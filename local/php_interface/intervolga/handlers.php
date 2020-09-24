@@ -1,41 +1,41 @@
 <?php
-AddEventHandler( "iblock", "OnAfterIBlockElementAdd", array( "asproImport", "FillProperties" ) );
-AddEventHandler( "iblock", "OnAfterIBlockElementUpdate", array( "asproImport", "FillProperties" ) );
-class asproImport {
-    public static function FillProperties( $arFields )
+\Bitrix\Main\EventManager::getInstance()->addEventHandler( "iblock", "OnAfterIBlockElementAdd", array( "AsproImport", "FillProperties" ) );
+\Bitrix\Main\EventManager::getInstance()->addEventHandler( "iblock", "OnAfterIBlockElementUpdate", array( "AsproImport", "FillProperties" ) );
+class AsproImport {
+    static $propHit = null;
+    public static function fillProperties( $arFields )
     {
         $iBlockID = \CNextCache::$arIBlocks['s1']['aspro_next_catalog']['aspro_next_catalog'][0];
         $newValue = [];
         $oldValue = [];
-        $arCatalogID=array($iBlockID);
-        if( in_array($arFields['IBLOCK_ID'], $arCatalogID) )
+        if($arFields['IBLOCK_ID'] == $iBlockID)
         {
             $property = CIBlockProperty::GetByID('HIT', $iBlockID)->GetNext();
-            $propID = $property['ID'];
+            $propHitID = $property['ID'];
 
-            $prop = CIBlockPropertyEnum::GetList(Array("DEF"=>"DESC", "SORT"=>"ASC"), Array("IBLOCK_ID"=>$iBlockID, "CODE"=>"HIT"));
+            if (self::$propHit == null) self::$propHit = CIBlockPropertyEnum::GetList(Array("DEF"=>"DESC", "SORT"=>"ASC"), Array("IBLOCK_ID"=>$iBlockID, "CODE"=>"HIT"));
+            $prop = self::$propHit;
 
-            $arItem = CIBlockElement::GetList( false, array( 'IBLOCK_ID' => $arFields['IBLOCK_ID'], 'ID' => $arFields['ID'] ), false, false, array( 'ID', 'PROPERTY_KATEGORIYA_TOVARA_A_B_C_D', 'PROPERTY_SKIDKA', 'PROPERTY_HIT') );
-            while ($el = $arItem->fetch())
+            $arItem = \CNextCache::CIBlockElement_GetList( false, array( 'IBLOCK_ID' => $arFields['IBLOCK_ID'], 'ID' => $arFields['ID'] ), false, false, array( 'ID', 'PROPERTY_KATEGORIYA_TOVARA_A_B_C_D', 'PROPERTY_SKIDKA', 'PROPERTY_HIT'));
+            $arItem = $arItem[0];
+            foreach ($arItem["PROPERTY_HIT_ENUM_ID"] as $el)
             {
-                $oldValue[] = $el["PROPERTY_HIT_ENUM_ID"];
-                $temp = $el;
+                $oldValue[] = $el;
             }
-            $arItem = $temp;
             while ($el = $prop->fetch())
             {
                 if($arItem['PROPERTY_SKIDKA_VALUE'] == $el['VALUE'])
                 {
-                    $propId = $el['ID'];
+                    $newPropHitListElId = $el['ID'];
                 }
-                if($el["XML_ID"] == 'HIT') $hit = $el['ID'];
-                if($el["XML_ID"] == 'NEW') $new = $el['ID'];
-                if($el["XML_ID"] == 'STOCK') $action = $el['ID'];
+                if($el["XML_ID"] == 'HIT') $propHitValueID['hit'] = $el['ID'];
+                if($el["XML_ID"] == 'NEW') $propHitValueID['new'] = $el['ID'];
+                if($el["XML_ID"] == 'STOCK') $propHitValueID['action'] = $el['ID'];
             }
 
             if($arItem['PROPERTY_KATEGORIYA_TOVARA_A_B_C_D_VALUE'] == 'Хит продаж')
             {
-                $newValue[] = $hit;
+                $newValue[] = $propHitValueID['hit'];
             }
 
             $prop = CIBlockElement::GetProperty( $arFields['IBLOCK_ID'], $arFields['ID'],"sort", "asc", array('CODE' => 'CML2_TRAITS'));
@@ -43,22 +43,22 @@ class asproImport {
             {
                 if($el['DESCRIPTION'] == 'Акция' && $el['VALUE'] == 'true')
                 {
-                    $newValue[] = $action;
+                    $newValue[] = $propHitValueID['action'];
                 }
                 if($el['DESCRIPTION'] == 'Новинка' && $el['VALUE'] == 'true')
                 {
-                    $newValue[] = $new;
+                    $newValue[] = $propHitValueID['new'];
                 }
             }
             if($arItem['PROPERTY_SKIDKA_VALUE'])
             {
-                if(!isset($propId))
+                if(!isset($newPropHitListElId))
                 {
-                    $propId = CIBlockPropertyEnum::Add(Array('PROPERTY_ID'=>$propID, 'VALUE'=>$arItem['PROPERTY_SKIDKA_VALUE']));
+                    $newPropHitListElId = CIBlockPropertyEnum::Add(Array('PROPERTY_ID'=>$propHitID, 'VALUE'=>$arItem['PROPERTY_SKIDKA_VALUE']));
                 }
-                $newValue[] = $propId;
+                $newValue[] = $newPropHitListElId;
             }
-            if(array_values($oldValue) != array_values($newValue))  CIBlockElement::SetPropertyValuesEx($arFields['ID'], false, array('HIT' => $newValue));
+            if(count(array_diff($newValue, $oldValue)) > 0)  CIBlockElement::SetPropertyValuesEx($arFields['ID'], false, array('HIT' => $newValue));
         }
     }
 }
