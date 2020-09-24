@@ -22,8 +22,12 @@ class AsproImport {
                 }
             }
 
-            $arItem = \CNextCache::CIBlockElement_GetList( false, array( 'IBLOCK_ID' => $arFields['IBLOCK_ID'], 'ID' => $arFields['ID'] ), false, false, array( 'ID', 'PROPERTY_KATEGORIYA_TOVARA_A_B_C_D', 'PROPERTY_SKIDKA', 'PROPERTY_HIT'));
-            $arItem = $arItem[0];
+            $item = CIBlockElement::GetList( false, array( 'IBLOCK_ID' => $arFields['IBLOCK_ID'], 'ID' => $arFields['ID'] ), false, false, array( 'ID', 'PROPERTY_KATEGORIYA_TOVARA_A_B_C_D', 'PROPERTY_SKIDKA', 'PROPERTY_HIT') );
+            while ($el = $item->fetch())
+            {
+                $oldValue[] = $el["PROPERTY_HIT_ENUM_ID"];
+                $arItem = $el;
+            }
             $oldValue = $arItem["PROPERTY_HIT_ENUM_ID"];
             foreach (self::$propHit as $el)
             {
@@ -58,6 +62,12 @@ class AsproImport {
                 if(!isset($newPropHitListElId))
                 {
                     $newPropHitListElId = CIBlockPropertyEnum::Add(Array('PROPERTY_ID'=>$propHitID, 'VALUE'=>$arItem['PROPERTY_SKIDKA_VALUE']));
+                    self::$propHit[] =
+                        [
+                            'VALUE'=>$arItem['PROPERTY_SKIDKA_VALUE'],
+                            'XML_ID'=>'FAKE',
+                            'ID' => $newPropHitListElId,
+                        ];
                 }
                 $newValue[] = $newPropHitListElId;
             }
