@@ -19,7 +19,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) { die(); }
 				<div class="set-composition_article">Артикул: 111111</div>
 			</span>
 			<span class="set-composition_price">
-				11&nbsp;999&nbsp;руб.
+				<div class="set-composition_price__old">13&nbsp;999&nbsp;руб.</div>
+				<div class="set-composition_price__new">11&nbsp;999&nbsp;руб.</div>
 			</span>
 		</div>
 		<div class="set-composition_row">
@@ -36,7 +37,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) { die(); }
 				<div class="set-composition_article">Артикул: 111111</div>
 			</span>
 			<span class="set-composition_price">
-				11&nbsp;999&nbsp;руб.
+				<div class="set-composition_price__new">11&nbsp;999&nbsp;руб.</div>
 			</span>
 		</div>
 	</div>
@@ -56,7 +57,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) { die(); }
 				<div class="set-composition_article">Артикул: 111111</div>
 			</span>
 			<span class="set-composition_price">
-				11&nbsp;999&nbsp;руб.
+				<div class="set-composition_price__new">11&nbsp;999&nbsp;руб.</div>
 			</span>
 		</div>
 		<div class="set-composition_row">
@@ -73,7 +74,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) { die(); }
 				<div class="set-composition_article">Артикул: 111111</div>
 			</span>
 			<span class="set-composition_price">
-				11&nbsp;999&nbsp;руб.
+				<div class="set-composition_price__new">11&nbsp;999&nbsp;руб.</div>
 			</span>
 		</div>
 	</div>
