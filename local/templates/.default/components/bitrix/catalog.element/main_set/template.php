@@ -1356,6 +1356,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 						<?endif;?>
 						<?if($showProps && $arParams["PROPERTIES_DISPLAY_LOCATION"] != "TAB"):?>
 							<div class="wraps">
+								<? include "set_composition.php"; ?>
 								<hr>
 								<h4><?=($arParams["TAB_CHAR_NAME"] ? $arParams["TAB_CHAR_NAME"] : GetMessage("PROPERTIES_TAB"));?></h4>
 								<?if($strGrupperType == "GRUPPER"):?>

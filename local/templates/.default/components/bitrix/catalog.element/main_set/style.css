@@ -1,0 +1,35 @@
+.catalog_detail .wraps h4.set-composition_header {
+    background-color: lightgrey;
+    width: 100%;
+    padding: 4px 0;
+    text-align: center;
+    margin: 0;
+}
+.set-composition_row {
+    display: flex;
+    flex-flow: wrap;
+    width: 100%;
+    border-bottom: solid 1px lightgrey;
+    margin: 5px 0;
+    padding: 3px 5px;
+}
+.set-composition_row > span {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+.set-composition_price {
+    flex-basis: 150px;
+}
+.set-composition_picture {
+    flex-basis: 100px;
+    height: 80px;
+}
+.set-composition_row > span.set-composition_title {
+    flex-basis: 165px;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
