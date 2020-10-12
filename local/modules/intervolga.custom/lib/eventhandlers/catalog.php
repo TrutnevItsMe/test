@@ -1,7 +1,7 @@
 <?namespace Intervolga\Custom\EventHandlers;
 
 use Intervolga\Common\Tools\EventHandler;
-use Intervolga\Custom\Import\Catalog as ImportCatalog;
+use Intervolga\Custom\Import\Sets;
 
 
 /**
@@ -21,6 +21,12 @@ class Catalog extends EventHandler
 	 */
 	public static function onSuccessCatalogImport1C($arParams, $xmlFileName)
 	{
-		ImportCatalog::importSets($xmlFileName);
+		// Intervolga Akentyev Logs
+		file_put_contents(
+			$_SERVER['DOCUMENT_ROOT'] . '/upload/logs/1c_catalog' . DATE('_Y_m_d') . '.log',
+			var_export($xmlFileName, true),
+			FILE_APPEND
+		);
+		//Sets::import($xmlFileName);
 	}
 }
