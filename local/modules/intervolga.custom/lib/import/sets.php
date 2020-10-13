@@ -2,6 +2,9 @@
 
 use CDataXML;
 use Error;
+use Bitrix\Main\Loader;
+use Bitrix\Iblock\ElementTable;
+use CIBlockElement;
 
 class Sets {
 	const TAG_ID = "Ид";
@@ -24,7 +27,7 @@ class Sets {
 		$sets = $xml->SelectNodes("КоммерческаяИнформация/КоммерческаяИнформация/Каталог/Комплекты");
 		$arrSets = [];
 		foreach ($sets->children as $set) {
-			$arrSets[] = [
+			$arrSets[self::getValue($set, self::TAG_ID)] = [
 				'id' => self::getValue($set, self::TAG_ID),
 				'name' => self::getValue($set, self::TAG_NAME),
 				'parentId' => self::getValue($set, self::TAG_PARENT_ID),
@@ -41,7 +44,24 @@ class Sets {
 	 * @param $sets array данные о комплектах
 	 */
 	protected static function processSets($sets) {
-		var_dump($sets);
+		if (count($sets)> 0 && Loader::includeModule('iblock')) {
+			$items = ElementTable::getList([
+				'select' => ['ID', 'XML_ID', 'NAME'],
+				'filter' => ['=XML_ID' => array_keys($sets)],
+			]);
+			while ($item = $items->fetch()) {
+				if (is_array($composition = $sets[$item['XML_ID']]['composition']) > 0) {
+					var_dump($item['XML_ID']);
+					var_dump($item['NAME']);
+					var_dump($composition);
+					CIBlockElement::SetPropertyValueCode(
+						$item['ID'],
+						"COMPOSITION",
+						["TEXT"=>json_encode($composition), "TYPE"=>"TEXT"]
+					);
+				}
+			}
+		}
 	}
 	
 	/**
