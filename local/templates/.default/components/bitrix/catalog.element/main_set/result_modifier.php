@@ -2,6 +2,9 @@
 use Bitrix\Main\Type\Collection;
 use Bitrix\Currency\CurrencyTable;
 use Bitrix\Iblock;
+use Bitrix\Main\Web\Json;
+use Bitrix\Main\ArgumentException;
+use Bitrix\Iblock\ElementTable;
 
 if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED!==true) die();
 /** @var CBitrixComponentTemplate $this */
@@ -1492,4 +1495,24 @@ if(is_array($arParams["SECTION_TIZER"]) && $arParams["SECTION_TIZER"]){
 		$obCache->EndDataCache($arTizersData);
 	}
 	$arResult["TIZERS_ITEMS"]=$arTizersData;
-}?>
+}
+if (is_array($arResult["GROUPS_PROPS"]["COMPOSITION"])
+	&& $composition = $arResult["GROUPS_PROPS"]["COMPOSITION"]['~VALUE']['TEXT']) {
+	try {
+		echo '<pre>';
+		$composition = Json::decode($composition);
+		var_dump($composition);
+		if (count($composition) > 0) {
+			$items = ElementTable::getList([
+				'select' => ['ID', 'XML_ID', 'NAME', 'PREVIEW_PICTURE'],
+				'filter' => ['=XML_ID' => array_keys($composition)],
+			]);
+			while ($item = $items->fetch()) {
+				var_dump($item);
+			}
+			die();
+		}
+	} catch (ArgumentException $err) {
+	
+	}
+}

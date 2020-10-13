@@ -5,7 +5,7 @@ use Error;
 use Bitrix\Main\Loader;
 use Bitrix\Iblock\ElementTable;
 use CIBlockElement;
-
+use Bitrix\Main\Web\Json;
 class Sets {
 	const TAG_ID = "Ид";
 	const TAG_NAME = "Наименование";
@@ -27,8 +27,9 @@ class Sets {
 		$sets = $xml->SelectNodes("КоммерческаяИнформация/КоммерческаяИнформация/Каталог/Комплекты");
 		$arrSets = [];
 		foreach ($sets->children as $set) {
-			$arrSets[self::getValue($set, self::TAG_ID)] = [
-				'id' => self::getValue($set, self::TAG_ID),
+			$id = self::getValue($set, self::TAG_ID);
+			$arrSets[$id] = [
+				'id' => $id,
 				'name' => self::getValue($set, self::TAG_NAME),
 				'parentId' => self::getValue($set, self::TAG_PARENT_ID),
 				'mainChoice' => self::getValueBoolean($set, self::TAG_MAIN_CHOICE),
@@ -57,7 +58,7 @@ class Sets {
 					CIBlockElement::SetPropertyValueCode(
 						$item['ID'],
 						"COMPOSITION",
-						["TEXT"=>json_encode($composition), "TYPE"=>"TEXT"]
+						["TEXT"=>Json::encode($composition), "TYPE"=>"TEXT"]
 					);
 				}
 			}
@@ -73,8 +74,9 @@ class Sets {
 		$items = reset($node->elementsByName(self::TAG_COMPOSITION));
 		$arrItems = [];
 		foreach ($items->children as $item) {
-			$arrItems[] = [
-				"id" => self::getValue($item, self::TAG_ID),
+			$id = self::getValue($item, self::TAG_ID);
+			$arrItems[$id] = [
+				"id" => $id,
 				"amount" => self::getValueInteger($item, self::TAG_AMOUNT),
 				"optional" => self::getValueBoolean($item, self::TAG_OPTIONAL),
 				"default" => self::getValueBoolean($item, self::TAG_DEFAULT),
