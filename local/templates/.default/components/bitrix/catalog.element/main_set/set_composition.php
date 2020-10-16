@@ -1,81 +1,65 @@
 <?
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) { die(); }
-?>
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
+	die();
+}
 
-<div class="set-composition">
-	<div class="set-composition_base">
-		<h4 class="set-composition_header">Базовые элементы</h4>
-		<div class="set-composition_row">
+if (is_array($arResult["SET"])):?>
+	<div class="set-composition">
+		<div class="set-composition_base">
+			<h4 class="set-composition_header">Базовые элементы</h4>
+			<? foreach ($arResult["SET"]["SET"] as $arItem): ?>
+				<div class="set-composition_row" data-id="<?= $arItem['ID'] ?>">
 			<span class="set-composition_checkbox">
 				<input type="checkbox" checked disabled>
 			</span>
-			<span class="set-composition_picture">
-				<img src="/upload/iblock/c07/c072a9bf920cca4468957b4687cdf65e.jpg">
+					<span class="set-composition_picture">
+				<? if ($arItem['FILE']): ?>
+					<img src="<?= $arItem['FILE'] ?>">
+				<? else: ?>
+					<img src="/bitrix/templates/aspro_next/images/no_photo_medium.png">
+				<? endif ?>
 			</span>
-			<span class="set-composition_title">
+					<span class="set-composition_title">
 				<div class="set-composition_name">
-					<a href="#">Lorem Ipsum</a>
+					<a href="#"><?= $arItem['NAME'] ?></a>
 				</div>
-				<div class="set-composition_article">Артикул: 111111</div>
+				<div class="set-composition_article">Артикул: <?= $arItem['ARTICLE'] ?></div>
 			</span>
-			<span class="set-composition_price">
+					<span class="set-composition_price">
 				<div class="set-composition_price__old">13&nbsp;999&nbsp;руб.</div>
 				<div class="set-composition_price__new">11&nbsp;999&nbsp;руб.</div>
 			</span>
-		</div>
-		<div class="set-composition_row">
-			<span class="set-composition_checkbox">
-				<input type="checkbox" checked disabled>
-			</span>
-			<span class="set-composition_picture">
-				<img src="/bitrix/templates/aspro_next/images/no_photo_medium.png">
-			</span>
-			<span class="set-composition_title">
-				<div class="set-composition_name">
-					<a href="#">Lorem Ipsum</a>
 				</div>
-				<div class="set-composition_article">Артикул: 111111</div>
+			<? endforeach; ?>
+		</div>
+		<? if (count($arResult["SET"]["OPTIONAL"]) > 0): ?>
+			<div class="set-composition_accesories">
+				<h4 class="set-composition_header">Комплектующие (<?= count($arResult["SET"]["OPTIONAL"]) ?>)</h4>
+				<? foreach ($arResult["SET"]["OPTIONAL"] as $arItem): ?>
+					<div class="set-composition_row" data-id="<?= $arItem['ID'] ?>">
+			<span class="set-composition_checkbox">
+				<input type="checkbox"<?= $arItem['DEFAULT'] ? ' checked' : '' ?>>
 			</span>
-			<span class="set-composition_price">
+						<span class="set-composition_picture">
+				<? if ($arItem['FILE']): ?>
+					<img src="<?= $arItem['FILE'] ?>">
+				<? else: ?>
+					<img src="/bitrix/templates/aspro_next/images/no_photo_medium.png">
+				<? endif ?>
+			</span>
+						<span class="set-composition_title">
+				<div class="set-composition_name">
+					<a href="#"><?= $arItem['NAME'] ?></a>
+				</div>
+				<div class="set-composition_article">Артикул: <?= $arItem['ARTICLE'] ?></div>
+			</span>
+						<span class="set-composition_price">
+				<div class="set-composition_price__old">13&nbsp;999&nbsp;руб.</div>
 				<div class="set-composition_price__new">11&nbsp;999&nbsp;руб.</div>
 			</span>
-		</div>
+					</div>
+				<? endforeach; ?>
+			</div>
+		<? endif ?>
 	</div>
-	<div class="set-composition_accesories">
-		<h4 class="set-composition_header">Комплектующие (12)</h4>
-		<div class="set-composition_row">
-			<span class="set-composition_checkbox">
-				<input type="checkbox">
-			</span>
-			<span class="set-composition_picture">
-				<img src="/bitrix/templates/aspro_next/images/no_photo_medium.png">
-			</span>
-			<span class="set-composition_title">
-				<div class="set-composition_name">
-					<a href="#">Lorem Ipsum</a>
-				</div>
-				<div class="set-composition_article">Артикул: 111111</div>
-			</span>
-			<span class="set-composition_price">
-				<div class="set-composition_price__new">11&nbsp;999&nbsp;руб.</div>
-			</span>
-		</div>
-		<div class="set-composition_row">
-			<span class="set-composition_checkbox">
-				<input type="checkbox">
-			</span>
-			<span class="set-composition_picture">
-				<img src="/bitrix/templates/aspro_next/images/no_photo_medium.png">
-			</span>
-			<span class="set-composition_title">
-				<div class="set-composition_name">
-					<a href="#">Lorem Ipsum</a>
-				</div>
-				<div class="set-composition_article">Артикул: 111111</div>
-			</span>
-			<span class="set-composition_price">
-				<div class="set-composition_price__new">11&nbsp;999&nbsp;руб.</div>
-			</span>
-		</div>
-	</div>
-</div>
+<? endif;

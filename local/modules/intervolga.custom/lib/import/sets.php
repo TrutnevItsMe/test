@@ -4,8 +4,13 @@ use CDataXML;
 use Error;
 use Bitrix\Main\Loader;
 use Bitrix\Iblock\ElementTable;
+use Bitrix\Iblock\PropertyTable;
+use Bitrix\Iblock\ElementPropertyTable;
+use Bitrix\Main\FileTable;
 use CIBlockElement;
 use Bitrix\Main\Web\Json;
+use Bitrix\Main\ArgumentException;
+
 class Sets {
 	const TAG_ID = "Ид";
 	const TAG_NAME = "Наименование";
@@ -15,6 +20,7 @@ class Sets {
 	const TAG_COMPOSITION = "Состав";
 	const TAG_OPTIONAL = "Опция";
 	const TAG_DEFAULT = "ОпцияУмолч";
+	const TAG_DELETE = "ПометкаУдаления";
 
 	/**
 	 * https://youtrack.ivsupport.ru/issue/iberisweb-8
@@ -34,10 +40,82 @@ class Sets {
 				'parentId' => self::getValue($set, self::TAG_PARENT_ID),
 				'mainChoice' => self::getValueBoolean($set, self::TAG_MAIN_CHOICE),
 				'amount' => self::getValueInteger($set, self::TAG_AMOUNT),
+				'delete' => self::getValueBoolean($set, self::TAG_DELETE),
 				'composition' => self::getComposition($set),
 			];
 		}
 		self::processSets($arrSets);
+	}
+	
+	/**
+	 * Возвращает данные комплекта
+	 * @param $json string сериализированый состав комплекта
+	 * @return array данные товаров, составляющих комплект
+	 */
+	public static function getSet($composition) {
+		$set = [];
+		try {
+			$composition = Json::decode($composition);
+			if (count($composition) > 0) {
+				$items = ElementTable::getList([
+					'select' => [
+						'ID',
+						'XML_ID',
+						'NAME',
+						'ARTICLE' => 'PROPERTY_VALUE.VALUE',
+						'DIR' => 'PICTURE.SUBDIR',
+						'FILE' => 'PICTURE.FILE_NAME',
+					],
+					'filter' => [
+						'=XML_ID' => array_keys($composition),
+						'=PROPERTY.CODE' => 'CML2_ARTICLE',
+					],
+					'runtime' => [
+						'PROPERTY_VALUE' => [
+							'data_type' => ElementPropertyTable::class,
+							'reference' => [
+								'=this.ID' => 'ref.IBLOCK_ELEMENT_ID',
+							],
+							'join_type' => 'left'
+						],
+						'PROPERTY' => [
+							'data_type' => PropertyTable::class,
+							'reference' => [
+								'=this.PROPERTY_VALUE.IBLOCK_PROPERTY_ID' => 'ref.ID',
+							],
+							'join_type' => 'left'
+						],
+						'PICTURE' => [
+							'data_type' => FileTable::class,
+							'reference' => [
+								'=this.PREVIEW_PICTURE' => 'ref.ID',
+							],
+							'join_type' => 'left'
+						],
+					]
+				]);
+				while ($item = $items->fetch()) {
+					$xmlId = $item['XML_ID'];
+					$compItem = $composition[$xmlId];
+					$category = $compItem['optional'] ? 'OPTIONAL' : 'SET';
+					$item['AMOUNT'] = $compItem['amount'];
+					if($compItem['optional']) {$item['DEFAULT'] = $compItem['default'];}
+					if($item['FILE']) {
+						$item['FILE'] = '/upload/' . $item['DIR'] . '/' . $item['FILE'];
+					} else {
+						unset($item['FILE']);
+					}
+					unset($item['DIR']);
+					if(!isset($set[$category])) {
+						$set[$category] = [];
+					}
+					$set[$category][] = $item;
+				}
+			}
+		} catch (ArgumentException $err) {
+		
+		}
+		return $set;
 	}
 	
 	/**
