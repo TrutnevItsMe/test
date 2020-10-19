@@ -13,21 +13,22 @@ if (is_array($arResult["SET"])):?>
 				<input type="checkbox" checked disabled>
 			</span>
 					<span class="set-composition_picture">
-				<? if ($arItem['FILE']): ?>
-					<img src="<?= $arItem['FILE'] ?>">
+				<? if ($arItem['PREVIEW_PICTURE']): ?>
+					<img src="<?= $arItem['PREVIEW_PICTURE'] ?>">
 				<? else: ?>
 					<img src="/bitrix/templates/aspro_next/images/no_photo_medium.png">
 				<? endif ?>
 			</span>
 					<span class="set-composition_title">
 				<div class="set-composition_name">
-					<a href="#"><?= $arItem['NAME'] ?></a>
+					<a href="<?= $arItem['DETAIL_PAGE_URL'] ?>"><?= $arItem['NAME'] ?></a>
 				</div>
 				<div class="set-composition_article">Артикул: <?= $arItem['ARTICLE'] ?></div>
 			</span>
 					<span class="set-composition_price">
-				<div class="set-composition_price__old">13&nbsp;999&nbsp;руб.</div>
-				<div class="set-composition_price__new">11&nbsp;999&nbsp;руб.</div>
+				<div class="set-composition_price__old">нет цены</div>
+				<div class="set-composition_price__new"><?=
+					number_format($arItem['PRICE'], 2, ',', '') ?> руб.</div>
 			</span>
 				</div>
 			<? endforeach; ?>
@@ -41,21 +42,22 @@ if (is_array($arResult["SET"])):?>
 				<input type="checkbox"<?= $arItem['DEFAULT'] ? ' checked' : '' ?>>
 			</span>
 						<span class="set-composition_picture">
-				<? if ($arItem['FILE']): ?>
-					<img src="<?= $arItem['FILE'] ?>">
+				<? if ($arItem['PREVIEW_PICTURE']): ?>
+					<img src="<?= $arItem['PREVIEW_PICTURE'] ?>">
 				<? else: ?>
 					<img src="/bitrix/templates/aspro_next/images/no_photo_medium.png">
 				<? endif ?>
 			</span>
 						<span class="set-composition_title">
 				<div class="set-composition_name">
-					<a href="#"><?= $arItem['NAME'] ?></a>
+					<a href="<?= $arItem['DETAIL_PAGE_URL'] ?>"><?= $arItem['NAME'] ?></a>
 				</div>
 				<div class="set-composition_article">Артикул: <?= $arItem['ARTICLE'] ?></div>
 			</span>
 						<span class="set-composition_price">
-				<div class="set-composition_price__old">13&nbsp;999&nbsp;руб.</div>
-				<div class="set-composition_price__new">11&nbsp;999&nbsp;руб.</div>
+				<div class="set-composition_price__old">нет цены</div>
+				<div class="set-composition_price__new"><?=
+					number_format($arItem['PRICE'], 2, ',', '') ?> руб.</div>
 			</span>
 					</div>
 				<? endforeach; ?>

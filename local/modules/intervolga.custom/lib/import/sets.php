@@ -1,17 +1,17 @@
-<?namespace Intervolga\Custom\Import;
+<? namespace Intervolga\Custom\Import;
 
 use CDataXML;
 use Error;
 use Bitrix\Main\Loader;
-use Bitrix\Iblock\ElementTable;
-use Bitrix\Iblock\PropertyTable;
-use Bitrix\Iblock\ElementPropertyTable;
-use Bitrix\Main\FileTable;
+use Bitrix\Main\Data\Cache;
 use CIBlockElement;
+use CFile;
 use Bitrix\Main\Web\Json;
 use Bitrix\Main\ArgumentException;
+use Bitrix\Main\Application;
 
-class Sets {
+class Sets
+{
 	const TAG_ID = "Ид";
 	const TAG_NAME = "Наименование";
 	const TAG_PARENT_ID = "ИдОсновнойНоменклатуры";
@@ -21,13 +21,14 @@ class Sets {
 	const TAG_OPTIONAL = "Опция";
 	const TAG_DEFAULT = "ОпцияУмолч";
 	const TAG_DELETE = "ПометкаУдаления";
-
+	
 	/**
 	 * https://youtrack.ivsupport.ru/issue/iberisweb-8
 	 * Загружает комплекты из xml файла импорта 1С
 	 * @param $xmlFileName string абсолютный путь к xml файлу обмена
 	 */
-	public static function import($xmlFileName) {
+	public static function import($xmlFileName)
+	{
 		$xml = new CDataXML;
 		$xml->Load($xmlFileName);
 		$sets = $xml->SelectNodes("КоммерческаяИнформация/КоммерческаяИнформация/Каталог/Комплекты");
@@ -52,68 +53,65 @@ class Sets {
 	 * @param $json string сериализированый состав комплекта
 	 * @return array данные товаров, составляющих комплект
 	 */
-	public static function getSet($composition) {
-		$set = [];
-		try {
-			$composition = Json::decode($composition);
-			if (count($composition) > 0) {
-				$items = ElementTable::getList([
-					'select' => [
-						'ID',
-						'XML_ID',
-						'NAME',
-						'ARTICLE' => 'PROPERTY_VALUE.VALUE',
-						'DIR' => 'PICTURE.SUBDIR',
-						'FILE' => 'PICTURE.FILE_NAME',
-					],
-					'filter' => [
-						'=XML_ID' => array_keys($composition),
-						'=PROPERTY.CODE' => 'CML2_ARTICLE',
-					],
-					'runtime' => [
-						'PROPERTY_VALUE' => [
-							'data_type' => ElementPropertyTable::class,
-							'reference' => [
-								'=this.ID' => 'ref.IBLOCK_ELEMENT_ID',
-							],
-							'join_type' => 'left'
-						],
-						'PROPERTY' => [
-							'data_type' => PropertyTable::class,
-							'reference' => [
-								'=this.PROPERTY_VALUE.IBLOCK_PROPERTY_ID' => 'ref.ID',
-							],
-							'join_type' => 'left'
-						],
-						'PICTURE' => [
-							'data_type' => FileTable::class,
-							'reference' => [
-								'=this.PREVIEW_PICTURE' => 'ref.ID',
-							],
-							'join_type' => 'left'
-						],
-					]
-				]);
-				while ($item = $items->fetch()) {
-					$xmlId = $item['XML_ID'];
-					$compItem = $composition[$xmlId];
-					$category = $compItem['optional'] ? 'OPTIONAL' : 'SET';
-					$item['AMOUNT'] = $compItem['amount'];
-					if($compItem['optional']) {$item['DEFAULT'] = $compItem['default'];}
-					if($item['FILE']) {
-						$item['FILE'] = '/upload/' . $item['DIR'] . '/' . $item['FILE'];
-					} else {
-						unset($item['FILE']);
+	public static function getSet($composition)
+	{
+		$cache = Cache::createInstance();
+		if ($cache->initCache(3600, $composition)) {
+			$set = $cache->getVars();
+		} else {
+			$set = [];
+			try {
+				$composition = Json::decode($composition);
+				if (count($composition) > 0) {
+					$rsItems = CIBlockElement::GetList(
+						['SORT' => 'ASC'],
+						['=XML_ID' => array_keys($composition)],
+						false,
+						false,
+						[
+							'ID',
+							'IBLOCK_ID',
+							'XML_ID',
+							'NAME',
+							'PREVIEW_PICTURE',
+							'DETAIL_PAGE_URL',
+							'CATALOG_PRICE_10',
+							'PROPERTY_CML2_ARTICLE',
+						]
+					);
+					$first = true;
+					while ($rsItem = $rsItems->GetNext()) {
+						if ($first) {
+							$taggedCache = Application::getInstance()->getTaggedCache();
+							$taggedCache->registerTag('iblock_id_' . $rsItem['IBLOCK_ID']);
+							$first = false;
+						}
+						$item = [
+							'XML_ID' => $rsItem['XML_ID'],
+							'NAME' => $rsItem['NAME'],
+							'DETAIL_PAGE_URL' => $rsItem['DETAIL_PAGE_URL'],
+							'PRICE' => floatval($rsItem['CATALOG_PRICE_10']),
+							'ARTICLE' => trim($rsItem['PROPERTY_CML2_ARTICLE_VALUE']),
+						];
+						$compItem = $composition[$item['XML_ID']];
+						$category = $compItem['optional'] ? 'OPTIONAL' : 'SET';
+						$item['AMOUNT'] = $compItem['amount'];
+						if ($compItem['optional']) {
+							$item['DEFAULT'] = $compItem['default'];
+						}
+						if ($rsItem['PREVIEW_PICTURE']) {
+							$item['PREVIEW_PICTURE'] = CFile::GetPath($rsItem['PREVIEW_PICTURE']);
+						}
+						if (!isset($set[$category])) {
+							$set[$category] = [];
+						}
+						$set[$category][] = $item;
 					}
-					unset($item['DIR']);
-					if(!isset($set[$category])) {
-						$set[$category] = [];
-					}
-					$set[$category][] = $item;
 				}
+				$cache->endDataCache($set);
+			} catch (ArgumentException $err) {
+				$cache->abortDataCache();
 			}
-		} catch (ArgumentException $err) {
-		
 		}
 		return $set;
 	}
@@ -122,8 +120,9 @@ class Sets {
 	 * Обработать комплекты
 	 * @param $sets array данные о комплектах
 	 */
-	protected static function processSets($sets) {
-		if (count($sets)> 0 && Loader::includeModule('iblock')) {
+	protected static function processSets($sets)
+	{
+		if (count($sets) > 0 && Loader::includeModule('iblock')) {
 			$items = ElementTable::getList([
 				'select' => ['ID', 'XML_ID', 'NAME'],
 				'filter' => ['=XML_ID' => array_keys($sets)],
@@ -136,7 +135,7 @@ class Sets {
 					CIBlockElement::SetPropertyValueCode(
 						$item['ID'],
 						"COMPOSITION",
-						["TEXT"=>Json::encode($composition), "TYPE"=>"TEXT"]
+						["TEXT" => Json::encode($composition), "TYPE" => "TEXT"]
 					);
 				}
 			}
@@ -148,7 +147,8 @@ class Sets {
 	 * @param $node object узел xml, содержащий комплект
 	 * @return array данные о составе комплекта
 	 */
-	protected static function getComposition($node) {
+	protected static function getComposition($node)
+	{
 		$items = reset($node->elementsByName(self::TAG_COMPOSITION));
 		$arrItems = [];
 		foreach ($items->children as $item) {
@@ -169,7 +169,8 @@ class Sets {
 	 * @param $name string название параметра
 	 * @return string текстовое знаечение параметра, если не найден -- пустая строка
 	 */
-	protected static function getValue($node, $name) {
+	protected static function getValue($node, $name)
+	{
 		try {
 			return trim(reset($node->elementsByName($name))->textContent());
 		} catch (Error $e) {
@@ -183,7 +184,8 @@ class Sets {
 	 * @param $name string название параметра
 	 * @return int текстовое знаечение параметра, 0 - если не найден
 	 */
-	protected static function getValueInteger($node, $name) {
+	protected static function getValueInteger($node, $name)
+	{
 		return intval(self::getValue($node, $name));
 	}
 	
@@ -193,7 +195,8 @@ class Sets {
 	 * @param $name string название параметра
 	 * @return bool true если параметр "истина", иначе false
 	 */
-	protected static function getValueBoolean($node, $name) {
+	protected static function getValueBoolean($node, $name)
+	{
 		return self::getValue($node, $name) === "истина";
 	}
 }
