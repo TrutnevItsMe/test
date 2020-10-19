@@ -87,6 +87,7 @@ class Sets
 							$first = false;
 						}
 						$item = [
+							'ID' => $rsItem['ID'],
 							'XML_ID' => $rsItem['XML_ID'],
 							'NAME' => $rsItem['NAME'],
 							'DETAIL_PAGE_URL' => $rsItem['DETAIL_PAGE_URL'],

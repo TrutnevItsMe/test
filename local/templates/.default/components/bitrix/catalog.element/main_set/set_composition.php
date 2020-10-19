@@ -8,7 +8,11 @@ if (is_array($arResult["SET"])):?>
 		<div class="set-composition_base">
 			<h4 class="set-composition_header">Базовые элементы</h4>
 			<? foreach ($arResult["SET"]["SET"] as $arItem): ?>
-				<div class="set-composition_row" data-id="<?= $arItem['ID'] ?>">
+				<div
+					class="set-composition_row"
+					data-id="<?= $arItem['ID'] ?>"
+					data-amount="<?= $arItem['AMOUNT'] ?>"
+				>
 			<span class="set-composition_checkbox">
 				<input type="checkbox" checked disabled>
 			</span>
@@ -37,7 +41,11 @@ if (is_array($arResult["SET"])):?>
 			<div class="set-composition_accesories">
 				<h4 class="set-composition_header">Комплектующие (<?= count($arResult["SET"]["OPTIONAL"]) ?>)</h4>
 				<? foreach ($arResult["SET"]["OPTIONAL"] as $arItem): ?>
-					<div class="set-composition_row" data-id="<?= $arItem['ID'] ?>">
+					<div
+						class="set-composition_row"
+						data-id="<?= $arItem['ID'] ?>"
+						data-amount="<?= $arItem['AMOUNT'] ?>"
+					>
 			<span class="set-composition_checkbox">
 				<input type="checkbox"<?= $arItem['DEFAULT'] ? ' checked' : '' ?>>
 			</span>
