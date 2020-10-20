@@ -124,7 +124,6 @@ class Sets
 	 */
 	protected static function processSets($sets)
 	{
-		var_dump($sets);
 		if (count($sets) > 0 && Loader::includeModule('iblock')) {
 			$items = ElementTable::getList([
 				'select' => ['ID', 'XML_ID', 'NAME'],
@@ -132,9 +131,6 @@ class Sets
 			]);
 			while ($item = $items->fetch()) {
 				if (is_array($composition = $sets[$item['XML_ID']]['composition']) > 0) {
-					var_dump($item['XML_ID']);
-					var_dump($item['NAME']);
-					var_dump($composition);
 					CIBlockElement::SetPropertyValueCode(
 						$item['ID'],
 						"COMPOSITION",

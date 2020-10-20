@@ -27,6 +27,6 @@ class Catalog extends EventHandler
 			$xmlFileName  . PHP_EOL,
 			FILE_APPEND
 		);
-		//Sets::import($xmlFileName);
+		Sets::import($xmlFileName);
 	}
 }
