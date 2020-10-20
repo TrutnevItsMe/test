@@ -38,6 +38,7 @@ class AsproImport {
                 if($el["XML_ID"] == 'HIT') $propHitValueID['hit'] = $el['ID'];
                 if($el["XML_ID"] == 'NEW') $propHitValueID['new'] = $el['ID'];
                 if($el["XML_ID"] == 'STOCK') $propHitValueID['action'] = $el['ID'];
+                if($el["XML_ID"] == 'SALE') $propHitValueID['sale'] = $el['ID'];
             }
 
             if($arItem['PROPERTY_KATEGORIYA_TOVARA_A_B_C_D_VALUE'] == 'Хит продаж')
@@ -55,6 +56,10 @@ class AsproImport {
                 if($el['DESCRIPTION'] == 'Новинка' && $el['VALUE'] == 'true')
                 {
                     $newValue[] = $propHitValueID['new'];
+                }
+                if($el['DESCRIPTION'] == 'Распродажа' && $el['VALUE'] == 'true')
+                {
+                    $newValue[] = $propHitValueID['sale'];
                 }
             }
             if($arItem['PROPERTY_SKIDKA_VALUE'])
