@@ -24,7 +24,7 @@ class Catalog extends EventHandler
 		// Intervolga Akentyev Logs
 		file_put_contents(
 			$_SERVER['DOCUMENT_ROOT'] . '/upload/logs/1c_catalog' . DATE('_Y_m_d') . '.log',
-			var_export($xmlFileName, true),
+			$xmlFileName  . PHP_EOL,
 			FILE_APPEND
 		);
 		//Sets::import($xmlFileName);

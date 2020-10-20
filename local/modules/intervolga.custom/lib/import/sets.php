@@ -9,6 +9,7 @@ use CFile;
 use Bitrix\Main\Web\Json;
 use Bitrix\Main\ArgumentException;
 use Bitrix\Main\Application;
+use Bitrix\Iblock\ElementTable;
 
 class Sets
 {
@@ -123,6 +124,7 @@ class Sets
 	 */
 	protected static function processSets($sets)
 	{
+		var_dump($sets);
 		if (count($sets) > 0 && Loader::includeModule('iblock')) {
 			$items = ElementTable::getList([
 				'select' => ['ID', 'XML_ID', 'NAME'],
