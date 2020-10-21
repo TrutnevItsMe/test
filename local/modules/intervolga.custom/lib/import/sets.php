@@ -35,17 +35,23 @@ class Sets
 		$sets = $xml->SelectNodes("КоммерческаяИнформация/КоммерческаяИнформация/Каталог/Комплекты");
 		$arrSets = [];
 		foreach ($sets->children as $set) {
-			$id = self::getValue($set, self::TAG_ID);
-			$arrSets[$id] = [
-				'id' => $id,
+			$parentId = self::getValue($set, self::TAG_PARENT_ID);
+			$arrSets[$parentId] = [
+				'id' => self::getValue($set, self::TAG_ID),
 				'name' => self::getValue($set, self::TAG_NAME),
-				'parentId' => self::getValue($set, self::TAG_PARENT_ID),
+				'parentId' => $parentId,
 				'mainChoice' => self::getValueBoolean($set, self::TAG_MAIN_CHOICE),
 				'amount' => self::getValueInteger($set, self::TAG_AMOUNT),
 				'delete' => self::getValueBoolean($set, self::TAG_DELETE),
 				'composition' => self::getComposition($set),
 			];
 		}
+		// Intervolga Akentyev Logs
+		file_put_contents(
+			$_SERVER['DOCUMENT_ROOT'] . '/upload/logs/1c_catalog' . DATE('_Y_m_d') . '.log',
+			print_r($arrSets, true)  . PHP_EOL,
+			FILE_APPEND
+		);
 		self::processSets($arrSets);
 	}
 	

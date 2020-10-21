@@ -21,12 +21,14 @@ class Catalog extends EventHandler
 	 */
 	public static function onSuccessCatalogImport1C($arParams, $xmlFileName)
 	{
-		// Intervolga Akentyev Logs
-		file_put_contents(
-			$_SERVER['DOCUMENT_ROOT'] . '/upload/logs/1c_catalog' . DATE('_Y_m_d') . '.log',
-			$xmlFileName  . PHP_EOL,
-			FILE_APPEND
-		);
-		Sets::import($xmlFileName);
+		if (strpos($xmlFileName, 'import') !== false) {
+			// Intervolga Akentyev Logs
+			file_put_contents(
+				$_SERVER['DOCUMENT_ROOT'] . '/upload/logs/1c_catalog' . DATE('_Y_m_d') . '.log',
+				$xmlFileName  . PHP_EOL,
+				FILE_APPEND
+			);
+			Sets::import($xmlFileName);
+		}
 	}
 }
