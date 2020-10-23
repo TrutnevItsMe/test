@@ -202,6 +202,6 @@ class Sets
 	 */
 	protected static function getValueBoolean($node, $name)
 	{
-		return self::getValue($node, $name) === "истина";
+		return self::getValue($node, $name) === "true";
 	}
 }

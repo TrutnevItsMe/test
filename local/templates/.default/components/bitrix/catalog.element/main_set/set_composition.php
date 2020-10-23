@@ -32,7 +32,7 @@ if (is_array($arResult["SET"])):?>
 					<span class="set-composition_price">
 				<div class="set-composition_price__old">нет цены</div>
 				<div class="set-composition_price__new"><?=
-					number_format($arItem['PRICE'], 2, ',', '') ?> руб.</div>
+					number_format($arItem['PRICE'], 2, ',', '&nbsp;') ?> руб.</div>
 			</span>
 				</div>
 			<? endforeach; ?>
@@ -65,7 +65,7 @@ if (is_array($arResult["SET"])):?>
 						<span class="set-composition_price">
 				<div class="set-composition_price__old">нет цены</div>
 				<div class="set-composition_price__new"><?=
-					number_format($arItem['PRICE'], 2, ',', '') ?> руб.</div>
+					number_format($arItem['PRICE'], 2, ',', '&nbsp;') ?> руб.</div>
 			</span>
 					</div>
 				<? endforeach; ?>
