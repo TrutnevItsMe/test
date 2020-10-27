@@ -30,7 +30,10 @@ if (is_array($arResult["SET"])):?>
 				<div class="set-composition_article">Артикул: <?= $arItem['ARTICLE'] ?></div>
 			</span>
 					<span class="set-composition_price">
-				<div class="set-composition_price__old">нет цены</div>
+				<?if(isset($arItem['OLD_PRICE'])):?>
+					<div class="set-composition_price__old"><?=
+						number_format($arItem['OLD_PRICE'], 2, ',', '&nbsp;') ?> руб.</div>
+				<?endif?>
 				<div class="set-composition_price__new"><?=
 					number_format($arItem['PRICE'], 2, ',', '&nbsp;') ?> руб.</div>
 			</span>
@@ -63,7 +66,10 @@ if (is_array($arResult["SET"])):?>
 				<div class="set-composition_article">Артикул: <?= $arItem['ARTICLE'] ?></div>
 			</span>
 						<span class="set-composition_price">
-				<div class="set-composition_price__old">нет цены</div>
+				<?if(isset($arItem['OLD_PRICE'])):?>
+				<div class="set-composition_price__old"><?=
+					number_format($arItem['OLD_PRICE'], 2, ',', '&nbsp;') ?> руб.</div>
+				<?endif?>
 				<div class="set-composition_price__new"><?=
 					number_format($arItem['PRICE'], 2, ',', '&nbsp;') ?> руб.</div>
 			</span>

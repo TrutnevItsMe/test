@@ -6,6 +6,7 @@ use Bitrix\Main\Loader;
 use Bitrix\Main\Data\Cache;
 use CIBlockElement;
 use CFile;
+use CCatalogProduct;
 use Bitrix\Main\Web\Json;
 use Bitrix\Main\ArgumentException;
 use Bitrix\Main\Application;
@@ -82,7 +83,6 @@ class Sets
 							'NAME',
 							'PREVIEW_PICTURE',
 							'DETAIL_PAGE_URL',
-							'CATALOG_PRICE_10',
 							'PROPERTY_CML2_ARTICLE',
 						]
 					);
@@ -98,7 +98,6 @@ class Sets
 							'XML_ID' => $rsItem['XML_ID'],
 							'NAME' => $rsItem['NAME'],
 							'DETAIL_PAGE_URL' => $rsItem['DETAIL_PAGE_URL'],
-							'PRICE' => floatval($rsItem['CATALOG_PRICE_10']),
 							'ARTICLE' => trim($rsItem['PROPERTY_CML2_ARTICLE_VALUE']),
 						];
 						$compItem = $composition[$item['XML_ID']];
@@ -109,6 +108,13 @@ class Sets
 						}
 						if ($rsItem['PREVIEW_PICTURE']) {
 							$item['PREVIEW_PICTURE'] = CFile::GetPath($rsItem['PREVIEW_PICTURE']);
+						}
+						$price = CCatalogProduct::GetOptimalPrice($item['ID']);
+						$price = $price['RESULT_PRICE'];
+						$item['PRICE'] = floatval($price['DISCOUNT_PRICE']);
+						
+						if ($price['DISCOUNT'] > 0) {
+							$item['OLD_PRICE'] = floatval($price['BASE_PRICE']);
 						}
 						if (!isset($set[$category])) {
 							$set[$category] = [];
