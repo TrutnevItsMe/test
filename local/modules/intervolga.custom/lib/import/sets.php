@@ -50,7 +50,7 @@ class Sets
 		// Intervolga Akentyev Logs
 		file_put_contents(
 			$_SERVER['DOCUMENT_ROOT'] . '/upload/logs/1c_catalog' . DATE('_Y_m_d') . '.log',
-			print_r($arrSets, true)  . PHP_EOL,
+			print_r($arrSets, true) . PHP_EOL,
 			FILE_APPEND
 		);
 		self::processSets($arrSets);
@@ -142,11 +142,16 @@ class Sets
 				'filter' => ['=XML_ID' => array_keys($sets)],
 			]);
 			while ($item = $items->fetch()) {
-				if (is_array($composition = $sets[$item['XML_ID']]['composition']) > 0) {
+				if ($delete = $sets[$item['XML_ID']]['delete']
+					|| is_array($composition = $sets[$item['XML_ID']]['composition'])) {
+					$value = ["TYPE" => "TEXT", "TEXT" => ""];
+					if (!$delete) {
+						$value = ["TEXT"] = Json::encode($composition);
+					}
 					CIBlockElement::SetPropertyValueCode(
 						$item['ID'],
 						"COMPOSITION",
-						["TEXT" => Json::encode($composition), "TYPE" => "TEXT"]
+						$value
 					);
 				}
 			}
