@@ -53,8 +53,10 @@ if (is_array($arResult["GRID"]["ROWS"])) {
 				$set = Sets::getSet($value['TEXT']);
 				$set = array_column ($set['SET'], 'NAME');
 				if (count ($set) > 0) {
-					$arResult["BASKET_ITEM_RENDER_DATA"][$key]['NAME'] .= '<br/>Состав комплекта:<br/>'
-						. implode('<br/>', $set);
+					$arResult["BASKET_ITEM_RENDER_DATA"][$key]['NAME'] .=
+						'<div class="iv-item-composition-8">Состав комплекта:<br/>'
+						. implode('<br/>', $set)
+						. '</div>';
 				}
 			}
 		}

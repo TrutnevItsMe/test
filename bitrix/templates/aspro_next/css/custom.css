@@ -10,3 +10,14 @@
 
 /* Hide compare button */
 /* a.compare_item { display: none !important;  }*/
+
+/*
+    https://youtrack.ivsupport.ru/issue/iberisweb-8
+    Вёрстка отображения состава товара
+ */
+.iv-item-composition-8 {
+    color: #888;
+    font-size: 12px;
+    line-height: 15px;
+    font-weight: 400;
+}

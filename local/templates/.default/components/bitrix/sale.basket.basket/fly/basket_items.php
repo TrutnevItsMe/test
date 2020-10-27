@@ -72,10 +72,12 @@
 								<td class="name-cell" style="padding-left:0; padding-right:0;">
 									<?if (strlen($arItem["DETAIL_PAGE_URL"]) > 0):?><a href="<?=$arItem["DETAIL_PAGE_URL"]?>"><?endif;?><?=$arItem["NAME"]?><?if (strlen($arItem["DETAIL_PAGE_URL"]) > 0):?></a><?endif;?><br />
 									<?if (is_array($set = $arItem['SET']) && count($set) > 0):?>
+										<div class="iv-item-composition-8">
 										Cостав комплекта:<br />
 										<?foreach ($set as $itemName):?>
 											<?=$itemName?><br />
 										<?endforeach?>
+										</div>
 									<?endif?>
 									<?if ($bPropsColumn):?>
 										<div class="item_props">
