@@ -142,11 +142,19 @@ class Sets
 				'filter' => ['=XML_ID' => array_keys($sets)],
 			]);
 			while ($item = $items->fetch()) {
-				if ($delete = $sets[$item['XML_ID']]['delete']
-					|| is_array($composition = $sets[$item['XML_ID']]['composition'])) {
-					$value = ["TYPE" => "TEXT", "TEXT" => ""];
+				$delete = $sets[$item['XML_ID']]['delete'];
+				$composition = $sets[$item['XML_ID']]['composition'];
+				if ($delete || is_array($composition)) {
+					$value = null;
 					if (!$delete) {
-						$value["TEXT"] = Json::encode($composition);
+						$value = [["TEXT" => Json::encode($composition), "TYPE" => "TEXT"]];
+					} else {
+						// Intervolga Akentyev Logs
+						file_put_contents(
+							$_SERVER['DOCUMENT_ROOT'] . '/upload/logs/1c_catalog' . DATE('_Y_m_d') . '.log',
+							"Delete:" . PHP_EOL . print_r($item, true) . PHP_EOL,
+							FILE_APPEND
+						);
 					}
 					CIBlockElement::SetPropertyValueCode(
 						$item['ID'],
