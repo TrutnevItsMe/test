@@ -34,6 +34,7 @@ if ('' != $arParams['TEMPLATE_THEME'])
 if ('' == $arParams['TEMPLATE_THEME'])
 	$arParams['TEMPLATE_THEME'] = 'blue';
 
+// https://youtrack.ivsupport.ru/issue/iberisweb-8
 if (is_array($arResult["GRID"]["ROWS"])) {
 	$catalogIblockID = Option::get(
 		'aspro.next',

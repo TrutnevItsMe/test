@@ -4,7 +4,7 @@ $APPLICATION->SetTitle("Оформление заказа");
 
 <?$APPLICATION->IncludeComponent(
 	"bitrix:sale.order.ajax", 
-	".default", 
+	"intervolga",
 	array(
 		"PAY_FROM_ACCOUNT" => "N",
 		"ONLY_FULL_PAY_FROM_ACCOUNT" => "N",
