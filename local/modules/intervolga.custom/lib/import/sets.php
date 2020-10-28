@@ -146,7 +146,7 @@ class Sets
 					|| is_array($composition = $sets[$item['XML_ID']]['composition'])) {
 					$value = ["TYPE" => "TEXT", "TEXT" => ""];
 					if (!$delete) {
-						$value = ["TEXT"] = Json::encode($composition);
+						$value["TEXT"] = Json::encode($composition);
 					}
 					CIBlockElement::SetPropertyValueCode(
 						$item['ID'],
