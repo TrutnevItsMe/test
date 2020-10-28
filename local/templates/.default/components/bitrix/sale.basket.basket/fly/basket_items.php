@@ -75,7 +75,7 @@
 										<div class="iv-item-composition-8">
 										Cостав комплекта:<br />
 										<?foreach ($set as $itemName):?>
-											<?=$itemName?><br />
+											<?=htmlspecialcharsbx($itemName)?><br />
 										<?endforeach?>
 										</div>
 									<?endif?>
