@@ -199,11 +199,11 @@ function showPrice(price) {
         html += '<div class="price discount" data-currency="RUB" data-value="'
             + price.old + '"><span class="values_wrapper"><span class="price_value">'
             + formatNumber(price.old) + '</span><span class="price_currency"> руб.</span></span></div>';
-        html += '<div class="sale_block"><span class="title">Экономия</span><div class="text">'
+        html += '<div class="sale_block"><span class="title">Экономия&nbsp;</span><div class="text">'
             + '<span class="values_wrapper" data-currency="RUB" data-value="'
-            + (price.old-price.price) + '"><span class="price_value">' +
+            + (price.old-price.price) + '"><span class="price_value">'
             + formatNumber(price.old-price.price)
-            + '</span><span class="price_currency">руб.</span></span></div>';
+            + '</span><span class="price_currency">&nbsp;руб.</span></span></div>';
     }
     html += '</div></div>';
     $('.prices_block .cost.prices').html(html);

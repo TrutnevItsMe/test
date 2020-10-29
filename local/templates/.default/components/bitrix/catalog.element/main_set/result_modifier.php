@@ -1508,8 +1508,37 @@ $rsProperty = CIBlockElement::GetProperty(
 	[],
 	["CODE" => "COMPOSITION"]
 );
+if (!function_exists('array_key_first')) {
+	function array_key_first(array $arr) {
+		foreach($arr as $key => $unused) {
+			return $key;
+		}
+		return NULL;
+	}
+}
 if ($property = $rsProperty->Fetch()) {
 	if (is_array($value = $property['VALUE'])) {
 		$arResult["SET"] = Sets::getSet($value['TEXT']);
+		// Посчитаем цену комплекта
+		$price = 0;
+		$oldPrice = 0;
+		foreach ($arResult['SET']['SET'] as $item) {
+			$price += floatval($item['PRICE']);
+			$oldPrice += floatval(isset($item['OLD_PRICE']) ? $item['OLD_PRICE'] : $item['PRICE']);
+		}
+		foreach ($arResult['SET']['OPTIONAL'] as $item) {
+			if($item['DEFAULT']) {
+				$price += floatval($item['PRICE']);
+				$oldPrice += floatval(isset($item['OLD_PRICE']) ? $item['OLD_PRICE'] : $item['PRICE']);
+			}
+		}
+		$curPriceTypeId = array_key_first($arResult['PRICE_MATRIX']['COLS']);
+		$curPriceId= array_key_first($arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId]);
+		$arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId][$curPriceId]['PRICE'] = $oldPrice;
+		$arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId][$curPriceId]['DISCOUNT_PRICE'] = $price;
+		$arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId][$curPriceId]['PRINT_PRICE'] =
+			number_format($oldPrice, 2, '.', '&nbsp;') . "&nbsp;руб.";
+		$arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId][$curPriceId]['PRINT_DISCOUNT_PRICE'] =
+			number_format($price, 2, '.', '&nbsp;') . "&nbsp;руб.";
 	}
 }
