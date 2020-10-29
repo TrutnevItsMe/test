@@ -3,6 +3,7 @@ use Bitrix\Main\Type\Collection;
 use Bitrix\Currency\CurrencyTable;
 use Bitrix\Iblock;
 use Intervolga\Custom\Import\Sets;
+use Bitrix\Main\Config\Option;
 
 if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED!==true) die();
 /** @var CBitrixComponentTemplate $this */
@@ -1495,8 +1496,20 @@ if(is_array($arParams["SECTION_TIZER"]) && $arParams["SECTION_TIZER"]){
 	$arResult["TIZERS_ITEMS"]=$arTizersData;
 }
 
-if (is_array($arResult['DISPLAY_PROPERTIES']["COMPOSITION"])
-	&& $composition = $arResult['DISPLAY_PROPERTIES']["COMPOSITION"]['~VALUE']['TEXT']) {
-	$arResult["SET"] = Sets::getSet($composition);
-	unset($arResult['DISPLAY_PROPERTIES']["COMPOSITION"]);
+$catalogIblockID = Option::get(
+	'aspro.next',
+	'CATALOG_IBLOCK_ID',
+	CNextCache::$arIBlocks[SITE_ID]['aspro_next_catalog']['aspro_next_catalog'][0]
+);
+$productId = $arResult['ID'];
+$rsProperty = CIBlockElement::GetProperty(
+	$catalogIblockID,
+	$productId,
+	[],
+	["CODE" => "COMPOSITION"]
+);
+if ($property = $rsProperty->Fetch()) {
+	if (is_array($value = $property['VALUE'])) {
+		$arResult["SET"] = Sets::getSet($value['TEXT']);
+	}
 }
