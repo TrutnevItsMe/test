@@ -83,10 +83,6 @@ $(document).on( 'click', '.to-cart:not(.read_more)', function(e){
     }
 })
 $(function(){
-    var price=calculatePrice();
-    if (price.price > 0) {
-        showPrice(price);
-    }
     $('.set-composition .set-composition_checkbox input').change(function(e){
         var price=calculatePrice();
         if (price.price > 0) {
