@@ -47,6 +47,10 @@ $(document).on( 'click', '.to-cart:not(.read_more)', function(e){
 
         fill_prop=fillBasketPropsExt(th, 'prop', th.data('bakset_div'));
 
+        var itemPrice = calculatePrice().base.price;
+        if (itemPrice <= 0) {
+            itemPrice = $('.prices_block .price:not(.discount)').data('value');
+        }
 
         fill_prop.quantity=val;
         fill_prop.add_item='Y';
@@ -58,6 +62,7 @@ $(document).on( 'click', '.to-cart:not(.read_more)', function(e){
         fill_prop.props=JSON.stringify(props);
         fill_prop.item=item;
         fill_prop.basket_props=basket_props;
+        fill_prop.price = itemPrice;
 
         if(th.data("empty_props")=="N"){
             showBasketError($("#"+th.data("bakset_div")).html(), BX.message("ERROR_BASKET_PROP_TITLE"), "Y", th);
@@ -69,18 +74,31 @@ $(document).on( 'click', '.to-cart:not(.read_more)', function(e){
             $('.set-composition_accesories .set-composition_row').each(function (index, el) {
                 if ($(el).find('.set-composition_checkbox input').prop('checked')) {
                     fill_prop.item = $(el).data('id');
-                    fill_prop.quantity = $(el).data('amount')
+                    fill_prop.price = $(el).data('price');
+                    //fill_prop.quantity = $(el).data('amount');
                     addItem(fill_prop, th, item);
                 }
             })
         }
     }
 })
+$(function(){
+    var price=calculatePrice();
+    if (price.price > 0) {
+        showPrice(price);
+    }
+    $('.set-composition .set-composition_checkbox input').change(function(e){
+        var price=calculatePrice();
+        if (price.price > 0) {
+            showPrice(price);
+        }
+    })
+})
 
 function addItem(fill_prop, th, item) {
-	    $.ajax({
+    $.ajax({
         type: "POST",
-        url: arNextOptions['SITE_DIR'] + "ajax/item.php",
+        url: arNextOptions['SITE_DIR'] + "ajax/item_price.php",
         data: fill_prop,
         dataType: "json",
         success: function (data) {
@@ -150,5 +168,48 @@ function addItem(fill_prop, th, item) {
             }
         }
     })
-
+}
+function calculatePrice() {
+    var result = {
+        'price': 0,
+        'old': 0,
+    };
+    $('.set-composition_base .set-composition_row').each(function (index, el) {
+        result.price += parseFloat($(el).data('price'));
+        result.old += parseFloat($(el).data('old-price'));
+    });
+    result.base = {
+        price: result.price,
+        old: result.old,
+    };
+    $('.set-composition_accesories .set-composition_row').each(function (index, el) {
+        if ($(el).find('.set-composition_checkbox input').prop('checked')) {
+            result.price += parseFloat($(el).data('price'));
+            result.old += parseFloat($(el).data('old-price'));
+        }
+    });
+    return result;
+}
+function showPrice(price) {
+    var html = '<div class="price_matrix_block"><div class="price_matrix_wrapper "><div class="price" data-currency="RUB" data-value="'
+        + price.price + '"><span><span class="values_wrapper"><span class="price_value">'
+        + formatNumber(price.price) + '</span><span class="price_currency"> руб.</span></span>'
+        + '<span class="price_measure">/шт</span></span></div>';
+    if (price.price < price.old) {
+        html += '<div class="price discount" data-currency="RUB" data-value="'
+            + price.old + '"><span class="values_wrapper"><span class="price_value">'
+            + formatNumber(price.old) + '</span><span class="price_currency"> руб.</span></span></div>';
+        html += '<div class="sale_block"><span class="title">Экономия</span><div class="text">'
+            + '<span class="values_wrapper" data-currency="RUB" data-value="'
+            + (price.old-price.price) + '"><span class="price_value">' +
+            + formatNumber(price.old-price.price)
+            + '</span><span class="price_currency">руб.</span></span></div>';
+    }
+    html += '</div></div>';
+    $('.prices_block .cost.prices').html(html);
+}
+function formatNumber(n) {
+    return n.toLocaleString('ru', {"minimumFractionDigits": 2})
+        .replace(',', '.')
+        .replace(' ', '&nbsp;');
 }

@@ -12,6 +12,8 @@ if (is_array($arResult["SET"])):?>
 					class="set-composition_row"
 					data-id="<?= $arItem['ID'] ?>"
 					data-amount="<?= $arItem['AMOUNT'] ?>"
+					data-price="<?= $arItem['PRICE'] ?>"
+					data-old-price="<?= isset($arItem['OLD_PRICE']) ? $arItem['OLD_PRICE'] : $arItem['PRICE'] ?>"
 				>
 			<span class="set-composition_checkbox">
 				<input type="checkbox" checked disabled>
@@ -48,6 +50,8 @@ if (is_array($arResult["SET"])):?>
 						class="set-composition_row"
 						data-id="<?= $arItem['ID'] ?>"
 						data-amount="<?= $arItem['AMOUNT'] ?>"
+						data-price="<?= $arItem['PRICE'] ?>"
+						data-old-price="<?= isset($arItem['OLD_PRICE']) ? $arItem['OLD_PRICE'] : $arItem['PRICE'] ?>"
 					>
 			<span class="set-composition_checkbox">
 				<input type="checkbox"<?= $arItem['DEFAULT'] ? ' checked' : '' ?>>
