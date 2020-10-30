@@ -1532,13 +1532,19 @@ if ($property = $rsProperty->Fetch()) {
 				$oldPrice += floatval(isset($item['OLD_PRICE']) ? $item['OLD_PRICE'] : $item['PRICE']);
 			}
 		}
-		$curPriceTypeId = array_key_first($arResult['PRICE_MATRIX']['COLS']);
-		$curPriceId= array_key_first($arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId]);
-		$arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId][$curPriceId]['PRICE'] = $oldPrice;
-		$arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId][$curPriceId]['DISCOUNT_PRICE'] = $price;
-		$arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId][$curPriceId]['PRINT_PRICE'] =
-			number_format($oldPrice, 2, '.', '&nbsp;') . "&nbsp;руб.";
-		$arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId][$curPriceId]['PRINT_DISCOUNT_PRICE'] =
-			number_format($price, 2, '.', '&nbsp;') . "&nbsp;руб.";
+		if (is_array($arResult['PRICE_MATRIX']) && is_array($arResult['PRICE_MATRIX']['COLS'])) {
+			$curPriceTypeId = array_key_first($arResult['PRICE_MATRIX']['COLS']);
+			if (is_array($arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId])) {
+				$curPriceId= array_key_first($arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId]);
+				if (is_array($arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId][$curPriceId])) {
+					$arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId][$curPriceId]['PRICE'] = $oldPrice;
+					$arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId][$curPriceId]['DISCOUNT_PRICE'] = $price;
+					$arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId][$curPriceId]['PRINT_PRICE'] =
+						number_format($oldPrice, 2, '.', '&nbsp;') . "&nbsp;руб.";
+					$arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId][$curPriceId]['PRINT_DISCOUNT_PRICE'] =
+						number_format($price, 2, '.', '&nbsp;') . "&nbsp;руб.";
+				}
+			}
+		}
 	}
 }
