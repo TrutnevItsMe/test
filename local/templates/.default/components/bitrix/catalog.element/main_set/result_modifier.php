@@ -1532,19 +1532,46 @@ if ($property = $rsProperty->Fetch()) {
 				$oldPrice += floatval(isset($item['OLD_PRICE']) ? $item['OLD_PRICE'] : $item['PRICE']);
 			}
 		}
-		if (is_array($arResult['PRICE_MATRIX']) && is_array($arResult['PRICE_MATRIX']['COLS'])) {
-			$curPriceTypeId = array_key_first($arResult['PRICE_MATRIX']['COLS']);
-			if (is_array($arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId])) {
-				$curPriceId= array_key_first($arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId]);
-				if (is_array($arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId][$curPriceId])) {
-					$arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId][$curPriceId]['PRICE'] = $oldPrice;
-					$arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId][$curPriceId]['DISCOUNT_PRICE'] = $price;
-					$arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId][$curPriceId]['PRINT_PRICE'] =
-						number_format($oldPrice, 2, '.', '&nbsp;') . "&nbsp;руб.";
-					$arResult['PRICE_MATRIX']['MATRIX'][$curPriceTypeId][$curPriceId]['PRINT_DISCOUNT_PRICE'] =
-						number_format($price, 2, '.', '&nbsp;') . "&nbsp;руб.";
-				}
-			}
+		$priceId = reset($arPriceTypeID);
+		if (isset($arResult['PRICE_MATRIX']) && is_array($arResult['PRICE_MATRIX'])) {
+			$priceMatrix = $arResult['PRICE_MATRIX'];
+		} else {
+			// Шаблонная матрица цен, если цены из 1С нет, но есть расчётная
+			$priceMatrix = [
+				"ROWS" => ["ZERO-INF" => ["QUANTITY_FROM" => 0, "QUANTITY_TO" => 0,]],
+				"COLS" => [
+					$priceId => [
+					"ID" => $priceId,
+					"NAME" => "",
+					"BASE" => "Y",
+				]],
+				"MATRIX" => [
+					$priceId => [
+						"ZERO-INF" => [
+							"ID" => $arResult["ID"],
+							"PRICE" => 0,
+							"DISCOUNT_PRICE" => 0,
+							"PRINT_PRICE" => "0",
+							"PRINT_DISCOUNT_PRICE" => "0",
+							"CURRENCY" => "RUB",
+						]
+					]
+				],
+				"CAN_BUY" => $arPriceTypeID,
+			];
 		}
+		if (is_array($priceMatrix)) {
+			$curPriceTypeId = array_key_first($priceMatrix['COLS']);
+			$curPriceId= array_key_first($priceMatrix['MATRIX'][$curPriceTypeId]);
+			$priceMatrix['MATRIX'][$curPriceTypeId][$curPriceId]['PRICE'] = $oldPrice;
+			$priceMatrix['MATRIX'][$curPriceTypeId][$curPriceId]['DISCOUNT_PRICE'] = $price;
+			$priceMatrix['MATRIX'][$curPriceTypeId][$curPriceId]['PRINT_PRICE'] =
+				number_format($oldPrice, 2, '.', '&nbsp;') . "&nbsp;руб.";
+			$priceMatrix['MATRIX'][$curPriceTypeId][$curPriceId]['PRINT_DISCOUNT_PRICE'] =
+				number_format($price, 2, '.', '&nbsp;') . "&nbsp;руб.";
+				
+			
+		}
+		$arResult['PRICE_MATRIX'] = $priceMatrix;
 	}
 }
