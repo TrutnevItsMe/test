@@ -39,3 +39,18 @@
 .set-composition_price__old {
     text-decoration: line-through;
 }
+.set-composition-sticker {
+    display: inline-block;
+    background-color: #4fad00;
+    width: auto;
+    margin: 0 3px 6px;
+    letter-spacing: .5px;
+    position: relative;
+    display: inline-block;
+    color: #fff;
+    font-size: 10px;
+    line-height: 12px;
+    padding: 5px 10px 4px;
+    text-transform: uppercase;
+    border-radius: 2px;
+}

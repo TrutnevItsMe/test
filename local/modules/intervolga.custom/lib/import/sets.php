@@ -11,6 +11,7 @@ use Bitrix\Main\Web\Json;
 use Bitrix\Main\ArgumentException;
 use Bitrix\Main\Application;
 use Bitrix\Iblock\ElementTable;
+use CPrice;
 
 class Sets
 {
@@ -109,12 +110,18 @@ class Sets
 						if ($rsItem['PREVIEW_PICTURE']) {
 							$item['PREVIEW_PICTURE'] = CFile::GetPath($rsItem['PREVIEW_PICTURE']);
 						}
-						$price = CCatalogProduct::GetOptimalPrice($item['ID']);
+						$price = CCatalogProduct::GetOptimalPrice(
+							$item['ID'],
+							1,
+							[],
+							"N",
+							[CPrice::GetBasePrice($item['ID'])]
+						);
 						$price = $price['RESULT_PRICE'];
 						$item['PRICE'] = floatval($price['DISCOUNT_PRICE']);
-						
 						if ($price['DISCOUNT'] > 0) {
 							$item['OLD_PRICE'] = floatval($price['BASE_PRICE']);
+							$item['PERCENT'] = intval($price['PERCENT']);
 						}
 						if (!isset($set[$category])) {
 							$set[$category] = [];
