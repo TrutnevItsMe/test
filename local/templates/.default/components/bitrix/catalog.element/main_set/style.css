@@ -64,6 +64,9 @@
         background-color: lightgrey;
         cursor: pointer;
     }
+    set-composition_checkbox input:disabled {
+        cursor: not-allowed;
+    }
     .set-composition_checkbox input:checked:after {
         display: block;
         position: relative;
