@@ -54,3 +54,34 @@
     text-transform: uppercase;
     border-radius: 2px;
 }
+@supports(-webkit-appearance: none) or (-moz-appearance: none) {
+    .set-composition_checkbox input {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background-color: lightgrey;
+        cursor: pointer;
+    }
+    .set-composition_checkbox input:checked:after {
+        display: block;
+        position: relative;
+        content: "";
+        left: 7px;
+        top: 1px;
+        width: 8px;
+        height: 15px;
+        border: solid green;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+    .set-composition_checkbox input[type=checkbox]:focus {
+        outline: none;
+    }
+    .set-composition_checkbox input:disabled:after {
+        border-color: grey;
+    }
+}
