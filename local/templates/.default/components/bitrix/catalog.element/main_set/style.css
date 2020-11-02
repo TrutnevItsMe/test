@@ -75,8 +75,8 @@
         top: 1px;
         width: 8px;
         height: 15px;
-        border: solid green;
-        border-width: 0 3px 3px 0;
+        border: solid rgb(59, 136, 164);
+        border-width: 0 2px 2px 0;
         -webkit-transform: rotate(45deg);
         -ms-transform: rotate(45deg);
         transform: rotate(45deg);
