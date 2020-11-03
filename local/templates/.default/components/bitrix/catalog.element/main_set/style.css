@@ -59,24 +59,27 @@
         -webkit-appearance: none;
         -moz-appearance: none;
         display: inline-block;
-        width: 20px;
-        height: 20px;
-        background-color: lightgrey;
+        width: 26px;
+        height: 30px;
+        background-color: #d8d3d0;
         cursor: pointer;
     }
-    set-composition_checkbox input:disabled {
+    .set-composition_checkbox input:checked {
+        background-color: #d2ebf4;
+    }
+    .set-composition_checkbox input:disabled {
         cursor: not-allowed;
     }
     .set-composition_checkbox input:checked:after {
         display: block;
         position: relative;
         content: "";
-        left: 7px;
-        top: 1px;
+        left: 10px;
+        top: 5px;
         width: 8px;
         height: 15px;
-        border: solid rgb(59, 136, 164);
-        border-width: 0 2px 2px 0;
+        border: solid #3b88a4;
+        border-width: 0 1px 1px 0;
         -webkit-transform: rotate(45deg);
         -ms-transform: rotate(45deg);
         transform: rotate(45deg);
@@ -85,6 +88,6 @@
         outline: none;
     }
     .set-composition_checkbox input:disabled:after {
-        border-color: grey;
+        border-color: #030303;
     }
 }
