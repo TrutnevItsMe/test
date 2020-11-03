@@ -55,39 +55,24 @@
     border-radius: 2px;
 }
 @supports(-webkit-appearance: none) or (-moz-appearance: none) {
-    .set-composition_checkbox input {
+    .set-composition_checkbox input[type=checkbox] {
         -webkit-appearance: none;
         -moz-appearance: none;
         display: inline-block;
         width: 26px;
-        height: 30px;
-        background-color: #d8d3d0;
+        height: 26px;
+        margin: 0;
+        background: url(cheсkbox.png) no-repeat;
         cursor: pointer;
     }
     .set-composition_checkbox input:checked {
-        background-color: #d2ebf4;
+        background-position: 0 -26px;
     }
-    .set-composition_checkbox input:disabled {
-        cursor: not-allowed;
-    }
-    .set-composition_checkbox input:checked:after {
-        display: block;
-        position: relative;
-        content: "";
-        left: 10px;
-        top: 5px;
-        width: 8px;
-        height: 15px;
-        border: solid #3b88a4;
-        border-width: 0 1px 1px 0;
-        -webkit-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-        transform: rotate(45deg);
+    .set-composition_checkbox input[type=checkbox][disabled] {
+        cursor: default;
+        background-position: 0 -52px;
     }
     .set-composition_checkbox input[type=checkbox]:focus {
         outline: none;
-    }
-    .set-composition_checkbox input:disabled:after {
-        border-color: #030303;
     }
 }
