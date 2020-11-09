@@ -12,6 +12,7 @@ use Bitrix\Main\ArgumentException;
 use Bitrix\Main\Application;
 use Bitrix\Iblock\ElementTable;
 use CPrice;
+use CCatalogProductSet;
 
 class Sets
 {
@@ -85,6 +86,7 @@ class Sets
 							'PREVIEW_PICTURE',
 							'DETAIL_PAGE_URL',
 							'PROPERTY_CML2_ARTICLE',
+							'SORT',
 						]
 					);
 					$first = true;
@@ -98,6 +100,7 @@ class Sets
 							'ID' => $rsItem['ID'],
 							'XML_ID' => $rsItem['XML_ID'],
 							'NAME' => $rsItem['NAME'],
+							'SORT' => $rsItem['SORT'],
 							'DETAIL_PAGE_URL' => $rsItem['DETAIL_PAGE_URL'],
 							'ARTICLE' => trim($rsItem['PROPERTY_CML2_ARTICLE_VALUE']),
 						];
@@ -156,6 +159,8 @@ class Sets
 					if (!$delete) {
 						$value = [["TEXT" => Json::encode($composition), "TYPE" => "TEXT"]];
 					} else {
+						self::deleteSets($item['ID'], CCatalogProductSet::TYPE_SET);
+						self::deleteSets($item['ID'], CCatalogProductSet::TYPE_GROUP);
 						// Intervolga Akentyev Logs
 						file_put_contents(
 							$_SERVER['DOCUMENT_ROOT'] . '/upload/logs/1c_catalog' . DATE('_Y_m_d') . '.log',
@@ -168,8 +173,60 @@ class Sets
 						"COMPOSITION",
 						$value
 					);
+					$set = self::getSet(Json::encode($composition));
+					self::addSet($item['ID'], CCatalogProductSet::TYPE_SET, $set['SET']);
+					self::addSet($item['ID'], CCatalogProductSet::TYPE_GROUP, $set['OPTIONAL']);
 				}
 			}
+		}
+	}
+	
+	/**
+	 * Добавляет или обновляет комплект/набор у товара
+	 * @param $productId integer идентификатор товара
+	 * @param $setType CCatalogProductSet::TYPE_SET|CCatalogProductSet::TYPE_GROUP комлект или набор
+	 * @param $set array комплект/набор товаров
+	 * @return integer идентификатор комплект/набор
+	 */
+	protected static function addSet($productId, $setType, $set) {
+		$items = [];
+		foreach ($set as $item) {
+			$items[] = [
+				'ITEM_ID' => $item['ID'],
+				'SORT' => $item['SORT'],
+				'QUANTITY' => $item['AMOUNT'],
+			];
+		}
+		$sets = CCatalogProductSet::getAllSetsByProduct($productId, $setType);
+		if (empty($sets)) {
+			$setId = CCatalogProductSet::add([
+				'ITEM_ID' => $productId,
+				'TYPE' => $setType,
+				'ITEMS' => $items,
+			]);
+		} else {
+			$set = reset($sets);
+			$setId = $set['SET_ID'];
+			CCatalogProductSet::update(
+				$setId,
+				[
+				'ITEM_ID' => $productId,
+				'TYPE' => $setType,
+				'ITEMS' => $items,
+			]);
+		}
+		return $setId;
+	}
+	
+	/**
+	 * Удаляет комплект/набор у товара
+	 * @param $productId integer идентификатор товара
+	 * @param $setType CCatalogProductSet::TYPE_SET|CCatalogProductSet::TYPE_GROUP комлект или набор
+	 */
+	protected static function deleteSets($productId, $setType) {
+		$sets = CCatalogProductSet::getAllSetsByProduct($productId, $setType);
+		foreach ($sets as $set) {
+			CCatalogProductSet::delete($set['SET_ID']);
 		}
 	}
 	
