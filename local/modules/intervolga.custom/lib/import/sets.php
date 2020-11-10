@@ -11,6 +11,7 @@ use Bitrix\Main\Web\Json;
 use Bitrix\Main\ArgumentException;
 use Bitrix\Main\Application;
 use Bitrix\Iblock\ElementTable;
+use Bitrix\Catalog\Model\Price;
 use CPrice;
 use CCatalogProductSet;
 
@@ -117,8 +118,9 @@ class Sets
 							$item['ID'],
 							1,
 							[],
-							"N",
-							[CPrice::GetBasePrice($item['ID'])]
+							'N',
+							[CPrice::GetBasePrice($item['ID'])],
+							's1'
 						);
 						$price = $price['RESULT_PRICE'];
 						$item['PRICE'] = floatval($price['DISCOUNT_PRICE']);
@@ -174,6 +176,15 @@ class Sets
 						$value
 					);
 					$set = self::getSet(Json::encode($composition));
+					// Зададим цену комплекта
+					$price = 0;
+					foreach ($set['SET'] as $setItem) {
+						$price += $setItem['PRICE'];
+					}
+					$basePrice = CPrice::GetBasePrice($item['ID']);
+					$basePrice['PRICE'] = $price;
+					Price::add($basePrice);
+					// Заполним стандартные данные о комплекте / наборе
 					self::addSet($item['ID'], CCatalogProductSet::TYPE_SET, $set['SET']);
 					self::addSet($item['ID'], CCatalogProductSet::TYPE_GROUP, $set['OPTIONAL']);
 				}
