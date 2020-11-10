@@ -741,88 +741,10 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 		</div>
 	<?}?>
 
-	<?if($arParams["SHOW_KIT_PARTS"] == "Y" && $arResult["SET_ITEMS"]):?>
-		<div class="set_wrapp set_block">
-			<div class="title"><?=GetMessage("GROUP_PARTS_TITLE")?></div>
-			<ul>
-				<?foreach($arResult["SET_ITEMS"] as $iii => $arSetItem):?>
-					<li class="item">
-						<div class="item_inner">
-							<div class="image">
-								<a href="<?=$arSetItem["DETAIL_PAGE_URL"]?>">
-									<?if($arSetItem["PREVIEW_PICTURE"]):?>
-										<?$img = CFile::ResizeImageGet($arSetItem["PREVIEW_PICTURE"], array("width" => 140, "height" => 140), BX_RESIZE_IMAGE_PROPORTIONAL, true);?>
-										<img  src="<?=$img["src"]?>" alt="<?=$arSetItem["NAME"];?>" title="<?=$arSetItem["NAME"];?>" />
-									<?elseif($arSetItem["DETAIL_PICTURE"]):?>
-										<?$img = CFile::ResizeImageGet($arSetItem["DETAIL_PICTURE"], array("width" => 140, "height" => 140), BX_RESIZE_IMAGE_PROPORTIONAL, true);?>
-										<img  src="<?=$img["src"]?>" alt="<?=$arSetItem["NAME"];?>" title="<?=$arSetItem["NAME"];?>" />
-									<?else:?>
-										<img  src="<?=SITE_TEMPLATE_PATH?>/images/no_photo_small.png" alt="<?=$arSetItem["NAME"];?>" title="<?=$arSetItem["NAME"];?>" />
-									<?endif;?>
-								</a>
-								<?if($arResult["SET_ITEMS_QUANTITY"]):?>
-									<div class="quantity">x<?=$arSetItem["QUANTITY"];?></div>
-								<?endif;?>
-							</div>
-							<div class="item_info">
-								<div class="item-title">
-									<a href="<?=$arSetItem["DETAIL_PAGE_URL"]?>"><span><?=$arSetItem["NAME"]?></span></a>
-								</div>
-								<?if($arParams["SHOW_KIT_PARTS_PRICES"] == "Y"):?>
-									<div class="cost prices clearfix">
-										<?
-										$arCountPricesCanAccess = 0;
-										foreach($arSetItem["PRICES"] as $key => $arPrice){
-											if($arPrice["CAN_ACCESS"]){
-												$arCountPricesCanAccess++;
-											}
-										}
-
-										if($arSetItem["MEASURE"][$arSetItem["ID"]]["MEASURE"]["SYMBOL_RUS"])
-											$strMeasure = $arSetItem["MEASURE"][$arSetItem["ID"]]["MEASURE"]["SYMBOL_RUS"];
-										?>
-										<?if(isset($arSetItem['PRICE_MATRIX']) && $arSetItem['PRICE_MATRIX']):?>
-											<?
-											// USE_PRICE_COUNT
-											if($arSetItem['ITEM_PRICE_MODE'] == 'Q' && count($arSetItem['PRICE_MATRIX']['ROWS']) > 1){
-												echo CNext::showPriceRangeTop($arSetItem, $arParams, GetMessage("CATALOG_ECONOMY"));
-											}
-											echo CNext::showPriceMatrix($arSetItem, $arParams, $strMeasure, $arAddToBasketData);
-											?>
-										<?else:?>
-											<?foreach($arSetItem["PRICES"] as $key => $arPrice):?>
-												<?if($arPrice["CAN_ACCESS"]):?>
-													<?$price = CPrice::GetByID($arPrice["ID"]);?>
-													<?if($arCountPricesCanAccess > 1):?>
-														<div class="price_name"><?=$price["CATALOG_GROUP_NAME"];?></div>
-													<?endif;?>
-													<?if($arPrice["VALUE"] > $arPrice["DISCOUNT_VALUE"]  && $arParams["SHOW_OLD_PRICE"]=="Y"):?>
-														<div class="price">
-															<?=$arPrice["PRINT_DISCOUNT_VALUE"];?><?if(($arParams["SHOW_MEASURE"] == "Y") && $strMeasure):?><small>/<?=$strMeasure?></small><?endif;?>
-														</div>
-														<div class="price discount">
-															<span><?=$arPrice["PRINT_VALUE"]?></span>
-														</div>
-													<?else:?>
-														<div class="price">
-															<?=$arPrice["PRINT_VALUE"];?><?if(($arParams["SHOW_MEASURE"] == "Y") && $strMeasure):?><small>/<?=$strMeasure?></small><?endif;?>
-														</div>
-													<?endif;?>
-												<?endif;?>
-											<?endforeach;?>
-										<?endif;?>
-									</div>
-								<?endif;?>
-							</div>
-						</div>
-					</li>
-					<?if($arResult["SET_ITEMS"][$iii + 1]):?>
-						<li class="separator"></li>
-					<?endif;?>
-				<?endforeach;?>
-			</ul>
-		</div>
-	<?endif;?>
+	<?
+	// https://youtrack.ivsupport.ru/issue/iberisweb-8
+	// Удалили стандартное отображение комплектов
+	?>
 	<?if($arResult['OFFERS']):?>
 		<?if($arResult['OFFER_GROUP']):?>
 			<?foreach($arResult['OFFERS'] as $arOffer):?>
@@ -849,25 +771,11 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 				</span>
 			<?endforeach;?>
 		<?endif;?>
-	<?else:?>
-		<?$APPLICATION->IncludeComponent("bitrix:catalog.set.constructor", "",
-			array(
-				"IBLOCK_ID" => $arParams["IBLOCK_ID"],
-				"ELEMENT_ID" => $arResult["ID"],
-				"PRICE_CODE" => $arParams["PRICE_CODE"],
-				"BASKET_URL" => $arParams["BASKET_URL"],
-				"CACHE_TYPE" => $arParams["CACHE_TYPE"],
-				"CACHE_TIME" => $arParams["CACHE_TIME"],
-				"CACHE_GROUPS" => $arParams["CACHE_GROUPS"],
-				"SHOW_OLD_PRICE" => $arParams["SHOW_OLD_PRICE"],
-				"BUNDLE_ITEMS_COUNT" => $arParams["BUNDLE_ITEMS_COUNT"],
-				"SHOW_MEASURE" => $arParams["SHOW_MEASURE"],
-				"SHOW_DISCOUNT_PERCENT" => $arParams["SHOW_DISCOUNT_PERCENT"],
-				"CONVERT_CURRENCY" => $arParams['CONVERT_CURRENCY'],
-				"CURRENCY_ID" => $arParams["CURRENCY_ID"]
-			), $component, array("HIDE_ICONS" => "Y")
-		);?>
-	<?endif;?>
+	<?endif?>
+	<?
+	// https://youtrack.ivsupport.ru/issue/iberisweb-8
+	// Удалили стандартное отображение наборов
+	?>
 </div>
 <?if($arParams["WIDE_BLOCK"] == "Y"):?>
 	<div class="row">
