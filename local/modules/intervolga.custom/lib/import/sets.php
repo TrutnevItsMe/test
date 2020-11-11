@@ -12,6 +12,7 @@ use Bitrix\Main\ArgumentException;
 use Bitrix\Main\Application;
 use Bitrix\Iblock\ElementTable;
 use Bitrix\Catalog\Model\Price;
+use Bitrix\Catalog\GroupTable;
 use CPrice;
 use CCatalogProductSet;
 
@@ -182,8 +183,26 @@ class Sets
 						$price += $setItem['PRICE'];
 					}
 					$basePrice = CPrice::GetBasePrice($item['ID']);
-					$basePrice['PRICE'] = $price;
-					Price::add($basePrice);
+					if (is_array($basePrice)) {
+						Price::update(
+							$basePrice['ID'],
+							[
+								'ID' => $basePrice['ID'],
+								'PRODUCT_ID' => $basePrice['PRODUCT_ID'],
+								'CATALOG_GROUP_ID' => $basePrice['CATALOG_GROUP_ID'],
+								'CURRENCY' => $basePrice['CURRENCY'],
+								'PRICE' => $price,
+							]
+						);
+					} else {
+						// Если у товара нет базовой цены, создадим запись
+						Price::add([
+							'PRODUCT_ID' => $item['ID'],
+							'CATALOG_GROUP_ID' => self::getBasePriceId(),
+							'CURRENCY' => 'RUB',
+							'PRICE' => $price
+						]);
+					}
 					// Заполним стандартные данные о комплекте / наборе
 					self::addSet($item['ID'], CCatalogProductSet::TYPE_SET, $set['SET']);
 					self::addSet($item['ID'], CCatalogProductSet::TYPE_GROUP, $set['OPTIONAL']);
@@ -239,6 +258,14 @@ class Sets
 		foreach ($sets as $set) {
 			CCatalogProductSet::delete($set['SET_ID']);
 		}
+	}
+	
+	protected function getBasePriceId() {
+		$price = GroupTable::getRow([
+			'filter' => ['=BASE' => 'Y'],
+			'select' => ['ID']
+		]);
+		return $price['ID'];
 	}
 	
 	/**
