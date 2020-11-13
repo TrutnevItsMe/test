@@ -12,6 +12,7 @@ use Bitrix\Main\ArgumentException;
 use Bitrix\Main\Application;
 use Bitrix\Iblock\ElementTable;
 use Bitrix\Catalog\Model\Price;
+use Bitrix\Catalog\PriceTable;
 use Bitrix\Catalog\GroupTable;
 use CPrice;
 use CCatalogProductSet;
@@ -151,7 +152,7 @@ class Sets
 	{
 		if (count($sets) > 0 && Loader::includeModule('iblock')) {
 			$items = ElementTable::getList([
-				'select' => ['ID', 'XML_ID', 'NAME'],
+				'select' => ['ID', 'XML_ID'],
 				'filter' => ['=XML_ID' => array_keys($sets)],
 			]);
 			while ($item = $items->fetch()) {
@@ -176,36 +177,80 @@ class Sets
 						"COMPOSITION",
 						$value
 					);
-					$set = self::getSet(Json::encode($composition));
-					// Зададим цену комплекта
-					$price = 0;
-					foreach ($set['SET'] as $setItem) {
-						$price += $setItem['PRICE'];
-					}
-					$basePrice = CPrice::GetBasePrice($item['ID']);
-					if (is_array($basePrice)) {
-						Price::update(
-							$basePrice['ID'],
-							[
-								'ID' => $basePrice['ID'],
-								'PRODUCT_ID' => $basePrice['PRODUCT_ID'],
-								'CATALOG_GROUP_ID' => $basePrice['CATALOG_GROUP_ID'],
-								'CURRENCY' => $basePrice['CURRENCY'],
-								'PRICE' => $price,
-							]
-						);
-					} else {
-						// Если у товара нет базовой цены, создадим запись
-						Price::add([
-							'PRODUCT_ID' => $item['ID'],
-							'CATALOG_GROUP_ID' => self::getBasePriceId(),
-							'CURRENCY' => 'RUB',
-							'PRICE' => $price
-						]);
-					}
-					// Заполним стандартные данные о комплекте / наборе
-					self::addSet($item['ID'], CCatalogProductSet::TYPE_SET, $set['SET']);
-					self::addSet($item['ID'], CCatalogProductSet::TYPE_GROUP, $set['OPTIONAL']);
+					self::processSet($item['ID'], $composition);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Заполнение комплекта / набора и цен у товара-комплекта
+	 * @param $itemId integer идентификатор товара-комплекта
+	 * @param $set array данные о комплекте и наборе
+	 */
+	protected static function processSet($itemId, $set) {
+		if (count($set) > 0) {
+			$base = [];
+			$baseIds = [];
+			$optional = [];
+			$items = ElementTable::getList([
+				'select' => ['ID', 'XML_ID'],
+				'filter' => ['=XML_ID' => array_keys($set)],
+			]);
+			while ($item = $items->fetch()) {
+				$setItem = $set[$item['XML_ID']];
+				$item = [
+					'ITEM_ID' => $item['ID'],
+					'SORT' => 500, // $item['SORT'], TODO: Планируется передавать сортировку из 1С
+					'QUANTITY' => $setItem['amount'],
+				];
+				if ($setItem['optional']) {
+					$optional[] = $item;
+				} else {
+					$baseIds[] = $item['ITEM_ID'];
+					$base[] = $item;
+				}
+			}
+			// Заполним комплект / набор
+			self::addSet($itemId, CCatalogProductSet::TYPE_SET, $base);
+			self::addSet($itemId, CCatalogProductSet::TYPE_GROUP, $optional);
+			$baseIds[] = $itemId; // Получим данные о существующих ценах комплекта
+			$prices = PriceTable::getList([
+				'filter' => ['=PRODUCT_ID' => $baseIds],
+				'select' => ['ID', 'PRODUCT_ID', 'PRICE', 'CURRENCY', 'CATALOG_GROUP_ID'],
+			]);
+			$itemPrices = [];
+			while ($price = $prices->fetch()) {
+				$price = CCatalogProduct::GetOptimalPrice(
+					$price['PRODUCT_ID'],
+					1,
+					[],
+					'N',
+					[$price],
+					's1'
+				);
+				$group = $price['PRICE']['CATALOG_GROUP_ID'];
+				if (!isset($itemPrices[$group])) {
+					$itemPrices[$group] = [
+						'PRODUCT_ID' => $itemId,
+						'CATALOG_GROUP_ID' => $group,
+						'CURRENCY' => $price['PRICE']['CURRENCY'],
+						'PRICE' => 0
+					];
+				}
+				if ($price['PRICE']['PRODUCT_ID'] == $itemId) {
+					$itemPrices[$group]['ID'] = $price['PRICE']['ID'];
+				} else {
+					$itemPrices[$group]['PRICE'] += $price['RESULT_PRICE']['DISCOUNT_PRICE'];
+				}
+			}
+			foreach ($itemPrices as $price) {
+				if (isset($price['ID'])) {
+					// Если существует такая цена у комплекта -- обновим
+					Price::update($price['ID'], $price);
+				} else {
+					// Если у товара нет такой цены, создадим запись
+					Price::add($price);
 				}
 			}
 		}
@@ -219,20 +264,12 @@ class Sets
 	 * @return integer идентификатор комплект/набор
 	 */
 	protected static function addSet($productId, $setType, $set) {
-		$items = [];
-		foreach ($set as $item) {
-			$items[] = [
-				'ITEM_ID' => $item['ID'],
-				'SORT' => $item['SORT'],
-				'QUANTITY' => $item['AMOUNT'],
-			];
-		}
 		$sets = CCatalogProductSet::getAllSetsByProduct($productId, $setType);
 		if (empty($sets)) {
 			$setId = CCatalogProductSet::add([
 				'ITEM_ID' => $productId,
 				'TYPE' => $setType,
-				'ITEMS' => $items,
+				'ITEMS' => $set,
 			]);
 		} else {
 			$set = reset($sets);
@@ -242,7 +279,7 @@ class Sets
 				[
 				'ITEM_ID' => $productId,
 				'TYPE' => $setType,
-				'ITEMS' => $items,
+				'ITEMS' => $set,
 			]);
 		}
 		return $setId;
@@ -260,6 +297,10 @@ class Sets
 		}
 	}
 	
+	/**
+	 * Получить идентификатор базовой цены
+	 * @return integer идентификатор базовой цены
+	 */
 	protected function getBasePriceId() {
 		$price = GroupTable::getRow([
 			'filter' => ['=BASE' => 'Y'],
