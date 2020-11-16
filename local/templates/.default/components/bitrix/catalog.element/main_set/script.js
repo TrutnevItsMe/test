@@ -75,7 +75,7 @@ $(document).on( 'click', '.to-cart:not(.read_more)', function(e){
                 if ($(el).find('.set-composition_checkbox input').prop('checked')) {
                     fill_prop.item = $(el).data('id');
                     fill_prop.price = $(el).data('price');
-                    //fill_prop.quantity = $(el).data('amount');
+                    fill_prop.quantity = $(el).data('amount') * val;
                     addItem(fill_prop, th, item);
                 }
             })
@@ -171,8 +171,8 @@ function calculatePrice() {
         'old': 0,
     };
     $('.set-composition_base .set-composition_row').each(function (index, el) {
-        result.price += parseFloat($(el).data('price'));
-        result.old += parseFloat($(el).data('old-price'));
+        result.price += parseFloat($(el).data('price')) * parseInt($(el).data('amount'));
+        result.old += parseFloat($(el).data('old-price')) * parseInt($(el).data('amount'));
     });
     result.base = {
         price: result.price,
@@ -180,8 +180,8 @@ function calculatePrice() {
     };
     $('.set-composition_accesories .set-composition_row').each(function (index, el) {
         if ($(el).find('.set-composition_checkbox input').prop('checked')) {
-            result.price += parseFloat($(el).data('price'));
-            result.old += parseFloat($(el).data('old-price'));
+            result.price += parseFloat($(el).data('price')) * parseInt($(el).data('amount'));
+            result.old += parseFloat($(el).data('old-price')) * parseInt($(el).data('amount'));
         }
     });
     return result;

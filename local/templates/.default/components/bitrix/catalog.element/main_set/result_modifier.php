@@ -1523,13 +1523,15 @@ if ($property = $rsProperty->Fetch()) {
 		$price = 0;
 		$oldPrice = 0;
 		foreach ($arResult['SET']['SET'] as $item) {
-			$price += floatval($item['PRICE']);
-			$oldPrice += floatval(isset($item['OLD_PRICE']) ? $item['OLD_PRICE'] : $item['PRICE']);
+			$price += floatval($item['PRICE']) * intval($item['AMOUNT']);
+			$oldPrice += floatval(isset($item['OLD_PRICE']) ? $item['OLD_PRICE'] : $item['PRICE'])
+				* intval($item['AMOUNT']);
 		}
 		foreach ($arResult['SET']['OPTIONAL'] as $item) {
 			if($item['DEFAULT']) {
-				$price += floatval($item['PRICE']);
-				$oldPrice += floatval(isset($item['OLD_PRICE']) ? $item['OLD_PRICE'] : $item['PRICE']);
+				$price += floatval($item['PRICE']) * intval($item['AMOUNT']);
+				$oldPrice += floatval(isset($item['OLD_PRICE']) ? $item['OLD_PRICE'] : $item['PRICE'])
+					* intval($item['AMOUNT']);
 			}
 		}
 		$priceId = reset($arPriceTypeID);
