@@ -28,6 +28,7 @@ class Sets
 	const TAG_OPTIONAL = "Опция";
 	const TAG_DEFAULT = "ОпцияУмолч";
 	const TAG_DELETE = "ПометкаУдаления";
+	const TAG_SORT = "ПорядокСорт";
 	
 	/**
 	 * https://youtrack.ivsupport.ru/issue/iberisweb-8
@@ -89,7 +90,6 @@ class Sets
 							'PREVIEW_PICTURE',
 							'DETAIL_PAGE_URL',
 							'PROPERTY_CML2_ARTICLE',
-							'SORT',
 						]
 					);
 					$first = true;
@@ -103,13 +103,13 @@ class Sets
 							'ID' => $rsItem['ID'],
 							'XML_ID' => $rsItem['XML_ID'],
 							'NAME' => $rsItem['NAME'],
-							'SORT' => $rsItem['SORT'],
 							'DETAIL_PAGE_URL' => $rsItem['DETAIL_PAGE_URL'],
 							'ARTICLE' => trim($rsItem['PROPERTY_CML2_ARTICLE_VALUE']),
 						];
 						$compItem = $composition[$item['XML_ID']];
 						$category = $compItem['optional'] ? 'OPTIONAL' : 'SET';
 						$item['AMOUNT'] = $compItem['amount'];
+						$item['SORT'] = $compItem['sort'];
 						if ($compItem['optional']) {
 							$item['DEFAULT'] = $compItem['default'];
 						}
@@ -135,6 +135,8 @@ class Sets
 						}
 						$set[$category][] = $item;
 					}
+					usort($set['SET'], [__CLASS__, 'compareItems']);
+					usort($set['OPTIONAL'], [__CLASS__, 'compareItems']);
 				}
 				$cache->endDataCache($set);
 			} catch (ArgumentException $err) {
@@ -184,6 +186,16 @@ class Sets
 	}
 	
 	/**
+	 * Сравнение двух элементов комплекта
+	 * @param $a array первый элемент комплекта
+	 * @param $b array первый элемент комплекта
+	 * @return int результат сравнения
+	 */
+	protected static function compareItems($a, $b) {
+		return intval($a['SORT']) - intval($b['SORT']);
+	}
+	
+	/**
 	 * Заполнение комплекта / набора и цен у товара-комплекта
 	 * @param $itemId integer идентификатор товара-комплекта
 	 * @param $set array данные о комплекте и наборе
@@ -201,7 +213,7 @@ class Sets
 				$setItem = $set[$item['XML_ID']];
 				$item = [
 					'ITEM_ID' => $item['ID'],
-					'SORT' => 500, // $item['SORT'], TODO: Планируется передавать сортировку из 1С
+					'SORT' => $setItem['sort'],
 					'QUANTITY' => $setItem['amount'],
 				];
 				if ($setItem['optional']) {
@@ -272,8 +284,8 @@ class Sets
 				'ITEMS' => $set,
 			]);
 		} else {
-			$set = reset($sets);
-			$setId = $set['SET_ID'];
+			$oldSet = reset($sets);
+			$setId = $oldSet['SET_ID'];
 			CCatalogProductSet::update(
 				$setId,
 				[
@@ -323,6 +335,7 @@ class Sets
 			$arrItems[$id] = [
 				"id" => $id,
 				"amount" => self::getValueInteger($item, self::TAG_AMOUNT),
+				"sort" => self::getValueInteger($item, self::TAG_SORT),
 				"optional" => self::getValueBoolean($item, self::TAG_OPTIONAL),
 				"default" => self::getValueBoolean($item, self::TAG_DEFAULT),
 			];
