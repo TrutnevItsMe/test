@@ -203,7 +203,7 @@ class Sets
 	protected static function processSet($itemId, $set) {
 		if (count($set) > 0) {
 			$base = [];
-			$baseIds = [];
+			$baseItems = [];
 			$optional = [];
 			$items = ElementTable::getList([
 				'select' => ['ID', 'XML_ID'],
@@ -219,16 +219,16 @@ class Sets
 				if ($setItem['optional']) {
 					$optional[] = $item;
 				} else {
-					$baseIds[] = $item['ITEM_ID'];
+					$baseItems[$item['ITEM_ID']] = $setItem['amount'];
 					$base[] = $item;
 				}
 			}
 			// Заполним комплект / набор
 			self::addSet($itemId, CCatalogProductSet::TYPE_SET, $base);
 			self::addSet($itemId, CCatalogProductSet::TYPE_GROUP, $optional);
-			$baseIds[] = $itemId; // Получим данные о существующих ценах комплекта
+			$baseItems[$itemId] = 0; // Получим данные о существующих ценах комплекта
 			$prices = PriceTable::getList([
-				'filter' => ['=PRODUCT_ID' => $baseIds],
+				'filter' => ['=PRODUCT_ID' => array_keys($baseItems)],
 				'select' => ['ID', 'PRODUCT_ID', 'PRICE', 'CURRENCY', 'CATALOG_GROUP_ID'],
 			]);
 			$itemPrices = [];
@@ -253,7 +253,8 @@ class Sets
 				if ($price['PRICE']['PRODUCT_ID'] == $itemId) {
 					$itemPrices[$group]['ID'] = $price['PRICE']['ID'];
 				} else {
-					$itemPrices[$group]['PRICE'] += $price['RESULT_PRICE']['DISCOUNT_PRICE'];
+					$itemPrices[$group]['PRICE'] += $price['RESULT_PRICE']['DISCOUNT_PRICE']
+						* $baseItems[$price['PRICE']['PRODUCT_ID']];
 				}
 			}
 			foreach ($itemPrices as $price) {
