@@ -37,10 +37,20 @@ if (is_array($arResult["SET"])):?>
 					<span class="set-composition_price">
 				<? if (isset($arItem['OLD_PRICE'])): ?>
 					<div class="set-composition_price__old"><?=
-						number_format($arItem['OLD_PRICE'], 2, ',', '&nbsp;') ?> руб.</div>
+						number_format(
+							$arItem['OLD_PRICE'] * $arItem['AMOUNT'],
+							2,
+							',',
+							'&nbsp;'
+						) ?> руб.</div>
 				<? endif ?>
 						<div class="set-composition_price__new"><?=
-							number_format($arItem['PRICE'], 2, ',', '&nbsp;') ?> руб.</div>
+							number_format(
+								$arItem['PRICE'] * $arItem['AMOUNT'],
+								2,
+								',',
+								'&nbsp;'
+							) ?> руб.</div>
 			</span>
 				</div>
 			<? endforeach; ?>
@@ -75,10 +85,20 @@ if (is_array($arResult["SET"])):?>
 						<span class="set-composition_price">
 				<? if (isset($arItem['OLD_PRICE'])): ?>
 					<div class="set-composition_price__old"><?=
-						number_format($arItem['OLD_PRICE'], 2, ',', '&nbsp;') ?> руб.</div>
+						number_format(
+							$arItem['OLD_PRICE'] * $arItem['AMOUNT'],
+							2,
+							',',
+							'&nbsp;'
+						) ?> руб.</div>
 				<? endif ?>
 							<div class="set-composition_price__new"><?=
-								number_format($arItem['PRICE'], 2, ',', '&nbsp;') ?> руб.</div>
+								number_format(
+									$arItem['PRICE'] * $arItem['AMOUNT'],
+									2,
+									',',
+									'&nbsp;'
+								) ?> руб.</div>
 			</span>
 					</div>
 				<? endforeach; ?>

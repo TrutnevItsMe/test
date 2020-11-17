@@ -1575,5 +1575,18 @@ if ($property = $rsProperty->Fetch()) {
 			
 		}
 		$arResult['PRICE_MATRIX'] = $priceMatrix;
+		if (isset($arResult['PRICE_MATRIX']) && is_array($arResult['PRICE_MATRIX'])) {
+			$minPrice = $arResult['MIN_PRICE'];
+		} else {
+			$minPrice = [
+				"CURRENCY" => "RUB",
+				"CAN_BUY" => "Y"
+			];
+		}
+		$minPrice["VALUE"] = $oldPrice;
+		$minPrice["DISCOUNT_VALUE"] = $price;
+		$minPrice["PRINT_DISCOUNT_VALUE"] = number_format($price, 2, '.', '&nbsp;')
+			. "&nbsp;руб.";
+		$arResult['MIN_PRICE'] = $minPrice;
 	}
 }

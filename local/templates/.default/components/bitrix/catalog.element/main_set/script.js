@@ -189,23 +189,29 @@ function calculatePrice() {
 function showPrice(price) {
     var html = '<div class="price_matrix_block"><div class="price_matrix_wrapper "><div class="price" data-currency="RUB" data-value="'
         + price.price + '"><span><span class="values_wrapper"><span class="price_value">'
-        + formatNumber(price.price) + '</span><span class="price_currency"> руб.</span></span>'
+        + formatNumber(price.price, 2) + '</span><span class="price_currency"> руб.</span></span>'
         + '<span class="price_measure">/шт</span></span></div>';
     if (price.price < price.old) {
         html += '<div class="price discount" data-currency="RUB" data-value="'
             + price.old + '"><span class="values_wrapper"><span class="price_value">'
-            + formatNumber(price.old) + '</span><span class="price_currency"> руб.</span></span></div>';
+            + formatNumber(price.old, 2) + '</span><span class="price_currency"> руб.</span></span></div>';
         html += '<div class="sale_block"><span class="title">Экономия&nbsp;</span><div class="text">'
             + '<span class="values_wrapper" data-currency="RUB" data-value="'
             + (price.old-price.price) + '"><span class="price_value">'
-            + formatNumber(price.old-price.price)
+            + formatNumber(price.old-price.price, 2)
             + '</span><span class="price_currency">&nbsp;руб.</span></span></div>';
     }
     html += '</div></div>';
     $('.prices_block .cost.prices').html(html);
+    $('.button_block .btn.to-cart').attr("data-value", price.price);
+    var totalSumEl = $('.total_summ div span');
+    if (totalSumEl) {
+        var sum = price.price * parseInt($('.counter_wrapp .counter_block .text').val());
+        totalSumEl.html(formatNumber(sum, 0) + '&nbsp;руб.');
+    }
 }
-function formatNumber(n) {
-    return n.toLocaleString('ru', {"minimumFractionDigits": 2})
+function formatNumber(n, digits) {
+    return n.toLocaleString('ru', {"minimumFractionDigits": digits})
         .replace(',', '.')
         .replace(' ', '&nbsp;');
 }
