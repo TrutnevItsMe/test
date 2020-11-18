@@ -4,6 +4,8 @@ use Bitrix\Currency\CurrencyTable;
 use Bitrix\Iblock;
 use Intervolga\Custom\Import\Sets;
 use Bitrix\Main\Config\Option;
+use Bitrix\Catalog\StoreProductTable;
+use Bitrix\Catalog\StoreTable;
 
 if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED!==true) die();
 /** @var CBitrixComponentTemplate $this */
@@ -1588,5 +1590,25 @@ if ($property = $rsProperty->Fetch()) {
 		$minPrice["PRINT_DISCOUNT_VALUE"] = number_format($price, 2, '.', '&nbsp;')
 			. "&nbsp;руб.";
 		$arResult['MIN_PRICE'] = $minPrice;
+
+		// Извлечём остатки по складам
+		$arResult['SET_STORES'] = StoreProductTable::getList([
+			'filter' => ['=PRODUCT_ID' => $arParams['ELEMENT_ID'], '>AMOUNT' => 0, '=STORE.ACTIVE' => 'Y'],
+			'select' => ['STORE_ID', 'AMOUNT', 'NAME' => 'STORE.TITLE'],
+			'runtime' => [
+				'STORE' => [
+					'data_type' => StoreTable::class,
+					'reference' => [
+						'=this.STORE_ID' => 'ref.ID',
+					],
+					'join_type' => 'left'
+				],
+			],
+		])->fetchAll();
+		$cp = $this->__component;
+		if (is_object($cp))
+		{
+			$cp->SetResultCacheKeys(['SET_STORES']);
+		}
 	}
 }

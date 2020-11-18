@@ -1707,6 +1707,20 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 					<div class="stores_wrapp">
 					<?if($arResult["OFFERS"]){?>
 						<span></span>
+					<?}elseif(isset($arResult['SET_STORES']) && count($arResult['SET_STORES']) > 0){?>
+						<div class="stores_block_wrap">
+							<?foreach ($arResult['SET_STORES'] as $store):?>
+							<div class="stores_block wo_image">
+								<div class="stores_text_wrapp ">
+									<div class="main_info"><?=$store['NAME']?></div>
+								</div>
+								<div class="item-stock">
+									<span class="stock stock_range_2"></span>
+									<span class="value"><?=$store['AMOUNT']?></span>
+								</div>
+							</div>
+							<?endforeach?>
+						</div>
 					<?}else{?>
 						<?$APPLICATION->IncludeComponent("bitrix:catalog.store.amount", "main", array(
 								"PER_PAGE" => "10",

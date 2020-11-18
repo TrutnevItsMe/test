@@ -132,6 +132,7 @@ BX.ready(
 	})
 );
 </script>
+<? if(!isset($arResult['SET_STORES']) || count($arResult['SET_STORES']) <= 0):?>
 <?$des = new \Bitrix\Main\Page\FrameStatic('des');$des->startDynamicArea();?>
 <script>
 BX.ready(
@@ -172,6 +173,7 @@ BX.ready(
 );
 </script>
 <?$des->finishDynamicArea();?>
+<?endif?>
 <?if($_REQUEST && isset($_REQUEST['formresult'])):?>
 	<script>
 	$(document).ready(function() {
