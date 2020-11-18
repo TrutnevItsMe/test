@@ -1593,8 +1593,9 @@ if ($property = $rsProperty->Fetch()) {
 
 		// Извлечём остатки по складам
 		$arResult['SET_STORES'] = StoreProductTable::getList([
-			'filter' => ['=PRODUCT_ID' => $arParams['ELEMENT_ID'], '>AMOUNT' => 0, '=STORE.ACTIVE' => 'Y'],
+			'filter' => ['=PRODUCT_ID' => $arParams['ELEMENT_ID'], '=STORE.ACTIVE' => 'Y'],
 			'select' => ['STORE_ID', 'AMOUNT', 'NAME' => 'STORE.TITLE'],
+			'order' => ['AMOUNT' => 'DESC', 'NAME' => 'ASC'],
 			'runtime' => [
 				'STORE' => [
 					'data_type' => StoreTable::class,
