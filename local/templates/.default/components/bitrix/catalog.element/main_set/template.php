@@ -1723,15 +1723,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 										data-storehref="<?= $storePath ?>"
 										data-iblockhref=""><?= $store['NAME'] ?></a></span></div>
 								</div>
-								<div class="item-stock">
-									<?if ($store['AMOUNT'] <= 0): ?>
-										<span class="icon order"></span>
-										<span class="value">Нет в наличии</span>
-									<?else:?>
-										<span class="icon stock stock_range_2"></span>
-										<span class="value"><?= $store['AMOUNT'] ?></span>
-									<?endif?>
-								</div>
+								<?=$store['AMOUNT_HTML']?>
 							</div>
 							<? endforeach ?>
 						</div>

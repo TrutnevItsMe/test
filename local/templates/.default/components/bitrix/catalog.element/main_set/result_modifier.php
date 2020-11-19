@@ -1606,6 +1606,14 @@ if ($property = $rsProperty->Fetch()) {
 				],
 			],
 		])->fetchAll();
+		foreach ($arResult['SET_STORES'] as $key => $value) {
+			$arResult['SET_STORES'][$key];
+			$totalCount = CNext::CheckTypeCount($value["AMOUNT"]);
+			$arQuantityData = CNext::GetQuantityArray($totalCount);
+			if (strlen($arQuantityData["TEXT"])) {
+				$arResult['SET_STORES'][$key]['AMOUNT_HTML'] = $arQuantityData["HTML"];
+			}
+		}
 		$cp = $this->__component;
 		if (is_object($cp))
 		{
