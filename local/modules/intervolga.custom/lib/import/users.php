@@ -1,5 +1,7 @@
 <? namespace Intervolga\Custom\Import;
+use CUser;
 use Bitrix\Main\Entity\Event;
+use Bitrix\Main\UserTable;
 use Intervolga\Common\Highloadblock\HlbWrap;
 
 class Users {
@@ -52,10 +54,31 @@ class Users {
 		])->fetch();
 	}
 	protected static function updateUser($user) {
+		$cUser = new CUser;
+		$dbUser = UserTable::getRow([
+			'filter' => ['=XML_ID' => $user['UF_XML_ID']],
+			'select' => ['ID', 'XML_ID']
+		]);
 		echo '<pre>';
-		echo 'Создадим/обновим пользователя' . PHP_EOL;
-		var_dump($user);
+		if ($dbUser) {
+			echo 'Обновим пользователя' . PHP_EOL;
+		} else {
+			echo 'Создадим пользователя' . PHP_EOL;
+			$password = randString(14);
+			$fields = [
+				'LOGIN' => $user['UF_IMLOGIN'],
+				'PASSWORD' => $password,
+				'CONFIRM_PASSWORD' => $password,
+				'NAME' => $user['UF_NAME'],
+				'XML_ID' => $user['UF_XML_ID'],
+				'LID' => 's1',
+			];
+			$userId = $cUser->Add($fields);
+			var_dump($cUser->LAST_ERROR);
+		}
+		var_dump($userId);
 		echo '</pre>';
+		return $userId;
 	}
 	protected static function updateSaleUser($saleUser, $user) {
 		echo '<pre>';
