@@ -1,5 +1,6 @@
 <? namespace Intervolga\Custom\Import;
 use CUser;
+use CSaleOrderProps;
 use CSaleOrderUserProps;
 use CSaleOrderUserPropsValue;
 use Bitrix\Main\Loader;
@@ -8,7 +9,7 @@ use Bitrix\Main\UserTable;
 use Intervolga\Common\Highloadblock\HlbWrap;
 
 class Users {
-	const PERSON_TYPE_ID = 1;
+	const COMPANY_PERSON_TYPE_ID = 1;
 	public static function processPartner($partner) {
 		if (!$partner['UF_IMLOGIN']) {
 			// обрабатывем только записи с указаными логинами
@@ -69,13 +70,10 @@ class Users {
 			'NAME' => $user['UF_NAME'],
 			'LID' => 's1',
 		];
-		echo '<pre>';
 		if ($dbUser) {
-			echo 'Обновим пользователя' . PHP_EOL;
 			$userId = $dbUser['ID'];
 			$cUser->Update($userId, $fields);
 		} else {
-			echo 'Создадим пользователя' . PHP_EOL;
 			$password = randString(14);
 			$fields['XML_ID'] = $user['UF_XML_ID'];
 			$fields['PASSWORD'] = $password;
@@ -84,17 +82,13 @@ class Users {
 			if ($userId) {
 				$cUser->SendPassword($user['UF_IMLOGIN'], $user['UF_IMLOGIN'], 's1');
 			} else {
-				var_dump($cUser->LAST_ERROR);
+				//$error = $cUser->LAST_ERROR;
 			}
 		}
-		var_dump($userId);
-		echo '</pre>';
 		return $userId;
 	}
 	protected static function updateSaleUser($userId, $saleUser, $user) {
-		echo '<pre>';
 		if ($saleUser['UF_YURFIZLITSO'] == 'Физическое лицо') {
-			echo 'Физлицо -- ничего не делаем' . PHP_EOL;
 			return;
 		}
 		
@@ -109,26 +103,25 @@ class Users {
 			$fields = [
 				'NAME' => $saleUser['UF_NAME'],
 				'USER_ID' => $userId,
-				'PERSON_TYPE_ID' => self::PERSON_TYPE_ID,
+				'PERSON_TYPE_ID' => self::COMPANY_PERSON_TYPE_ID,
 				'XML_ID' => $saleUser['UF_XML_ID'],
 			];
 			if ($profile) {
-				echo 'Обновим профиль покупателя' . PHP_EOL;
 				$profileId = $profile['ID'];
 				CSaleOrderUserProps::Update($profileId, $fields);
 			} else {
-				echo 'Создадим профиль покупателя' . PHP_EOL;
 				$profileId = CSaleOrderUserProps::Add($fields);
 			}
 			if ($profileId) {
 				self::setSaleUserProperties(
 					$profileId,
+					self::COMPANY_PERSON_TYPE_ID,
 					[
 						'COMPANY' => $saleUser['UF_NAME'],
 						'COMPANY_ADR' => $saleUser['UF_YURIDICHESKIYADRE'],
 						'INN' => $saleUser['UF_INN'],
 						'KPP' => $saleUser['UF_KPP'],
-						'CONTACT_PERSON' => $user['UF_NAME'],
+						'CONTACT_PERSON' => '', // $user['UF_POMOSHNIK1'],
 						'EMAIL' => $saleUser['UF_ELEKTRONNAYAPOCHT'],
 						'PHONE' => $saleUser['UF_TELEFON'],
 						'FAX' => $saleUser['UF_FAKS'],
@@ -139,12 +132,51 @@ class Users {
 					]
 				);
 			}
-			echo '</pre>';
 		}
 	}
-	protected static function setSaleUserProperties($profileId, $fields) {
-		echo 'Заполним свойство' . PHP_EOL;
-		var_dump($profileId);
-		var_dump($fields);
+	protected static function setSaleUserProperties($profileId, $personTypeId, $fields) {
+		$props = CSaleOrderProps::GetList(
+			[],
+			['PERSON_TYPE_ID' => $personTypeId, 'CODE' => array_keys($fields)],
+			false,
+			false,
+			['ID', 'CODE', 'NAME']
+		);
+		$properties = [];
+		while ($property = $props->Fetch()) {
+			$properties[$property['CODE']] = $property;
+			$properties[$property['CODE']]['VALUE'] = $fields[$property['CODE']];
+			$properties[$property['CODE']]['USER_PROPS_ID'] = $profileId;
+			$properties[$property['CODE']]['ORDER_PROPS_ID'] = $property['ID'];
+		}
+		$props = CSaleOrderUserPropsValue::GetList(
+			[],
+			['USER_PROPS_ID' => $profileId, 'ORDER_PROPS_ID' => array_column($properties, 'ID')],
+			false,
+			false,
+			['ID', 'CODE']
+		);
+		while ($property = $props->Fetch()) {
+			
+			CSaleOrderUserPropsValue::Update(
+				$property['ID'],
+				[
+					'ID' => $property['ID'],
+					'USER_PROPS_ID' => $profileId,
+					'ORDER_PROPS_ID' => $properties[$property['CODE']]['ID'],
+					'NAME' => $properties[$property['CODE']]['NAME'],
+					'VALUE' => $fields[$property['CODE']],
+				]
+			);
+			unset($properties[$property['CODE']]);
+		}
+		foreach ($properties as $property) {
+			CSaleOrderUserPropsValue::Add([
+				'USER_PROPS_ID' => $property['USER_PROPS_ID'],
+				'ORDER_PROPS_ID' => $property['ORDER_PROPS_ID'],
+				'NAME' => $property['NAME'],
+				'VALUE ' => $property['VALUE'],
+			]);
+		}
 	}
 }

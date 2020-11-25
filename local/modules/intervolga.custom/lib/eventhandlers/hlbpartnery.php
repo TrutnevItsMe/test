@@ -20,7 +20,7 @@ class HLBPartnery extends EventHandler
 	}
 	public static function OnAfterUpdate(Event $event)
 	{
-		//Users::processPartner(Users::getEventData($event));
+		Users::processPartner(Users::getEventData($event));
 	}
 	public static function OnAfterDelete(Event $event)
 	{

@@ -20,7 +20,7 @@ class HLBKontragenty extends EventHandler
 	}
 	public static function OnAfterUpdate(Event $event)
 	{
-		//Users::processKontragent(Users::getEventData($event));
+		Users::processKontragent(Users::getEventData($event));
 	}
 	public static function OnAfterDelete(Event $event)
 	{
