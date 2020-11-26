@@ -22,21 +22,21 @@ list($bPhoneAuthSupported, $bPhoneAuthShow, $bPhoneAuthRequired, $bPhoneAuthUse)
 		<div class="alert alert-success"><?=GetMessage('main_profile_code_sent')?></div>
 	<?endif;?>
 	<?if ($arResult['POMOSHNIKI']):?>
-	<div>
+	<div class="iv-pomoshniki" style="border-bottom: 1px solid #f2f2f2;margin: 0 -43px 20px -43px;padding: 0 43px 20px 43px;">
 		<?if($arResult['POMOSHNIKI']['UF_OSNOVNOYMENEDZHER']):?>
 		<div><label>Основной менеджер:</label> <?=$arResult['POMOSHNIKI']['UF_OSNOVNOYMENEDZHER']?></div>
 		<?endif;?>
 		<?if($arResult['POMOSHNIKI']['UF_POMOSHNIK1']):?>
-		<div><label>Помошник:</label> <?=$arResult['POMOSHNIKI']['UF_POMOSHNIK1']?></div>
+		<div><label>Помощник менеджера:</label> <?=$arResult['POMOSHNIKI']['UF_POMOSHNIK1']?></div>
 		<?endif;?>
 		<?if($arResult['POMOSHNIKI']['UF_POMOSHNIK2']):?>
-		<div><label>Помошник:</label> <?=$arResult['POMOSHNIKI']['UF_POMOSHNIK2']?></div>
+		<div><label>Помощник менеджера:</label> <?=$arResult['POMOSHNIKI']['UF_POMOSHNIK2']?></div>
 		<?endif;?>
 		<?if($arResult['POMOSHNIKI']['UF_POMOSHNIK3']):?>
-		<div><label>Помошник:</label> <?=$arResult['POMOSHNIKI']['UF_POMOSHNIK3']?></div>
+		<div><label>Помощник менеджера:</label> <?=$arResult['POMOSHNIKI']['UF_POMOSHNIK3']?></div>
 		<?endif;?>
 		<?if($arResult['POMOSHNIKI']['UF_POMOSHNIK4']):?>
-		<div><label>Помошник:</label> <?=$arResult['POMOSHNIKI']['UF_POMOSHNIK4']?></div>
+		<div><label>Помощник менеджера:</label> <?=$arResult['POMOSHNIKI']['UF_POMOSHNIK4']?></div>
 		<?endif;?>
 	</div>
 	<?endif?>
