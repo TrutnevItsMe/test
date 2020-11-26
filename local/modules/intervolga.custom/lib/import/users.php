@@ -65,6 +65,7 @@ class Users {
 			'select' => ['ID', 'XML_ID']
 		]);
 		$fields = [
+			'ACTIVE' => ($user['UF_POMETKAUDALENIYA'] == 'Да') ? 'N' : 'Y',
 			'LOGIN' => $user['UF_IMLOGIN'],
 			'EMAIL' => $user['UF_IMLOGIN'],
 			'NAME' => $user['UF_NAME'],
