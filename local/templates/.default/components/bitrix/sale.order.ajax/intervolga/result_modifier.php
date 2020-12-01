@@ -31,7 +31,7 @@ if (is_array($arResult["GRID"]["ROWS"])) {
 			if (is_array($value = $property['VALUE'])) {
 				$set = Sets::getSet($value['TEXT']);
 				$set = array_column ($set['SET'], 'NAME');
-				if (count ($set) > 0) {//Унитаз подвесной BELBAGNO BINGO
+				if (count ($set) > 0) {
 					$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]['SET'] = $set;
 				}
 			}
