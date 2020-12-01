@@ -442,3 +442,32 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
 		});
 	}
 };
+
+/**
+ * https://youtrack.ivsupport.ru/issue/iberisweb-12
+ * @param id
+ * @param values
+ */
+function activateAgreementsField(id, values) {
+    window.currentProfileId = '';
+    setInterval(function () {
+        var $profile = $('select[name=PROFILE_ID]');
+        var profileId = $profile.val();
+        var $input = $('input#soa-property-' + id);
+        if (profileId != window.currentProfileId || $input.length > 0) {
+            window.currentProfileId = profileId;
+            var inputName = $input.attr('name');
+            var profileValues = values[profileId];
+            if (profileValues && profileValues.length > 0) {
+                var html = '<select id="soa-property-' + id + '" name="' + inputName + '" class="form-control">';
+                profileValues.forEach(function (value) {
+                    html += '<option value="' + value.UF_NAME + '">' + value.UF_NAME + '</option>';
+                });
+                html += '</select>';
+                $input.replaceWith(html);
+            } else {
+                $input.val('');
+            }
+        }
+    }, 300)
+}

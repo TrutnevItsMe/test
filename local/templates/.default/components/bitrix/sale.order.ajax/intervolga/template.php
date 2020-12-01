@@ -2,6 +2,7 @@
 
 use Bitrix\Main;
 use Bitrix\Main\Localization\Loc;
+use Bitrix\Main\Web\Json;
 
 /**
  * @var array $arParams
@@ -691,4 +692,9 @@ else
 		</script>
 		<?
 	}
+	?><script>
+	$(function () {
+        activateAgreementsField(<?=$arResult['AGREEMENT_FIELD']['ID']?>, <?=Json::encode($arResult['AGREEMENTS'])?>);
+    })
+	</script><?
 }
