@@ -451,7 +451,7 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
 function activateAgreementsField(id, values) {
     window.currentProfileId = '';
     setInterval(function () {
-        var $profile = $('select[name=PROFILE_ID]');
+        var $profile = $('[name=PROFILE_ID]');
         var profileId = $profile.val();
         var $input = $('input#soa-property-' + id);
         if (profileId != window.currentProfileId || $input.length > 0) {

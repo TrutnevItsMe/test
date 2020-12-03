@@ -32,7 +32,7 @@ $APPLICATION->SetTitle("Оформление заказа");
 		"DISPLAY_IMG_WIDTH" => "90",
 		"DISPLAY_IMG_HEIGHT" => "90",
 		"COMPONENT_TEMPLATE" => ".default",
-		"ALLOW_NEW_PROFILE" => "Y",
+		"ALLOW_NEW_PROFILE" => "N",
 		"SHOW_PAYMENT_SERVICES_NAMES" => "Y",
 		"COMPATIBLE_MODE" => "Y",
 		"BASKET_IMAGES_SCALING" => "adaptive",
