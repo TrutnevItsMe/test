@@ -62,7 +62,7 @@
         width: 26px;
         height: 26px;
         margin: 0;
-        background: url(cheсkbox.png) no-repeat;
+        background: url(checkbox.png) no-repeat;
         cursor: pointer;
     }
     .set-composition_checkbox input:checked {

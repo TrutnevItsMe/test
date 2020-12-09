@@ -694,7 +694,8 @@ else
 	}
 	?><script>
 	$(function () {
-        activateAgreementsField(<?=$arResult['AGREEMENT_FIELD']['ID']?>, <?=Json::encode($arResult['AGREEMENTS'])?>);
+        activateAgreementsField(<?=Json::encode($arResult['PARTNERS'])?>);
+        addGetCustomPricesButton(<?=Json::encode($arResult['PARTNERS'])?>);
     })
 	</script><?
 }

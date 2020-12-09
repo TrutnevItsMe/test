@@ -448,26 +448,57 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
  * @param id
  * @param values
  */
-function activateAgreementsField(id, values) {
+function activateAgreementsField(data) {
     window.currentProfileId = '';
     setInterval(function () {
         var $profile = $('[name=PROFILE_ID]');
         var profileId = $profile.val();
-        var $input = $('input#soa-property-' + id);
+        var $input = $('input#soa-property-' + data.agreementFieldId);
         if (profileId != window.currentProfileId || $input.length > 0) {
             window.currentProfileId = profileId;
             var inputName = $input.attr('name');
-            var profileValues = values[profileId];
-            if (profileValues && profileValues.length > 0) {
-                var html = '<select id="soa-property-' + id + '" name="' + inputName + '" class="form-control">';
-                profileValues.forEach(function (value) {
-                    html += '<option value="' + value.UF_NAME + '">' + value.UF_NAME + '</option>';
-                });
-                html += '</select>';
-                $input.replaceWith(html);
-            } else {
-                $input.val('');
+            if (data.counterparties[profileId]) {
+				var pofileXmlId = data.counterparties[profileId].XML_ID;
+				var profileValues = data.agreements[pofileXmlId];
+				if (profileValues && profileValues.length > 0) {
+					var html = '<select id="soa-property-' + data.agreementFieldId + '" name="'
+						+ inputName + '" class="form-control">';
+					profileValues.forEach(function (value) {
+						html += '<option value="' + value.UF_XML_ID + '">' + value.UF_NAME + '</option>';
+					});
+					html += '</select>';
+					$input.replaceWith(html);
+					$input.css('display', 'block');
+				} else {
+					$input.css('display', 'none');
+				}
             }
         }
     }, 300)
+}
+
+function addGetCustomPricesButton(data) {
+    $("#bx-soa-basket .bx-soa-section-title-container h2").removeClass("col-sm-9").addClass("col-sm-6");
+    $("#bx-soa-basket .bx-soa-section-title-container h2")
+        .after('<a id="get-custom-prices" class="col-xs-12 col-sm-3 btn btn-default">Инд. цены</a>');
+    var $button = $("#bx-soa-basket #get-custom-prices");
+    $button.click(function() {
+        var profileId = $('[name=PROFILE_ID]').val();
+        var counterpartyXmlId = data.counterparties[profileId].XML_ID;
+        var agreementXmlId = $('#soa-property-' + data.agreementFieldId).val();
+        $.post(
+            '/ajax/getCustomPrices.php',
+            {
+                userXmlId: data.userXmlId,
+                counterpartyXmlId: counterpartyXmlId,
+                agreementXmlId: agreementXmlId,
+                basket: data.basket,
+            },
+            function(result) {
+                document.location.reload();
+                console.log(result);
+            },
+            'json'
+        );
+    });
 }
