@@ -500,7 +500,7 @@ function addGetCustomPricesButton(data) {
             },
             function(result) {
                 document.location.reload();
-                console.log(result);
+                //result.data.forEach(el => console.log(el));
             },
             'json'
         );

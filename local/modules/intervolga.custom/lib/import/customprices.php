@@ -26,11 +26,14 @@ class CustomPrices {
 	}
 	public static function set($prices, $basket) {
 		foreach ($prices as $price) {
-			$basketRow = $basket[$price['xml_id']];
-			CSaleBasket::Update(
-				$basketRow['dbId'],
-				['PRICE' => $price['price'], 'QUANTITY' => $price['quantity'], 'CUSTOM_PRICE' => 'Y']
-			);
+			if ($price['price'] > 0 && $price['quantity'] > 0) {
+				$basketRow = $basket[$price['xml_id']];
+				$customPrice = $price['price'] - ($price['discount'] / $price['quantity']);
+				CSaleBasket::Update(
+					$basketRow['dbId'],
+					['PRICE' => $customPrice, 'QUANTITY' => $price['quantity'], 'CUSTOM_PRICE' => 'Y']
+				);
+			}
 		}
 	}
 	/**
