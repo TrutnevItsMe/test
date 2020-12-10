@@ -478,6 +478,10 @@ function activateAgreementsField(data) {
 }
 
 function addGetCustomPricesButton(data) {
+    var profileId = $('[name=PROFILE_ID]').val();
+    if (!profileId) {
+        return;
+    }
     $("#bx-soa-basket .bx-soa-section-title-container h2").removeClass("col-sm-9").addClass("col-sm-6");
     $("#bx-soa-basket .bx-soa-section-title-container h2")
         .after('<a id="get-custom-prices" class="col-xs-12 col-sm-3 btn btn-default">Инд. цены</a>');
