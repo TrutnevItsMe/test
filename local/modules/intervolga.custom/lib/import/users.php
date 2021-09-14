@@ -15,15 +15,6 @@ class Users {
 			// обрабатывем только записи с указаными логинами
 			return;
 		}
-		// Intervolga Akentyev Logs
-		file_put_contents(
-			$_SERVER['DOCUMENT_ROOT'] . '/upload/logs/users' . DATE('_Y_m_d') . '.log',
-			var_export([
-				'PARTNER' => $partner,
-			], true),
-			FILE_APPEND
-		);
-		
 		// обработаем партнера
 		$userId = self::updateUser($partner);
 		// найдем контрагентов партнера
@@ -68,17 +59,6 @@ class Users {
 			'filter' => ['=ID' => $id],
 			'select' => ['*'],
 		])->fetch();
-		// Intervolga Akentyev Logs
-		file_put_contents(
-			$_SERVER['DOCUMENT_ROOT'] . '/upload/logs/users' . DATE('_Y_m_d') . '.log',
-			var_export([
-				'HLBLOCK' => $event->getEntity()->getName(),
-				'ID' => $id,
-				'DATA' => $data,
-			], true),
-			FILE_APPEND
-		);
-		
 		return $data;
 	}
 	protected static function updateUser($user) {
@@ -94,27 +74,9 @@ class Users {
 			'NAME' => $user['UF_NAME'],
 			'LID' => 's1',
 		];
-		// Intervolga Akentyev Logs
-		file_put_contents(
-			$_SERVER['DOCUMENT_ROOT'] . '/upload/logs/users' . DATE('_Y_m_d') . '.log',
-			var_export([
-				'DB_USER' => $dbUser,
-			], true),
-			FILE_APPEND
-		);
 		if ($dbUser) {
 			$userId = $dbUser['ID'];
 			$cUser->Update($userId, $fields);
-			if ($error = $cUser->LAST_ERROR) {
-				// Intervolga Akentyev Logs
-				file_put_contents(
-					$_SERVER['DOCUMENT_ROOT'] . '/upload/logs/users' . DATE('_Y_m_d') . '.log',
-					var_export([
-						'ERROR' => $error,
-					], true),
-					FILE_APPEND
-				);
-			}
 		} else {
 			$password = randString(14);
 			$fields['XML_ID'] = $user['UF_XML_ID'];
@@ -124,25 +86,9 @@ class Users {
 			if ($userId) {
 				$cUser->SendPassword($user['UF_IMLOGIN'], $user['UF_IMLOGIN'], 's1');
 			} else {
-				$error = $cUser->LAST_ERROR;
-				// Intervolga Akentyev Logs
-				file_put_contents(
-					$_SERVER['DOCUMENT_ROOT'] . '/upload/logs/users' . DATE('_Y_m_d') . '.log',
-					var_export([
-						'ERROR' => $error,
-					], true),
-					FILE_APPEND
-				);
+				//$error = $cUser->LAST_ERROR;
 			}
 		}
-		// Intervolga Akentyev Logs
-		file_put_contents(
-			$_SERVER['DOCUMENT_ROOT'] . '/upload/logs/users' . DATE('_Y_m_d') . '.log',
-			var_export([
-				'USER_ID' => $userId,
-			], true),
-			FILE_APPEND
-		);
 		return $userId;
 	}
 	protected static function updateSaleUser($userId, $saleUser, $user) {
