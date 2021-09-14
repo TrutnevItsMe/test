@@ -53,8 +53,10 @@ class Users {
 	}
 	public static function getEventData(Event $event) {
 		$hl = new HlbWrap($event->getEntity()->getName());
-		return  $hl->getList([
-			'filter' => ['=ID' => $event->getParameter('id')['ID']],
+		$id = $event->getParameter('id');
+		$id = is_array($id) ? $id['ID'] : $id;
+		$data = $hl->getList([
+			'filter' => ['=ID' => $id],
 			'select' => ['*'],
 		])->fetch();
 	}
