@@ -81,7 +81,9 @@ class Users {
 			$fields['XML_ID'] = $user['UF_XML_ID'];
 			$fields['PASSWORD'] = $password;
 			$fields['CONFIRM_PASSWORD'] = $password;
+			$GLOBALS['HL_CAN_CREATE_USERS'] = true;
 			$userId = $cUser->Add($fields);
+			$GLOBALS['HL_CAN_CREATE_USERS'] = false;
 			if ($userId) {
 				$cUser->SendPassword($user['UF_IMLOGIN'], $user['UF_IMLOGIN'], 's1');
 			} else {
