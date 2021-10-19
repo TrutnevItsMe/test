@@ -7,11 +7,28 @@ class CustomPrices {
 	const URL = "https://CalcDiscountBitrix:bLK8mGtXQI0C@api.iberis-pro.ru/iberis-ut11-TestForBitrix/hs/AutoDiscountCalc/GetAutoDiscount";
 	public static function get($clientId, $counterpartyId, $agreementId, $products) {
 		$xml = self::getRequestXml($clientId, $counterpartyId, $agreementId, $products);
+		file_put_contents(
+			$_SERVER['DOCUMENT_ROOT'] . '/upload/logs/xml' . DATE('_Y_m_d') . '.log',
+			var_export($xml, true) . PHP_EOL,
+			FILE_APPEND
+		);
 		$httpClient = new HttpClient();
 		$httpClient->setHeader('Content-Type', 'application/xml; charset=UTF-8', true);
 		$httpClient->query("PUT", self::URL, $xml);
 		$xml = new CDataXML();
+		// Intervolga Akentyev Logs
+		file_put_contents(
+			$_SERVER['DOCUMENT_ROOT'] . '/upload/logs/xml' . DATE('_Y_m_d') . '.log',
+			var_export($httpClient->getResult(), true) . PHP_EOL,
+			FILE_APPEND
+		);
 		$xml->LoadString($httpClient->getResult());
+		// Intervolga Akentyev Logs
+		file_put_contents(
+			$_SERVER['DOCUMENT_ROOT'] . '/upload/logs/xml' . DATE('_Y_m_d') . '.log',
+			var_export($xml, true) . PHP_EOL,
+			FILE_APPEND
+		);
 		$items = $xml->SelectNodes("/CalcDiscountResponse")->elementsByName('Products');
 		$products = [];
 		foreach ($items as $item) {

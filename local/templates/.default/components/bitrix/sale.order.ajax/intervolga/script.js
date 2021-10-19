@@ -449,31 +449,46 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
  * @param values
  */
 function activateAgreementsField(data) {
-    window.currentProfileId = '';
+    window.currentAgreementId = $('#bx-soa-properties-hidden #soa-property-' + data.agreementFieldId).val()
+		?? $('#bx-soa-properties #soa-property-' + data.agreementFieldId).val() ?? '';
     setInterval(function () {
-        var $profile = $('[name=PROFILE_ID]');
+		var $profile = $('[name=PROFILE_ID]');
         var profileId = $profile.val();
-        var $input = $('input#soa-property-' + data.agreementFieldId);
-        if (profileId != window.currentProfileId || $input.length > 0) {
-            window.currentProfileId = profileId;
-            var inputName = $input.attr('name');
-            if (data.counterparties[profileId]) {
-				var pofileXmlId = data.counterparties[profileId].XML_ID;
-				var profileValues = data.agreements[pofileXmlId];
-				if (profileValues && profileValues.length > 0) {
-					var html = '<select id="soa-property-' + data.agreementFieldId + '" name="'
-						+ inputName + '" class="form-control">';
+		if (data.counterparties[profileId]) {
+			var pofileXmlId = data.counterparties[profileId].XML_ID;
+			var profileValues = data.agreements[pofileXmlId];
+			if (profileValues && profileValues.length > 0) {
+				if ($('#bx-soa-region #soa-property-' + data.agreementFieldId).length <= 0) {
+					var html = '<div class="form-group bx-soa-customer-field" data-property-id-row="' + data.agreementFieldId + '">'
+						+ '<label for="soa-property-' + data.agreementFieldId + '" class="bx-soa-custom-label">Соглашение с клиентами</label>'
+						+ '<div class="soa-property-container">'
+						+ '<select id="soa-property-' + data.agreementFieldId + '" name="ORDER_PROP_'
+						+ data.agreementFieldId + '" class="form-control"></div></div>';
 					profileValues.forEach(function (value) {
 						html += '<option value="' + value.UF_XML_ID + '">' + value.UF_NAME + '</option>';
 					});
 					html += '</select>';
-					$input.replaceWith(html);
-					$input.css('display', 'block');
+					$('#bx-soa-region .bx-soa-location-input-container').after(html);
+					$('#bx-soa-properties #soa-property-' + data.agreementFieldId).closest('.bx-soa-customer-field').hide();
 				} else {
-					$input.css('display', 'none');
+					var $select =  $('#bx-soa-region #soa-property-' + data.agreementFieldId);
+					if ($select.length > 0) {
+						window.currentAgreementId = $select.val();
+					}
 				}
+			}
+            if (window.currentAgreementId) {
+                $('#bx-soa-properties #soa-property-' + data.agreementFieldId).val(window.currentAgreementId);
+				$('#bx-soa-properties-hidden #soa-property-' + data.agreementFieldId).val(window.currentAgreementId);
+            } else {
+                window.currentAgreementId = profileValues[0].UF_XML_ID;
             }
-        }
+		}
+		if ($('#bx-soa-properties input').length > 0) {
+			$('#bx-soa-properties input, #bx-soa-properties textarea').prop("disabled", true);
+			document.querySelector('#bx-soa-properties .bx-soa-more-btn .pull-right').click();
+		}
+		$('#bx-soa-properties a.bx-soa-editstep').hide();
     }, 300)
 }
 
