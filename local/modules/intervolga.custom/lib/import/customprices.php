@@ -3,23 +3,16 @@ use CDataXML;
 use CSaleBasket;
 use Bitrix\Main\Web\HttpClient;
 
-
-
 class CustomPrices {
-	const URL = "https://CalcDiscountBitrix:bLK8mGtXQI0C@api.iberis-pro.ru/iberis-ut11-TestForBitrix2/hs/AutoDiscountCalc/GetAutoDiscount";
+	const URL = "https://CalcDiscountBitrix:bLK8mGtXQI0C@api.iberis-pro.ru/iberis-ut11-TestForBitrix/hs/AutoDiscountCalc/GetAutoDiscount";
 	public static function get($clientId, $counterpartyId, $agreementId, $products) {
-		$clientId = "edc0bd44-ab2f-11ea-a954-0022196cc745";
-		$counterpartyId = "edc0bd43-ab2f-11ea-a954-0022196cc745";
-		$agreementId = "6e5e9be3-ab30-11ea-a954-0022196cc745";
 		$xml = self::getRequestXml($clientId, $counterpartyId, $agreementId, $products);
-		//var_dump($xml);
 		$httpClient = new HttpClient();
 		$httpClient->setHeader('Content-Type', 'application/xml; charset=UTF-8', true);
 		$httpClient->query("PUT", self::URL, $xml);
 		$xml = new CDataXML();
 		$xml->LoadString($httpClient->getResult());
 		$items = $xml->SelectNodes("/CalcDiscountResponse")->elementsByName('Products');
-		//die(var_dump($httpClient->getResult()));
 		$products = [];
 		foreach ($items as $item) {
 			$products[] = [
@@ -29,7 +22,6 @@ class CustomPrices {
 				'discount' => self::getValueFloat($item, "Discount"),
 			];
 		}
-		//die(var_dump($httpClient->getResult()));
 		return $products;
 	}
 	public static function set($prices, $basket) {
