@@ -449,8 +449,7 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
  * @param values
  */
 function activateAgreementsField(data) {
-    window.currentAgreementId = $('#bx-soa-properties-hidden #soa-property-' + data.agreementFieldId).val()
-		?? $('#bx-soa-properties #soa-property-' + data.agreementFieldId).val() ?? '';
+    window.currentAgreementId = '';
     setInterval(function () {
 		var $profile = $('[name=PROFILE_ID]');
         var profileId = $profile.val();
@@ -463,11 +462,11 @@ function activateAgreementsField(data) {
 						+ '<label for="soa-property-' + data.agreementFieldId + '" class="bx-soa-custom-label">Соглашение с клиентами</label>'
 						+ '<div class="soa-property-container">'
 						+ '<select id="soa-property-' + data.agreementFieldId + '" name="ORDER_PROP_'
-						+ data.agreementFieldId + '" class="form-control"></div></div>';
+						+ data.agreementFieldId + '" class="form-control">';
 					profileValues.forEach(function (value) {
 						html += '<option value="' + value.UF_XML_ID + '">' + value.UF_NAME + '</option>';
 					});
-					html += '</select>';
+					html += '</select></div></div>';
 					$('#bx-soa-region .bx-soa-location-input-container').after(html);
 					$('#bx-soa-properties #soa-property-' + data.agreementFieldId).closest('.bx-soa-customer-field').hide();
 				} else {
@@ -494,7 +493,7 @@ function activateAgreementsField(data) {
 
 function addGetCustomPricesButton(data) {
     var profileId = $('[name=PROFILE_ID]').val();
-    if (!profileId) {
+    if (!profileId || !data.counterparties || data.counterparties.length <= 0) {
         return;
     }
     $("#bx-soa-basket .bx-soa-section-title-container h2").removeClass("col-sm-9").addClass("col-sm-6");
@@ -503,6 +502,7 @@ function addGetCustomPricesButton(data) {
     var $button = $("#bx-soa-basket #get-custom-prices");
     $button.click(function() {
         var profileId = $('[name=PROFILE_ID]').val();
+        if (!data.counterparties[profileId]) { return; }
         var counterpartyXmlId = data.counterparties[profileId].XML_ID;
         var agreementXmlId = $('#soa-property-' + data.agreementFieldId).val();
         $.post(
@@ -512,10 +512,14 @@ function addGetCustomPricesButton(data) {
                 counterpartyXmlId: counterpartyXmlId,
                 agreementXmlId: agreementXmlId,
                 basket: data.basket,
+                sessid: BX.bitrix_sessid(),
             },
-            function(result) {
-                document.location.reload();
-                //result.data.forEach(el => console.log(el));
+            function(res) {
+                if (res.result == 'ok') {
+                    document.location.reload();
+                } else {
+                    console.error(res.data);
+                }
             },
             'json'
         );

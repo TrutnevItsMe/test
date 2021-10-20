@@ -71,9 +71,6 @@ $dbSoglashenia = $soglasheniyaSKlientami->getList([
 $soglashenia = [];
 while ($soglashenie = $dbSoglashenia->fetch()) {
 	$key = $soglashenie['UF_KONTRAGENT'];
-	if (!isset($soglashenia[$key])) {
-		$soglashenia[$key] = [];
-	}
 	$soglashenia[$key][] = $soglashenie;
 }
 $agreementField = false;
