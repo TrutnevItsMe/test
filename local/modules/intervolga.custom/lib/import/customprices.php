@@ -2,6 +2,7 @@
 use CDataXML;
 use CSaleBasket;
 use Bitrix\Main\Web\HttpClient;
+use Bitrix\Main\Config\Option;
 
 class CustomPrices {
 	const URL = "https://CalcDiscountBitrix:bLK8mGtXQI0C@api.iberis-pro.ru/iberis-ut11-TestForBitrix/hs/AutoDiscountCalc/GetAutoDiscount";
@@ -9,7 +10,7 @@ class CustomPrices {
 		$xml = self::getRequestXml($clientId, $counterpartyId, $agreementId, $products);
 		$httpClient = new HttpClient();
 		$httpClient->setHeader('Content-Type', 'application/xml; charset=UTF-8', true);
-		$httpClient->query("PUT", self::URL, $xml);
+		$httpClient->query("PUT", Option::get("grain.customsettings","custom_prices_url"), $xml);
 		$xml = new CDataXML();
 		$xml->LoadString($httpClient->getResult());
 		$items = $xml->SelectNodes("/CalcDiscountResponse")->elementsByName('Products');
