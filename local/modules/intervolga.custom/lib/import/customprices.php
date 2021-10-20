@@ -5,7 +5,6 @@ use Bitrix\Main\Web\HttpClient;
 use Bitrix\Main\Config\Option;
 
 class CustomPrices {
-	const URL = "https://CalcDiscountBitrix:bLK8mGtXQI0C@api.iberis-pro.ru/iberis-ut11-TestForBitrix/hs/AutoDiscountCalc/GetAutoDiscount";
 	public static function get($clientId, $counterpartyId, $agreementId, $products) {
 		$xml = self::getRequestXml($clientId, $counterpartyId, $agreementId, $products);
 		$httpClient = new HttpClient();
