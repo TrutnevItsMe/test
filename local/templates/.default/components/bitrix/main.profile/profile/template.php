@@ -24,20 +24,41 @@ list($bPhoneAuthSupported, $bPhoneAuthShow, $bPhoneAuthRequired, $bPhoneAuthUse)
 	<?if ($arResult['POMOSHNIKI']):?>
 	<div class="iv-pomoshniki" style="border-bottom: 1px solid #f2f2f2;margin: 0 -43px 20px -43px;padding: 0 43px 20px 43px;">
 		<?if($arResult['POMOSHNIKI']['UF_OSNOVNOYMENEDZHER']):?>
-		<div><label>Основной менеджер:</label> <?=$arResult['POMOSHNIKI']['UF_OSNOVNOYMENEDZHER']?></div>
-		<?endif;?>
-		<?if($arResult['POMOSHNIKI']['UF_POMOSHNIK1']):?>
-		<div><label>Помощник менеджера:</label> <?=$arResult['POMOSHNIKI']['UF_POMOSHNIK1']?></div>
-		<?endif;?>
-		<?if($arResult['POMOSHNIKI']['UF_POMOSHNIK2']):?>
-		<div><label>Помощник менеджера:</label> <?=$arResult['POMOSHNIKI']['UF_POMOSHNIK2']?></div>
-		<?endif;?>
-		<?if($arResult['POMOSHNIKI']['UF_POMOSHNIK3']):?>
-		<div><label>Помощник менеджера:</label> <?=$arResult['POMOSHNIKI']['UF_POMOSHNIK3']?></div>
-		<?endif;?>
-		<?if($arResult['POMOSHNIKI']['UF_POMOSHNIK4']):?>
-		<div><label>Помощник менеджера:</label> <?=$arResult['POMOSHNIKI']['UF_POMOSHNIK4']?></div>
-		<?endif;?>
+		<div>
+			<label>Основной менеджер:</label>
+			<?=$arResult['POMOSHNIKI']['UF_OSNOVNOYMENEDZHER']?>,
+			<?if ($arResult['POMOSHNIKI']['UF_OSNMENEDZHERADRES']):?>
+			<a href="mailto:<?=$arResult['POMOSHNIKI']['UF_OSNMENEDZHERADRES']?>">
+				<?=$arResult['POMOSHNIKI']['UF_OSNMENEDZHERADRES'] . ','?>
+			</a>
+			<?endif?>
+			<?if ($arResult['POMOSHNIKI']['UF_OSNMENEDZHERTELEF']):?>
+			тел.
+			<a href="tel:<?=$arResult['POMOSHNIKI']['UF_OSNMENEDZHERTELEF']?>">
+				<?=$arResult['POMOSHNIKI']['UF_OSNMENEDZHERTELEF']?>
+			</a>
+			<?endif?>
+		</div>
+		<?endif?>
+		<? for($index = 1; $index < 4; $index++):
+			if($arResult['POMOSHNIKI']['UF_POMOSHNIK' . $index]):?>
+			<div>
+				<label>Помощник менеджера:</label>
+				<?=$arResult['POMOSHNIKI']['UF_POMOSHNIK' . $index]?>,
+				<?if ($arResult['POMOSHNIKI']['UF_POMOSHNIKADRES' . $index]):?>
+					<a href="mailto:<?=$arResult['POMOSHNIKI']['UF_POMOSHNIKADRES' . $index]?>">
+						<?=$arResult['POMOSHNIKI']['UF_POMOSHNIKADRES' . $index] . ','?>
+					</a>
+				<?endif?>
+				<?if ($arResult['POMOSHNIKI']['UF_POMOSHNIKTELEFON' . $index]):?>
+					тел.
+					<a href="tel:<?=$arResult['POMOSHNIKI']['UF_POMOSHNIKTELEFON' . $index]?>">
+						<?=$arResult['POMOSHNIKI']['UF_POMOSHNIKTELEFON' . $index]?>
+					</a>
+				<?endif?>
+			</div>
+			<?endif;
+		endfor?>
 	</div>
 	<?endif?>
 	<div class="form-block-wr">
