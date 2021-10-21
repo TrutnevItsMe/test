@@ -518,7 +518,7 @@ function addGetCustomPricesButton(data) {
                 if (res.result == 'ok') {
                     document.location.reload();
                 } else {
-                    console.error(res.data);
+                    console.error(res.data.errorText);
                 }
             },
             'json'
