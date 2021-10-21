@@ -55,7 +55,7 @@ class Users {
 		$hl = new HlbWrap($event->getEntity()->getName());
 		$id = $event->getParameter('id');
 		$id = is_array($id) ? $id['ID'] : $id;
-		$data = $hl->getList([
+		return $hl->getList([
 			'filter' => ['=ID' => $id],
 			'select' => ['*'],
 		])->fetch();
@@ -107,7 +107,7 @@ class Users {
 				['ID', 'XML_ID']
 			)->Fetch();
 			$fields = [
-				'NAME' => $saleUser['UF_NAME'],
+				'NAME' => $saleUser['UF_DESCRIPTION'] ?: $saleUser['UF_NAME'],
 				'USER_ID' => $userId,
 				'PERSON_TYPE_ID' => self::COMPANY_PERSON_TYPE_ID,
 				'XML_ID' => $saleUser['UF_XML_ID'],
