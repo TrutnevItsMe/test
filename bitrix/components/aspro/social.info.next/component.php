@@ -31,7 +31,11 @@ if(\Bitrix\Main\Loader::includeModule('aspro.next'))
 	$arResult['SOCIAL_YOUTUBE'] = $arFrontParametrs['SOCIAL_YOUTUBE'];
 	$arResult['SOCIAL_MAIL'] = $arFrontParametrs['SOCIAL_MAIL'];
 	$arResult['SOCIAL_VIBER'] = $arFrontParametrs['SOCIAL_VIBER'];
+	$arResult['SOCIAL_VIBER_CUSTOM_DESKTOP'] = $arFrontParametrs['SOCIAL_VIBER_CUSTOM_DESKTOP'];
+	$arResult['SOCIAL_VIBER_CUSTOM_MOBILE'] = $arFrontParametrs['SOCIAL_VIBER_CUSTOM_MOBILE'];
 	$arResult['SOCIAL_WHATS'] = $arFrontParametrs['SOCIAL_WHATS'];
+	$arResult['SOCIAL_WHATS_TEXT'] = $arFrontParametrs['SOCIAL_WHATS_TEXT'];
+	$arResult['SOCIAL_WHATS_CUSTOM'] = $arFrontParametrs['SOCIAL_WHATS_CUSTOM'];
 	$arResult['SOCIAL_ZEN'] = $arFrontParametrs['SOCIAL_ZEN'];
 	$arResult['SOCIAL_PINTEREST'] = $arFrontParametrs['SOCIAL_PINTEREST'];
 	$arResult['SOCIAL_SNAPCHAT'] = $arFrontParametrs['SOCIAL_SNAPCHAT'];
@@ -49,7 +53,10 @@ if(\Bitrix\Main\Loader::includeModule('aspro.next'))
 			'SOCIAL_YOUTUBE',
 			'SOCIAL_MAIL',
 			'SOCIAL_VIBER',
+			'SOCIAL_VIBER_CUSTOM_DESKTOP',
+			'SOCIAL_VIBER_CUSTOM_MOBILE',
 			'SOCIAL_WHATS',
+			'SOCIAL_WHATS_TEXT',
 			'SOCIAL_ZEN',
 			'SOCIAL_TIKTOK',
 			'SOCIAL_PINTEREST',

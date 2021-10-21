@@ -1,10 +1,66 @@
 <?
 $aMenuLinks = Array(
 	Array(
+		"Главная", 
+		"/", 
+		Array(), 
+		Array("ONLY_MOBILE"=>"Y"), 
+		"" 
+	),
+	Array(
+		"Каталог", 
+		"/catalog/", 
+		Array(), 
+		Array("NOT_VISIBLE"=>"Y", "CLASS"=>"catalog wide_menu"), 
+		"" 
+	),
+	Array(
+		"БРЕНДЫ", 
+		"/brands/", 
+		Array(),
+		Array(),//Array("NOT_VISIBLE"=>"Y", "CLASS"=>"catalog wide_menu"), 
+		"" 
+	),
+	Array(
+		"Компания", 
+		"/company/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Новости", 
+		"/company/news/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
 		"Акции", 
 		"/sale/", 
 		Array(), 
-		Array("CLASS" => "icon sale_icon"), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Где купить", 
+		"/contacts/stores/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Партнерам", 
+		"/help/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Контакты", 
+		"/contacts/", 
+		Array(), 
+		Array(), 
 		"" 
 	)
 );

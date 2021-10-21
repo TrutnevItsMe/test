@@ -1,0 +1,31 @@
+/*NOTE: This file is intended for programmers. Aspro technical support is not advised to work with him.*/
+
+/* Examples (uncomment to use):*/
+
+/* Expand site width */
+/* body .wrapper { max-width: 1400px !important;  } */
+
+/* Set site background image */
+/* body {  background: url(image_source) top no-repeat; }
+
+/* Hide compare button */
+/* a.compare_item { display: none !important;  }*/
+
+.tab_slider_wrapp ul.tabs>li{
+     display: none;
+}
+
+.tab_slider_wrapp ul.tabs>li[data-code=HIT], ul.tabs>li[data-code=NEW], ul.tabs>li[data-code=SALE], ul.tabs>li[data-code=STOCK]{
+     display: inherit;
+}
+
+.bx_filter_vertical input[type=checkbox]+label[data-role^=label_NEXT_SMART_FILTER_136]{
+     display: none;
+}
+
+.bx_filter_vertical input[type=checkbox]+label[data-role=label_NEXT_SMART_FILTER_136_2658551721],
+.bx_filter_vertical input[type=checkbox]+label[data-role=label_NEXT_SMART_FILTER_136_125769235],
+.bx_filter_vertical input[type=checkbox]+label[data-role=label_NEXT_SMART_FILTER_136_1886922373],
+.bx_filter_vertical input[type=checkbox]+label[data-role=label_NEXT_SMART_FILTER_136_3771153172]{
+      display: inherit;
+}

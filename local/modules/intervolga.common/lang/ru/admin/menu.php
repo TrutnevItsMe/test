@@ -1,0 +1,6 @@
+<?
+$MESS['INTERVOLGA_COMMON.INTERVOLGA_MENU'] = 'Интерволга';
+$MESS['INTERVOLGA_COMMON.LOG_1C_PAGE'] = 'Логи 1С';
+$MESS['INTERVOLGA_COMMON.MESSAGES_PAGE'] = 'Список отправленных писем';
+$MESS['INTERVOLGA_COMMON.DIAG_1C_PAGE'] = 'Логи 1С (Гантт)';
+$MESS['INTERVOLGA_COMMON.SEARCH_1C_PAGE'] = 'Поиск по логам';

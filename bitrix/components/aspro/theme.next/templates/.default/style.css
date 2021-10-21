@@ -73,6 +73,7 @@
 .style-switcher .right-block .block-item .item.borders{border-top:1px solid #f3f3f3;border-bottom-width:0px;margin:21px 0px 0px;padding:23px 0px 4px;}
 .style-switcher .right-block .block-item .item > .title{font-size:12px;font-weight:bold;padding:0px 0px 12px;text-transform:uppercase;letter-spacing:0.5px;}
 .style-switcher .right-block .block-item .item > .title.with-border{padding:23px 0px 0px;margin:25px 0px 0px;border-top:1px solid #f3f3f3;}
+.style-switcher .right-block .block-item .item > .title + .title{border-top: 1px solid #f3f3f3;padding: 23px 0px 0px;margin: 17px 0px 0px;}
 .style-switcher .right-block .block-item .item .pull-left + .title{padding-left:85px;padding-top:6px;padding-right:20px;}
 .style-switcher .right-block .block-item .item.borders .pull-left + .title{padding-top:12px;padding-bottom:11px;}
 .style-switcher .right-block .block-item .item .options{font-size:0px;min-height:33px;}

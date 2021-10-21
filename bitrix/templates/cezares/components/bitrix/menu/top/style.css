@@ -1,0 +1,4 @@
+.mega-menu table .dropdown-submenu, .dropdown-menu li {
+float: left;
+    padding-right: 58px!important;
+}

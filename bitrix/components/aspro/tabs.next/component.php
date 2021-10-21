@@ -1,142 +1,147 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();?>
-<?\Bitrix\Main\Loader::includeModule('iblock');
+<?\Bitrix\Main\Loader::includeModule('iblock');?>
+<?
 $arTabs = $arShowProp = array();
 global $USER;
 
 $arResult["SHOW_SLIDER_PROP"] = false;
-if(strlen($arParams["FILTER_NAME"])<=0 || !preg_match("/^[A-Za-z_][A-Za-z01-9_]*$/", $arParams["FILTER_NAME"]))
-{
+if (strlen($arParams["FILTER_NAME"])<=0 || !preg_match("/^[A-Za-z_][A-Za-z01-9_]*$/", $arParams["FILTER_NAME"])) {
 	$arrFilter = array();
-}
-else
-{
+} else {
 	$arrFilter = $GLOBALS[$arParams["FILTER_NAME"]];
-	if(!is_array($arrFilter))
+	if (!is_array($arrFilter)) {
 		$arrFilter = array();
+	}
 }
 
 $arFilter = array("ACTIVE" => "Y", "ACTIVE_DATE" => "Y", "IBLOCK_ID" => $arParams["IBLOCK_ID"], "IBLOCK_ACTIVE" => "Y", "SECTION_GLOBAL_ACTIVE" => "Y");
-if($arParams["SECTION_ID"])
+if ($arParams["SECTION_ID"]) {
 	$arFilter[]=array("SECTION_ID" => $arParams["SECTION_ID"], "INCLUDE_SUBSECTIONS" => "Y");
-elseif($arParams["SECTION_CODE"])
+} elseif($arParams["SECTION_CODE"]) {
 	$arFilter[]=array("SECTION_CODE" => $arParams["SECTION_CODE"], "INCLUDE_SUBSECTIONS" => "Y");
+}
 
 global $arTheme, $isShowCatalogElements;
 $bCatalogIndex = $isShowCatalogElements;
 
 global $arTheme;
 $arParams["SET_SKU_TITLE"] = ($arTheme["CHANGE_TITLE_ITEM"]["VALUE"] == "Y" ? "Y" : "");
+$arParams["REVIEWS_VIEW"] = $arTheme["REVIEWS_VIEW"]["VALUE"] == "EXTENDED";
 $arParams["DISPLAY_TYPE"] = "block";
 
 $arParams["USE_PERMISSIONS"] = $arParams["USE_PERMISSIONS"]=="Y";
-if(!is_array($arParams["GROUP_PERMISSIONS"]))
+if (!is_array($arParams["GROUP_PERMISSIONS"])) {
 	$arParams["GROUP_PERMISSIONS"] = array(1);
+}
 
 $bUSER_HAVE_ACCESS = !$arParams["USE_PERMISSIONS"];
-if($arParams["USE_PERMISSIONS"] && isset($GLOBALS["USER"]) && is_object($GLOBALS["USER"]))
-{
+if ($arParams["USE_PERMISSIONS"] && isset($GLOBALS["USER"]) && is_object($GLOBALS["USER"])) {
 	$arUserGroupArray = $USER->GetUserGroupArray();
-	foreach($arParams["GROUP_PERMISSIONS"] as $PERM)
-	{
-		if(in_array($PERM, $arUserGroupArray))
-		{
+	foreach ($arParams["GROUP_PERMISSIONS"] as $PERM) {
+		if (in_array($PERM, $arUserGroupArray)) {
 			$bUSER_HAVE_ACCESS = true;
 			break;
 		}
 	}
 }
 
-if($arParams["SHOW_BUY_BTN"] == "Y")
+if ($arParams["SHOW_BUY_BTN"] == "Y") {
 	$arParams['OFFER_TREE_PROPS'] = $arParams['OFFERS_PROPERTY_CODE'];
-else
+} else {
 	$arParams['OFFER_TREE_PROPS'] = array();
+}
 
-if($arParams['OFFER_TREE_PROPS'])
-{
+$arParams['PAGER_TEMPLATE'] = 'main';
+
+if ($arParams['OFFER_TREE_PROPS']) {
 	$keys = array_search('ARTICLE', $arParams['OFFER_TREE_PROPS']);
-	if(false !== $keys)
+	if (false !== $keys) {
 		unset($arParams['OFFER_TREE_PROPS'][$keys]);
+	}
 }
 
 
-if(!in_array('DETAIL_PAGE_URL', $arParams['OFFERS_FIELD_CODE']))
+if (!in_array('DETAIL_PAGE_URL', $arParams['OFFERS_FIELD_CODE'])) {
 	$arParams['OFFERS_FIELD_CODE'][] = 'DETAIL_PAGE_URL';
-if(!in_array('NAME', $arParams['OFFERS_FIELD_CODE']))
+}
+if (!in_array('NAME', $arParams['OFFERS_FIELD_CODE'])) {
 	$arParams['OFFERS_FIELD_CODE'][] = 'NAME';
+}
 
-if($bCatalogIndex)
-{
+if ($bCatalogIndex) {
 	$arShowProp = CNextCache::CIBlockPropertyEnum_GetList(Array("sort" => "asc", "id" => "desc", "CACHE" => array("TAG" => CNextCache::GetPropertyCacheTag($arParams["TABS_CODE"]))), Array("ACTIVE" => "Y", "IBLOCK_ID" => $arParams["IBLOCK_ID"], "CODE" => $arParams["TABS_CODE"]));
 
-	if($arShowProp)
-	{
-		if($arParams['STORES'])
-		{
-			foreach($arParams['STORES'] as $key => $store)
-			{
-				if(!$store)
+	if ($arShowProp) {
+		if ($arParams['STORES']) {
+			foreach ($arParams['STORES'] as $key => $store) {
+				if (!$store) {
 					unset($arParams['STORES'][$key]);
+				}
 			}
 		}
 		global $arRegion;
 		$arFilterStores = array();
-		if($arRegion)
-		{
+		if ($arRegion) {
 			$arParams['USE_REGION'] = 'Y';
-			if($arRegion['LIST_PRICES'])
-			{
-				if(reset($arRegion['LIST_PRICES']) != 'component')
-				{
+			if ($arRegion['LIST_PRICES']) {
+				if (reset($arRegion['LIST_PRICES']) != 'component') {
 					$arParams['PRICE_CODE'] = array_keys($arRegion['LIST_PRICES']);
 					$arParams['~PRICE_CODE'] = array_keys($arRegion['LIST_PRICES']);
 				}
 			}
-			if($arRegion['LIST_STORES'])
-			{
-				if(reset($arRegion['LIST_STORES']) != 'component')
-				{
+			if ($arRegion['LIST_STORES']) {
+				if (reset($arRegion['LIST_STORES']) != 'component') {
 					$arParams['STORES'] = $arRegion['LIST_STORES'];
 					$arParams['~STORES'] = $arRegion['LIST_STORES'];
 				}
 
-				if($arParams["HIDE_NOT_AVAILABLE"] == "Y")
-				{
+				if ($arParams["HIDE_NOT_AVAILABLE"] == "Y") {
 					if (CNext::checkVersionModule('18.6.200', 'iblock')) {
-						$arTmpFilter[]['STORE_NUMBER'] = $arParams['STORES'];
-						$arTmpFilter[]['>STORE_AMOUNT'] = 0;
-					}
-					else{
 						$arTmpFilter["LOGIC"] = "OR";
-						foreach($arParams['STORES'] as $storeID)
-						{
+						$arTmpFilter[] = array('TYPE' => array('2', '3'));// complects, offers
+						$arTmpFilter[] = array(
+							'STORE_NUMBER' => $arParams['STORES'],
+							'>STORE_AMOUNT' => 0,
+						);
+					} else {
+						$arTmpFilter["LOGIC"] = "OR";
+						foreach ($arParams['STORES'] as $storeID) {
 							$arTmpFilter[] = array(">CATALOG_STORE_AMOUNT_".$storeID => 0);
 						}
 					}
 					$arFilterStores[] = $arTmpFilter;
 				}
 			}
-		}
-		else{
+		} else {
 			if ($arParams["HIDE_NOT_AVAILABLE"] == "Y") {
 				if (CNext::checkVersionModule('18.6.200', 'iblock')) {
-					$arFilterStores["=AVAILABLE"] = "Y";
+					$arFilterStores[] = [
+						"LOGIC" => "OR",
+						[
+							"=AVAILABLE" => "Y",
+							">QUANTITY" => 0
+						]
+					];
 				} else {
-					$arFilterStores["CATALOG_AVAILABLE"] = "Y";
+					$arFilterStores[] = [
+						"LOGIC" => "OR",
+						[
+							"CATALOG_AVAILABLE" => "Y",
+							">CATALOG_QUANTITY" => 0
+						]
+					];
 				}
 			}
 		}
-
-		foreach($arShowProp as $key => $prop)
-		{
+		foreach ($arShowProp as $key => $prop) {
 			$arItems = array();
 			$arFilterProp = array("PROPERTY_".$arParams["TABS_CODE"]."_VALUE" => array($prop));
 
 			$arItemsFilter = array_merge($arFilterProp, $arFilter, $arrFilter, $arFilterStores);
-			CNext::makeElementFilterInRegion($arItemsFilter);
+			CNext::makeElementFilterInRegion($arItemsFilter, false, true);
 
 			$arItems = CNextCache::CIBLockElement_GetList(array('CACHE' => array("MULTI" => "N", "TAG" => CNextCache::GetIBlockCacheTag($arParams["IBLOCK_ID"]))), $arItemsFilter, false, array("nTopCount" => 1), array("ID", "IBLOCK_ID"));
-			if($arItems)
-			{
+			if ($arItems) {
 				$arTabs[$key] = array(
 					"CODE" => $key,
 					"TITLE" => $prop,
@@ -145,13 +150,20 @@ if($bCatalogIndex)
 				$arResult["SHOW_SLIDER_PROP"] = true;
 			}
 		}
-	}
-	else
-	{
+	} else {
 		return;
 	}
+
 	$arParams["PROP_CODE"] = $arParams["TABS_CODE"];
 	$arResult["TABS"] = $arTabs;
+
+	global $arTheme;
+
+	$arParams["ADD_PICT_PROP"] = ($arParams["ADD_PICT_PROP"] ? $arParams["ADD_PICT_PROP"] : 'MORE_PHOTO');
+	$arParams["OFFER_ADD_PICT_PROP"] = ($arParams["OFFER_ADD_PICT_PROP"] ? $arParams["OFFER_ADD_PICT_PROP"] : 'MORE_PHOTO');
+	$arParams["GALLERY_ITEM_SHOW"] = $arTheme["GALLERY_ITEM_SHOW"]["VALUE"];
+	$arParams["MAX_GALLERY_ITEMS"] = $arTheme["GALLERY_ITEM_SHOW"]["DEPENDENT_PARAMS"]["MAX_GALLERY_ITEMS"]["VALUE"];
+	$arParams["ADD_DETAIL_TO_GALLERY_IN_LIST"] = $arTheme["GALLERY_ITEM_SHOW"]["DEPENDENT_PARAMS"]["ADD_DETAIL_TO_GALLERY_IN_LIST"]["VALUE"];
 
 	$arTransferParams = array(
 		"SHOW_ABSENT" => $arParams["SHOW_ABSENT"],
@@ -189,11 +201,16 @@ if($bCatalogIndex)
 		"OFFER_ADD_PICT_PROP" => ($arParams["ADD_PROPERTIES_TO_BASKET"] != "N" ? "Y" : "N"),
 		"PRODUCT_QUANTITY_VARIABLE" => $arParams["PRODUCT_QUANTITY_VARIABLE"],
 		"MAIN_IBLOCK_ID" => $arParams["IBLOCK_ID"],
+		"ADD_PICT_PROP" => $arParams["ADD_PICT_PROP"],
+		"OFFER_ADD_PICT_PROP" => $arParams["OFFER_ADD_PICT_PROP"],
+		"GALLERY_ITEM_SHOW" => $arParams["GALLERY_ITEM_SHOW"],
+		"MAX_GALLERY_ITEMS" => $arParams["MAX_GALLERY_ITEMS"],
+		"ADD_DETAIL_TO_GALLERY_IN_LIST" => $arParams["ADD_DETAIL_TO_GALLERY_IN_LIST"],
 	);
 	?>
 	<div class="js_wrapper_items" data-params='<?=str_replace('\'', '"', CUtil::PhpToJSObject($arTransferParams, false))?>'>
 		<?$this->IncludeComponentTemplate();?>
 	</div>
-<?}
-else
-	return;?>
+<?} else {
+	return;
+}?>

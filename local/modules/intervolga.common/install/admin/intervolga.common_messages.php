@@ -1,0 +1,1 @@
+<?require_once($_SERVER["DOCUMENT_ROOT"] . "/local/modules/intervolga.common/admin/messages.php");
