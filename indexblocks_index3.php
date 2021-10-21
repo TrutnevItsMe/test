@@ -11,28 +11,32 @@
 	false
 );?>
 
-<?$APPLICATION->IncludeComponent("bitrix:main.include", ".default",
-	array(
-		"COMPONENT_TEMPLATE" => ".default",
+<?$APPLICATION->IncludeComponent("bitrix:main.include", ".default", array(
+	"COMPONENT_TEMPLATE" => ".default",
 		"PATH" => SITE_DIR."include/mainpage/comp_adv_top.php",
 		"AREA_FILE_SHOW" => "file",
 		"AREA_FILE_SUFFIX" => "",
 		"AREA_FILE_RECURSIVE" => "Y",
 		"EDIT_TEMPLATE" => "standard.php"
 	),
-	false
+	false,
+	array(
+	"ACTIVE_COMPONENT" => "N"
+	)
 );?>
 
-<?$APPLICATION->IncludeComponent("bitrix:main.include", ".default",
-	array(
-		"COMPONENT_TEMPLATE" => ".default",
+<?$APPLICATION->IncludeComponent("bitrix:main.include", ".default", array(
+	"COMPONENT_TEMPLATE" => ".default",
 		"PATH" => SITE_DIR."include/mainpage/comp_banners_float.php",
 		"AREA_FILE_SHOW" => "file",
 		"AREA_FILE_SUFFIX" => "",
 		"AREA_FILE_RECURSIVE" => "Y",
 		"EDIT_TEMPLATE" => "standard.php"
 	),
-	false
+	false,
+	array(
+	"ACTIVE_COMPONENT" => "N"
+	)
 );?>
 
 <?$APPLICATION->IncludeComponent("bitrix:main.include", ".default",
@@ -83,16 +87,18 @@
 	false
 );?>
 
-<?$APPLICATION->IncludeComponent("bitrix:main.include", ".default",
-	array(
-		"COMPONENT_TEMPLATE" => ".default",
+<?$APPLICATION->IncludeComponent("bitrix:main.include", ".default", array(
+	"COMPONENT_TEMPLATE" => ".default",
 		"PATH" => SITE_DIR."include/mainpage/comp_bottom_banners.php",
 		"AREA_FILE_SHOW" => "file",
 		"AREA_FILE_SUFFIX" => "",
 		"AREA_FILE_RECURSIVE" => "Y",
 		"EDIT_TEMPLATE" => "standard.php"
 	),
-	false
+	false,
+	array(
+	"ACTIVE_COMPONENT" => "N"
+	)
 );?>
 
 <?global $arRegion, $isShowCompany;?>

@@ -4219,10 +4219,46 @@ $(document).on( 'click', '.to-cart:not(.read_more)', function(e){
 })
 $(function(){
     $('.set-composition .set-composition_checkbox input').change(function(e){
+
+
+
+var group=$(this).data('group');
+		if($(this).prop('checked')!=false){
+			//var group=$(this).data('group');
+				$('.set-composition_group_'+group).each(function (index, el) {
+					if ($(el).find('.set-composition_checkbox input').prop('checked')) {
+						$(el).find('.set-composition_checkbox input').prop('checked', false);
+						//alert('1');
+					}
+				});
+			$(this).prop('checked', true);
+//alert('1-1');
+
+			$('#set_item_new_'+group+' .cont').css("border","1px solid #81c822");
+			$('#include_'+group).show();
+			$('#add1_'+group).show();
+			$('#plus1_'+group).hide();
+		}else{
+//alert('0');
+//alert('gr '+group);
+			$('#set_item_new_'+group+' .cont').css("border","1px solid #fc3");
+			$('#include_'+group).hide();
+			$('#add1_'+group).hide();
+			$('#plus1_'+group).show();
+}
+
         var price=calculatePrice();
         if (price.price > 0) {
             showPrice(price);
         }
+
+
+			$('#set_item_base_img_'+group).html('<img src="'+$(this).data('img')+'" />');
+			$('#set_item_base_price_'+group).html($(this).data('price'));
+			$('#set_item_base_name_'+group).html($(this).data('name'));
+			$('#set_item_base_article_'+group).html($(this).data('article'));
+
+
     })
 })
 
@@ -4305,7 +4341,8 @@ function calculatePrice() {
         'price': 0,
         'old': 0,
     };
-    $('.set-composition_base .set-composition_row').each(function (index, el) {
+    //$('.set-composition_base .set-composition_row').each(function (index, el) {
+	$('.set_item_base').each(function (index, el) {
         result.price += parseFloat($(el).data('price')) * parseInt($(el).data('amount'));
         result.old += parseFloat($(el).data('old-price')) * parseInt($(el).data('amount'));
     });
@@ -4313,7 +4350,8 @@ function calculatePrice() {
         price: result.price,
         old: result.old,
     };
-    $('.set-composition_accesories .set-composition_row').each(function (index, el) {
+   /*$('.set-composition_accesories .set-composition_row').each(function (index, el) {*/
+	$('.set-composition_row').each(function (index, el) {
         if ($(el).find('.set-composition_checkbox input').prop('checked')) {
             result.price += parseFloat($(el).data('price')) * parseInt($(el).data('amount'));
             result.old += parseFloat($(el).data('old-price')) * parseInt($(el).data('amount'));

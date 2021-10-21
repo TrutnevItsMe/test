@@ -99,6 +99,8 @@ class CAsproAuth extends CBitrixComponent{
 			}
 		}*/
 
+		\Bitrix\Main\Data\StaticHtmlCache::getInstance()->markNonCacheable();
+
 		global $arTheme;
 
 		if($arTheme['CABINET']['VALUE'] != 'N')

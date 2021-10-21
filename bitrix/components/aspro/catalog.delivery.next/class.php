@@ -382,7 +382,7 @@ class CAsproCatalogDeliveryNext extends CBitrixComponent{
 	}
 
 	public static function getLocationByCode($locationCode, $languageId = false){
-		$languageId = $languageId ? $languageId : $this->getLanguageId();
+		$languageId = $languageId ? $languageId : 'ru';
 
 		$arLocation = \Bitrix\Sale\Location\LocationTable::getByCode(
 			$locationCode,
@@ -705,7 +705,7 @@ class CAsproCatalogDeliveryNext extends CBitrixComponent{
 
 										$dbRes = \CCatalogStore::GetList(
 											array(),
-											array_merge($arFilter, array('PRODUCT_ID' => $arProductSet)),
+											array_merge($arFilter, array('ACTIVE' => 'Y', 'PRODUCT_ID' => $arProductSet)),
 											false,
 											false,
 											array(
@@ -733,6 +733,7 @@ class CAsproCatalogDeliveryNext extends CBitrixComponent{
 									$dbRes = \CCatalogStore::GetList(
 										array(),
 										array(
+											'ACTIVE' => 'Y', 
 											'ID' => $arStores,
 											'PRODUCT_ID' => $arProduct['ID'],
 										),
@@ -1069,19 +1070,31 @@ class CAsproCatalogDeliveryNext extends CBitrixComponent{
 
 			$remainingSum = empty($innerPayment) ? $this->order->getPrice() : $this->order->getPrice() - $innerPayment->getSum();
 			$payment->setField('SUM', $remainingSum);
-			$extPaySystemList = Sale\PaySystem\Manager::getListWithRestrictions($payment);
+
+			// if D2P, than check restrictions later, because here is no delivery
+			$bCheckRestrictions = $this->getD2P() !== 'd2p';
+			if($bCheckRestrictions){
+				$extPaySystemList = Sale\PaySystem\Manager::getListWithRestrictions($payment);
+			}
+
 			if($this->arParams['PAY_FROM_ACCOUNT'] !== 'Y'){
 				$innerPaySystemtId = Sale\PaySystem\Manager::getInnerPaySystemId();
 				unset($extPaySystemList[$innerPaySystemtId]);
 			}
 
 			foreach($this->arResult['PAY_SYSTEM'] as $i => &$paysystem){
-				if($paysystem['ID'] && !array_key_exists($paysystem['ID'], $extPaySystemList)){
-					unset($this->arResult['PAY_SYSTEM'][$i]);
-					continue;
+				if($bCheckRestrictions){
+					if($paysystem['ID'] && !array_key_exists($paysystem['ID'], $extPaySystemList)){
+						unset($this->arResult['PAY_SYSTEM'][$i]);
+						continue;
+					}
 				}
 
-				if($paySystemId === intval($paysystem['ID']) || !array_key_exists($paySystemId, $this->arResult['PAY_SYSTEM'])){
+				// set current paysystem or set the first paysystem in list as current
+				if(
+					$paySystemId === intval($paysystem['ID']) ||
+					!array_key_exists($paySystemId, $this->arResult['PAY_SYSTEM'])
+				){
 					$paySystemId = intval($paysystem['ID']);
 
 					if($paySystemId){
@@ -1124,6 +1137,7 @@ class CAsproCatalogDeliveryNext extends CBitrixComponent{
 
 			$innerPayment = $this->getInnerPayment($this->order);
 
+			$extAllPaySystemIDs = array();
 			foreach($this->arResult['DELIVERY'] as &$arDelivery){
 				$shipment->setFields(array(
 					'DELIVERY_ID' => $arDelivery['ID'],
@@ -1131,7 +1145,10 @@ class CAsproCatalogDeliveryNext extends CBitrixComponent{
 
 				$remainingSum = empty($innerPayment) ? $this->order->getPrice() : $this->order->getPrice() - $innerPayment->getSum();
 				$payment->setField('SUM', $remainingSum);
+
 				$extPaySystemList = Sale\PaySystem\Manager::getListWithRestrictions($payment);
+				$extAllPaySystemIDs = array_merge($extAllPaySystemIDs, array_column($extPaySystemList, 'ID'));
+
 				if($this->arParams['PAY_FROM_ACCOUNT'] !== 'Y'){
 					$innerPaySystemtId = Sale\PaySystem\Manager::getInnerPaySystemId();
 					unset($extPaySystemList[$innerPaySystemtId]);
@@ -1236,6 +1253,35 @@ class CAsproCatalogDeliveryNext extends CBitrixComponent{
 				}
 			}
 			unset($arDelivery);
+
+			// check paysystems by restrictions
+			if($extAllPaySystemIDs){
+				foreach($this->arResult['PAY_SYSTEM'] as $i => &$paysystem){
+					if($paysystem['ID'] && !in_array($paysystem['ID'], $extAllPaySystemIDs)){
+						unset($this->arResult['PAY_SYSTEM'][$i]);
+						continue;
+					}
+				}
+				unset($paysystem);
+
+				// if current paysystem was failed check, than set first paysystem as current
+				if(!array_key_exists($this->arResult['PAY_SYSTEM_ID'], $this->arResult['PAY_SYSTEM'])){
+					if($paysystem = reset($this->arResult['PAY_SYSTEM'])){
+						$paySystemId = intval($paysystem['ID']);
+
+						if($paySystemId){
+							$paySystemService = \Bitrix\Sale\PaySystem\Manager::getObjectById($paySystemId);
+							$payment->setFields(array(
+								'PAY_SYSTEM_ID' => $paySystemService->getField('PAY_SYSTEM_ID'),
+								'PAY_SYSTEM_NAME' => $paySystemService->getField('NAME'),
+							));
+						}
+
+						$this->arResult['PAY_SYSTEM_ID'] = $paySystemId;
+						$paysystem['CHECKED'] = 'Y';
+					}
+				}
+			}
 		}
 
         return $this->arResult['PAY_SYSTEM_ID'];

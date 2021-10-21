@@ -16,6 +16,14 @@ $arUrlRewrite=array (
     'PATH' => '/desktop_app/router.php',
     'SORT' => 100,
   ),
+  28 => 
+  array (
+    'CONDITION' => '#^/video/([\\.\\-0-9a-zA-Z]+)(/?)([^/]*)#',
+    'RULE' => 'alias=$1&videoconf',
+    'ID' => 'bitrix:im.router',
+    'PATH' => '/desktop_app/router.php',
+    'SORT' => 100,
+  ),
   7 => 
   array (
     'CONDITION' => '#^/personal/history-of-orders/#',
@@ -104,22 +112,6 @@ $arUrlRewrite=array (
     'PATH' => '/catalog/index.php',
     'SORT' => 100,
   ),
-  16 => 
-  array (
-    'CONDITION' => '#^/info/brands/#',
-    'RULE' => '',
-    'ID' => 'bitrix:news',
-    'PATH' => '/info/brands/index.php',
-    'SORT' => 100,
-  ),
-  13 => 
-  array (
-    'CONDITION' => '#^/projects/#',
-    'RULE' => '',
-    'ID' => 'bitrix:news',
-    'PATH' => '/projects/index.php',
-    'SORT' => 100,
-  ),
   17 => 
   array (
     'CONDITION' => '#^/services/#',
@@ -136,7 +128,15 @@ $arUrlRewrite=array (
     'PATH' => '/landings/index.php',
     'SORT' => 100,
   ),
-  21 => 
+  13 => 
+  array (
+    'CONDITION' => '#^/projects/#',
+    'RULE' => '',
+    'ID' => 'bitrix:news',
+    'PATH' => '/projects/index.php',
+    'SORT' => 100,
+  ),
+  33 => 
   array (
     'CONDITION' => '#^/personal/#',
     'RULE' => '',
@@ -144,12 +144,28 @@ $arUrlRewrite=array (
     'PATH' => '/personal/index.php',
     'SORT' => 100,
   ),
-  23 => 
+  34 => 
+  array (
+    'CONDITION' => '#^/contacts/#',
+    'RULE' => '',
+    'ID' => 'bitrix:news',
+    'PATH' => '/contacts/page_contacts_3.php',
+    'SORT' => 100,
+  ),
+  31 => 
   array (
     'CONDITION' => '#^/catalog/#',
     'RULE' => '',
     'ID' => 'bitrix:catalog',
     'PATH' => '/catalog/index.php',
+    'SORT' => 100,
+  ),
+  35 => 
+  array (
+    'CONDITION' => '#^/brands/#',
+    'RULE' => '',
+    'ID' => 'bitrix:news',
+    'PATH' => '/brands/index.php',
     'SORT' => 100,
   ),
   4 => 
@@ -174,14 +190,6 @@ $arUrlRewrite=array (
     'RULE' => '',
     'ID' => 'aspro:auth.next',
     'PATH' => '/auth/index.php',
-    'SORT' => 100,
-  ),
-  20 => 
-  array (
-    'CONDITION' => '#^/sale/#',
-    'RULE' => '',
-    'ID' => 'bitrix:news',
-    'PATH' => '/sale/index.php',
     'SORT' => 100,
   ),
 );

@@ -1,9 +1,11 @@
 <?
-$PERM["personal"]["8"]="W";
+$PERM["catalog"]["2"]="D";
+$PERM["catalog"]["6"]="D";
 $PERM["catalog"]["8"]="W";
+$PERM["video"]["*"]="R";
+$PERM["personal"]["8"]="W";
 $PERM["news"]["8"]="W";
 $PERM["about"]["8"]="W";
-$PERM["index.php"]["8"]="W";
 $PERM["desktop_app"]["*"]="D";
 $PERM["online"]["*"]="R";
 $PERM["pub"]["5"]="T_8";

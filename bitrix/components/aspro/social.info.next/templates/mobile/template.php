@@ -75,17 +75,32 @@
 				</a>
 			</li>
 		<?endif;?>
-		<?if(!empty($arResult['SOCIAL_VIBER'])):?>
+		<?if(!empty($arResult['SOCIAL_VIBER']) || !empty($arResult["SOCIAL_VIBER_CUSTOM_MOBILE"]) ):?>
+			<?$hrefMobile = strlen(trim($arResult["SOCIAL_VIBER_CUSTOM_MOBILE"])) ? $arResult["SOCIAL_VIBER_CUSTOM_MOBILE"] : 'viber://add?number='.$arResult['SOCIAL_VIBER'];?>
 			<li class="viber">
-				<a href="<?=$arResult['SOCIAL_VIBER']?>" class="dark-color" target="_blank" rel="nofollow" title="<?=GetMessage('TEMPL_SOCIAL_VIBER')?>">
+				<a href="<?=$hrefMobile?>" class="dark-color" target="_blank" rel="nofollow" title="<?=GetMessage('TEMPL_SOCIAL_VIBER')?>">
 					<?=CNext::showIconSvg("vi", SITE_TEMPLATE_PATH."/images/svg/social/Viber.svg");?>
 					<?=GetMessage('TEMPL_SOCIAL_VIBER')?>
 				</a>
 			</li>
 		<?endif;?>
-		<?if(!empty($arResult['SOCIAL_WHATS'])):?>
+		<?if(!empty($arResult['SOCIAL_WHATS']) || !empty($arResult["SOCIAL_WHATS_CUSTOM"])):?>
+			<?
+			if( strlen(trim($arResult["SOCIAL_WHATS_CUSTOM"])) ){
+				$whatsHref = $arResult["SOCIAL_WHATS_CUSTOM"];
+			} else {
+				if(defined('LANG_CHARSET') && strtolower(LANG_CHARSET) == 'windows-1251'){
+					$text = iconv("windows-1251","utf-8", $arResult['SOCIAL_WHATS_TEXT']);
+				} else {
+					$text = $arResult['SOCIAL_WHATS_TEXT'];
+				}
+				$bWhatsText = !empty($arResult['SOCIAL_WHATS_TEXT']);
+				$whatsText = $bWhatsText ? '?text='.rawurlencode($text) : '';
+				$whatsHref = 'https://wa.me/'.$arResult['SOCIAL_WHATS'].$whatsText;
+			}			
+			?>
 			<li class="whats">
-				<a href="<?=$arResult['SOCIAL_WHATS']?>" class="dark-color" target="_blank" rel="nofollow" title="<?=GetMessage('TEMPL_SOCIAL_WHATS')?>">
+				<a href="<?=$whatsHref?>" class="dark-color" target="_blank" rel="nofollow" title="<?=GetMessage('TEMPL_SOCIAL_WHATS')?>">
 					<?=CNext::showIconSvg("wh", SITE_TEMPLATE_PATH."/images/svg/social/Whatsapp.svg");?>
 					<?=GetMessage('TEMPL_SOCIAL_WHATS')?>
 				</a>

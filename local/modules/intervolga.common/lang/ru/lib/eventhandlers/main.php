@@ -1,0 +1,2 @@
+<?php
+$MESS['INTERVOLGA_COMMON.SHOW_CSV_MENU_ITEM_NAME'] = 'Просмотр CSV файла';

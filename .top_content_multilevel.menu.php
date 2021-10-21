@@ -8,10 +8,31 @@ $aMenuLinks = Array(
 		"" 
 	),
 	Array(
-		"Продукция", 
+		"Каталог", 
 		"/catalog/", 
 		Array(), 
 		Array("NOT_VISIBLE"=>"Y", "CLASS"=>"catalog wide_menu"), 
+		"" 
+	),
+	Array(
+		"БРЕНДЫ", 
+		"/brands/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Акции", 
+		"/sale/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Распродажа", 
+		"/rasprodazha/", 
+		Array(), 
+		Array(), 
 		"" 
 	),
 	Array(
@@ -24,13 +45,6 @@ $aMenuLinks = Array(
 	Array(
 		"Новости", 
 		"/company/news/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
-		"Акции", 
-		"/sale/", 
 		Array(), 
 		Array(), 
 		"" 

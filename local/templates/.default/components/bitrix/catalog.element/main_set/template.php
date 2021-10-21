@@ -613,6 +613,35 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 					<?endif;?>
 				</div>
 
+				<div class="prop_block">
+					<?//=var_dump($arResult["PROPERTIES"])?>
+					
+					<table style="width: 100%;">
+						
+						<?if($arResult["PROPERTIES"]["VYSOTA_IZDELIYA_SM"]["VALUE"] AND $arResult["PROPERTIES"]["SHIRINA_IZDELIYA_SM"]["VALUE"] AND $arResult["PROPERTIES"]["DLINA_IZDELIYA_SM"]["VALUE"]){?>
+						<tr><td>Габариты см</td><td><?=$arResult["PROPERTIES"]["VYSOTA_IZDELIYA_SM"]["VALUE"]?>x<?=$arResult["PROPERTIES"]["SHIRINA_IZDELIYA_SM"]["VALUE"]?>x<?=$arResult["PROPERTIES"]["DLINA_IZDELIYA_SM"]["VALUE"]?></td></tr>
+						<?}?>
+						<?if($arResult["PROPERTIES"]["VES_NETTO_KG"]["VALUE"]){?>
+						<tr><td>Вес кг</td><td><?=$arResult["PROPERTIES"]["VES_NETTO_KG"]["VALUE"]?></td></tr>
+						<?}?>
+						<?if($arResult["PROPERTIES"]["NAZNACHENIE"]["VALUE"]){?>
+						<tr><td>Назначение</td><td><?=$arResult["PROPERTIES"]["NAZNACHENIE"]["VALUE"]?></td></tr>
+						<?}?>
+						<?if($arResult["PROPERTIES"]["MATERIAL"]["VALUE"]){?>
+						<tr><td>Материал</td><td><?=$arResult["PROPERTIES"]["MATERIAL"]["VALUE"]?></td></tr>
+						<?}?>
+						<?if($arResult["PROPERTIES"]["KRYSHKA_SIDENE_V_KOMPLEKTE"]["VALUE"]){?>
+						<tr><td>Крышка-сиденье в комплекте</td><td><?=$arResult["PROPERTIES"]["KRYSHKA_SIDENE_V_KOMPLEKTE"]["VALUE"]?></td></tr>
+						<?}?>
+						<?if($arResult["PROPERTIES"]["NAPRAVLENIE_VYPUSKA"]["VALUE"]){?>
+						<tr><td>Направление выпуска</td><td><?=$arResult["PROPERTIES"]["NAPRAVLENIE_VYPUSKA"]["VALUE"]?></td></tr>
+						<?}?>
+						<?if($arResult["PROPERTIES"]["DLINA_CHASHI_SM"]["VALUE"]){?>
+						<tr><td>Длинна чаши</td><td><?=$arResult["PROPERTIES"]["DLINA_CHASHI_SM"]["VALUE"]?></td></tr>
+						<?}?>
+					</table>
+					
+				</div>
 				<?//delivery calculate?>
 				<?if(
 					(
@@ -886,6 +915,11 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 			<?if($useStores && ($showCustomOffer || !$arResult["OFFERS"] )):?>
 				<li class="stores_tab<?=(!($iTab++) ? ' active' : '')?>">
 					<a href="#stores" data-toggle="tab"><span><?=($arParams["TAB_STOCK_NAME"] ? $arParams["TAB_STOCK_NAME"] : GetMessage("STORES_TAB"));?></span></a>
+				</li>
+			<?endif;?>
+			<?if(1==1):?>
+				<li class="stores_tab<?=(!($iTab++) ? ' active' : '')?>">
+					<a href="#haracters" data-toggle="tab"><span>Характеристики</span></a>
 				</li>
 			<?endif;?>
 			<?if($arParams["SHOW_ADDITIONAL_TAB"] == "Y"):?>
@@ -1266,7 +1300,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 							<div class="wraps">
 								<? include "set_composition.php"; ?>
 								<hr>
-								<h4><?=($arParams["TAB_CHAR_NAME"] ? $arParams["TAB_CHAR_NAME"] : GetMessage("PROPERTIES_TAB"));?></h4>
+								<!--<h4><?=($arParams["TAB_CHAR_NAME"] ? $arParams["TAB_CHAR_NAME"] : GetMessage("PROPERTIES_TAB"));?></h4>-->
 								<?if($strGrupperType == "GRUPPER"):?>
 									<div class="char_block">
 										<?$APPLICATION->IncludeComponent(
@@ -1345,6 +1379,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 											<?endforeach;?>
 										</div>
 									<?else:?>
+										<!--
 										<div class="char_block">
 											<table class="props_list">
 												<?foreach($arResult["DISPLAY_PROPERTIES"] as $arProp):?>
@@ -1372,7 +1407,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 												<?endforeach;?>
 											</table>
 											<table class="props_list" id="<? echo $arItemIDs["ALL_ITEM_IDS"]['DISPLAY_PROP_DIV']; ?>"></table>
-										</div>
+										</div>-->
 									<?endif;?>
 								<?endif;?>
 							</div>
@@ -1753,7 +1788,37 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 					</div>
 				</div>
 			<?endif;?>
-
+				<div class="tab-pane additional_block<?=(!($iTab++) ? ' active' : '')?>" id="haracters">
+					<h4>Характеристики</h4>
+					<div class="char_block">
+						<table class="props_list">
+							<?foreach($arResult["DISPLAY_PROPERTIES"] as $arProp):?>
+								<?if(!in_array($arProp["CODE"], array("SERVICES", "BRAND", "HIT", "RECOMMEND", "NEW", "STOCK", "VIDEO", "VIDEO_YOUTUBE", "CML2_ARTICLE"))):?>
+									<?if((!is_array($arProp["DISPLAY_VALUE"]) && strlen($arProp["DISPLAY_VALUE"])) || (is_array($arProp["DISPLAY_VALUE"]) && implode('', $arProp["DISPLAY_VALUE"]))):?>
+										<tr itemprop="additionalProperty" itemscope itemtype="http://schema.org/PropertyValue">
+											<td class="char_name">
+												<?if($arProp["HINT"] && $arParams["SHOW_HINTS"]=="Y"):?><div class="hint"><span class="icon"><i>?</i></span><div class="tooltip"><?=$arProp["HINT"]?></div></div><?endif;?>
+												<div class="props_item <?if($arProp["HINT"] && $arParams["SHOW_HINTS"] == "Y"){?>whint<?}?>">
+													<span itemprop="name"><?=$arProp["NAME"]?></span>
+												</div>
+											</td>
+											<td class="char_value">
+												<span itemprop="value">
+													<?if(count($arProp["DISPLAY_VALUE"]) > 1):?>
+														<?=implode(', ', $arProp["DISPLAY_VALUE"]);?>
+													<?else:?>
+														<?=$arProp["DISPLAY_VALUE"];?>
+													<?endif;?>
+												</span>
+											</td>
+										</tr>
+									<?endif;?>
+								<?endif;?>
+							<?endforeach;?>
+						</table>
+						<table class="props_list" id="<? echo $arItemIDs["ALL_ITEM_IDS"]['DISPLAY_PROP_DIV']; ?>"></table>
+					</div>
+				</div>
 			<?if($arParams["SHOW_ADDITIONAL_TAB"] == "Y"):?>
 				<div class="tab-pane additional_block<?=(!($iTab++) ? ' active' : '')?>" id="dops">
 					<div class="title-tab-heading visible-xs"><?=($arParams["TAB_DOPS_NAME"] ? $arParams["TAB_DOPS_NAME"] : GetMessage("ADDITIONAL_TAB"));?></div>

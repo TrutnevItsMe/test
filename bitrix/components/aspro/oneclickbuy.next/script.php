@@ -32,10 +32,10 @@ if(isset($_GET['uploadfiles']) && isset($_GET['orderID']))
 	if($arFilesID)
 	{
 		$arOrderQuery=CSaleOrder::GetList(array(), array("ID"=>$orderID), false, false, array("ID", "PERSON_TYPE_ID"))->Fetch();
-		$personType = intval($arOrderQuery['PERSON_TYPE_ID']) > 0 ? $arOrderQuery['PERSON_TYPE_ID']: 1;
+		$personTypeId = intval($arOrderQuery['PERSON_TYPE_ID']) > 0 ? $arOrderQuery['PERSON_TYPE_ID']: 1;
 
 		// add order properties
-		$res = CSaleOrderProps::GetList(array(), array('TYPE' => 'FILE', 'PERSON_TYPE_ID' =>$personType));
+		$res = CSaleOrderProps::GetList(array(), array('TYPE' => 'FILE', 'PERSON_TYPE_ID' => $personTypeId));
 		while($prop = $res->Fetch())
 		{
 			if($arFilesID[$prop['CODE']])
@@ -60,69 +60,6 @@ else
 	require(dirname(__FILE__)."/functions.php");
 
 	ob_start();
-
-	if(!function_exists('json_encode')){
-	    function json_encode($value){
-	        if(is_int($value)){
-				return (string)$value;
-			}
-			elseif(is_string($value)){
-		        $value = str_replace(array('\\', '/', '"', "\r", "\n", "\b", "\f", "\t"),  array('\\\\', '\/', '\"', '\r', '\n', '\b', '\f', '\t'), $value);
-		        $convmap = array(0x80, 0xFFFF, 0, 0xFFFF);
-		        $result = "";
-		        for ($i = mb_strlen($value) - 1; $i >= 0; $i--){
-		            $mb_char = mb_substr($value, $i, 1);
-		            if (mb_ereg("&#(\\d+);", mb_encode_numericentity($mb_char, $convmap, "UTF-8"), $match)) { $result = sprintf("\\u%04x", $match[1]) . $result;  }
-					else { $result = $mb_char . $result;  }
-		        }
-		        return '"' . $result . '"';
-	        }
-			elseif(is_float($value)) { return str_replace(",", ".", $value); }
-			elseif(is_null($value)) {  return 'null';}
-			elseif(is_bool($value)) { return $value ? 'true' : 'false';   }
-			elseif(is_array($value)){
-	            $with_keys = false;
-	            $n = count($value);
-	            for ($i = 0, reset($value); $i < $n; $i++, next($value))  { if (key($value) !== $i) {  $with_keys = true; break;  }  }
-	        }
-			elseif (is_object($value)) { $with_keys = true; }
-			else { return ''; }
-	        $result = array();
-	        if ($with_keys)  {  foreach ($value as $key => $v) {  $result[] = json_encode((string)$key) . ':' . json_encode($v); }  return '{' . implode(',', $result) . '}'; }
-			else {  foreach ($value as $key => $v) { $result[] = json_encode($v); } return '[' . implode(',', $result) . ']';  }
-	    }
-	}
-
-	if(!function_exists('getJson')) {
-		function getJson($message, $res = 'N', $error = '', $ext = false){
-			$result = array(
-				'result' => $res === 'Y' ? 'Y' : 'N',
-				'message' => $GLOBALS['APPLICATION']->ConvertCharset($message, SITE_CHARSET, 'utf-8'),
-			);
-
-			if(\Bitrix\Main\Config\Option::get('aspro.next', 'ONE_CLICK_BUY_CAPTCHA', 'N') == 'Y'){
-				if(!is_array($ext)){
-					$ext = array();
-				}
-
-				include_once($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/classes/general/captcha.php');
-				$cpt = new CCaptcha();
-				$code = htmlspecialcharsbx($GLOBALS['APPLICATION']->CaptchaGetCode());
-
-				$ext['captcha_html'] = '<div class="form-control captcha-row clearfix"><label><span>'.$GLOBALS['APPLICATION']->ConvertCharset(GetMessage('CAPTCHA_LABEL'), SITE_CHARSET, 'utf-8').'<span class="star">*</span></span></label><div class="captcha_image"><img src="/bitrix/tools/captcha.php?captcha_sid='.$code.'" border="0" data-src="" /><input type="hidden" name="captcha_sid" value="'.$code.'"><div class="captcha_reload"></div></div><div class="captcha_input"><input type="text" class="inputtext captcha" name="captcha_word" size="30" maxlength="50" value="" required="" aria-required="true"></div></div>';
-			}
-
-			if($ext){
-				$result['ext'] = $ext;
-			}
-
-			if($error){
-				$result['err'] = $GLOBALS['APPLICATION']->ConvertCharset(is_array($error) ? implode('<br />', $error) : $error, SITE_CHARSET, 'utf-8');
-			}
-
-			return json_encode($result);
-		}
-	}
 
 	if(!CModule::IncludeModule('sale') || !CModule::IncludeModule('iblock') || !CModule::IncludeModule('catalog') || !CModule::IncludeModule('currency')){
 		die(getJson(GetMessage('CANT_INCLUDE_MODULE')));
@@ -153,9 +90,8 @@ else
 	if(!empty($_POST['ONE_CLICK_BUY']['EMAIL']) && !preg_match('/^[0-9a-zA-Z\-_\.]+@[0-9a-zA-Z\-]+[\.]{1}[0-9a-zA-Z\-]+[\.]?[0-9a-zA-Z\-]+$/', $_POST['ONE_CLICK_BUY']['EMAIL'])) die(getJson(GetMessage('BAD_EMAIL_FORMAT')));
 
 	$basketUserID = CSaleBasket::GetBasketUserID();
-	$arBasketItemsAll=array();
 
-	// register user if not registered
+	$arBasketItemsAll=array();
 	$resBasketItems = CSaleBasket::GetList(array('SORT' => 'DESC'), array('FUSER_ID' => $basketUserID, 'LID' => $SITE_ID, 'ORDER_ID' => NULL));
 	while($arBasketItem = $resBasketItems->Fetch()){
 		// get props
@@ -170,7 +106,10 @@ else
 		$arBasketItemsAll[]=$arBasketItem;
 	}
 
+	//  if not registered, than register new user or find them by email/phone
 	if(!$USER->IsAuthorized()){
+		$user_registered = true;
+
 		// get phone auth params
 		list($bPhoneAuthSupported, $bPhoneAuthShow, $bPhoneAuthRequired, $bPhoneAuthUse) = Aspro\Next\PhoneAuth::getOptions();
 
@@ -196,6 +135,10 @@ else
 							$registeredUserID = $ar_user['USER_ID'];
 
 							$user_exists = true;
+
+							if(!checkNewVersionExt('sale')){
+								$USER->Authorize($registeredUserID);
+							}
 						}
 						elseif($nUserCount > 1)
 						{
@@ -229,54 +172,44 @@ else
 					else
 					{
 						$login = 'user_' . substr((microtime(true) * 10000), 0, 12);
+						$_POST['ONE_CLICK_BUY']['EMAIL'] = genUserEmail($login);
 					}
 				}
 			}
 			else
 			{
 				$login = 'user_' . substr((microtime(true) * 10000), 0, 12);
-				if (strlen(SITE_SERVER_NAME)) { $server_name = SITE_SERVER_NAME; } else { $server_name = $_SERVER["SERVER_NAME"];}
-				$server_name = Cutil::translit($server_name, "ru", ['replace_other' => '-']);
-				if($dotPos = strrpos($server_name, "-")){
-					$server_name = substr($server_name, 0, $dotPos).str_replace("-", ".", substr($server_name, $dotPos));
-				}
-				else{
-					$server_name .= ".ru";
-				}
-				$_POST['ONE_CLICK_BUY']['EMAIL'] = $login.'@'.$server_name;
-				if(!check_email($_POST['ONE_CLICK_BUY']['EMAIL'], true)){
-					$_POST['ONE_CLICK_BUY']['EMAIL'] = $login.'@'.str_replace('_', '-', $server_name);
-				}
+				$_POST['ONE_CLICK_BUY']['EMAIL'] = genUserEmail($login);
 			}
-
-			$user_registered = true;
 		}
 		else{
 			$dbUser = CUser::GetList(($by = 'ID'), ($order = 'ASC'), array('=EMAIL' => trim($_POST['ONE_CLICK_BUY']['EMAIL'])));
 			if($dbUser->SelectedRowsCount() == 0){
 				$login = 'user_'.substr((microtime(true) * 10000), 0, 12);
-				$user_registered = true;
 			}
 			elseif($dbUser->SelectedRowsCount() == 1){
 				$ar_user = $dbUser->Fetch();
 				$registeredUserID = $ar_user['ID'];
 
+				$user_exists = true;
+
 				if(!checkNewVersionExt('sale')){
 					$USER->Authorize($registeredUserID);
 				}
-				$user_registered = true;
-				$user_exists = true;
 			}
 			else die(getJson(GetMessage('TOO_MANY_USERS')));
 		}
 
-		if($user_registered && !$user_exists){
+		// register new user
+		if(!$user_exists){
 			$userPassword = randString(10);
 			$username = explode(' ', trim($_POST['ONE_CLICK_BUY']['FIO']));
 
-			// register user
 			$captcha = COption::GetOptionString('main', 'captcha_registration', 'N');
-			if($captcha == 'Y'){COption::SetOptionString('main', 'captcha_registration', 'N');}
+			if($captcha == 'Y'){
+				COption::SetOptionString('main', 'captcha_registration', 'N');
+			}
+
 			if($bPhoneAuthSupported && $bPhoneAuthShow){
 				/*if(empty($_POST['ONE_CLICK_BUY']['PHONE']) && $bPhoneAuthRequired){
 					die(getJson(GetMessage('NO_PHONE')));
@@ -360,8 +293,10 @@ else
 		$_POST['ONE_CLICK_BUY']['EMAIL'] = $USER->GetEmail();
 	}
 
+	$personTypeId = intval($_POST['PERSON_TYPE_ID']) > 0 ? intval($_POST['PERSON_TYPE_ID']) : 1;
+
 	if(!$_POST['ONE_CLICK_BUY']['LOCATION']){
-		$arLocation = CSaleOrderProps::GetList(array("SORT" => "ASC"), array("PERSON_TYPE_ID" => intval($_POST['PERSON_TYPE_ID']) > 0 ? $_POST['PERSON_TYPE_ID']: 1, "CODE" => "LOCATION"), false, false, array())->Fetch();
+		$arLocation = CSaleOrderProps::GetList(array("SORT" => "ASC"), array("PERSON_TYPE_ID" => $personTypeId, "CODE" => "LOCATION"), false, false, array())->Fetch();
 	   	$_POST['ONE_CLICK_BUY']['LOCATION'] = $arLocation["DEFAULT_VALUE"];
 	}
 
@@ -382,7 +317,7 @@ else
 		"CANCELED" => "N",
 		"STATUS_ID" => "N",
 		'USER_ID' => $registeredUserID,
-		'PERSON_TYPE_ID' => intval($_POST['PERSON_TYPE_ID']) > 0 ? $_POST['PERSON_TYPE_ID'] : 1,
+		'PERSON_TYPE_ID' => $personTypeId,
 		'DELIVERY_ID' => $deliveryId,
 		'PAY_SYSTEM_ID' => intval($_POST['PAY_SYSTEM_ID']) > 0 ? $_POST['PAY_SYSTEM_ID'] : 1,
 		'USER_DESCRIPTION' => $_POST['ONE_CLICK_BUY']['COMMENT'],
@@ -537,6 +472,13 @@ else
 			}
 		}
 
+		if ($arBasketItemsAll) {
+			// print_r($arBasketItemsAll);
+			foreach ($arBasketItemsAll as $arBasketItem) {
+				CSaleBasket::Delete($arBasketItem['ID']);
+			}
+		}
+
 		// if this product is already in basket, then fix quantity
 		$arBasketItems = CSaleBasket::GetList(array(), array("PRODUCT_ID" => $productID, "FUSER_ID" => $basketUserID, "LID" => $SITE_ID, "ORDER_ID" => NULL), false, false, array("ID"))->Fetch();
 		if($arBasketItems){
@@ -553,6 +495,9 @@ else
 
 				if($user_registered)
 					$USER->Logout();
+
+				//add products to basket, removed before
+				AddProducts2Basket($arBasketItemsAll);
 
 				die(getJson(GetMessage('ITEM_ADD_FAIL'), 'N', $strError));
 			}
@@ -577,6 +522,10 @@ else
 				}
 				$arErrors = $arErrorsTmp;
 			}
+
+			//add products to basket, removed before
+			AddProducts2Basket($arBasketItemsAll);
+
 			die(getJson(GetMessage('ORDER_CREATE_FAIL'), 'N', implode('<br />', (array)$arErrors)));
 		}
 		if(is_array($arOrderDat) && array_key_exists("ORDER_PRICE", $arOrderDat)){
@@ -587,7 +536,7 @@ else
 				CSaleBasket::Delete($productBasketID);
 				if($user_registered){
 					$USER->Logout();
-					if(!$USER->IsAuthorized() && $arBasketItemsAll && !$bAllBasketBuy){
+					/*if(!$USER->IsAuthorized() && $arBasketItemsAll && !$bAllBasketBuy){
 						foreach($arBasketItemsAll as $arItem){
 							// get props
 							$arProps = array();
@@ -601,8 +550,12 @@ else
 							}
 							Add2BasketByProductID($arItem['PRODUCT_ID'], $arItem['QUANTITY'], array(), $arProps);
 						}
-					}
+					}*/
 				}
+
+				//add products to basket, removed before
+				AddProducts2Basket($arBasketItemsAll);
+
 				CNextCache::ClearCacheByTag('sale_basket');
 				die(getJson($arError["TEXT"]));
 			}
@@ -631,6 +584,9 @@ else
 
 			if($user_registered)
 				$USER->Logout();
+
+			//add products to basket, removed before
+			AddProducts2Basket($arBasketItemsAll);
 
 			die(getJson(GetMessage('ORDER_CREATE_FAIL'), 'N', $strError));
 		}
@@ -707,20 +663,10 @@ else
 		$USER->Logout();
 	}
 
-	if(!$USER->IsAuthorized() && $arBasketItemsAll && !$bAllBasketBuy){
-		foreach($arBasketItemsAll as $arItem){
-			// get props
-			$arProps = array();
-			if($arItem['BASKET_PROPS']){
-				foreach($arItem['BASKET_PROPS'] as $keyProp => $arBasketProp)
-				{
-					if(isset($arBasketProp['BASKET_ID']))
-						unset($arItem['BASKET_PROPS'][$keyProp]['BASKET_ID']);
-				}
-				$arProps=$arItem['BASKET_PROPS'];
-			}
-			Add2BasketByProductID($arItem['PRODUCT_ID'], $arItem['QUANTITY'], array(), $arProps);
-		}
+	// if(!$USER->IsAuthorized() && $arBasketItemsAll && !$bAllBasketBuy){
+	if(!$bAllBasketBuy){
+		//add products to basket, removed before
+		AddProducts2Basket($arBasketItemsAll);
 	}
 
 	\Bitrix\Main\Loader::IncludeModule('aspro.next');
@@ -728,8 +674,7 @@ else
 	CNextCache::ClearCacheByTag('sale_basket');
 
 	// add order properties
-	$personType = intval($_POST['PERSON_TYPE_ID']) > 0 ? $_POST['PERSON_TYPE_ID']: 1;
-	$res = CSaleOrderProps::GetList(array(), array('@CODE' => unserialize($_POST["PROPERTIES"]), 'PERSON_TYPE_ID' =>$personType));
+	$res = CSaleOrderProps::GetList(array(), array('@CODE' => unserialize($_POST["PROPERTIES"]), 'PERSON_TYPE_ID' => $personTypeId));
 
 	while($prop = $res->Fetch()){
 		if($_POST['ONE_CLICK_BUY'][$prop['CODE']]){
@@ -759,9 +704,9 @@ else
 				$curPrice = roundEx($arBasketItem['PRICE'], SALE_VALUE_PRECISION) * DoubleVal($arBasketItem['QUANTITY']);
 				$orderPrice += $curPrice;
 				$orderList .= GetMessage('ITEM_NAME') . $arBasketItem['NAME']
-					. GetMessage('ITEM_PRICE') . str_replace('#', number_format($arBasketItem['PRICE'], $arCurrency["DECIMALS"], $arCurrency["DEC_POINT"], $currencyThousandsSep), $arCurrency['FORMAT_STRING'])
+					. GetMessage('ITEM_PRICE') . CCurrencyLang::CurrencyFormat($arBasketItem['PRICE'], $newOrder['CURRENCY'], true)
 					. GetMessage('ITEM_QTY') . intval($arBasketItem['QUANTITY'])
-					. GetMessage('ITEM_TOTAL') . str_replace('#', number_format($curPrice, $arCurrency["DECIMALS"], $arCurrency["DEC_POINT"], $currencyThousandsSep), $arCurrency['FORMAT_STRING']) . "\n";
+					. GetMessage('ITEM_TOTAL') . CCurrencyLang::CurrencyFormat($curPrice, $newOrder['CURRENCY'], true) . "\n";
 			}
 		}
 
@@ -774,7 +719,7 @@ else
 			"ACCOUNT_NUMBER" => $arOrderQuery["ACCOUNT_NUMBER"],
 			"PHONE" => $_POST["ONE_CLICK_BUY"]["PHONE"],
 			"ORDER_ITEMS" => $orderList,
-			"ORDER_PRICE" => str_replace('#', number_format(($arOrderQuery["PRICE"] ? $arOrderQuery["PRICE"] : $orderPrice), $arCurrency["DECIMALS"], $arCurrency["DEC_POINT"], $currencyThousandsSep), $arCurrency['FORMAT_STRING']),
+			"ORDER_PRICE" => CCurrencyLang::CurrencyFormat($arOrderQuery["PRICE"], $newOrder['CURRENCY'], true),
 			"COMMENT" => $_POST['ONE_CLICK_BUY']['COMMENT'],
 			"RS_DATE_CREATE" => ConvertTimeStamp(false, "FULL"),
 		);
