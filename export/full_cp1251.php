@@ -1,0 +1,1 @@
+/home/bitrix/www/bitrix/catalog_export/full_cp1251.php

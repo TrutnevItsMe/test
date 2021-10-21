@@ -1,0 +1,5 @@
+<?
+$MESS['INTERVOLGA_COMMON.CRM_TABLE_ID'] = 'Идентификатор';
+$MESS['INTERVOLGA_COMMON.CRM_TABLE_NAME'] = 'Название';
+$MESS['INTERVOLGA_COMMON.CRM_TABLE_URL'] = 'Адрес сервера';
+$MESS['INTERVOLGA_COMMON.CRM_TABLE_AUTH_HASH'] = 'Авторизация пользователя';

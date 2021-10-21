@@ -1,140 +1,194 @@
+
+
 <?
+//$GLOBALS["page_css"] = 'Catalog';
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Акции");
 ?>
-<?$APPLICATION->IncludeComponent(
-	"bitrix:news", 
-	"news", 
+
+<div class="left_block filter_ajax filter_visible">
+
+<?$arParams['USE_FILTER']="Y";?>
+
+
+<?if('Y' == $arParams['USE_FILTER']):?>
+	<?
+	if($arTheme["FILTER_VIEW"]["VALUE"] == 'COMPACT'){
+		if($arParams["AJAX_FILTER_CATALOG"]=="Y"){
+			$template = 'main_compact_ajax';
+		}
+		else{
+			$template = 'main_compact';
+		}
+	}
+	elseif($arParams["AJAX_FILTER_CATALOG"]=="Y"){
+		$template = 'main_ajax';
+	}
+	else{
+		$template = 'main';
+	}
+	?>
+	<?$APPLICATION->IncludeComponent(
+	"bitrix:catalog.smart.filter", 
+	"main", 
 	array(
-		"IBLOCK_TYPE" => "aspro_next_content",
-		"IBLOCK_ID" => "19",
-		"NEWS_COUNT" => "20",
-		"USE_SEARCH" => "N",
-		"USE_RSS" => "N",
-		"USE_RATING" => "N",
-		"USE_CATEGORIES" => "N",
-		"USE_REVIEW" => "N",
-		"USE_FILTER" => "Y",
-		"FILTER_NAME" => "arRegionLink",
-		"SORT_BY1" => "ACTIVE_FROM",
-		"SORT_ORDER1" => "DESC",
-		"SORT_BY2" => "SORT",
-		"SORT_ORDER2" => "ASC",
-		"CHECK_DATES" => "Y",
-		"SEF_MODE" => "Y",
-		"SEF_FOLDER" => "/sale/",
+		"IBLOCK_TYPE" => "aspro_next_catalog",
+		"IBLOCK_ID" => "17",
+		"AJAX_FILTER_FLAG" => $isAjaxFilter,
+		"SECTION_ID" => "",
+		"FILTER_NAME" => $arParams["FILTER_NAME"],
+		"PRICE_CODE" => array(
+		),
+		"CACHE_TYPE" => "A",
+		"CACHE_TIME" => $arParams["CACHE_TIME"],
+		"FILL_COMPACT_FILTER" => $arParams["FILL_COMPACT_FILTER"],
+		"CACHE_NOTES" => "",
+		"CACHE_GROUPS" => "N",
+		"SAVE_IN_SESSION" => "N",
+		"XML_EXPORT" => "Y",
+		"SECTION_TITLE" => "NAME",
+		"SECTION_DESCRIPTION" => "DESCRIPTION",
+		"SHOW_HINTS" => $arParams["SHOW_HINTS"],
+		"CONVERT_CURRENCY" => "N",
+		"CURRENCY_ID" => $arParams["CURRENCY_ID"],
+		"DISPLAY_ELEMENT_COUNT" => $arParams["DISPLAY_ELEMENT_COUNT"],
+		"INSTANT_RELOAD" => "Y",
+		"VIEW_MODE" => strtolower($arTheme["FILTER_VIEW"]["VALUE"]),
+		"SEF_MODE" => "N",
+		"SEF_RULE" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["smart_filter"],
+		"SMART_FILTER_PATH" => $arResult["VARIABLES"]["SMART_FILTER_PATH"],
+		"HIDE_NOT_AVAILABLE" => "N",
+		"SORT_BUTTONS" => $arParams["SORT_BUTTONS"],
+		"SORT_PRICES" => $arParams["SORT_PRICES"],
+		"AVAILABLE_SORT" => $arAvailableSort,
+		"SORT" => $sort,
+		"SORT_ORDER" => $sort_order,
+		"COMPONENT_TEMPLATE" => "main",
+		"SECTION_CODE" => "",
+		"PREFILTER_NAME" => "smartPreFilter",
+		"PAGER_PARAMS_NAME" => "arrPager"
+	),
+	$component
+);
+	?>
+<?endif;?>
+
+
+</div>
+
+<div class="right_block  wide_N">
+
+	 <?$APPLICATION->IncludeComponent(
+	"bitrix:catalog.section.filtred", 
+	"catalog_block", 
+	array(
+		"MY_FILTER" => array(
+			"HIT" => "68",
+		),
+		"IBLOCK_TYPE" => "aspro_next_catalog",
+		"IBLOCK_ID" => "17",
+		"SECTION_ID" => $_REQUEST["SECTION_ID"],
+		"SECTION_CODE" => "",
+		"SECTION_USER_FIELDS" => array(
+			0 => "",
+			1 => "",
+		),
+		"ELEMENT_SORT_FIELD" => "name",
+		"ELEMENT_SORT_ORDER" => "asc",
+		"ELEMENT_SORT_FIELD2" => "sort",
+		"ELEMENT_SORT_ORDER2" => "desc",
+		"FILTER_NAME" => "arrFilter",
+		"INCLUDE_SUBSECTIONS" => "Y",
+		"SHOW_ALL_WO_SECTION" => "Y",
+		"HIDE_NOT_AVAILABLE" => "N",
+		"PAGE_ELEMENT_COUNT" => "30",
+		"LINE_ELEMENT_COUNT" => "4",
+		"PROPERTY_CODE" => array(
+			0 => "CML2_ARTICLE",
+			1 => "",
+		),
+		"OFFERS_LIMIT" => "5",
+		"TEMPLATE_THEME" => "red",
+		"ADD_PICT_PROP" => "-",
+		"LABEL_PROP" => "-",
+		"PRODUCT_SUBSCRIPTION" => "N",
+		"SHOW_DISCOUNT_PERCENT" => "Y",
+		"SHOW_OLD_PRICE" => "Y",
+		"MESS_BTN_BUY" => "Купить",
+		"MESS_BTN_ADD_TO_BASKET" => "В корзину",
+		"MESS_BTN_SUBSCRIBE" => "Подписаться",
+		"MESS_BTN_DETAIL" => "Подробнее",
+		"MESS_NOT_AVAILABLE" => "Цена скрыта",
+		"SECTION_URL" => "",
+		"DETAIL_URL" => "",
+		"SECTION_ID_VARIABLE" => "SECTION_ID",
 		"AJAX_MODE" => "N",
 		"AJAX_OPTION_JUMP" => "N",
 		"AJAX_OPTION_STYLE" => "Y",
 		"AJAX_OPTION_HISTORY" => "N",
 		"CACHE_TYPE" => "A",
 		"CACHE_TIME" => "36000000",
-		"CACHE_FILTER" => "Y",
-		"CACHE_GROUPS" => "N",
-		"SET_TITLE" => "Y",
-		"SET_STATUS_404" => "Y",
-		"INCLUDE_IBLOCK_INTO_CHAIN" => "N",
-		"ADD_SECTIONS_CHAIN" => "N",
-		"USE_PERMISSIONS" => "N",
-		"PREVIEW_TRUNCATE_LEN" => "",
-		"LIST_ACTIVE_DATE_FORMAT" => "j F Y",
-		"LIST_FIELD_CODE" => array(
-			0 => "NAME",
-			1 => "PREVIEW_TEXT",
-			2 => "PREVIEW_PICTURE",
-			3 => "DATE_ACTIVE_FROM",
-			4 => "",
-		),
-		"LIST_PROPERTY_CODE" => array(
-			0 => "PERIOD",
-			1 => "",
-		),
-		"HIDE_LINK_WHEN_NO_DETAIL" => "N",
-		"DISPLAY_NAME" => "N",
+		"CACHE_GROUPS" => "Y",
+		"SET_META_KEYWORDS" => "Y",
 		"META_KEYWORDS" => "-",
+		"SET_META_DESCRIPTION" => "Y",
 		"META_DESCRIPTION" => "-",
 		"BROWSER_TITLE" => "-",
-		"DETAIL_ACTIVE_DATE_FORMAT" => "j F Y",
-		"DETAIL_FIELD_CODE" => array(
-			0 => "PREVIEW_TEXT",
-			1 => "DETAIL_TEXT",
-			2 => "DETAIL_PICTURE",
-			3 => "DATE_ACTIVE_FROM",
-			4 => "",
+		"ADD_SECTIONS_CHAIN" => "N",
+		"DISPLAY_COMPARE" => "N",
+		"SET_TITLE" => "Y",
+		"SET_STATUS_404" => "N",
+		"CACHE_FILTER" => "N",
+		"PRICE_CODE" => array(
+			0 => "Оптовые руб. 2021",
+			1 => "РРЦ МОСКВА, СПБ Акция/Распродажа",
+			2 => "Оптовые руб. 2021 Акция/Распродажа",
+			3 => "РРЦ ЮФО, ПФО, УРФО, СФО",
+			4 => "Оптовые Сантехника-Онлайн",
+			5 => "РРЦ МОСКВА, СПБ",
 		),
-		"DETAIL_PROPERTY_CODE" => array(
-			0 => "",
-			1 => "FORM_QUESTION",
-			2 => "FORM_ORDER",
-			3 => "PHOTOPOS",
-			4 => "LINK_GOODS",
-			5 => "LINK_SERVICES",
-			6 => "LINK_STUDY",
-			7 => "VIDEO",
-			8 => "PHOTOS",
-			9 => "DOCUMENTS",
-			10 => "",
+		"USE_PRICE_COUNT" => "N",
+		"SHOW_PRICE_COUNT" => "1",
+		"PRICE_VAT_INCLUDE" => "Y",
+		"CONVERT_CURRENCY" => "N",
+		"BASKET_URL" => "/personal/cart/",
+		"ACTION_VARIABLE" => "action",
+		"PRODUCT_ID_VARIABLE" => "id",
+		"USE_PRODUCT_QUANTITY" => "N",
+		"ADD_PROPERTIES_TO_BASKET" => "Y",
+		"PRODUCT_PROPS_VARIABLE" => "prop",
+		"PARTIAL_PRODUCT_PROPERTIES" => "N",
+		"PRODUCT_PROPERTIES" => array(
 		),
-		"IBLOCK_CATALOG_TYPE" => "aspro_next_catalog",
-		"DISPLAY_DATE" => "Y",
-		"SHOW_FAQ_BLOCK" => "Y",
-		"SHOW_BACK_LINK" => "Y",
-		"GALLERY_PROPERTY" => "MORE_PHOTO",
-		"SHOW_GALLERY" => "Y",
-		"LINKED_PRODUCTS_PROPERTY" => "LINK",
-		"SHOW_LINKED_PRODUCTS" => "Y",
-		"PRICE_PROPERTY" => "PRICE",
-		"SHOW_PRICE" => "N",
-		"PERIOD_PROPERTY" => "PERIOD",
-		"SHOW_PERIOD" => "N",
-		"DETAIL_DISPLAY_TOP_PAGER" => "N",
-		"DETAIL_DISPLAY_BOTTOM_PAGER" => "Y",
-		"DETAIL_PAGER_TITLE" => "",
-		"DETAIL_PAGER_TEMPLATE" => "",
-		"DETAIL_PAGER_SHOW_ALL" => "Y",
-		"ELEMENT_TYPE_VIEW" => "element_1",
-		"IMAGE_POSITION" => "left",
 		"PAGER_TEMPLATE" => "main",
 		"DISPLAY_TOP_PAGER" => "N",
 		"DISPLAY_BOTTOM_PAGER" => "Y",
-		"PAGER_TITLE" => "",
-		"PAGER_SHOW_ALWAYS" => "N",
+		"PAGER_TITLE" => "Товары",
+		"PAGER_SHOW_ALWAYS" => "Y",
 		"PAGER_DESC_NUMBERING" => "N",
 		"PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",
-		"PAGER_SHOW_ALL" => "N",
-		"CATALOG_FILTER_NAME" => "arrProductsFilter",		
+		"PAGER_SHOW_ALL" => "Y",
 		"AJAX_OPTION_ADDITIONAL" => "",
-		"COMPONENT_TEMPLATE" => "news",
-		"SET_LAST_MODIFIED" => "N",
-		"ADD_ELEMENT_CHAIN" => "Y",
-		"IS_VERTICAL" => "N",
-		"DETAIL_SET_CANONICAL_URL" => "N",
-		"PAGER_BASE_LINK_ENABLE" => "N",
-		"SHOW_404" => "Y",
-		"MESSAGE_404" => "",
-		"SHOW_SERVICES_BLOCK" => "N",
-		"SECTION_ELEMENTS_TYPE_VIEW" => "list_elements_1",
-		"DETAIL_STRICT_SECTION_CHECK" => "Y",
-		"STRICT_SECTION_CHECK" => "Y",
-		"S_ASK_QUESTION" => "",
-		"S_ORDER_SERVISE" => "",
-		"FORM_ID_ORDER_SERVISE" => "",
-		"T_GALLERY" => "",
-		"T_DOCS" => "",
-		"T_GOODS" => "Товары по акции",
-		"T_SERVICES" => "",
-		"T_NEXT_LINK" => "",
-		"T_PREV_LINK" => "",
-		"SHOW_DETAIL_LINK" => "Y",
-		"SHOW_FILTER_DATE" => "N",
-		"LINE_ELEMENT_COUNT_LIST" => "3",
-		"SHOW_NEXT_ELEMENT" => "N",
-		"USE_SHARE" => "Y",
-		"SEF_URL_TEMPLATES" => array(
-			"news" => "",
-			"section" => "",
-			"detail" => "#ELEMENT_CODE#/",
+		"PRODUCT_QUANTITY_VARIABLE" => "quantity",
+		"COMPONENT_TEMPLATE" => "catalog_block",
+		"OFFERS_FIELD_CODE" => array(
+			0 => "",
+			1 => "",
+		),
+		"OFFERS_PROPERTY_CODE" => array(
+			0 => "",
+			1 => "",
+		),
+		"OFFERS_SORT_FIELD" => "sort",
+		"OFFERS_SORT_ORDER" => "asc",
+		"OFFERS_SORT_FIELD2" => "id",
+		"OFFERS_SORT_ORDER2" => "desc",
+		"PRODUCT_DISPLAY_MODE" => "N",
+		"OFFERS_CART_PROPERTIES" => array(
 		)
 	),
 	false
-);?><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+);?>
+</div>
+
+ <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

@@ -9,14 +9,6 @@ if(!strlen($arParams['DEFAULT_CURRENCY'])){
 	$arParams['DEFAULT_CURRENCY'] = COption::GetOptionString('sale', 'default_currency', 'RUB');
 }
 
-if(empty($arParams['PROPERTIES'])){
-	$arParams['PROPERTIES'] = array('FIO', 'PHONE');
-}
-
-if(empty($arParams['REQUIRED'])){
-	$arParams['REQUIRED'] = array('FIO', 'PHONE');
-}
-
 // get phone auth params
 list($bPhoneAuthSupported, $bPhoneAuthShow, $bPhoneAuthRequired, $bPhoneAuthUse) = Aspro\Next\PhoneAuth::getOptions();
 

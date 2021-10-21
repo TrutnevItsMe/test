@@ -1,4 +1,5 @@
 <?
+define("BX_SKIP_USER_LIMIT_CHECK", true);
 define("BX_PULL_SKIP_INIT", true);
 require($_SERVER["DOCUMENT_ROOT"]."/desktop_app/headers.php");
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
@@ -7,6 +8,8 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 
 if (!\Bitrix\Main\Application::getInstance()->isUtfMode())
 {
+	$GLOBALS["APPLICATION"]->RestartBuffer();
+	CHTTP::SetStatus("404 Not Found");
 	return;
 }
 

@@ -44,7 +44,7 @@
 	array(
 		"IBLOCK_TYPE" => "aspro_next_content",
 		"IBLOCK_ID" => "10",
-		"NEWS_COUNT" => "20",
+		"NEWS_COUNT" => "40",
 		"USE_SEARCH" => "N",
 		"USE_RSS" => "Y",
 		"USE_RATING" => "N",
@@ -115,7 +115,7 @@
 		"DETAIL_PAGER_TITLE" => "Страница",
 		"DETAIL_PAGER_TEMPLATE" => "",
 		"DETAIL_PAGER_SHOW_ALL" => "Y",
-		"PAGER_TEMPLATE" => ".default",
+		"PAGER_TEMPLATE" => "main",
 		"DISPLAY_TOP_PAGER" => "N",
 		"DISPLAY_BOTTOM_PAGER" => "Y",
 		"PAGER_TITLE" => "Новости",

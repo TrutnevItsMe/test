@@ -1,16 +1,14 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();?>
-
 <?if(!\Bitrix\Main\Loader::includeModule('aspro.next')):?>
 	<div class='alert alert-warning'><?=GetMessage('ASPRO_NEXT_MODULE_NOT_INSTALLED')?></div>
 	<?die;?>
 <?endif;?>
-
-<?require_once('function.php');?>
-
 <?
-$arResult = array();
+require_once('function.php');
 
+$arResult = array();
 $arFrontParametrs = CNext::GetFrontParametrsValues(SITE_ID);
+
 foreach(CNext::$arParametrsList as $blockCode => $arBlock)
 {
 	foreach($arBlock['OPTIONS'] as $optionCode => $arOption)
@@ -34,12 +32,12 @@ foreach(CNext::$arParametrsList as $blockCode => $arBlock)
 								foreach($arResult[$optionCode]['SUB_PARAMS'][$key][$key2]['LIST'] as $key3 => $value)
 								{
 									if($arFrontParametrs[$key.'_'.$key2] == $value)
-										$arResult[$optionCode]['SUB_PARAMS'][$key][$key2]['LIST'][$key3]['CURRENT'] = 'Y';	
+										$arResult[$optionCode]['SUB_PARAMS'][$key][$key2]['LIST'][$key3]['CURRENT'] = 'Y';
 								}
 							}
 							else
 							{
-								$arResult[$optionCode]['SUB_PARAMS'][$key][$key2]['VALUE'] = $arFrontParametrs[$key.'_'.$key2];								
+								$arResult[$optionCode]['SUB_PARAMS'][$key][$key2]['VALUE'] = $arFrontParametrs[$key.'_'.$key2];
 							}
 						}
 					}
@@ -84,7 +82,7 @@ if($arResult)
 	$arGroups = array();
 	foreach($arResult as $optionCode => $arOption)
 	{
-		
+
 		if((isset($arOption['GROUP']) && $arOption['GROUP'])) //set groups option
 		{
 			$arGroups[$arOption['GROUP']]['TITLE'] = GetMessage($arOption['GROUP']);
@@ -100,53 +98,62 @@ if($arResult)
 	}
 	if($arGroups)
 		$arResult = array_merge($arResult, $arGroups);
-}?>
+}
 
-<?
-$themeDir = strToLower($arResult['BASE_COLOR']['VALUE'].($arResult['BASE_COLOR']['VALUE'] !== 'CUSTOM' ? '' : '_'.SITE_ID));
-$themeBgDir = strToLower($arResult['BGCOLOR_THEME']['VALUE'].($arResult['BGCOLOR_THEME']['VALUE'] !== 'CUSTOM' ? '' : '_'.SITE_ID));
+$bPageSpeedTest = CNext::isPageSpeedTest(); // it`s page speed test now
+$bLightVersion = CNext::checkIndexBot(); // it`s page speed test & need light version now
 
-$bIndexBot = CNext::checkIndexBot(); // is indexed yandex/google bot
-
-$active = ($arResult['THEME_SWITCHER']['VALUE'] == 'Y' && !$bIndexBot);
+$active = $arResult['THEME_SWITCHER']['VALUE'] == 'Y';
 $arResult['CAN_SAVE'] = ($GLOBALS['USER']->IsAdmin() && ((isset($_SESSION['THEME']) && $_SESSION['THEME']) && (isset($_SESSION['THEME'][SITE_ID]) && $_SESSION['THEME'][SITE_ID])));
 
 // $APPLICATION->AddHeadString(CNext::GetBannerStyle($arResult['BANNER_WIDTH']['VALUE'], $arResult['TOP_MENU']['VALUE']), true);
 
+$themeDir = strToLower($arResult['BASE_COLOR']['VALUE'].($arResult['BASE_COLOR']['VALUE'] !== 'CUSTOM' ? '' : '_'.SITE_ID));
+$themeBgDir = strToLower($arResult['BGCOLOR_THEME']['VALUE'].($arResult['BGCOLOR_THEME']['VALUE'] !== 'CUSTOM' ? '' : '_'.SITE_ID));
 $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH.'/themes/'.$themeDir.'/theme.css', true);
 $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH.'/bg_color/'.$themeBgDir.'/bgcolors.css', true);
 
 $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH.'/css/width-'.$arResult['PAGE_WIDTH']['VALUE'].'.css', true);
-$APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH.'/css/font-'.$arResult['FONT_STYLE']['VALUE'].'.css', true);?>
+$APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH.'/css/font-'.$arResult['FONT_STYLE']['VALUE'].'.css', true);
 
-<?
-if(!$bIndexBot)
-{
+if($bLightVersion){
+	\Bitrix\Main\Data\StaticHtmlCache::getInstance()->markNonCacheable();
+}
+else{
 	$APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH.'/css/jquery.mCustomScrollbar.min.css');
 	$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH.'/js/jquery.mCustomScrollbar.min.js');
 
-	if($active && ((!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') && (strtolower($_REQUEST['ajax']) != 'y')))
-	{
+	if(
+		$active &&
+		(
+			(
+				!isset($_REQUEST['ajax']) ||
+				strtolower($_REQUEST['ajax']) !== 'y'
+			) &&
+			(
+				!isset($_SERVER['HTTP_X_REQUESTED_WITH']) ||
+				strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) !== 'xmlhttprequest'
+			)
+		)
+	){
 		\Bitrix\Main\Data\StaticHtmlCache::getInstance()->markNonCacheable();
-		$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH.'/js/spectrum.js');
-		$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH.'/js/on-off-switch.js');
-		$APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH.'/css/spectrum.css');
-		$this->IncludeComponentTemplate();
-	}
-}
-else
-{
-	\Bitrix\Main\Data\StaticHtmlCache::getInstance()->markNonCacheable();
-}
 
-if(!$bIndexBot)
+		if(!$bPageSpeedTest){
+			$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH.'/js/spectrum.js');
+			$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH.'/js/on-off-switch.js');
+			$APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH.'/css/spectrum.css');
+			$this->IncludeComponentTemplate();
+		}
+	}
+
 	$APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH.'/css/custom.css', true);
+}
 
 $file = \Bitrix\Main\Application::getDocumentRoot().'/bitrix/components/aspro/theme.next/css/user_font_'.SITE_ID.'.css';
 
-if($arResult['CUSTOM_FONT']['VALUE'] && \Bitrix\Main\IO\File::isFileExists($file))
-{
+if($arResult['CUSTOM_FONT']['VALUE'] && \Bitrix\Main\IO\File::isFileExists($file)){
 	$APPLICATION->SetAdditionalCSS($componentPath.'/css/user_font_'.SITE_ID.'.css', true);
 }
 
-return $arResult;?>
+return $arResult;
+?>
