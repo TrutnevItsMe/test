@@ -1,0 +1,88 @@
+.catalog_detail .wraps h4.set-composition_header {
+    background-color: lightgrey;
+    width: 100%;
+    padding: 4px 0;
+    text-align: center;
+    margin: 0;
+}
+.set-composition_row {
+    display: flex;
+    flex-flow: wrap;
+    width: 100%;
+    border-bottom: solid 1px lightgrey;
+    margin: 5px 0;
+    padding: 3px 5px;
+}
+.set-composition_row > span {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+.set-composition_picture {
+    flex-basis: 100px;
+    height: 80px;
+}
+.set-composition_row > span.set-composition_title {
+    flex-basis: 165px;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.set-composition_price {
+    flex-basis: 150px;
+    flex-direction: column;
+}
+.set-composition_price__new {
+    font-weight: bold;
+}
+.set-composition_price__old {
+    text-decoration: line-through;
+}
+.set-composition-sticker {
+    display: inline-block;
+    background-color: #4fad00;
+    width: auto;
+    margin: 0 3px 6px;
+    letter-spacing: .5px;
+    position: relative;
+    display: inline-block;
+    color: #fff;
+    font-size: 10px;
+    line-height: 12px;
+    padding: 5px 10px 4px;
+    text-transform: uppercase;
+    border-radius: 2px;
+}
+.tab_slider_wrapp ul.tabs_content > li.tab {
+    position: relative;
+}
+.tab_slider_wrapp ul.tabs_content > li.tab .flex-viewport {
+    height: 460px;
+    margin-bottom: -90px;
+}
+.tab_slider_wrapp ul.tabs_content > li.tab .item-title {
+    height: 60px;
+}
+@supports(-webkit-appearance: none) or (-moz-appearance: none) {
+    .set-composition_checkbox input[type=checkbox] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        display: inline-block;
+        width: 26px;
+        height: 26px;
+        margin: 0;
+        background: url(checkbox.png) no-repeat;
+        cursor: pointer;
+    }
+    .set-composition_checkbox input:checked {
+        background-position: 0 -26px;
+    }
+    .set-composition_checkbox input[type=checkbox][disabled] {
+        cursor: default;
+        background-position: 0 -52px;
+    }
+    .set-composition_checkbox input[type=checkbox]:focus {
+        outline: none;
+    }
+}
