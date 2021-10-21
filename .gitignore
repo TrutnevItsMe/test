@@ -56,3 +56,4 @@ test*
 
 *.bak.*
 *_bak.*
+*.php.back*
