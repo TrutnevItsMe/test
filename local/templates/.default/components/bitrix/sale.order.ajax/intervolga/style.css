@@ -1088,12 +1088,41 @@ ul.bx-soa-pp-list li {
         }*/
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2),@media only screen and (min--moz-device-pixel-ratio: 2),@media only screen and (-moz-min-device-pixel-ratio: 2),@media only screen and (-o-min-device-pixel-ratio: 2/1),@media only screen and (min-device-pixel-ratio: 2),@media only screen and (min-resolution: 192dpi),@media only screen and (min-resolution: 2dppx){
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
     .bx-soa-location-input-container {
         border-width: .5px;
     }
 }
-
+@media only screen and (min--moz-device-pixel-ratio: 2) {
+    .bx-soa-location-input-container {
+        border-width: .5px;
+    }
+}
+@media only screen and (min--moz-device-pixel-ratio: 2) {
+    .bx-soa-location-input-container {
+        border-width: .5px;
+    }
+}
+@media only screen and (-o-min-device-pixel-ratio: 2/1) {
+    .bx-soa-location-input-container {
+        border-width: .5px;
+    }
+}
+@media only screen and (min-device-pixel-ratio: 2) {
+    .bx-soa-location-input-container {
+        border-width: .5px;
+    }
+}
+@media only screen and (min-resolution: 192dpi) {
+    .bx-soa-location-input-container {
+        border-width: .5px;
+    }
+}
+@media only screen and (min-resolution: 2dppx) {
+    .bx-soa-location-input-container {
+        border-width: .5px;
+    }
+}
 .bx-soa-section.bx-step-good {
     -webkit-animation: animationBorderStep ease 5s;
     -moz-animation: animationBorderStep ease 5s;
@@ -1518,6 +1547,12 @@ label[data-bx-user-consent] a{
     font-size: 11px;
     font-weight: 100;
 }
-label[data-bx-user-consent] input{
+label[data-bx-user-consent] input {
     margin-top: 2px;
 }
+#bx-soa-paysystem {
+    display: none;
+}
+/*#bx-soa-order #bx-soa-properties .bx-soa-location-input-container.form-group:not([data-property-id-row]) {*/
+/*    margin-bottom: 30px;*/
+/*}*/
