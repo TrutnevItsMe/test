@@ -1,0 +1,1 @@
+/home/bitrix/www/bitrix/catalog_export/yandex_605787.php

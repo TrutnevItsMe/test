@@ -1,0 +1,1 @@
+<?require_once($_SERVER["DOCUMENT_ROOT"] . "/local/modules/intervolga.common/admin/search_log1c.php");

@@ -9,10 +9,10 @@ $MESS['MAIL'] = 'Мой мир';
 $MESS['GOOGLEPLUS'] = 'Google+';
 $MESS['YOUTUBE'] = 'Youtube';
 $MESS['VIBER'] = 'Viber';
-$MESS['WHATS'] = 'Whats App';
-$MESS['TIKTOK'] = 'Tick Tock';
+$MESS['WHATS'] = 'WhatsApp';
+$MESS['TIKTOK'] = 'TikTok';
 $MESS['PINTEREST'] = 'Pinterest';
 $MESS['SNAPCHAT'] = 'Snapchat';
-$MESS['ZEN'] = 'Яндекс Дзен';
+$MESS['ZEN'] = 'Яндекс.Дзен';
 $MESS['LINKEDIN'] = 'LinkedIn';
 ?>

@@ -46,13 +46,28 @@
 			<img src="/bitrix/components/aspro/social.info.next/images/youtube.png" alt="<?=GetMessage("YOUTUBE")?>" title="<?=GetMessage("YOUTUBE")?>" />
 		</a>
 	<?endif;?>
-	<?if(!empty($arResult['SOCIAL_VIBER'])):?>
-		<a href="<?=$arResult['SOCIAL_VIBER']?>" target="_blank" class="mail_soc" title="<?=GetMessage('VIBER')?>">
+	<?if(!empty($arResult['SOCIAL_VIBER']) || !empty($arResult["SOCIAL_VIBER_CUSTOM_DESKTOP"])):?>
+		<?$hrefDesktop = strlen(trim($arResult["SOCIAL_VIBER_CUSTOM_DESKTOP"])) ? $arResult["SOCIAL_VIBER_CUSTOM_DESKTOP"] : 'viber://chat?number=+'.$arResult['SOCIAL_VIBER'];?>
+		<a href="<?=$hrefDesktop?>" target="_blank" class="mail_soc" title="<?=GetMessage('VIBER')?>">
 			<img src="/bitrix/components/aspro/social.info.next/images/viber.png" alt="<?=GetMessage("VIBER")?>" title="<?=GetMessage("VIBER")?>" />
 		</a>
 	<?endif;?>
-	<?if(!empty($arResult['SOCIAL_WHATS'])):?>
-		<a href="<?=$arResult['SOCIAL_WHATS']?>" target="_blank" class="mail_soc" title="<?=GetMessage('WHATS')?>">
+	<?if(!empty($arResult['SOCIAL_WHATS']) || !empty($arResult["SOCIAL_WHATS_CUSTOM"]) ):?>
+		<?
+		if( strlen(trim($arResult["SOCIAL_WHATS_CUSTOM"])) ){
+			$whatsHref = $arResult["SOCIAL_WHATS_CUSTOM"];
+		} else {
+			if(defined('LANG_CHARSET') && strtolower(LANG_CHARSET) == 'windows-1251'){
+				$text = iconv("windows-1251","utf-8", $arResult['SOCIAL_WHATS_TEXT']);
+			} else {
+				$text = $arResult['SOCIAL_WHATS_TEXT'];
+			}
+			$bWhatsText = !empty($arResult['SOCIAL_WHATS_TEXT']);
+			$whatsText = $bWhatsText ? '?text='.rawurlencode($text) : '';
+			$whatsHref = 'https://wa.me/'.$arResult['SOCIAL_WHATS'].$whatsText;
+		}			
+		?>
+		<a href="<?=$whatsHref?>" target="_blank" class="mail_soc" title="<?=GetMessage('WHATS')?>">
 			<img src="/bitrix/components/aspro/social.info.next/images/whats.png" alt="<?=GetMessage("WHATS")?>" title="<?=GetMessage("WHATS")?>" />
 		</a>
 	<?endif;?>

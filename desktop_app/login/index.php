@@ -4,6 +4,7 @@
  * @global CMain $APPLICATION
  */
 use Bitrix\Main\Authentication\ApplicationPasswordTable as ApplicationPasswordTable;
+use Bitrix\Main\Context;
 
 if ($_SERVER["REQUEST_METHOD"] == "OPTIONS")
 {
@@ -13,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "OPTIONS")
 	die('');
 }
 
+define("BX_SKIP_USER_LIMIT_CHECK", true);
 define("ADMIN_SECTION",false);
 require($_SERVER["DOCUMENT_ROOT"]."/desktop_app/headers.php");
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
@@ -95,6 +97,17 @@ if ($USER->IsAuthorized() && !isAccessAllowed())
 	exit;
 }
 
+if (
+	\Bitrix\Main\Loader::includeModule('bitrix24') &&
+	mb_strpos(Context::getCurrent()->getRequest()->getUserAgent(), 'Bitrix24.Disk') !== false &&
+	\Bitrix\Bitrix24\Limits\User::isUserRestricted($USER->GetID())
+)
+{
+	header('Access-Control-Allow-Origin: *');
+	sendResponse(["success" => false, "code" => "restricted_access"], "401 Unauthorized");
+	exit;
+}
+
 $answer = array(
 	"success" => true,
 	"desktopRevision" => \Bitrix\Im\Revision::getDesktop(),
@@ -109,7 +122,7 @@ if(
 )
 {
 	$code = '';
-	if (strlen($_POST['user_os_mark']) > 0)
+	if ($_POST['user_os_mark'] <> '')
 	{
 		$code = md5($_POST['user_os_mark'].$_POST['user_account']);
 	}
@@ -195,7 +208,7 @@ function sendResponse(array $answer, string $httpCode = '200 OK')
 function isAccessAllowed()
 {
 	global $USER;
-	
+
 	if ($USER->IsAdmin())
 	{
 		return true;
