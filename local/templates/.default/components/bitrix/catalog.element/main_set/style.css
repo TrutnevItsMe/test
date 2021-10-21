@@ -64,6 +64,9 @@
 .tab_slider_wrapp ul.tabs_content > li.tab .item-title {
     height: 60px;
 }
+.tabs_content .flexslider .flex-viewport:before, .tabs_content .flexslider .flex-viewport:after {
+    height: 440px;
+}
 @supports(-webkit-appearance: none) or (-moz-appearance: none) {
     .set-composition_checkbox input[type=checkbox] {
         -webkit-appearance: none;
