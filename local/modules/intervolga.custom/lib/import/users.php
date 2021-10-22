@@ -59,7 +59,6 @@ class Users {
 			'filter' => ['=ID' => $id],
 			'select' => ['*'],
 		])->fetch();
-		return $data;
 	}
 	protected static function updateUser($user) {
 		$cUser = new CUser;
