@@ -57,3 +57,5 @@ test*
 *.bak.*
 *_bak.*
 *.php.back*
+*.css.back*
+*.js.back*
