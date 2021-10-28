@@ -14,8 +14,7 @@ $partner = $hl->getList([
 	],
 ])->fetch();
 if ($partner
-	&& ($partner['UF_OSNOVNOYMENEDZHER'] || $partner['UF_POMOSHNIK1'] || $partner['UF_POMOSHNIK2']
-		|| $partner['UF_POMOSHNIK3'] || $partner['UF_POMOSHNIK4'])
+	&& ($partner['UF_OSNOVNOYMENEDZHER'] || $partner['UF_POMOSHNIK1'] || $partner['UF_POMOSHNIK2'])
 ) {
 	$arResult['POMOSHNIKI'] = $partner;
 }
