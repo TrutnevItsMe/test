@@ -23,14 +23,14 @@ $aMenuLinks = Array(
 	),
 	Array(
 		"Акции", 
-		"/sale/", 
+		"https://iberis-group.ru/sale/?set_filter=y&arrFilter_136_3771153172=Y", 
 		Array(), 
 		Array(), 
 		"" 
 	),
 	Array(
 		"Распродажа", 
-		"/rasprodazha/", 
+		"https://iberis-group.ru/rasprodazha/?set_filter=y&arrFilter_136_125769235=Y", 
 		Array(), 
 		Array(), 
 		"" 
