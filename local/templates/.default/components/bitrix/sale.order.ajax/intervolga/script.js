@@ -479,7 +479,7 @@ function activateAgreementsField(data) {
             if (window.currentAgreementId) {
                 $('#bx-soa-properties #soa-property-' + data.agreementFieldId).val(window.currentAgreementId);
 				$('#bx-soa-properties-hidden #soa-property-' + data.agreementFieldId).val(window.currentAgreementId);
-            } else {
+            } else if (profileValues && profileValues.length > 0) {
                 window.currentAgreementId = profileValues[0].UF_XML_ID;
             }
 		}
