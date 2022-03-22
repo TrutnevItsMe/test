@@ -28,7 +28,7 @@ class AsproImport {
                 $oldValue[] = $el["PROPERTY_HIT_ENUM_ID"];
                 $arItem = $el;
             }
-            $oldValue = $arItem["PROPERTY_HIT_ENUM_ID"];
+
             foreach (self::$propHit as $el)
             {
                 if($arItem['PROPERTY_SKIDKA_VALUE'] == $el['VALUE'])
@@ -76,7 +76,15 @@ class AsproImport {
                 }
                 $newValue[] = $newPropHitListElId;
             }
-            if(count(array_diff($newValue, $oldValue)) > 0 || count($oldValue) != count($newValue))  CIBlockElement::SetPropertyValuesEx($arFields['ID'], false, array('HIT' => $newValue));
+
+            if(count(array_diff($newValue, $oldValue)) > 0 || count($oldValue) != count($newValue))
+            {
+                if(empty($newValue))
+                {
+                    $newValue = false;
+                }
+                CIBlockElement::SetPropertyValuesEx($arFields['ID'], false, array('HIT' => $newValue));
+            }
         }
     }
 }
