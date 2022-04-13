@@ -1,1 +1,1 @@
-<a href="mailto:info@iberis-group.ru">info@iberis-group.ru</a>
+<a href="mailto:info@iberis-group.ru">sale@iberis-pro.ru</a>

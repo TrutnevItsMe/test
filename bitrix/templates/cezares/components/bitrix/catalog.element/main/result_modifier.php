@@ -1547,7 +1547,7 @@ if ($property = $rsProperty->Fetch()) {
 															array(),
 															array(
 																	"PRODUCT_ID" => $item['ID'],
-																	"CATALOG_GROUP_ID" => 11
+																	"CATALOG_GROUP_ID" => 13
 																)
 														);
 													if ($ar_res = $db_res->Fetch())
@@ -1557,6 +1557,22 @@ if ($property = $rsProperty->Fetch()) {
 													
 													}else{
 														$item['PRICE_DISCOUNT']= $item['PRICE'];
+														
+													}
+													$db_res = CPrice::GetList(
+															array(),
+															array(
+																	"PRODUCT_ID" => $item['ID'],
+																	"CATALOG_GROUP_ID" => 14
+																)
+														);
+													if ($ar_res = $db_res->Fetch())
+													{
+														$item['PRICE']= $ar_res["PRICE"];
+														//var_dump($ar_res["PRICE"]);
+													
+													}else{
+														$item['PRICE']= $item['PRICE'];
 														
 													}
 			
@@ -1573,7 +1589,7 @@ if ($property = $rsProperty->Fetch()) {
 															array(),
 															array(
 																	"PRODUCT_ID" => $item['ID'],
-																	"CATALOG_GROUP_ID" => 11
+																	"CATALOG_GROUP_ID" => 13
 																)
 														);
 													if ($ar_res = $db_res->Fetch())
@@ -1647,9 +1663,9 @@ if ($property = $rsProperty->Fetch()) {
 			];
 		}
 		
-//echo "<pre>";
-//var_dump($arResult['PRICE_MATRIX']);
-//echo "</pre>";
+		//echo "<pre>";
+		//var_dump($arResult['PRICE_MATRIX']);
+		//echo "</pre>";
 
 
 		$minPrice["VALUE"] = $oldPrice;

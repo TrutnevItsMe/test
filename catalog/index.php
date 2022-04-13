@@ -41,7 +41,6 @@ $APPLICATION->IncludeComponent(
 			2 => "",
 		),
 		"FILTER_PRICE_CODE" => array(
-			0 => "РРЦ МОСКВА, СПБ",
 		),
 		"FILTER_OFFERS_FIELD_CODE" => array(
 			0 => "NAME",
@@ -304,8 +303,7 @@ $APPLICATION->IncludeComponent(
 		"COMPARE_ELEMENT_SORT_ORDER" => "asc",
 		"DISPLAY_ELEMENT_SELECT_BOX" => "N",
 		"PRICE_CODE" => array(
-			0 => "РРЦ МОСКВА, СПБ Акция/Распродажа",
-			1 => "РРЦ МОСКВА, СПБ",
+			0 => "РРЦ Константа",
 		),
 		"USE_PRICE_COUNT" => "Y",
 		"SHOW_PRICE_COUNT" => "1",
@@ -850,7 +848,7 @@ $APPLICATION->IncludeComponent(
 		"SECTION_ELEMENTS_TYPE_VIEW" => "list_elements_1",
 		"ELEMENT_TYPE_VIEW" => "FROM_MODULE",
 		"SHOW_ARTICLE_SKU" => "Y",
-		"SORT_REGION_PRICE" => "РРЦ МОСКВА, СПБ",
+		"SORT_REGION_PRICE" => "РРЦ 2022",
 		"LANDING_TYPE_VIEW" => "landing_1",
 		"BIGDATA_NORMAL" => "bigdata_1",
 		"BIGDATA_EXT" => "bigdata_2",

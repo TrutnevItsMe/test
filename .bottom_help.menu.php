@@ -23,7 +23,7 @@ $aMenuLinks = Array(
 	),
 	Array(
 		"Бренды", 
-		"/info/brands/", 
+		"/brands/", 
 		Array(), 
 		Array(), 
 		"" 
@@ -34,6 +34,6 @@ $aMenuLinks = Array(
 		Array(), 
 		Array(), 
 		"" 
-	),
+	)
 );
 ?>

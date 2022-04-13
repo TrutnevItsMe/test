@@ -1537,6 +1537,8 @@ if ($property = $rsProperty->Fetch()) {
 			}
 		}
 		$priceId = reset($arPriceTypeID);
+		//echo arPriceTypeID;
+		//die();
 		if (isset($arResult['PRICE_MATRIX']) && is_array($arResult['PRICE_MATRIX'])) {
 			$priceMatrix = $arResult['PRICE_MATRIX'];
 		} else {

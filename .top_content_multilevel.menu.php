@@ -51,7 +51,7 @@ $aMenuLinks = Array(
 	),
 	Array(
 		"Где купить", 
-		"/contacts/stores/", 
+		"/contacts/", 
 		Array(), 
 		Array(), 
 		"" 
@@ -65,7 +65,7 @@ $aMenuLinks = Array(
 	),
 	Array(
 		"Контакты", 
-		"/contacts/", 
+		"/contacts/sale.php", 
 		Array(), 
 		Array(), 
 		"" 

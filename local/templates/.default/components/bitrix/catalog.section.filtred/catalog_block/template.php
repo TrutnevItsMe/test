@@ -367,10 +367,10 @@
 																	array(),
 																	array(
 																			"PRODUCT_ID" => $arItem['ID'],
-																			"CATALOG_GROUP_ID" => 10
+																			"CATALOG_GROUP_ID" => 13
 																		)
 																);
-															if ($ar_res10 = $db_res->Fetch())
+															if ($ar_res13 = $db_res->Fetch())
 															{
 																//var_dump($ar_res);
 																 //echo CurrencyFormat($ar_res["PRICE"], $ar_res["CURRENCY"]);
@@ -384,35 +384,40 @@
 																	array(),
 																	array(
 																			"PRODUCT_ID" => $arItem['ID'],
-																			"CATALOG_GROUP_ID" => 11
+																			"CATALOG_GROUP_ID" => 14
 																		)
 																);
-															if ($ar_res = $db_res->Fetch())
+															if ($ar_res14 = $db_res->Fetch())
 															{
 																//var_dump($ar_res);
 																 //echo CurrencyFormat($ar_res["PRICE"], $ar_res["CURRENCY"]);
-																 $vigoda = $ar_res10['PRICE']-$ar_res["PRICE"];
+																 $vigoda = $ar_res13['PRICE']-$ar_res14["PRICE"];
 																 
 															}
 															?>
-										<?//var_dump($ar_res10)?>
+												<?//var_dump($ar_res13)?>
+												<?//var_dump($arItem['PRICE_MATRIX']["MATRIX"]);?>
 															<?
 															//$vigoda=intval($arResult['PRICE_MATRIX']["MATRIX"][10]["ZERO-INF"]["PRICE"])-intval($arResult['PRICE_MATRIX']["MATRIX"][11]["ZERO-INF"]["PRICE"]);
-														if($vigoda AND (intval($ar_res["PRICE"]))){
+															$discount_price = $arItem['PRICE_MATRIX']["MATRIX"][13]["ZERO-INF"]["PRICE"];
+															$price = $arItem['PRICE_MATRIX']["MATRIX"][14]["ZERO-INF"]["PRICE"];
+															$vigoda =  $price-$discount_price;
+														//if($vigoda AND (intval($ar_res14["PRICE"]))){
+														if($vigoda AND (intval($discount_price))){
 														?>
 														<table cellpadding="4">
 															<tr>
-																<td ><span style=""><?=number_format($arItem['PRICE_MATRIX']["MATRIX"][11]["ZERO-INF"]["PRICE"], 0, ',', ' ');?> ₽</span></td>
-																<?//var_dump($arItem['PRICE_MATRIX']["MATRIX"][10]);?>
-																<!--<td><span style=" padding-left: 8px;   color: #ff9900;    ">-<?=$vigoda?> ₽</span></td>-->
+																<td ><span style=""><?=number_format($arItem['PRICE_MATRIX']["MATRIX"][13]["ZERO-INF"]["PRICE"], 0, ',', ' ');?> руб.</span></td>
+																<?//var_dump($arItem['PRICE_MATRIX']["MATRIX"]);?>
+																<!--<td><span style=" padding-left: 8px;   color: #ff9900;    ">-<?=$vigoda?> ?</span></td>-->
 															<!--</tr>
 															<tr>-->
-																<td><s style="padding-left: 8px; color: #333; font-size:15px;font-weight: normal; "><?=number_format($arItem['PRICE_MATRIX']["MATRIX"][10]["ZERO-INF"]["PRICE"], 0, ',', ' ');?> ₽</s></td>
+																<td><s style="padding-left: 8px; color: #333; font-size:15px;font-weight: normal; "><?=number_format($arItem['PRICE_MATRIX']["MATRIX"][14]["ZERO-INF"]["PRICE"], 0, ',', ' ');?> руб.</s></td>
 															</tr>
 														</table>
 														<?}else{?>
 														
-														<?=number_format($arItem['PRICE_MATRIX']["MATRIX"][10]["ZERO-INF"]["PRICE"], 0, ',', ' ');?> ₽
+														<?=number_format($arItem['PRICE_MATRIX']["MATRIX"][13]["ZERO-INF"]["PRICE"], 0, ',', ' ');?> руб.
 														<?}
 														$vigoda=0;
 														?>

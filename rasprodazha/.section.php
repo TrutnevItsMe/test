@@ -1,6 +1,6 @@
 <?
 $sSectionName = "Распродажа";
-$arDirProperties = Array(
+$arDirProperties = array(
    "HIDE_LEFT_BLOCK" => "Y"
 );
 ?>

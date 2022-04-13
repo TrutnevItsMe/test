@@ -692,6 +692,7 @@ else
 		</script>
 		<?
 	}
+	
 	?><script>
 	$(function () {
         activateAgreementsField(<?=Json::encode($arResult['PARTNERS'])?>);

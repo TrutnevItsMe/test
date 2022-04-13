@@ -56,8 +56,6 @@ $APPLICATION->SetTitle("Оформление заказа");
 		"PICKUPS_PER_PAGE" => "5",
 		"SHOW_MAP_IN_PROPS" => "Y",
 		"SHOW_MAP_FOR_DELIVERIES" => array(
-			0 => "1",
-			1 => "2",
 		),
 		"PROPS_FADE_LIST_1" => array(
 			0 => "1",
@@ -120,7 +118,8 @@ $APPLICATION->SetTitle("Оформление заказа");
 		"ADDITIONAL_PICT_PROP_17" => "-",
 		"ADDITIONAL_PICT_PROP_20" => "-",
 		"HIDE_ORDER_DESCRIPTION" => "N",
-		"USE_ENHANCED_ECOMMERCE" => "N"
+		"USE_ENHANCED_ECOMMERCE" => "N",
+		"ADDITIONAL_PICT_PROP_26" => "-"
 	),
 	false
 );?>

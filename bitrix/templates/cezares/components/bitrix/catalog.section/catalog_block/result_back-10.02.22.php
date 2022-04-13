@@ -566,10 +566,13 @@ if (!empty($arResult['ITEMS'])){
 			}
 
 			// get MIN_PRICE
-			$arItem['MIN_PRICE'] = CNext::getMinPriceFromOffersExt(
+			$arItem['MIN_PRICE'] =
+			CNext::getMinPriceFromOffersExt(
 				$arItem['OFFERS'],
 				$boolConvert ? $arResult['CONVERT_CURRENCY']['CURRENCY_ID'] : $strBaseCurrency
 			);
+			
+			
 
 			// get MIN_PRICE_ID
 			$minItemPriceID = 0;
@@ -750,7 +753,7 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 					$price = 0;
 					$oldPrice = 0;	
 					$price_discount = 0;
-					//var_dump("mlkj");
+
 					foreach ($arItem['SET']['SET'] as $item) {
 						
 																$db_res = CPrice::GetList(
@@ -760,9 +763,9 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 																				"CATALOG_GROUP_ID" => 13
 																			)
 																	);
-																if ($ar_res13 = $db_res->Fetch())
+																if ($ar_res = $db_res->Fetch())
 																{
-																	$item['PRICE_DISCOUNT']= $ar_res13["PRICE"];
+																	$item['PRICE_DISCOUNT']= $ar_res["PRICE"];
 																	//var_dump($ar_res["PRICE"]);
 																
 																}else{
@@ -776,13 +779,13 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 																				"CATALOG_GROUP_ID" => 14
 																			)
 																	);
-																if ($ar_res14 = $db_res->Fetch())
+																if ($ar_res = $db_res->Fetch())
 																{
-																	$item['PRICE']= $ar_res14["PRICE"];
+																	$item['OLD_PRICE']= $ar_res["PRICE"];
 																	//var_dump($ar_res["PRICE"]);
 																
 																}else{
-																	$item['PRICE']= $item['PRICE'];
+																	$item['OLD_PRICE']= $item['PRICE'];
 																	
 																}
 						
@@ -790,12 +793,7 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 						$price_discount += floatval($item['PRICE_DISCOUNT']) * intval($item['AMOUNT']);
 						$oldPrice += floatval(isset($item['OLD_PRICE']) ? $item['OLD_PRICE'] : $item['PRICE'])
 							* intval($item['AMOUNT']);
-							
-						$ar_res13 =0;
-						$ar_res14 =0;
 					}
-					//echo $price."\n";
-					//echo $price_discount;
 					foreach ($arItem['SET']['OPTIONAL'] as $item) {
 						
 																$db_res = CPrice::GetList(
@@ -805,15 +803,15 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 																				"CATALOG_GROUP_ID" => 13
 																			)
 																	);
-																if ($ar_res13 = $db_res->Fetch())
+																if ($ar_res = $db_res->Fetch())
 																{
-																	$item['PRICE_DISCOUNT'] = $ar_res13["PRICE"];
-																	//var_dump($ar_res13["PRICE"]);
-
+																	$item['PRICE_DISCOUNT']= $ar_res["PRICE"];
+																	//var_dump($ar_res["PRICE"]);
+																
 																}else{
 																	$item['PRICE_DISCOUNT']= $item['PRICE'];
-
-																}
+																	
+																}						
 																$db_res = CPrice::GetList(
 																		array(),
 																		array(
@@ -821,30 +819,27 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 																				"CATALOG_GROUP_ID" => 14
 																			)
 																	);
-																if ($ar_res14 = $db_res->Fetch())
+																if ($ar_res = $db_res->Fetch())
 																{
-																	$item['PRICE'] = $ar_res14["PRICE"];
-																	//var_dump($ar_res14["PRICE"]);
-
+																	$item['OLD_PRICE']= $ar_res["PRICE"];
+																	//var_dump($ar_res["PRICE"]);
+																
 																}else{
-																	$item['PRICE']= $item['PRICE'];
-
+																	$item['OLD_PRICE']= $item['PRICE'];
+																	
 																}
 						
 						if($item['DEFAULT']) {
-							//var_dump($item);
-							//echo $item['ID'].'---'.$ar_res13["PRICE"]."|||";
 							$price += floatval($item['PRICE']) * intval($item['AMOUNT']);
 							$price_discount += floatval($item['PRICE_DISCOUNT']) * intval($item['AMOUNT']);
 							$oldPrice += floatval(isset($item['OLD_PRICE']) ? $item['OLD_PRICE'] : $item['PRICE'])
 								* intval($item['AMOUNT']);
 						}
 					}
-
-				
-				
-					
-					$priceId = reset($arPriceTypeID);
+					//var_dump($item['PRICE']);
+					$priceId = 13;
+					$arItem['PRICE_MATRIX'] = 0;
+					//$priceId =reset($arPriceTypeID);
 					
 					if (isset($arItem['PRICE_MATRIX']) && is_array($arItem['PRICE_MATRIX'])) {
 						$priceMatrix = $arItem['PRICE_MATRIX'];
@@ -874,8 +869,9 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 							"CAN_BUY" => $arPriceTypeID,
 						];
 					}
+					//var_dump($oldPrice);
 					if (is_array($priceMatrix)) {
-						/*$curPriceTypeId = array_key_first($priceMatrix['COLS']);
+						$curPriceTypeId = array_key_first($priceMatrix['COLS']);
 						$curPriceId= array_key_first($priceMatrix['MATRIX'][$curPriceTypeId]);
 						$priceMatrix['MATRIX'][$curPriceTypeId][$curPriceId]['PRICE'] = $oldPrice;
 						$priceMatrix['MATRIX'][$curPriceTypeId][$curPriceId]['DISCOUNT_PRICE'] = $price;
@@ -883,19 +879,9 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 							number_format($oldPrice, 2, '.', '&nbsp;') . "&nbsp;руб.";
 						$priceMatrix['MATRIX'][$curPriceTypeId][$curPriceId]['PRINT_DISCOUNT_PRICE'] =
 							number_format($price, 2, '.', '&nbsp;') . "&nbsp;руб.";
-						*/
-						
-						//$curPriceTypeId = array_key_first($priceMatrix['COLS']);
-						$curPriceId= "ZERO-INF"; //array_key_first($priceMatrix['MATRIX'][$curPriceTypeId]);
-						$priceMatrix['MATRIX'][14][$curPriceId]['PRICE'] = $price;
-						$priceMatrix['MATRIX'][13][$curPriceId]['DISCOUNT_PRICE'] = $price_discount;
-						$priceMatrix['MATRIX'][13][$curPriceId]['PRICE'] = $price_discount;
-						$priceMatrix['MATRIX'][14][$curPriceId]['PRINT_PRICE'] =
-							number_format($oldPrice, 2, '.', '&nbsp;') . "&nbsp;руб.";
-						$priceMatrix['MATRIX'][13][$curPriceId]['PRINT_DISCOUNT_PRICE'] =
-							number_format($price_discount, 2, '.', '&nbsp;') . "&nbsp;руб.";
 							
-						//$priceMatrix['MATRIX'][13]["ZERO-INF"]['PRICE'] = 1000;//$price_discount;
+						$priceMatrix['MATRIX'][13]["ZERO-INF"]['PRICE'] = $price_discount;
+						$priceMatrix['MATRIX'][14]["ZERO-INF"]['PRICE'] = $oldPrice;
 					}
 
 					$arItem['PRICE_MATRIX'] = $priceMatrix;
@@ -915,27 +901,9 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 					$minPrice["DISCOUNT_VALUE"] = $price;
 					$minPrice["PRINT_DISCOUNT_VALUE"] = number_format($price, 2, '.', '&nbsp;')
 						. "&nbsp;руб.";
-				}else{
+				}else
+				{
 					
-					$db_res = CPrice::GetList(
-							array(),
-							array(
-									"PRODUCT_ID" => $arItem['ID'],
-									"CATALOG_GROUP_ID" => 13
-								)
-						);
-					if ($ar_res13 = $db_res->Fetch())
-					{
-						$item['PRICE_DISCOUNT']= $ar_res13["PRICE"];
-						//var_dump($ar_res["PRICE"]);
-					
-					}else{
-						$item['PRICE_DISCOUNT']= $item['PRICE'];
-
-					}
-
-					$arItem["PRICE_MATRIX"]['MATRIX'][13]["ZERO-INF"]['PRICE'] = floatval($item['PRICE_DISCOUNT']);
-
 					$db_res = CPrice::GetList(
 							array(),
 							array(
@@ -943,33 +911,37 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 									"CATALOG_GROUP_ID" => 14
 								)
 						);
-					if ($ar_res14 = $db_res->Fetch())
+					if ($ar_res = $db_res->Fetch())
 					{
-						$item['PRICE']= $ar_res14["PRICE"];
+						$item['PRICE_DISCOUNT']= $ar_res["PRICE"];
 						//var_dump($ar_res["PRICE"]);
 					
 					}else{
-						$item['PRICE']= $item['PRICE'];
-
+						$item['PRICE_DISCOUNT']= $item['PRICE'];
+						
 					}
-
-					$arItem["PRICE_MATRIX"]['MATRIX'][14]["ZERO-INF"]['PRICE'] = floatval($item['PRICE']);
+					
+					$arItem["PRICE_MATRIX"]['MATRIX'][13]["ZERO-INF"]['PRICE'] = floatval($item['PRICE_DISCOUNT']);
 				}	
 					
 			}
 			
 					//echo "<pre>";
 					//var_dump($arItem['ID']);
-					//var_dump($arItem["PRICE_MATRIX"]['MATRIX'][10]["ZERO-INF"]['PRICE']);
-					//var_dump($arItem["PRICE_MATRIX"]['MATRIX'][11]["ZERO-INF"]['PRICE']);
+					//var_dump($arItem["PRICE_MATRIX"]['MATRIX'][13]["ZERO-INF"]['PRICE']);
+					//var_dump($arItem["PRICE_MATRIX"]['MATRIX'][14]["ZERO-INF"]['PRICE']);
 					//echo "</pre>";
 		$items_new[]= $arItem;
 		$arItem = '';
-		$item['PRICE'] = '';
 	}
 }
 
 $arResult['ITEMS'] ='';
 $arResult['ITEMS'] = $items_new;
+
+
+//$arItem['MIN_PRICE']=1;
+//$arItem['MIN_PRICE']['VALUE']=1;
+
 			// print_r($arResult);
 ?>

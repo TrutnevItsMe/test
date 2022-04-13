@@ -152,7 +152,7 @@ $arUrlRewrite=array (
     'PATH' => '/contacts/page_contacts_3.php',
     'SORT' => 100,
   ),
-  31 => 
+  38 => 
   array (
     'CONDITION' => '#^/catalog/#',
     'RULE' => '',
@@ -160,7 +160,7 @@ $arUrlRewrite=array (
     'PATH' => '/catalog/index.php',
     'SORT' => 100,
   ),
-  35 => 
+  37 => 
   array (
     'CONDITION' => '#^/brands/#',
     'RULE' => '',

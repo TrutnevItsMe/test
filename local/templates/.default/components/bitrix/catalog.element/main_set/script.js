@@ -4251,6 +4251,7 @@ var group=$(this).data('group');
         if (price.price > 0) {
             showPrice(price);
         }
+        alert(121);
 
 
 			$('#set_item_base_img_'+group).html('<img src="'+$(this).data('img')+'" />');
