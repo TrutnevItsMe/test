@@ -363,36 +363,9 @@
 															
 															
 															<?
-															$db_res = CPrice::GetList(
-																	array(),
-																	array(
-																			"PRODUCT_ID" => $arItem['ID'],
-																			"CATALOG_GROUP_ID" => 13
-																		)
-																);
-															if ($ar_res13 = $db_res->Fetch())
+															if (isset($arItem["CATALOG_PRICE_13"]) && isset($arItem["CATALOG_PRICE_14"]))
 															{
-																//var_dump($ar_res);
-																 //echo CurrencyFormat($ar_res["PRICE"], $ar_res["CURRENCY"]);
-																 //
-																 
-															}
-															?>	
-															
-															<?
-															$db_res = CPrice::GetList(
-																	array(),
-																	array(
-																			"PRODUCT_ID" => $arItem['ID'],
-																			"CATALOG_GROUP_ID" => 14
-																		)
-																);
-															if ($ar_res14 = $db_res->Fetch())
-															{
-																//var_dump($ar_res);
-																 //echo CurrencyFormat($ar_res["PRICE"], $ar_res["CURRENCY"]);
-																 $vigoda = $ar_res13['PRICE']-$ar_res14["PRICE"];
-																 
+																$vigoda = $arItem["CATALOG_PRICE_13"] - $arItem["CATALOG_PRICE_14"];
 															}
 															?>
 												<?//var_dump($ar_res13)?>

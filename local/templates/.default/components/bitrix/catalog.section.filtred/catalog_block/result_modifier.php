@@ -727,12 +727,7 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 				CNextCache::$arIBlocks[SITE_ID]['aspro_next_catalog']['aspro_next_catalog'][0]
 			);
 			$productId = $arItem['ID'];
-			$rsProperty = CIBlockElement::GetProperty(
-				$catalogIblockID,
-				$productId,
-				[],
-				["CODE" => "COMPOSITION"]
-			);
+
 			if (!function_exists('array_key_first')) {
 				function array_key_first(array $arr) {
 					foreach($arr as $key => $unused) {
@@ -742,8 +737,9 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 				}
 			}
 				
-			if ($property = $rsProperty->Fetch()) {
-				
+			if (isset($arItem["PROPERTIES"]["COMPOSITION"])) {
+
+				$property = $arItem["PROPERTIES"]["COMPOSITION"];
 				if (is_array($value = $property['VALUE'])) {
 					$arItem["SET"] = Sets::getSet($value['TEXT']);
 					// Посчитаем цену комплекта
@@ -916,17 +912,10 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 					$minPrice["PRINT_DISCOUNT_VALUE"] = number_format($price, 2, '.', '&nbsp;')
 						. "&nbsp;руб.";
 				}else{
-					
-					$db_res = CPrice::GetList(
-							array(),
-							array(
-									"PRODUCT_ID" => $arItem['ID'],
-									"CATALOG_GROUP_ID" => 13
-								)
-						);
-					if ($ar_res13 = $db_res->Fetch())
+
+					if (isset($arItem["CATALOG_PRICE_13"]))
 					{
-						$item['PRICE_DISCOUNT']= $ar_res13["PRICE"];
+						$item['PRICE_DISCOUNT'] = $arItem["CATALOG_PRICE_13"];
 						//var_dump($ar_res["PRICE"]);
 					
 					}else{
@@ -936,16 +925,9 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 
 					$arItem["PRICE_MATRIX"]['MATRIX'][13]["ZERO-INF"]['PRICE'] = floatval($item['PRICE_DISCOUNT']);
 
-					$db_res = CPrice::GetList(
-							array(),
-							array(
-									"PRODUCT_ID" => $arItem['ID'],
-									"CATALOG_GROUP_ID" => 14
-								)
-						);
-					if ($ar_res14 = $db_res->Fetch())
+					if (isset($arItem["CATALOG_PRICE_14"]))
 					{
-						$item['PRICE']= $ar_res14["PRICE"];
+						$item['PRICE']= $arItem["CATALOG_PRICE_14"];
 						//var_dump($ar_res["PRICE"]);
 					
 					}else{
