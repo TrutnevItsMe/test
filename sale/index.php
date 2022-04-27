@@ -1,5 +1,3 @@
-
-
 <?
 //$GLOBALS["page_css"] = 'Catalog';
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
@@ -27,6 +25,10 @@ $APPLICATION->SetTitle("Акции");
 	else{
 		$template = 'main';
 	}
+
+	global $arrFilter;
+	$arrFilter["PROPERTY"] = ["HIT" => PROP_HIT_SALE_VALUE_ID];
+
 	?>
 	<?$APPLICATION->IncludeComponent(
 	"bitrix:catalog.smart.filter", 
@@ -36,7 +38,7 @@ $APPLICATION->SetTitle("Акции");
 		"IBLOCK_ID" => "17",
 		"AJAX_FILTER_FLAG" => $isAjaxFilter,
 		"SECTION_ID" => "",
-		"FILTER_NAME" => $arParams["FILTER_NAME"],
+		"FILTER_NAME" => "arrFilter",
 		"PRICE_CODE" => array(
 		),
 		"CACHE_TYPE" => "A",
@@ -82,9 +84,6 @@ $APPLICATION->SetTitle("Акции");
 	"bitrix:catalog.section.filtred", 
 	"catalog_block", 
 	array(
-		"MY_FILTER" => array(
-			"HIT" => "68",
-		),
 		"IBLOCK_TYPE" => "aspro_next_catalog",
 		"IBLOCK_ID" => "17",
 		"SECTION_ID" => $_REQUEST["SECTION_ID"],
