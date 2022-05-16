@@ -5,6 +5,18 @@ use Bitrix\Main\Localization\Loc;
 //$APPLICATION->AddChainItem(Loc::getMessage("SPS_CHAIN_MAIN"), $arResult['SEF_FOLDER']);
 $APPLICATION->AddChainItem(Loc::getMessage("SPS_CHAIN_ORDERS"), $arResult['PATH_TO_ORDERS']);?>
 <div class="personal_wrapper">
+    <?$APPLICATION->IncludeComponent(
+        "bitrix:main.profile",
+        "profile",
+        Array(
+            "SET_TITLE" => "Y",
+            "AJAX_MODE" => $arParams['AJAX_MODE_PRIVATE'],
+            "SEND_INFO" => $arParams["SEND_INFO_PRIVATE"],
+            "CHECK_RIGHTS" => $arParams['CHECK_RIGHTS_PRIVATE'],
+            "MANAGERS_ONLY" => "Y",
+        ),
+        $component
+    );?>
 	<div class="orders_wrapper">
 		<?$APPLICATION->IncludeComponent(
 			"bitrix:sale.personal.order.list",

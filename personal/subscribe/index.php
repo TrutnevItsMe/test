@@ -3,6 +3,17 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Подписка на новости");
 ?>
 <?$APPLICATION->IncludeComponent(
+	"bitrix:main.profile",
+	"profile",
+	Array(
+		"SET_TITLE" => "Y",
+		"SEND_INFO" => "Y",
+		"CHECK_RIGHTS" => "Y",
+		"MANAGERS_ONLY" => "Y",
+	),
+	$component
+);?>
+<?$APPLICATION->IncludeComponent(
 	"bitrix:subscribe.edit",
 	"main",
 	Array(

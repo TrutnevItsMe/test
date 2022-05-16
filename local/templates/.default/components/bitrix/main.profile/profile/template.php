@@ -22,7 +22,7 @@ list($bPhoneAuthSupported, $bPhoneAuthShow, $bPhoneAuthRequired, $bPhoneAuthUse)
 		<div class="alert alert-success"><?=GetMessage('main_profile_code_sent')?></div>
 	<?endif;?>
 	<?if ($arResult['POMOSHNIKI']):?>
-	<div class="iv-pomoshniki" style="border-bottom: 1px solid #f2f2f2;margin: 0 -43px 20px -43px;padding: 0 43px 20px 43px;">
+	<div class="iv-pomoshniki" <?if ($arParams["MANAGERS_ONLY"] != "Y"):?>style="border-bottom: 1px solid #f2f2f2;margin: 0 -43px 20px -43px;padding: 0 43px 20px 43px;"<?endif;?>>
 		<?if($arResult['POMOSHNIKI']['UF_OSNOVNOYMENEDZHER']):?>
 		<div>
 			<label>Основной менеджер:</label>
@@ -61,6 +61,7 @@ list($bPhoneAuthSupported, $bPhoneAuthShow, $bPhoneAuthRequired, $bPhoneAuthUse)
 		endfor?>
 	</div>
 	<?endif?>
+    <?if ($arParams["MANAGERS_ONLY"] != "Y") :?>
 	<div class="form-block-wr">
 		<?if($arResult["SHOW_SMS_FIELD"] && !$arResult["strProfileError"]):?>
 			<form method="post" name="form1" class="main" action="<?=$arResult["FORM_TARGET"]?>?" enctype="multipart/form-data">
@@ -239,4 +240,5 @@ list($bPhoneAuthSupported, $bPhoneAuthShow, $bPhoneAuthRequired, $bPhoneAuthUse)
 		$(".form-block-wr form").validate({rules:{ EMAIL: { email: true }}	});
 	})
 	</script>
+    <?endif;?>
 </div>

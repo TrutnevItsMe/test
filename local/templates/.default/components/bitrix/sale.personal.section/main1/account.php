@@ -12,6 +12,18 @@ $APPLICATION->SetTitle(Loc::getMessage("SPS_TITLE_ACCOUNT"));
 $APPLICATION->AddChainItem(Loc::getMessage("SPS_CHAIN_ACCOUNT"));
 ?>
 <div class="personal_wrapper">
+    <?$APPLICATION->IncludeComponent(
+        "bitrix:main.profile",
+        "profile",
+        Array(
+            "SET_TITLE" => "Y",
+            "AJAX_MODE" => $arParams['AJAX_MODE_PRIVATE'],
+            "SEND_INFO" => $arParams["SEND_INFO_PRIVATE"],
+            "MANAGERS_ONLY" => "Y",
+            "CHECK_RIGHTS" => $arParams['CHECK_RIGHTS_PRIVATE']
+        ),
+        $component
+    );?>
 	<div class="inner_border">
 		<?if ($arParams['SHOW_ACCOUNT_COMPONENT'] !== 'N')
 		{

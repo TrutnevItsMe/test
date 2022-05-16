@@ -4,6 +4,18 @@
 	if(!$USER->isAuthorized()){LocalRedirect(SITE_DIR.'auth');} else {
 ?>
 
+<?$APPLICATION->IncludeComponent(
+	"bitrix:main.profile",
+	"profile",
+	Array(
+		"SET_TITLE" => "Y",
+		"SEND_INFO" => "Y",
+		"CHECK_RIGHTS" => "Y",
+		"MANAGERS_ONLY" => "Y",
+	),
+	$component
+);?>
+
 <?$APPLICATION->IncludeComponent("bitrix:main.profile", "change_password", array(
 	"AJAX_MODE" => "N",
 	"AJAX_OPTION_JUMP" => "N",
