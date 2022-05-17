@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="e3e7b45e-5180-4075-816c-28275bb2f5c1" name="trutnev-Iberis">
+        <fileTransfer rootFolder="/home/bitrix/ext_www/trutnev-iberis-group.ivsupport.ru" accessType="SFTP" host="95.217.76.210" port="22" sshConfigId="197009dd-20b5-4953-892b-d783273d866a" sshConfig="bitrix@95.217.76.210:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
