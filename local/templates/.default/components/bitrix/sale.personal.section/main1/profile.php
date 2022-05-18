@@ -20,7 +20,7 @@ $APPLICATION->AddChainItem(Loc::getMessage("SPS_CHAIN_PROFILE"));?>
         $component
     );?>
 	<?$APPLICATION->IncludeComponent(
-		"bitrix:sale.personal.profile.list",
+		"iv:sale.personal.profile.list",
 		"",
 		array(
 			"PATH_TO_DETAIL" => $arResult['PATH_TO_PROFILE_DETAIL'],
