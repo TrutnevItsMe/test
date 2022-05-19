@@ -50,7 +50,7 @@ class Form extends EventHandler {
 				"ANSWER_PATRONYMIC" => $webFormResult["PATRONYMIC"][0]["USER_TEXT"],
 				"ANSWER_EMAIL" => $webFormResult["EMAIL"][0]["USER_TEXT"],
 				"ANSWER_LOGIN" => $webFormResult["LOGIN"][0]["USER_TEXT"],
-				"ANSWER_PASSWORD" => $webFormResult["PASSWORD"][0]["USER_TEXT"],
+				"ANSWER_PASSWORD" => md5($webFormResult["PASSWORD"][0]["USER_TEXT"]),
 				"ANSWER_PHONE" => $webFormResult["PHONE"][0]["USER_TEXT"],
 				"ANSWER_BIRTHDATE" => $webFormResult["BIRTHDATE"][0]["USER_DATE"],
 				"ANSWER_SEX" => $sex
