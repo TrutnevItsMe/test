@@ -1,7 +1,7 @@
 <?php
-namespace Intervolga\Custom\Import;
+namespace Intervolga\Custom;
 
-CModule::IncludeModule("aspro.next");
+\CModule::IncludeModule("aspro.next");
 
 class CNextCustom extends \CNext
 {
@@ -12,8 +12,8 @@ class CNextCustom extends \CNext
             ($arParams['USE_REGION'] == 'Y' || intval($arParams['USE_REGION']) > 0) &&
             $arParams['STORES']
         ){
-            $arSelect = array('ID', 'PRODUCT_AMOUNT');
-            $arFilter = array('ACTIVE' => 'Y', 'ID' => $arParams['STORES']);
+            $arSelect = array('STORE_ID', 'AMOUNT');
+            $arFilter = array('STORE.ACTIVE' => 'Y', 'STORE.ID' => $arParams['STORES']);
 
             if($arItem['OFFERS']){
                 $arOffers = array_column($arItem['OFFERS'], 'ID');
@@ -21,9 +21,13 @@ class CNextCustom extends \CNext
                 if($arOffers){
                     $quantity = 0;
 
-                    $rsStore = CCatalogStore::GetList(array(), array_merge($arFilter, array('PRODUCT_ID' => $arOffers)), false, false, $arSelect);
-                    while($arStore = $rsStore->Fetch()){
-                        $quantity += $arStore['PRODUCT_AMOUNT'];
+                    $rsStore = \Bitrix\Catalog\StoreProductTable::getList(array(
+                        'order' => ["STORE_ID" => "ASC"],
+                        'filter' => array_merge($arFilter, array('PRODUCT_ID' => $arOffers)),
+                        'select' => $arSelect,
+                    ));
+                    while($arStore = $rsStore->fetch()){
+                        $quantity += $arStore['AMOUNT'];
                     }
 
                     $totalCount = $quantity;
@@ -36,7 +40,7 @@ class CNextCustom extends \CNext
                 if(!$arItem['SET_ITEMS']){
                     $arItem['SET_ITEMS'] = array();
 
-                    if($arSets = CCatalogProductSet::getAllSetsByProduct($arItem['ID'], 1)){
+                    if($arSets = \CCatalogProductSet::getAllSetsByProduct($arItem['ID'], 1)){
                         $arSets = reset($arSets);
 
                         foreach($arSets['ITEMS'] as $v){
@@ -50,12 +54,16 @@ class CNextCustom extends \CNext
                 $arProductSet = $arItem['SET_ITEMS'] ? array_column($arItem['SET_ITEMS'], 'ID') : array();
 
                 if($arProductSet){
-                    $arSelect[] = 'ELEMENT_ID';
+                    $arSelect[] = 'PRODUCT_ID';
                     $quantity = array();
 
-                    $rsStore = CCatalogStore::GetList(array(), array_merge($arFilter, array('PRODUCT_ID' => $arProductSet)), false, false, $arSelect);
+                    $rsStore = \Bitrix\Catalog\StoreProductTable::getList(array(
+                        'order' => ["STORE_ID" => "ASC"],
+                        'filter' => array_merge($arFilter, array('PRODUCT_ID' => $arProductSet)),
+                        'select' => $arSelect,
+                    ));
                     while($arStore = $rsStore->Fetch()){
-                        $quantity[$arStore['ELEMENT_ID']] += $arStore['PRODUCT_AMOUNT'];
+                        $quantity[$arStore['PRODUCT_ID']] += $arStore['AMOUNT'];
                     }
 
                     if($quantity){
@@ -68,9 +76,13 @@ class CNextCustom extends \CNext
                 }
             }
             else{
-                $rsStore = CCatalogStore::GetList(array(), array_merge($arFilter, array('PRODUCT_ID' => $arItem['ID'])), false, false, $arSelect);
+                $rsStore = \Bitrix\Catalog\StoreProductTable::getList(array(
+                    'order' => ["STORE_ID" => "ASC"],
+                    'filter' => array_merge($arFilter, array('PRODUCT_ID' => $arItem['ID'])),
+                    'select' => $arSelect,
+                ));
                 while($arStore = $rsStore->Fetch()){
-                    $quantity += $arStore['PRODUCT_AMOUNT'];
+                    $quantity += $arStore['AMOUNT'];
                 }
 
                 $totalCount = $quantity;

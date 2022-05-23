@@ -430,7 +430,7 @@ if (!empty($arResult['ITEMS'])){
 						unset($arOneProp);
 					}
 
-					$totalCount = CNext::GetTotalCount($arOffer, $arParams);
+					$totalCount = \Intervolga\Custom\CNextCustom::GetTotalCount($arOffer, $arParams);
 					$arOffer['IS_OFFER'] = 'Y';
 					$arOffer['IBLOCK_ID'] = $arResult['IBLOCK_ID'];
 
