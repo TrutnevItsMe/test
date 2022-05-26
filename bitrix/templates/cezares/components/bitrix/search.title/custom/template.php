@@ -9,14 +9,6 @@ $CONTAINER_ID = trim($arParams["~CONTAINER_ID"]);
 if(strlen($CONTAINER_ID) <= 0)
 	$CONTAINER_ID = "title-search";
 $CONTAINER_ID = CUtil::JSEscape($CONTAINER_ID);
-
-global $isFixedTopSearch;
-$INPUT_ID_TMP = $INPUT_ID;
-if(isset($isFixedTopSearch) && $isFixedTopSearch)
-{
-	$CONTAINER_ID .= 'tf';
-	$INPUT_ID .= 'tf';
-}
 ?>
 <?if($arParams["SHOW_INPUT"] !== "N"):?>
 	<div class="inline-search-block fixed with-close big">
@@ -45,7 +37,7 @@ if(isset($isFixedTopSearch) && $isFixedTopSearch)
 		'AJAX_PAGE' : '<?=CUtil::JSEscape(POST_FORM_ACTION_URI)?>',
 		'CONTAINER_ID': '<?=$CONTAINER_ID?>',
 		'INPUT_ID': '<?=$INPUT_ID?>',
-		'INPUT_ID_TMP': '<?=$INPUT_ID_TMP?>',
+		'INPUT_ID_TMP': '<?=$INPUT_ID?>',
 		'MIN_QUERY_LEN': 2
 	});
 </script>
