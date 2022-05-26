@@ -18,7 +18,7 @@ $CONTAINER_ID = CUtil::JSEscape($CONTAINER_ID);
 					<div id="<?=$CONTAINER_ID?>">
 						<form action="<?=$arResult["FORM_ACTION"]?>" class="search">
 							<div class="search-input-div">
-								<input class="search-input" id="<?=$INPUT_ID?>" type="text" name="q" value="" placeholder="<?=GetMessage("CT_BST_SEARCH_BUTTON")?>" size="20" maxlength="50" autocomplete="off" />
+								<input class="search-input" id="<?=$INPUT_ID?>" type="text" name="q" value="" placeholder="<?=GetMessage("CT_BST_SEARCH_BUTTON")?>" size="20" maxlength="500" autocomplete="off" />
 							</div>
 							<div class="search-button-div">
 								<button class="btn btn-search btn-default bold btn-lg" type="submit" name="s" value="<?=GetMessage("CT_BST_SEARCH_BUTTON2")?>"><?=GetMessage("CT_BST_SEARCH_BUTTON2")?></button>
