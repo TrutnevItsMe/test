@@ -371,7 +371,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 			</div>
 			<div class="buy_block">
 
-				<?if(!$arResult["OFFERS"]):?>
+				<?if(!$arResult["OFFERS"] && !isset($arResult["SET"])):?>
 					<div class="counter_wrapp">
 						<?if(($arAddToBasketData["OPTIONS"]["USE_PRODUCT_QUANTITY_DETAIL"] && $arAddToBasketData["ACTION"] == "ADD") && $arAddToBasketData["CAN_BUY"]):?>
 							<div class="counter_block" data-offers="<?=($arResult["OFFERS"] ? "Y" : "N");?>" data-item="<?=$arResult["ID"];?>" <?=(($arResult["OFFERS"] && $arParams["TYPE_SKU"]=="N") ? "style='display: none;'" : "");?>>
