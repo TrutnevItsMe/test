@@ -498,7 +498,7 @@
 										<?}?>
 									<?}?>
 								</div>
-								<?if(!$arItem["OFFERS"] || $arParams['TYPE_SKU'] !== 'TYPE_1'):?>
+								<?if((!$arItem["OFFERS"] || $arParams['TYPE_SKU'] !== 'TYPE_1') && !isset($arItem["SET"])):?>
 									<div class="counter_wrapp <?=($arItem["OFFERS"] && $arParams["TYPE_SKU"] == "TYPE_1" ? 'woffers' : '')?>">
 										<?if(($arAddToBasketData["OPTIONS"]["USE_PRODUCT_QUANTITY_LIST"] && $arAddToBasketData["ACTION"] == "ADD") && $arAddToBasketData["CAN_BUY"]):?>
 											<div class="counter_block" data-offers="<?=($arItem["OFFERS"] ? "Y" : "N");?>" data-item="<?=$arItem["ID"];?>">
@@ -580,7 +580,7 @@
 												</script>
 											<?endif;?>
 										<?}?>
-									<?}?>ЙУЦЙУЦ
+									<?}?>
 									<div class="counter_wrapp ce_cmp_visible">
 										<div id="<?=$arItemIDs["ALL_ITEM_IDS"]['BASKET_ACTIONS']; ?>" class="button_block wide">
 											<a class="btn btn-default basket read_more" rel="nofollow" data-item="<?=$arItem['ID']?>" href="<?=$arItem['DETAIL_PAGE_URL']?>"><?=GetMessage('CATALOG_READ_MORE')?></a>

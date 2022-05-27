@@ -1,5 +1,3 @@
-
-
 <?
 //$GLOBALS["page_css"] = 'Catalog';
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
@@ -27,6 +25,10 @@ $APPLICATION->SetTitle("Акции");
 	else{
 		$template = 'main';
 	}
+
+	global $arrFilter;
+	$arrFilter["PROPERTY"] = ["HIT" => PROP_HIT_SALE_VALUE_ID];
+
 	?>
 	<?$APPLICATION->IncludeComponent(
 	"bitrix:catalog.smart.filter", 
@@ -36,7 +38,7 @@ $APPLICATION->SetTitle("Акции");
 		"IBLOCK_ID" => "17",
 		"AJAX_FILTER_FLAG" => $isAjaxFilter,
 		"SECTION_ID" => "",
-		"FILTER_NAME" => $arParams["FILTER_NAME"],
+		"FILTER_NAME" => "arrFilter",
 		"PRICE_CODE" => array(
 		),
 		"CACHE_TYPE" => "A",
@@ -78,13 +80,22 @@ $APPLICATION->SetTitle("Акции");
 
 <div class="right_block  wide_N">
 
-	 <?$APPLICATION->IncludeComponent(
+<?
+$isAjax="N";
+if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest"  && isset($_GET["ajax_get"]) && $_GET["ajax_get"] == "Y" || (isset($_GET["ajax_basket"]) && $_GET["ajax_basket"]=="Y"))
+{
+    $isAjax="Y";
+    $APPLICATION->RestartBuffer();
+}
+?>
+<?if($isAjax === 'N'):?>
+	<div class="ajax_load block">
+<?endif;?>
+
+<?$APPLICATION->IncludeComponent(
 	"bitrix:catalog.section.filtred", 
 	"catalog_block", 
 	array(
-		"MY_FILTER" => array(
-			"HIT" => "68",
-		),
 		"IBLOCK_TYPE" => "aspro_next_catalog",
 		"IBLOCK_ID" => "17",
 		"SECTION_ID" => $_REQUEST["SECTION_ID"],
@@ -93,6 +104,7 @@ $APPLICATION->SetTitle("Акции");
 			0 => "",
 			1 => "",
 		),
+		"AJAX_REQUEST" => $isAjax,
 		"ELEMENT_SORT_FIELD" => "name",
 		"ELEMENT_SORT_ORDER" => "asc",
 		"ELEMENT_SORT_FIELD2" => "sort",
@@ -101,7 +113,7 @@ $APPLICATION->SetTitle("Акции");
 		"INCLUDE_SUBSECTIONS" => "Y",
 		"SHOW_ALL_WO_SECTION" => "Y",
 		"HIDE_NOT_AVAILABLE" => "N",
-		"PAGE_ELEMENT_COUNT" => "30",
+		"PAGE_ELEMENT_COUNT" => "20",
 		"LINE_ELEMENT_COUNT" => "4",
 		"PROPERTY_CODE" => array(
 			0 => "CML2_ARTICLE",
@@ -185,6 +197,9 @@ $APPLICATION->SetTitle("Акции");
 	),
 	false
 );?>
+<?if($isAjax === 'N'):?>
+	</div>
+<?endif;?>
 </div>
 
  <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

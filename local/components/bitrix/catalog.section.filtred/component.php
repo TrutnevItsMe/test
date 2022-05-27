@@ -696,9 +696,6 @@ if($this->StartResultCache(false, array($arrFilter, ($arParams["CACHE_GROUPS"]==
 	$arSections = array();
 
 	//EXECUTE
-	$arrFilter["PROPERTY"]= $arParams["MY_FILTER"];// array("HIT"=>"68");
-	//var_dump($arrFilter);
-	
 	$rsElements = CIBlockElement::GetList($arSort, array_merge($arrFilter, $arFilter), false, $arNavParams, $arSelect);
 	$rsElements->SetUrlTemplates($arParams["DETAIL_URL"]);
 	if($arParams["BY_LINK"]!=="Y" && !$arParams["SHOW_ALL_WO_SECTION"])
