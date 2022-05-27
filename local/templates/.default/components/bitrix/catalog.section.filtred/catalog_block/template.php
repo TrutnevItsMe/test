@@ -359,42 +359,29 @@
 									<div class="price_matrix_block"><div style="display: none;">50 rub.</div>
 										<div class="price_matrix_wrapper ">
 											<div class="price" data-currency="RUB" data-value="<?=$arItem['PRICE']?>"><div style="display: none;">50 rub.</div>
-												
-															
-															
-															<?
-															if (isset($arItem["CATALOG_PRICE_13"]) && isset($arItem["CATALOG_PRICE_14"]))
-															{
-																$vigoda = $arItem["CATALOG_PRICE_13"] - $arItem["CATALOG_PRICE_14"];
-															}
-															?>
-												<?//var_dump($ar_res13)?>
-												<?//var_dump($arItem['PRICE_MATRIX']["MATRIX"]);?>
-															<?
-															//$vigoda=intval($arResult['PRICE_MATRIX']["MATRIX"][10]["ZERO-INF"]["PRICE"])-intval($arResult['PRICE_MATRIX']["MATRIX"][11]["ZERO-INF"]["PRICE"]);
-															$discount_price = $arItem['PRICE_MATRIX']["MATRIX"][13]["ZERO-INF"]["PRICE"];
-															$price = $arItem['PRICE_MATRIX']["MATRIX"][14]["ZERO-INF"]["PRICE"];
-															$vigoda =  $price-$discount_price;
-														//if($vigoda AND (intval($ar_res14["PRICE"]))){
-														if($vigoda AND (intval($discount_price))){
-														?>
-														<table cellpadding="4">
-															<tr>
-																<td ><span style=""><?=number_format($arItem['PRICE_MATRIX']["MATRIX"][13]["ZERO-INF"]["PRICE"], 0, ',', ' ');?> руб.</span></td>
-																<?//var_dump($arItem['PRICE_MATRIX']["MATRIX"]);?>
-																<!--<td><span style=" padding-left: 8px;   color: #ff9900;    ">-<?=$vigoda?> ?</span></td>-->
-															<!--</tr>
-															<tr>-->
-																<td><s style="padding-left: 8px; color: #333; font-size:15px;font-weight: normal; "><?=number_format($arItem['PRICE_MATRIX']["MATRIX"][14]["ZERO-INF"]["PRICE"], 0, ',', ' ');?> руб.</s></td>
-															</tr>
-														</table>
-														<?}else{?>
-														
-														<?=number_format($arItem['PRICE_MATRIX']["MATRIX"][13]["ZERO-INF"]["PRICE"], 0, ',', ' ');?> руб.
-														<?}
-														$vigoda=0;
-														?>
-										
+												<?
+												if (isset($arItem["CATALOG_PRICE_".$arParams["PRICE_RRC_2022_ID"]]) && isset($arItem["CATALOG_PRICE_".$arParams["PRICE_RRC_KONSTANTA_ID"]]))
+												{
+													$vigoda = $arItem["CATALOG_PRICE_".$arParams["PRICE_RRC_2022_ID"]] - $arItem["CATALOG_PRICE_".$arParams["PRICE_RRC_KONSTANTA_ID"]];
+												}
+
+												$discount_price = $arItem['PRICE_MATRIX']["MATRIX"][$arParams["PRICE_RRC_2022_ID"]]["ZERO-INF"]["PRICE"];
+												$price = $arItem['PRICE_MATRIX']["MATRIX"][$arParams["PRICE_RRC_KONSTANTA_ID"]]["ZERO-INF"]["PRICE"];
+												$vigoda =  $price-$discount_price;
+
+												if($vigoda AND (intval($discount_price))){
+												?>
+												<table cellpadding="4">
+													<tr>
+														<td ><span style=""><?=number_format($arItem['PRICE_MATRIX']["MATRIX"][$arParams["PRICE_RRC_2022_ID"]]["ZERO-INF"]["PRICE"], 0, ',', ' ');?> руб.</span></td>
+														<td><s style="padding-left: 8px; color: #333; font-size:15px;font-weight: normal; "><?=number_format($arItem['PRICE_MATRIX']["MATRIX"][$arParams["PRICE_RRC_KONSTANTA_ID"]]["ZERO-INF"]["PRICE"], 0, ',', ' ');?> руб.</s></td>
+													</tr>
+												</table>
+												<?}else{?>
+													<?=number_format($arItem['PRICE_MATRIX']["MATRIX"][$arParams["PRICE_RRC_2022_ID"]]["ZERO-INF"]["PRICE"], 0, ',', ' ');?> руб.
+												<?}
+												$vigoda=0;
+												?>
 											</div>
 										</div>
 									</div>
