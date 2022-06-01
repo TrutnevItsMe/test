@@ -1057,4 +1057,9 @@ if(is_array($arParams["SECTION_TIZER"]) && $arParams["SECTION_TIZER"]){
 		$obCache->EndDataCache($arTizersData);
 	}
 	$arResult["TIZERS_ITEMS"]=$arTizersData;
-}?>
+}
+if ($arResult["PROPERTIES"]["COMPOSITION"] && is_array($arResult["PROPERTIES"]["COMPOSITION"]["~VALUE"]))
+{
+	$arResult["SET"] = \Intervolga\Custom\Import\Sets::getSet($arResult["PROPERTIES"]["COMPOSITION"]["~VALUE"]["TEXT"]);
+}
+?>

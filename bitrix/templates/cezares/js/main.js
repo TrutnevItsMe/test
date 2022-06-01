@@ -4196,11 +4196,11 @@ $(document).ready(function(){
 			$('.inline-search-block').addClass('fixed');
 		}
 
-		if(arNextOptions['THEME']['TYPE_SEARCH'] == 'fixed'){
+		if(arNextOptions['THEME']['TYPE_SEARCH'] === 'fixed' || arNextOptions['THEME']['TYPE_SEARCH'] === 'custom'){
 			$('.inline-search-block.fixed.big .search-input').focus();
 		}
 
-	    if(arNextOptions['THEME']['TYPE_SEARCH'] != 'fixed'){
+	    if(arNextOptions['THEME']['TYPE_SEARCH'] !== 'fixed' && arNextOptions['THEME']['TYPE_SEARCH'] !== 'custom'){
 
 	        var height_block = 0;
 	        /*if(!$('header > .top-block').length || $('header.long').length)
@@ -4244,7 +4244,7 @@ $(document).ready(function(){
 	        }
 	    }
 
-	    if(arNextOptions['THEME']['TYPE_SEARCH'] === 'fixed'){
+	    if(arNextOptions['THEME']['TYPE_SEARCH'] === 'fixed' || arNextOptions['THEME']['TYPE_SEARCH'] === 'custom'){
 	        if($('.inline-search-block').hasClass('show')){
 	            $('<div class="jqmOverlay search"></div>').appendTo('body');
 	        }
@@ -4262,7 +4262,7 @@ $(document).ready(function(){
 			if(!$(e.target).hasClass('inline-search-block') && !$(e.target).hasClass('svg') && !search_target.length){
 				$('.inline-search-block').removeClass('show');
 				$('.title-search-result').hide();
-				if(arNextOptions['THEME']['TYPE_SEARCH'] === 'fixed'){
+				if(arNextOptions['THEME']['TYPE_SEARCH'] === 'fixed' || arNextOptions['THEME']['TYPE_SEARCH'] === 'custom'){
 					$('.jqmOverlay.search').remove();
 				}
 			}
