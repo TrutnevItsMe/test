@@ -32,7 +32,12 @@ use Bitrix\Main\Localization\Loc;
 			<div class="basket-checkout-section-inner">
 				<div class="basket-checkout-block basket-checkout-block-total">
 					<div class="basket-checkout-block-total-inner">
-						<div class="basket-checkout-block-total-title"><?=Loc::getMessage('SBB_TOTAL')?>:</div>
+						<div class="basket-checkout-block-total-title">
+                            <?=Loc::getMessage('SBB_TOTAL')?>:
+                            <span class="basket-coupon-block-total-price-current" data-entity="basket-total-price">
+                                {{{PRICE_FORMATED}}}
+                            </span>
+                        </div>
 						<div class="basket-checkout-block-total-description">
 							{{#WEIGHT_FORMATED}}
 								<?=Loc::getMessage('SBB_WEIGHT')?>: {{{WEIGHT_FORMATED}}}
@@ -45,33 +50,23 @@ use Bitrix\Main\Localization\Loc;
 					</div>
 				</div>
 
-				<div class="basket-checkout-block basket-checkout-block-total-price">
-					<div class="basket-checkout-block-total-price-inner">
-						{{#DISCOUNT_PRICE_FORMATED}}
-							<div class="basket-coupon-block-total-price-old">
-								{{{PRICE_WITHOUT_DISCOUNT_FORMATED}}}
-							</div>
-						{{/DISCOUNT_PRICE_FORMATED}}
-
-						<div class="basket-coupon-block-total-price-current" data-entity="basket-total-price">
-							{{{PRICE_FORMATED}}}
-						</div>
-
-						{{#DISCOUNT_PRICE_FORMATED}}
-							<div class="basket-coupon-block-total-price-difference">
-								<?=Loc::getMessage('SBB_BASKET_ITEM_ECONOMY')?>
-								<span style="white-space: nowrap;">{{{DISCOUNT_PRICE_FORMATED}}}</span>
-							</div>
-						{{/DISCOUNT_PRICE_FORMATED}}
-					</div>
-				</div>
-
 				<div class="basket-checkout-block basket-checkout-block-btn">
-					<button class="btn btn-lg btn-default basket-btn-checkout{{#DISABLE_CHECKOUT}} disabled{{/DISABLE_CHECKOUT}}"
-						data-entity="basket-checkout-button">
-						<?=Loc::getMessage('SBB_ORDER')?>
-					</button>
-				</div>
+                    <div>
+                        <button class="btn btn-lg btn-default basket-btn-checkout{{#DISABLE_CHECKOUT}} disabled{{/DISABLE_CHECKOUT}}"
+                            data-entity="basket-checkout-button">
+                            <?=Loc::getMessage('SBB_ORDER')?>
+                        </button>
+                    </div>
+
+                    <div class="count-info">
+                        <span data-entity="basket-items-count" data-filter="all" style="display: none;"</span>
+                    </div>
+                </div>
+
+                <div class="basket-checkout-block clear-box" id="clear-box">
+                    <div class="basket-items-list-header-filter">
+                    </div>
+                </div>
 			</div>
 		</div>
 
