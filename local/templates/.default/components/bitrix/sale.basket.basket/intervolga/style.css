@@ -575,7 +575,6 @@
 .basket-items-list-item-descriptions {
 	-ms-flex-order: 1;
 	padding-top: 20px;
-	width: 100%;
 	vertical-align: top;
 	-webkit-box-ordinal-group: 2;
 	order: 1;
@@ -2245,4 +2244,47 @@ body.bx-theme-yellow .catalog-block-header{border-color:#f4b236;}
 }
 #clear-box>.basket-items-list-header-filter>.top_control>span.delete_all:hover {
 	background-color: #f9f9f9!important;
+}
+
+.table-header {
+	background: #f9f9f9;
+	border-bottom-color: #f2f2f2;
+	position: static;
+}
+
+.table-header th{
+	padding: 15px 0 15px 15px;
+}
+.table-header th:last-child{
+	padding-right: 15px;
+}
+
+#basket-root .basket-item-actions-remove:after, #basket-root .basket-item-actions-remove:before {
+	height:80%!important;
+	transition: 0.5s;
+}
+#basket-root .basket-item-actions-remove:hover:before {
+	transform: translate3d(-50%, -50%, 0) rotate(405deg);
+}
+#basket-root .basket-item-actions-remove:hover:after {
+	transform: translate3d(-50%, -50%, 0) rotate(135deg);
+}
+#basket-root .basket-items-list-item-remove.td-remove {
+	padding-top: 0!important;
+}
+#basket-root .basket-item-block-actions {
+	padding-top: 29px;
+}
+
+#basket-root .basket-items-list .basket-item-block-info {
+	padding-left: 15px!important;
+	padding-right: 0!important;
+}
+
+#basket-root .basket-item-block-amount {
+	margin: 0 15px!important;
+}
+.basket-item-info-name-link {
+	display: block;
+	margin-top: -2px;
 }

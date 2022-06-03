@@ -265,9 +265,6 @@ if (empty($arResult['ERROR_MESSAGE']))
 			<div class="col-xs-12">
 				<div class="basket-items-list-wrapper basket-items-list-wrapper-height-fixed basket-items-list-wrapper-light<?=$displayModeClass?>"
 					id="basket-items-list-wrapper">
-					<div class="basket-items-list-header" data-entity="basket-items-list-header">
-
-					</div>
 					<div class="basket-items-list-container" id="basket-items-list-container">
 						<div class="basket-items-list-overlay" id="basket-items-list-overlay" style="display: none;"></div>
 						<div class="basket-items-list" id="basket-item-list">
@@ -277,7 +274,19 @@ if (empty($arResult['ERROR_MESSAGE']))
 									<?=Loc::getMessage('SBB_FILTER_EMPTY_RESULT')?>
 								</div>
 							</div>
-							<table class="basket-items-list-table" id="basket-item-table"></table>
+							<table class="basket-items-list-table" id="basket-item-table">
+                                    <tr class="table-header">
+                                        <th></th>
+                                        <th style="min-width: 170px;">Артикул</th>
+                                        <th>Наименование</th>
+                                        <th>Склад</th>
+                                        <th>Остаток</th>
+                                        <th>Количество</th>
+                                        <th style="min-width: 130px;">Цена (РЦЦ 2022)</th>
+                                        <th>Сумма</th>
+                                        <th></th>
+                                    </tr>
+                            </table>
 						</div>
 					</div>
 				</div>

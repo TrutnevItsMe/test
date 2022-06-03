@@ -40,7 +40,7 @@ $APPLICATION->SetTitle("Корзина");
 		"GIFTS_SHOW_OLD_PRICE" => "Y",
 		"GIFTS_TEXT_LABEL_GIFT" => "Подарок",
 		"HIDE_COUPON" => "Y",
-		"LABEL_PROP" => array(),
+		"LABEL_PROP" => array("CML2_ARTICLE"),
 		"OFFERS_PROPS" => array(0=>"SIZES",1=>"COLOR_REF",),
 		"PATH_TO_ORDER" => SITE_DIR."order/",
 		"PICTURE_HEIGHT" => "100",
@@ -62,7 +62,8 @@ $APPLICATION->SetTitle("Корзина");
 		"USE_ENHANCED_ECOMMERCE" => "N",
 		"USE_GIFTS" => "Y",
 		"USE_PREPAYMENT" => "N",
-		"USE_PRICE_ANIMATION" => "Y"
+		"USE_PRICE_ANIMATION" => "Y",
+		"DEF_STORE_ID" => 376,
 	)
 );?>
 <?$APPLICATION->IncludeComponent(
