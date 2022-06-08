@@ -721,14 +721,49 @@ if (!empty($arResult['ITEMS'])){
 	}
 	
 	$priceMatrix = 0;
-foreach ($arResult['ITEMS'] as $key => $arItem)
-	{
+	$catalogIblockID = Option::get(
+		'aspro.next',
+		'CATALOG_IBLOCK_ID',
+		CNextCache::$arIBlocks[SITE_ID]['aspro_next_catalog']['aspro_next_catalog'][0]
+	);
 
-				$catalogIblockID = Option::get(
-				'aspro.next',
-				'CATALOG_IBLOCK_ID',
-				CNextCache::$arIBlocks[SITE_ID]['aspro_next_catalog']['aspro_next_catalog'][0]
-			);
+	$setItemsIds = [];
+	foreach ($arResult["ITEMS"] as $key => $arItem)
+	{
+		if (isset($arItem["PROPERTIES"]["COMPOSITION"]) && is_array($arItem["PROPERTIES"]["COMPOSITION"]["~VALUE"]))
+		{
+			$arResult["ITEMS"][$key]["SET"] = Sets::getSet($arItem["PROPERTIES"]["COMPOSITION"]["~VALUE"]["TEXT"]);
+			foreach ($arResult["ITEMS"][$key]["SET"]["SET"] as $item)
+			{
+				$setItemsIds[$item["ID"]] = $item["ID"];
+			}
+			foreach ($arResult["ITEMS"][$key]['SET']['OPTIONAL'] as $item)
+			{
+				$setItemsIds[$item["ID"]] = $item["ID"];
+			}
+		}
+	}
+
+	if(count($setItemsIds) > 0)
+	{
+		$db_res = CPrice::GetList(
+			[],
+			[
+				"PRODUCT_ID" => $setItemsIds,
+				"CATALOG_GROUP_ID" => [$arParams["PRICE_RRC_2022_ID"], $arParams["PRICE_RRC_KONSTANTA_ID"]],
+			],
+			false,
+			false,
+			["ID", "PRICE", "CATALOG_GROUP_ID", "PRODUCT_ID"]
+		);
+		while($ar_res = $db_res->Fetch())
+		{
+			$setItemsPrices[$ar_res["PRODUCT_ID"]][$ar_res["CATALOG_GROUP_ID"]] = $ar_res["PRICE"];
+		}
+	}
+
+	foreach ($arResult['ITEMS'] as $key => $arItem)
+	{
 			$productId = $arItem['ID'];
 
 			if (!function_exists('array_key_first')) {
@@ -740,48 +775,30 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 				}
 			}
 				
-			if (isset($arItem["PROPERTIES"]["COMPOSITION"])) {
-
-				$property = $arItem["PROPERTIES"]["COMPOSITION"];
-				if (is_array($value = $property['VALUE'])) {
-					$arItem["SET"] = Sets::getSet($value['TEXT']);
+			if (isset($arItem["PROPERTIES"]["COMPOSITION"]))
+			{
+				if (is_array($arItem["PROPERTIES"]["COMPOSITION"]['~VALUE']))
+				{
 					// Посчитаем цену комплекта
 					$price = 0;
 					$oldPrice = 0;	
 					$price_discount = 0;
-					//var_dump("mlkj");
-					foreach ($arItem['SET']['SET'] as $item) {
-						
-																$db_res = CPrice::GetList(
-																		array(),
-																		array(
-																				"PRODUCT_ID" => $item['ID'],
-																				"CATALOG_GROUP_ID" => $arParams["PRICE_RRC_2022_ID"]
-																			)
-																	);
-																if ($ar_res = $db_res->Fetch())
-																{
-																	$item['PRICE_DISCOUNT']= $ar_res["PRICE"];
-																
-																}else{
-																	$item['PRICE_DISCOUNT']= $item['PRICE'];
-																	
-																}
-																$db_res = CPrice::GetList(
-																		array(),
-																		array(
-																				"PRODUCT_ID" => $item['ID'],
-																				"CATALOG_GROUP_ID" => $arParams["PRICE_RRC_KONSTANTA_ID"]
-																			)
-																	);
-																if ($ar_res = $db_res->Fetch())
-																{
-																	$item['PRICE']= $ar_res["PRICE"];
-																
-																}else{
-																	$item['PRICE']= $item['PRICE'];
-																	
-																}
+
+					foreach ($arItem['SET']['SET'] as $item)
+					{
+						if (isset($setItemsPrices[$item['ID']][$arParams["PRICE_RRC_2022_ID"]]))
+						{
+							$item['PRICE_DISCOUNT']= $setItemsPrices[$item['ID']][$arParams["PRICE_RRC_2022_ID"]];
+						}
+						else
+						{
+							$item['PRICE_DISCOUNT']= $item['PRICE'];
+						}
+
+						if (isset($setItemsPrices[$item['ID']][$arParams["PRICE_RRC_KONSTANTA_ID"]]))
+						{
+							$item['PRICE']= $setItemsPrices[$item['ID']][$arParams["PRICE_RRC_KONSTANTA_ID"]];
+						}
 						
 						$price += floatval($item['PRICE']) * intval($item['AMOUNT']);
 						$price_discount += floatval($item['PRICE_DISCOUNT']) * intval($item['AMOUNT']);
@@ -790,42 +807,25 @@ foreach ($arResult['ITEMS'] as $key => $arItem)
 							
 						$ar_res =0;
 					}
-					//echo $price."\n";
-					//echo $price_discount;
-					foreach ($arItem['SET']['OPTIONAL'] as $item) {
+
+					foreach ($arItem['SET']['OPTIONAL'] as $item)
+					{
+						if (isset($setItemsPrices[$item['ID']][$arParams["PRICE_RRC_2022_ID"]]))
+						{
+							$item['PRICE_DISCOUNT'] = $setItemsPrices[$item['ID']][$arParams["PRICE_RRC_2022_ID"]];
+						}
+						else
+						{
+							$item['PRICE_DISCOUNT']= $item['PRICE'];
+						}
+
+						if (isset($setItemsPrices[$item['ID']][$arParams["PRICE_RRC_KONSTANTA_ID"]]))
+						{
+							$item['PRICE'] = $setItemsPrices[$item['ID']][$arParams["PRICE_RRC_KONSTANTA_ID"]];
+						}
 						
-																$db_res = CPrice::GetList(
-																		array(),
-																		array(
-																				"PRODUCT_ID" => $item['ID'],
-																				"CATALOG_GROUP_ID" => $arParams["PRICE_RRC_2022_ID"]
-																			)
-																	);
-																if ($ar_res = $db_res->Fetch())
-																{
-																	$item['PRICE_DISCOUNT'] = $ar_res["PRICE"];
-
-																}else{
-																	$item['PRICE_DISCOUNT']= $item['PRICE'];
-
-																}
-																$db_res = CPrice::GetList(
-																		array(),
-																		array(
-																				"PRODUCT_ID" => $item['ID'],
-																				"CATALOG_GROUP_ID" => $arParams["PRICE_RRC_KONSTANTA_ID"]
-																			)
-																	);
-																if ($ar_res = $db_res->Fetch())
-																{
-																	$item['PRICE'] = $ar_res["PRICE"];
-
-																}else{
-																	$item['PRICE']= $item['PRICE'];
-
-																}
-						
-						if($item['DEFAULT']) {
+						if($item['DEFAULT'])
+						{
 							$price += floatval($item['PRICE']) * intval($item['AMOUNT']);
 							$price_discount += floatval($item['PRICE_DISCOUNT']) * intval($item['AMOUNT']);
 							$oldPrice += floatval(isset($item['OLD_PRICE']) ? $item['OLD_PRICE'] : $item['PRICE'])
