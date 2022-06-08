@@ -1,10 +1,13 @@
-<?$APPLICATION->SetPageProperty("HIDE_LEFT_BLOCK", "Y")?><?$APPLICATION->SetPageProperty("HIDE_LEFT_BLOCK", "Y")?>
+<?
+$APPLICATION->SetPageProperty("HIDE_LEFT_BLOCK", "Y");
+$request = \Bitrix\Main\Context::getCurrent()->getRequest();
+?>
 
 <?$isAjax="N";?>
-<?if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest"  && isset($_GET["ajax_get"]) && $_GET["ajax_get"] == "Y" || (isset($_GET["ajax_basket"]) && $_GET["ajax_basket"]=="Y")){
+<?if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest"  && $request->get("ajax_get") == "Y" || $request->get("ajax_basket") == "Y"){
 	$isAjax="Y";
 }?>
-<?if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest" && isset($_GET["ajax_get_filter"]) && $_GET["ajax_get_filter"] == "Y" ){
+<?if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest" && $request->get("ajax_get_filter") == "Y" ){
 	$isAjaxFilter="Y";
 }?>
 <?global $arTheme, $arRegion;?>
@@ -31,7 +34,7 @@
 
 		if($arItems)
 		{
-			$setionIDRequest = (isset($_GET["section_id"]) && $_GET["section_id"] ? intval($_GET["section_id"]) : 0);
+			$setionIDRequest = ($request->get("section_id") ? intval($request->get("section_id")) : 0);
 
 			foreach($arItems as $arItem)
 			{
@@ -57,14 +60,11 @@
 			$arSectionsID = array_keys($arAllSections);
 			foreach ($arSectionsID as $sectId)
 			{
-				$dbResult = CIBlockSection::GetNavChain($catalogIBlockID, $sectId, ["ID", "DEPTH_LEVEL"]);
-				while($arGroup = $dbResult->Fetch())
-				{
-					if ($arGroup['DEPTH_LEVEL'] == 1)
-					{
-						$arAllGlobalSections[$arGroup['ID']]["COUNT"] += $arAllSections[$sectId]["COUNT"];
-					}
-				}
+			    $rootSections = \Intervolga\Custom\Tools\Iblock::getRootSectionBySubsection($catalogIBlockID, $sectId);
+			    foreach ($rootSections as $id)
+                {
+                    $arAllGlobalSections[$id]["COUNT"] += $arAllSections[$sectId]["COUNT"];
+                }
 			}
 
 			$arGlobalSectionsID = array_keys($arAllGlobalSections);
@@ -254,7 +254,7 @@ $ar_SELECT = array("ID" => $arSectionsID, "IBLOCK_ID" => $catalogIBlockID, "!ID"
 		<?
         if($arItems)
         {
-            if(!$_GET['set_filter'])
+            if(empty($request->get("set_filter")))
             {
                 global $arSectionFilter;
                 if (empty($setionIDRequest))
@@ -294,7 +294,7 @@ $ar_SELECT = array("ID" => $arSectionsID, "IBLOCK_ID" => $catalogIBlockID, "!ID"
                     false
                 );
             }
-            if(!empty($setionIDRequest) && in_array($setionIDRequest, $arSectionsID))
+            if(!empty($setionIDRequest) && in_array($setionIDRequest, $arSectionsID) || !empty($request->get("set_filter")))
             {?>
 			<div class="right_block1 clearfix catalog vertical with_filter" id="right_block_ajax">
 				<?
