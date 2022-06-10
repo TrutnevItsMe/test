@@ -1,4 +1,11 @@
 <?
+use \Intervolga\Custom\Search\SearchSubstring;
+
+$q = $_REQUEST['q'];
+if ($q = SearchSubstring::getInstance($q)->checkNeedSearchBySubString()) {
+    $_REQUEST['q']= $q;
+}
+
 $arSearchPageParams = array(
 	"RESTART" => $arParams["RESTART"],
 	"NO_WORD_LOGIC" => $arParams["NO_WORD_LOGIC"],
