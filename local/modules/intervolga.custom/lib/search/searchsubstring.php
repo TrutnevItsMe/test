@@ -62,11 +62,11 @@ class SearchSubString
     public function checkNeedSearchBySubString()
     {
         try {
-            if (Loader::includeModule('search')) {
-                $obSearch = new CSearch;
-                $q = $this->getOriginalQuery();
-                $needSearchBySubString = $this->isAlwaysSearchBySubString;
-                if (!$needSearchBySubString) {
+            $q = $this->getOriginalQuery();
+            $needSearchBySubString = $this->isAlwaysSearchBySubString;
+            if (!$needSearchBySubString) {
+                if (Loader::includeModule('search')) {
+                    $obSearch = new CSearch;
                     $obSearch->Search([
                         'CHECK_DATES' => 'Y',
                         'QUERY' => $q,
@@ -78,13 +78,11 @@ class SearchSubString
                         }
                     }
                 }
-
-                if ($needSearchBySubString) {
-                    $this->setQueryForLikeRequest("\"$q\"");
-                    $this->isSearchBySubstring = true;
-                }
             }
-            if ($this->isSearchBySubString()) {
+
+            if ($needSearchBySubString) {
+                $this->setQueryForLikeRequest("\"$q\"");
+                $this->isSearchBySubstring = true;
                 return $this->getQueryForLikeRequest();
             } else {
                 return false;
