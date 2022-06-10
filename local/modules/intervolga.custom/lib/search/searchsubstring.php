@@ -12,10 +12,6 @@ class SearchSubString
     protected $isSearchBySubstring = false;
 
     /**
-     * @var bool
-     */
-    protected $isAlwaysSearchBySubString = true;
-    /**
      * @var string
      */
     protected $originalQuery = '';
@@ -59,35 +55,14 @@ class SearchSubString
     /**
      * @return false|string
      */
-    public function checkNeedSearchBySubString()
+    public function getQueryForRequestBySubString()
     {
-        try {
-            $q = $this->getOriginalQuery();
-            $needSearchBySubString = $this->isAlwaysSearchBySubString;
-            if (!$needSearchBySubString) {
-                if (Loader::includeModule('search')) {
-                    $obSearch = new CSearch;
-                    $obSearch->Search([
-                        'CHECK_DATES' => 'Y',
-                        'QUERY' => $q,
-                        'SITE_ID' => SITE_ID,
-                    ]);
-                    if ($obSearch->errorno == 0) {
-                        if (!($obSearch->GetNext())) {
-                            $needSearchBySubString = true;
-                        }
-                    }
-                }
-            }
-
-            if ($needSearchBySubString) {
-                $this->setQueryForLikeRequest("\"$q\"");
-                $this->isSearchBySubstring = true;
-                return $this->getQueryForLikeRequest();
-            } else {
-                return false;
-            }
-        } catch (\Bitrix\Main\LoaderException $e) {
+        $q = $this->getOriginalQuery();
+        if (strlen($q) > 0) {
+            $this->setQueryForLikeRequest("\"$q\"");
+            $this->isSearchBySubstring = true;
+            return $this->getQueryForLikeRequest();
+        } else {
             return false;
         }
     }
@@ -98,6 +73,7 @@ class SearchSubString
     public function setOriginalQuery($originalQuery)
     {
         $this->originalQuery = $originalQuery;
+        return $this;
     }
     /**
      * @return string
@@ -113,6 +89,7 @@ class SearchSubString
     public function setQueryForLikeRequest($queryForLikeRequest)
     {
         $this->queryForLikeRequest = $queryForLikeRequest;
+        return $this;
     }
 
     /**
@@ -122,13 +99,4 @@ class SearchSubString
     {
         return $this->queryForLikeRequest;
     }
-
-    /**
-     * @param bool $isAlwaysSearchBySubString
-     */
-    public function setIsAlwaysSearchBySubString($isAlwaysSearchBySubString)
-    {
-        $this->isAlwaysSearchBySubString = $isAlwaysSearchBySubString;
-    }
-
 }
