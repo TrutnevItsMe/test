@@ -7329,12 +7329,6 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 .header-custom .absolute-vertical-item svg > path{
 	fill: white !important;
 }
-.header-custom .search-input-div{
-	width: 300%;
-}
-.header-custom .search-button-div{
-	right: -200% !important;
-}
 .header-custom .top-menu-with-cabinet > .menu{
 	margin-top: 20px;
 	border-bottom: 1px solid #f2f2f2;
