@@ -7301,3 +7301,59 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 
 .sale_order_full_table input[name="BuyButton"]{display:inline-block;margin:26px 10px 26px 0;}
 .sale_order_full_table input[name="BuyButton"] + p{display:inline-block;margin:0 0 15px 0;}
+
+.header-custom .svg-inline-cabinet{
+	margin-right: 10px;
+}
+
+.header-custom .right-vertical-absolute-section{
+	position: fixed;
+	right: 0px;
+	border-radius: 10px;
+}
+.header-custom .absolute-vertical-item{
+	width: 70px;
+	height: 70px;
+	border-bottom: solid #bbb 2px;
+	align-content: center;
+	text-align: center;
+	background-color: #555;
+}
+.header-custom .absolute-vertical-item > a, .basket-link{
+	top: 25%;
+	padding: 0px !important;
+}
+.header-custom .right-vertical-link:hover .absolute-vertical-item{
+	background-color: #5e6978
+}
+.header-custom .absolute-vertical-item svg > path{
+	fill: white !important;
+}
+.header-custom .search-input{
+	width: 100%;
+}
+.header-custom .top-menu-with-cabinet > .menu{
+	margin-top: 20px;
+	border-bottom: 1px solid #f2f2f2;
+}
+.header-custom .top-menu-with-cabinet{
+	border-style: solid;
+	border-width: 0px;
+	border-color: #e5e5e5;
+}
+.header-custom .top-menu-with-cabinet > .cabinet{
+	margin-top: -30px;
+	z-index: 12;
+}
+
+.header-custom .menu-item{
+	padding-right: 10px;
+}
+
+.header-custom .right-vertical-link:first-child > .absolute-vertical-item{
+	border-radius: 10px 10px 0px 0px;
+}
+
+.header-custom .right-vertical-link:last-child > .absolute-vertical-item{
+	border-radius: 0px 0px 10px 10px;
+}
