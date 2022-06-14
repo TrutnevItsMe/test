@@ -8,8 +8,8 @@ else
 $logoClass = ($arTheme['COLORED_LOGO']['VALUE'] !== 'Y' ? '' : ' colored');
 ?>
 
-<div class="top-menu-with-cabinet maxwidth-theme" >
-    <div class="menu">
+<div class="top-menu-with-cabinet maxwidth-theme" style="border-bottom: 0px">
+    <div class="menu" style="border-bottom: 1px solid #f2f2f2;">
 		<?$APPLICATION->IncludeComponent(
 			"bitrix:menu",
 			"top",
@@ -44,6 +44,12 @@ $logoClass = ($arTheme['COLORED_LOGO']['VALUE'] !== 'Y' ? '' : ' colored');
             <div class="maxwidth-theme">
                 <div class="row">
 
+                    <div class="logo-block col-md-2 col-sm-3">
+                        <div class="logo<?=$logoClass?>">
+							<?=CNext::ShowLogo();?>
+                        </div>
+                    </div>
+
 					<?if($bPhone):?>
                         <div class="pull-left">
                             <div class="wrap_icon inner-table-block">
@@ -53,13 +59,6 @@ $logoClass = ($arTheme['COLORED_LOGO']['VALUE'] !== 'Y' ? '' : ' colored');
                             </div>
                         </div>
 					<?endif?>
-
-                    <div class="logo-block col-md-2 col-sm-3">
-                        <div class="logo<?=$logoClass?>">
-							<?=CNext::ShowLogo();?>
-                        </div>
-                    </div>
-
 
                     <div class="col-md-<?=($arRegions ? 2 : 3);?> col-lg-<?=($arRegions ? 2 : 3);?> search_wrap">
                         <div class="search-block inner-table-block">
@@ -109,6 +108,10 @@ $logoClass = ($arTheme['COLORED_LOGO']['VALUE'] !== 'Y' ? '' : ' colored');
 </div>
 
 <style>
+
+    .svg-inline-cabinet{
+        margin-right: 10px;
+    }
 
     .right-vertical-absolute-section{
         position: fixed;
