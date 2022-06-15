@@ -7360,6 +7360,10 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 	border-radius: 0px 0px 10px 10px;
 }
 
+.header-custom .right-vertical-link:only-child > .absolute-vertical-item{
+	border-radius: 10px 10px 10px 10px;
+}
+
 /* <div> вокруг иконки для сравнения*/
 .header-custom .right-vertical-link:first-child > div{
 
