@@ -7315,13 +7315,13 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 	width: 70px;
 	height: 70px;
 	border-bottom: solid #bbb 2px;
-	align-content: center;
-	text-align: center;
 	background-color: #555;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
-.header-custom .absolute-vertical-item > a, .basket-link{
-	top: 25%;
-	padding: 0px !important;
+.header-custom .right-vertical-link .absolute-vertical-item > a, .basket-link{
+	padding: 0px;
 }
 .header-custom .right-vertical-link:hover .absolute-vertical-item{
 	background-color: #5e6978
@@ -7343,7 +7343,12 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 	z-index: 12;
 }
 
-.header-custom .menu-item{
+.header-custom .menu-row.middle-block .mega-menu table td.catalog .wrap > a{
+	padding-left: 62px;
+	text-align: left;
+}
+
+.header-custom .top-menu-with-cabinet .menu .menu-item{
 	padding-right: 10px;
 }
 
@@ -7357,5 +7362,5 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 
 /* <div> вокруг иконки для сравнения*/
 .header-custom .right-vertical-link:first-child > div{
-	padding-top:20px;
+
 }
