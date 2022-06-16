@@ -5,6 +5,7 @@ use CSaleOrderUserProps;
 use Bitrix\Main\UserTable;
 use Intervolga\Custom\Import\Sets;
 use Intervolga\Common\Highloadblock\HlbWrap;
+use Intervolga\Custom\Tools\HighloadblockUtil;
 
 /**
  * @var array $arParams
@@ -55,10 +56,12 @@ while ($profile = $dbProfiles -> Fetch()) {
 		$profiles[$profile['ID']] = $profile;
 	}
 }
+
 $user = UserTable::getRow([
 	'filter' => ['=ID' => (reset($profiles))['USER_ID']],
 	'select' => ['ID', 'XML_ID']
 ]);
+
 if ($user) {
 	$userXmlId = $user['XML_ID'];
 }
@@ -102,3 +105,20 @@ $arResult['PARTNERS'] = [
 	'basket' => $basketItems,
 ];
 
+
+$rsUser = UserTable::GetByID($USER->GetID());
+$arUser = $rsUser->fetch();
+$arResult["USER_XML_ID"] = $arUser["XML_ID"];
+
+$idKontragentyHL = HighloadblockUtil::getHLBlockIdByCode("Kontragenty");
+
+
+
+?>
+
+<pre>
+	<p>HL_BLOCK</p>
+	<?var_dump($ar)?>
+</pre>
+
+<?php

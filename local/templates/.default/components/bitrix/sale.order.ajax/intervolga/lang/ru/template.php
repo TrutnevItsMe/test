@@ -100,6 +100,7 @@ $MESS["BACK_DEFAULT"] = "Назад";
 $MESS["FURTHER_DEFAULT"] = "Далее";
 $MESS["EDIT_DEFAULT"] = "изменить";
 $MESS["ORDER_DEFAULT"] = "Оформить заказ";
+$MESS["ORDER_DRAFT_DEFAULT"] = "Сохранить черновик";
 $MESS["ADD_DEFAULT"] = "Добавить";
 $MESS["PRICE_DEFAULT"] = "Стоимость";
 $MESS["PERIOD_DEFAULT"] = "Срок доставки";

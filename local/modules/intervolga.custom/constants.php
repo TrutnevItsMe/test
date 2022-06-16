@@ -7,3 +7,4 @@
  */
 define("LOG_FILENAME", $_SERVER["DOCUMENT_ROOT"] . "/log/addmessage2log.log");
 define("PROP_HIT_SALE_VALUE_ID", 68);
+define("SALE_DRAFT_STATUS_XML_ID", "draft");

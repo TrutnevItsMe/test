@@ -27,6 +27,7 @@ $MESS["NAV_BACK_DEFAULT"] = "Back";
 $MESS["NAV_FORWARD_DEFAULT"] = "Next";
 $MESS["NEAREST_PICKUP_LIST_DEFAULT"] = "Nearest locations:";
 $MESS["ORDER_DEFAULT"] = "Checkout";
+$MESS["ORDER_DRAFT_DEFAULT"] = "Save draft";
 $MESS["ORDER_DESC_DEFAULT"] = "Order comments:";
 $MESS["PAYMENT_BLOCK_NAME_DEFAULT"] = "Payment";
 $MESS["PAY_SYSTEM_PAYABLE_ERROR_DEFAULT"] = "You'll be able to pay for the order after we verify that the items you have ordered are in stock. Once your order is fulfilled, you'll receive an email with payment instructions. You'll be able to complete the purchase inside your customer account.";

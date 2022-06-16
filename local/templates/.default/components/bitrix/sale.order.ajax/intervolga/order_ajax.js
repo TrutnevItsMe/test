@@ -71,6 +71,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 			this.isHttps = window.location.protocol === "https:";
 			this.orderSaveAllowed = false;
 			this.socServiceHiddenNode = false;
+			this.isDraft = false;
 		},
 
 		/**
@@ -183,6 +184,8 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 					form.querySelector('input[type=hidden][name=sessid]').value = BX.bitrix_sessid();
 				}
 
+				this.isDraft = Boolean(this.isDraft);
+
 				BX.ajax.submitAjax(
 					BX('bx-soa-order-form'),
 					{
@@ -194,7 +197,8 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 							action: 'saveOrderAjax',
 							sessid: BX.bitrix_sessid(),
 							SITE_ID: this.siteId,
-							signedParamsString: this.signedParamsString
+							signedParamsString: this.signedParamsString,
+							isDraft: this.isDraft
 						},
 						onsuccess: BX.proxy(this.saveOrderWithJson, this),
 						onfailure: BX.proxy(this.handleNotRedirected, this)
@@ -1319,7 +1323,10 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 		 */
 		bindEvents: function()
 		{
-			BX.bind(this.orderSaveBlockNode.querySelector('[data-save-button]'), 'click', BX.proxy(this.clickOrderSaveAction, this));
+			this.orderSaveBlockNode.querySelectorAll('[data-save-button]').forEach((button) => {
+				BX.bind(button, 'click', BX.proxy(this.clickOrderSaveAction, this));
+			});
+
 			BX.bind(window, 'scroll', BX.proxy(this.totalBlockScrollCheck, this));
 			BX.bind(window, 'resize', BX.throttle(function(){
 				this.totalBlockResizeCheck();
@@ -1750,6 +1757,13 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 				}
 				else
 				{
+					let isDraft_ = $(event.srcElement).attr("data-is-draft");
+					if (isDraft_ === undefined){
+						this.isDraft = false;
+					}
+					else{
+						this.isDraft = Boolean(isDraft_);
+					}
 					this.doSaveAction();
 				}
 			}
