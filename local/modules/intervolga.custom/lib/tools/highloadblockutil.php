@@ -25,10 +25,15 @@ class HighloadblockUtil {
 		return $HLId;
 	}
 
-	static function getList($id, $arFilter = [], $arSelect = ["*"]){
+	static function getList($id, $arFilter = [], $arSelect = ["*", "UF_*"]){
 
 		$hlBlock = HL\HighloadBlockTable::getById($id)->fetch();
 		$entity = HL\HighloadBlockTable::compileEntity($hlBlock);
 		$entityDataClass = $entity->getDataClass();
+
+		return $entityDataClass::getList([
+			"filter" => $arFilter,
+			"select" => $arSelect
+		]);
 	}
 }

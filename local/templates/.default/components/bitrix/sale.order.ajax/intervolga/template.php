@@ -332,6 +332,29 @@ else
 	$hideDelivery = empty($arResult['DELIVERY']);
 	?>
 
+        <table class="contact-table">
+            <thead>
+            <tr>
+                <td>Головной партнер</td>
+                <td>Менеджер</td>
+                <td>Помощник менеджера</td>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td><?=$arResult["PARTNER"]["UF_NAME"]?></td>
+                <td><?=$arResult["PARTNER"]["UF_OSNOVNOYMENEDZHER"]?></td>
+                <td><?=$arResult["PARTNER"]["UF_POMOSHNIK1"]?></td>
+            </tr>
+            <tr>
+                <td><a href="mailto:<?=$arResult["PARTNER"]["UF_IMLOGIN"]?>"><?=$arResult["PARTNER"]["UF_IMLOGIN"]?></a></td>
+                <td><a href="mailto:<?=$arResult["PARTNER"]["UF_OSNMENEDZHERADRES"]?>"><?=$arResult["PARTNER"]["UF_OSNMENEDZHERADRES"]?></a></td>
+                <td><a href="mailto:<?=$arResult["PARTNER"]["UF_POMOSHNIKADRES1"]?>"><?=$arResult["PARTNER"]["UF_POMOSHNIKADRES1"]?></a></td>
+            </tr>
+            </tbody>
+        </table>
+
 	<form action="<?=POST_FORM_ACTION_URI?>" method="POST" name="ORDER_FORM" id="bx-soa-order-form" enctype="multipart/form-data">
 		<?
 		echo bitrix_sessid_post();
@@ -527,12 +550,6 @@ else
 			</div>
 		</div>
 	</form>
-
-    <pre>
-        <p>$arResult['PARTNERS']</p>
-        <?var_dump($arResult['PARTNERS'])?>
-        <?var_dump($arResult["JS_DATA"])?>
-    </pre>
 
 	<div id="bx-soa-saved-files" style="display:none"></div>
 	<div id="bx-soa-soc-auth-services" style="display:none">

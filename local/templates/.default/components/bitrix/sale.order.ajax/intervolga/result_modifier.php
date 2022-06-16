@@ -108,17 +108,9 @@ $arResult['PARTNERS'] = [
 
 $rsUser = UserTable::GetByID($USER->GetID());
 $arUser = $rsUser->fetch();
-$arResult["USER_XML_ID"] = $arUser["XML_ID"];
 
-$idKontragentyHL = HighloadblockUtil::getHLBlockIdByCode("Kontragenty");
+$idPartneryHL = HighloadblockUtil::getHLBlockIdByCode(HL_BLOCK_CODE_PARTNERY);
+$dbPartnery = HighloadblockUtil::getList($idPartneryHL, ["UF_XML_ID" => $arUser["XML_ID"]]);
 
-
-
-?>
-
-<pre>
-	<p>HL_BLOCK</p>
-	<?var_dump($ar)?>
-</pre>
-
-<?php
+$partner = $dbPartnery->fetch();
+$arResult["PARTNER"] = $partner;
