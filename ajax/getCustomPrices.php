@@ -19,6 +19,9 @@ if (!check_bitrix_sessid()) {
 				$_POST['agreementXmlId'],
 				$_POST['basket']
 			);
+			/* TODO: DELETE
+			\Bitrix\Main\Diag\Debug::dumpToFile($prices, $varName = '', $fileName = 'log.txt');
+			*/
 			CustomPrices::set($prices, $_POST['basket']);
 		} catch (Error $err) {
 			// Произошла ошибка исполнения

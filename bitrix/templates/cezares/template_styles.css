@@ -7376,3 +7376,7 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 	color: #107bb1;
 	font-weight: 1000;
 }
+
+.brand-left-dropdown-menu .brand-dropdown{
+	left: 256px !important;
+}
