@@ -7379,4 +7379,5 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 
 .brand-left-dropdown-menu .brand-dropdown{
 	left: 256px !important;
+	width: 450% !important;
 }

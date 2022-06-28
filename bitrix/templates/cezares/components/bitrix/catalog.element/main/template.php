@@ -937,7 +937,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 				</div>
 			</div>
 			<div class="text">
-				<a target="_blank" href="<?=$arResult["DISPLAY_PROPERTIES"]["BRAND"]["LINK_ELEMENT_VALUE"][$arResult["DISPLAY_PROPERTIES"]["BRAND"]["VALUE"]]["DETAIL_PAGE_URL"]?>/?arrFilter_286_<?=abs(crc32($arResult["DISPLAY_PROPERTIES"]["KOLLEKTSIYA"]["VALUE_ENUM_ID"]));?>=Y&set_filter=Показать">
+				<a target="_blank" href="<?=$arResult["DISPLAY_PROPERTIES"]["BRAND"]["LINK_ELEMENT_VALUE"][$arResult["DISPLAY_PROPERTIES"]["BRAND"]["VALUE"]]["DETAIL_PAGE_URL"]?>?arrFilter_286_<?=abs(crc32($arResult["DISPLAY_PROPERTIES"]["KOLLEKTSIYA"]["VALUE_ENUM_ID"]));?>=Y&set_filter=Показать">
 					Все товары коллекции  <?=$arResult["DISPLAY_PROPERTIES"]["KOLLEKTSIYA"]["DISPLAY_VALUE"]?>
 				</a>
 			</div>
