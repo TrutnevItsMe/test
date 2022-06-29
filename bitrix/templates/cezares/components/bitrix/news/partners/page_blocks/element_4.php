@@ -28,7 +28,7 @@
 		$arAllSections = $arSectionsID = $arItemsID = array();
 
 		$arParams["AJAX_FILTER_CATALOG"] = "N";
-
+ 
 		if($arItems)
 		{
 			$setionIDRequest = (isset($_GET["section_id"]) && $_GET["section_id"] ? $_GET["section_id"] : 0);
