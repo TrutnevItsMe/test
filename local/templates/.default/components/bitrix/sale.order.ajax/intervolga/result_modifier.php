@@ -16,6 +16,18 @@ use Intervolga\Custom\Tools\HighloadblockUtil;
 $component = $this->__component;
 $component::scaleImages($arResult['JS_DATA'], $arParams['SERVICES_IMAGES_SCALING']);
 
+
+/*
+ *
+ * Вычисление скидки
+ * */
+foreach ($arResult["BASKET_ITEMS"] as $ID => $arRow){
+	$oldPrice = $arResult["BASKET_ITEMS"][$ID]["SUM_BASE"];
+	$newPrice = $arResult["BASKET_ITEMS"][$ID]["SUM_NUM"];
+	$arResult["BASKET_ITEMS"][$ID]["DISCOUNT_PRICE_PERCENT"] = 1 - $newPrice / $oldPrice;
+	$arResult["BASKET_ITEMS"][$ID]["DISCOUNT_PRICE_PERCENT_FORMATED"] = round($arResult["BASKET_ITEMS"][$ID]["DISCOUNT_PRICE_PERCENT"] * 100, 2) . "%";
+}
+
 // https://youtrack.ivsupport.ru/issue/iberisweb-8
 if (is_array($arResult["GRID"]["ROWS"])) {
 	$catalogIblockID = Option::get(
@@ -24,6 +36,16 @@ if (is_array($arResult["GRID"]["ROWS"])) {
 		CNextCache::$arIBlocks[SITE_ID]['aspro_next_catalog']['aspro_next_catalog'][0]
 	);
 	foreach ($arResult['JS_DATA']["GRID"]["ROWS"] as $key => $arItem) {
+
+		/*
+		 *
+ 		* Вычисление скидки
+ 		* */
+		$oldPrice = $arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["SUM_BASE"];
+		$newPrice = $arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["SUM_NUM"];
+		$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["DISCOUNT_PRICE_PERCENT"] = 1 - $newPrice / $oldPrice;
+		$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["DISCOUNT_PRICE_PERCENT_FORMATED"] = round($arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["DISCOUNT_PRICE_PERCENT"] * 100, 2) . "%";
+
 		$productId = $arItem["data"]["PRODUCT_ID"];
 		$rsProperty = CIBlockElement::GetProperty(
 			$catalogIblockID,
