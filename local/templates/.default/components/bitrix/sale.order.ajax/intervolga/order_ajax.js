@@ -1754,7 +1754,9 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 				if (this.params.USER_CONSENT === 'Y' && BX.UserConsent)
 				{
 					BX.onCustomEvent('bx-soa-order-save', []);
-				}else{
+				}
+				else
+				{
 					let isDraft_ = $(event.srcElement).attr("data-is-draft");
 					if (isDraft_ === undefined){
 						this.isDraft = false;
