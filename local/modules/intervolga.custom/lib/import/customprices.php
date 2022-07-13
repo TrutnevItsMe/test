@@ -9,9 +9,22 @@ class CustomPrices {
 		$xml = self::getRequestXml($clientId, $counterpartyId, $agreementId, $products);
 		$httpClient = new HttpClient();
 		$httpClient->setHeader('Content-Type', 'application/xml; charset=UTF-8', true);
+
+
+
+		/* TODO: DELETE
+		\Bitrix\Main\Diag\Debug::dumpToFile($xml, $varName = '', $fileName = 'log.txt');
+				$url = "URL: " . Option::get("grain.customsettings","custom_prices_url");
+		\Bitrix\Main\Diag\Debug::dumpToFile($url, $varName = '', $fileName = 'log.txt');
+		*/
+
 		$httpClient->query("PUT", Option::get("grain.customsettings","custom_prices_url"), $xml);
 		$xml = new CDataXML();
 		$xml->LoadString($httpClient->getResult());
+		/* TODO: DELETE
+
+		\Bitrix\Main\Diag\Debug::dumpToFile($httpClient->getResult(), $varName = '', $fileName = 'log.txt');
+		*/
 		$items = $xml->SelectNodes("/CalcDiscountResponse")->elementsByName('Products');
 		$products = [];
 		foreach ($items as $item) {
@@ -73,6 +86,7 @@ class CustomPrices {
 		return floatval(self::getValue($node, $name));
 	}
 	protected static function getRequestXml($clientId, $counterpartyId, $agreementId, $products) {
+
 		$xml = '<OrderDataRequest xmlns="http://CalculateDiscountBitrix" xmlns:xs="http://www.w3.org/2001/XMLSchema"'
 			. ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">';
 		$xml .= "<ClientID>$clientId</ClientID>";

@@ -20,7 +20,7 @@ $APPLICATION->AddChainItem(Loc::getMessage("SPS_CHAIN_ORDERS"), $arResult['PATH_
 	<div class="orders_wrapper">
 		<?$APPLICATION->IncludeComponent(
 			"bitrix:sale.personal.order.list",
-			"",
+			"withDraftStatus",
 			array(
 				"PATH_TO_DETAIL" => $arResult["PATH_TO_ORDER_DETAIL"],
 				"PATH_TO_CANCEL" => $arResult["PATH_TO_ORDER_CANCEL"],

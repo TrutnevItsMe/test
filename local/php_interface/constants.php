@@ -1,0 +1,3 @@
+<?php
+
+define("OUT_OF_PRODUCTION_IBLOCK_ID", 364);
