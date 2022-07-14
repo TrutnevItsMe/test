@@ -146,6 +146,12 @@ if ($useDefaultMessages || !isset($arParams['MESS_ORDER']))
 	$arParams['MESS_ORDER'] = $arParams['~MESS_ORDER'] = Loc::getMessage('ORDER_DEFAULT');
 }
 
+if ($useDefaultMessages || !isset($arParams['MESS_ORDER_DRAFT']))
+{
+	$arParams['MESS_ORDER_DRAFT'] = $arParams['~MESS_ORDER_DRAFT'] = Loc::getMessage('ORDER_DRAFT_DEFAULT');
+}
+
+
 if ($useDefaultMessages || !isset($arParams['MESS_PRICE']))
 {
 	$arParams['MESS_PRICE'] = Loc::getMessage('PRICE_DEFAULT');
@@ -325,6 +331,30 @@ else
 
 	$hideDelivery = empty($arResult['DELIVERY']);
 	?>
+
+        <table class="contact-table">
+            <thead>
+            <tr>
+                <td>Головной партнер</td>
+                <td>Менеджер</td>
+                <td>Помощник менеджера</td>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td><?=$arResult["PARTNER"]["UF_NAME"]?></td>
+                <td><?=$arResult["PARTNER"]["UF_OSNOVNOYMENEDZHER"]?></td>
+                <td><?=$arResult["PARTNER"]["UF_POMOSHNIK1"]?></td>
+            </tr>
+            <tr>
+                <td><a href="mailto:<?=$arResult["PARTNER"]["UF_IMLOGIN"]?>"><?=$arResult["PARTNER"]["UF_IMLOGIN"]?></a></td>
+                <td><a href="mailto:<?=$arResult["PARTNER"]["UF_OSNMENEDZHERADRES"]?>"><?=$arResult["PARTNER"]["UF_OSNMENEDZHERADRES"]?></a></td>
+                <td><a href="mailto:<?=$arResult["PARTNER"]["UF_POMOSHNIKADRES1"]?>"><?=$arResult["PARTNER"]["UF_POMOSHNIKADRES1"]?></a></td>
+            </tr>
+            </tbody>
+        </table>
+
 	<form action="<?=POST_FORM_ACTION_URI?>" method="POST" name="ORDER_FORM" id="bx-soa-order-form" enctype="multipart/form-data">
 		<?
 		echo bitrix_sessid_post();
@@ -492,6 +522,9 @@ else
 						}
 						?>
 					</div>
+                    <a href="javascript:void(0)" style="margin: 10px 0" class="pull-left btn btn-default btn-lg hidden-xs" data-save-button="true" data-is-draft="true">
+						<?=$arParams['MESS_ORDER_DRAFT']?>
+                    </a>
 					<a href="javascript:void(0)" style="margin: 10px 0" class="pull-right btn btn-default btn-lg hidden-xs" data-save-button="true">
 						<?=$arParams['MESS_ORDER']?>
 					</a>
@@ -576,6 +609,8 @@ else
 	$signedParams = $signer->sign(base64_encode(serialize($arParams)), 'sale.order.ajax');
 	$messages = Loc::loadLanguageFile(__FILE__);
 	?>
+
+
 	<script>
 		BX.message(<?=CUtil::PhpToJSObject($messages)?>);
 		BX.Sale.OrderAjaxComponent.init({
