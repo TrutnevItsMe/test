@@ -36,13 +36,6 @@ if (!empty($arResult['ERRORS']['FATAL']))
 }
 else
 {
-    ?>
-
-<!--    <pre>-->
-<!--        --><?//var_dump($arResult['ORDERS'])?>
-<!--    </pre>-->
-
-        <?php
 	if (!empty($arResult['ERRORS']['NONFATAL']))
 	{
 		foreach($arResult['ERRORS']['NONFATAL'] as $error)
