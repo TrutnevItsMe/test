@@ -3419,7 +3419,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 			{
 				column = this.result.GRID.HEADERS[i];
 
-				if (column.id === 'NAME' || column.id === 'PREVIEW_PICTURE' || column.id === 'PROPS' || column.id === 'NOTES')
+				if (column.id === 'NAME' || column.id === 'PREVIEW_PICTURE' || column.id === 'PROPS')
 					continue;
 
 				if (column.id === 'DETAIL_PICTURE' && !this.options.showPreviewPicInBasket)
@@ -3472,7 +3472,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 			{
 				currentColumn = this.result.GRID.HEADERS[i];
 
-				if (currentColumn.id === 'NAME' || currentColumn.id === 'PREVIEW_PICTURE' || currentColumn.id === 'PROPS' || currentColumn.id === 'NOTES')
+				if (currentColumn.id === 'NAME' || currentColumn.id === 'PREVIEW_PICTURE' || currentColumn.id === 'PROPS')
 					continue;
 
 				if (currentColumn.id === 'DETAIL_PICTURE' && !this.options.showPreviewPicInBasket)
@@ -3729,6 +3729,9 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 						html: data.BASE_PRICE_FORMATED
 					}));
 				}
+
+				console.log("note: " + this.options.showPriceNotesInBasket);
+				console.log("active: " + active);
 
 				if (this.options.showPriceNotesInBasket && active)
 				{
