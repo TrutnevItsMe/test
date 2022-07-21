@@ -6712,6 +6712,7 @@ if(!funcDefined('orderActions')){
 						$('#bx-soa-orderSave, .bx-soa-cart-total-button-container').addClass('lic_condition');
 
 						if(typeof (BX.Sale.OrderAjaxComponent.oldClickOrderSaveAction) === "undefined" && typeof (BX.Sale.OrderAjaxComponent.clickOrderSaveAction) !== 'undefined'){
+
 							BX.Sale.OrderAjaxComponent.oldClickOrderSaveAction = BX.Sale.OrderAjaxComponent.clickOrderSaveAction;
 							BX.Sale.OrderAjaxComponent.clickOrderSaveAction = function(event){
 								if($('input[name="licenses_order"]').prop('checked')){
@@ -6719,10 +6720,20 @@ if(!funcDefined('orderActions')){
 
 									if (BX.Sale.OrderAjaxComponent.isValidForm())
 									{
-										if(typeof BX.Sale.OrderAjaxComponent.allowOrderSave == 'function')
+										if(typeof BX.Sale.OrderAjaxComponent.allowOrderSave == 'function'){
 											BX.Sale.OrderAjaxComponent.allowOrderSave();
-										if(typeof BX.Sale.OrderAjaxComponent.doSaveAction == 'function')
+										}
+										if(typeof BX.Sale.OrderAjaxComponent.doSaveAction == 'function'){
+
+											let isDraft_ = $(event.srcElement).attr("data-is-draft");
+											if (isDraft_ === undefined){
+												BX.Sale.OrderAjaxComponent.isDraft = false;
+											}
+											else{
+												BX.Sale.OrderAjaxComponent.isDraft = Boolean(isDraft_);
+											}
 											BX.Sale.OrderAjaxComponent.doSaveAction();
+										}
 										else
 											BX.Sale.OrderAjaxComponent.oldClickOrderSaveAction(event);
 									}

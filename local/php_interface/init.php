@@ -6,6 +6,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
  * Do not use addEventHandler here, use autoload handlers (see /local/modules/intervolga.custom/index.php)!
  */
 include_once $_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/intervolga/handlers.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/constants.php';
 
 # бренды
 AddEventHandler( "iblock", "OnAfterIBlockElementAdd", array( "aspro_import", "FillTheBrands" ) );
