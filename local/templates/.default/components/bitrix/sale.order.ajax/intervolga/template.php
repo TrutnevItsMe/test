@@ -333,28 +333,10 @@ else
 	$hideDelivery = empty($arResult['DELIVERY']);
 	?>
 
-        <table class="contact-table">
-            <thead>
-            <tr>
-                <td>Головной партнер</td>
-                <td>Менеджер</td>
-                <td>Помощник менеджера</td>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr>
-                <td><?=$arResult["PARTNER"]["UF_NAME"]?></td>
-                <td><?=$arResult["PARTNER"]["UF_OSNOVNOYMENEDZHER"]?></td>
-                <td><?=$arResult["PARTNER"]["UF_POMOSHNIK1"]?></td>
-            </tr>
-            <tr>
-                <td><a href="mailto:<?=$arResult["PARTNER"]["UF_IMLOGIN"]?>"><?=$arResult["PARTNER"]["UF_IMLOGIN"]?></a></td>
-                <td><a href="mailto:<?=$arResult["PARTNER"]["UF_OSNMENEDZHERADRES"]?>"><?=$arResult["PARTNER"]["UF_OSNMENEDZHERADRES"]?></a></td>
-                <td><a href="mailto:<?=$arResult["PARTNER"]["UF_POMOSHNIKADRES1"]?>"><?=$arResult["PARTNER"]["UF_POMOSHNIKADRES1"]?></a></td>
-            </tr>
-            </tbody>
-        </table>
+    <?
+    $APPLICATION->IncludeComponent("intervolga:managersByUser",
+    "");
+    ?>
 
 	<form action="<?=POST_FORM_ACTION_URI?>" method="POST" name="ORDER_FORM" id="bx-soa-order-form" enctype="multipart/form-data">
 		<?

@@ -105,10 +105,4 @@ $arResult['PARTNERS'] = [
 ];
 
 
-$rsUser = UserTable::GetByID($USER->GetID());
-$arUser = $rsUser->fetch();
-$HlBlock = new HlbWrap(HL_BLOCK_CODE_PARTNERY);
-$dbPartnery = $HlBlock->getList(["filter" => ["UF_XML_ID" => $arUser["XML_ID"]]]);
 
-$partner = $dbPartnery->fetch();
-$arResult["PARTNER"] = $partner;
