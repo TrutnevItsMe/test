@@ -20,14 +20,6 @@ $NEXT_SMART_FILTER[0] = array('!SECTION_ID' => $arNotShowSections);
 			##########################################################################
 			#pr();
 
-
-
-
-
-
-
-
-
 global $arTheme;?>
 <?if($arSeoItem):?>
 	<div class="seo_block">
@@ -274,15 +266,7 @@ if($isAjaxFilter == "Y")
 			<div class="<?=($arTheme["FILTER_VIEW"]["VALUE"]=="HORIZONTAL" ? 'filter_horizontal' : '');?><?=($arTheme["FILTER_VIEW"]["VALUE"]=="COMPACT" ? ' filter_compact' : '');?> swipeignore">
 				<?include_once(__DIR__."/../filter.php")?>
 			</div>
-		<?}/*else{?>
-			<div class="js_filter filter_horizontal">
-				<?if($isAjaxFilter == "Y"):?>
-					<?include(__DIR__."/../filter.php")?>
-				<?else:?>
-					<div class="bx_filter bx_filter_vertical"></div>
-				<?endif;?>
-			</div>
-		<?}*/?>
+		<?}?>
 		<div class="inner_wrapper">
 <?endif;?>
 			<?if(!$arSeoItem):?>

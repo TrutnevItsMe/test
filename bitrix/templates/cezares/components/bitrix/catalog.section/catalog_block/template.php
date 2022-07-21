@@ -249,7 +249,6 @@
 									</div>
 								<?endif;?>
 								<div class="sa_block" style="min-height: 190px;">
-									<?=$arQuantityData["HTML"];?>
 									<div class="article_block" <?if(isset($arItem['ARTICLE']) && $arItem['ARTICLE']['VALUE']):?>data-name="<?=$arItem['ARTICLE']['NAME'];?>" data-value="<?=$arItem['ARTICLE']['VALUE'];?>"<?endif;?>>
 										<?if(isset($arItem['ARTICLE']) && $arItem['ARTICLE']['VALUE']){?>
 											<div ><?=$arItem['ARTICLE']['NAME'];?>: <?=$arItem['ARTICLE']['VALUE'];?></div>
@@ -277,7 +276,11 @@
 											<?}?>
 										</table>
 									</div>
-								</div>
+									<?if ($arQuantityData["HTML"]):?>
+                                        <br>
+										<?=$arQuantityData["HTML"];?>
+									<?endif;?>
+                                </div>
 								<div class="cost prices clearfix">
 									<?if( $arItem["OFFERS"]){?>
 										<div class="with_matrix <?=($arParams["SHOW_OLD_PRICE"]=="Y" ? 'with_old' : '');?>" style="display:none;">
