@@ -20,7 +20,15 @@ $result['BASKET_ITEM_RENDER_DATA'] = array();
 
 foreach ($this->basketItems as $row)
 {
-	$rowData = array(
+    $rsStoreProduct = \Bitrix\Catalog\StoreProductTable::getList(array(
+        'filter' => array('=PRODUCT_ID'=>$row["PRODUCT_ID"],'=STORE.ACTIVE'=>'Y'),
+        'select' => array('AMOUNT','STORE_ID','STORE_TITLE' => 'STORE.TITLE'),
+    ));
+    while($arStoreProduct=$rsStoreProduct->fetch()) {
+        $row["STORES"][$arStoreProduct["STORE_ID"]] = $arStoreProduct;
+    }
+
+    $rowData = array(
 		'ID' => $row['ID'],
 		'PRODUCT_ID' => $row['PRODUCT_ID'],
 		'NAME' => isset($row['~NAME']) ? $row['~NAME'] : $row['NAME'],
@@ -58,6 +66,8 @@ foreach ($this->basketItems as $row)
 		'COLUMN_LIST' => array(),
 		'SHOW_LABEL' => false,
 		'LABEL_VALUES' => array(),
+		'ARTICLE' => $row["LABEL_ARRAY_VALUE"]["CML2_ARTICLE"],
+		'STORE' => $row["STORES"][$this->arParams["DEF_STORE_ID"]],
 		'BRAND' => isset($row[$this->arParams['BRAND_PROPERTY'].'_VALUE'])
 			? $row[$this->arParams['BRAND_PROPERTY'].'_VALUE']
 			: '',

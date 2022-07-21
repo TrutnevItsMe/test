@@ -189,6 +189,52 @@ if (empty($arResult['ERROR_MESSAGE']))
 	}
 	?>
 	<div id="basket-root" class="bx-basket bx-<?=$arParams['TEMPLATE_THEME']?> bx-step-opacity" style="opacity: 0;">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="basket-checkout-container">
+                    <div class="row" style="width: 100%; margin: 0">
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-12">
+                                    <?=$arResult["USER"]["NAME"]?>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <?=$arResult["USER"]["LOGIN"]?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-12">
+                                    <b>Менеджер:</b> <?=$arResult["USER"]["MANAGERS"]["UF_OSNOVNOYMENEDZHER"]?>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <a href="tel:<?=$arResult["USER"]["MANAGERS"]["UF_OSNMENEDZHERTELEF"]?>"><?=$arResult["USER"]["MANAGERS"]["UF_OSNMENEDZHERTELEF"]?></a>,
+                                    <a href="mailto:<?=$arResult["USER"]["MANAGERS"]["UF_OSNMENEDZHERADRES"]?>"><?=$arResult["USER"]["MANAGERS"]["UF_OSNMENEDZHERADRES"]?></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-12">
+                                    <b>Помошник менеджера:</b> <?=$arResult["USER"]["MANAGERS"]["UF_POMOSHNIK1"]?>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <a href="tel:<?=$arResult["USER"]["MANAGERS"]["UF_POMOSHNIKTELEFON1"]?>"><?=$arResult["USER"]["MANAGERS"]["UF_POMOSHNIKTELEFON1"]?></a>,
+                                    <a href="mailto:<?=$arResult["USER"]["MANAGERS"]["UF_POMOSHNIKADRES1"]?>"><?=$arResult["USER"]["MANAGERS"]["UF_POMOSHNIKADRES1"]?></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 		<?
 		if (
 			$arParams['BASKET_WITH_ORDER_INTEGRATION'] !== 'Y'
@@ -196,9 +242,9 @@ if (empty($arResult['ERROR_MESSAGE']))
 		)
 		{
 			?>
-			<div class="row">
+            <div class="row">
 				<div class="col-xs-12" data-entity="basket-total-block"></div>
-			</div>
+            </div>
 			<?
 		}
 		?>
@@ -219,28 +265,6 @@ if (empty($arResult['ERROR_MESSAGE']))
 			<div class="col-xs-12">
 				<div class="basket-items-list-wrapper basket-items-list-wrapper-height-fixed basket-items-list-wrapper-light<?=$displayModeClass?>"
 					id="basket-items-list-wrapper">
-					<div class="basket-items-list-header" data-entity="basket-items-list-header">
-						<div class="basket-items-search-field" data-entity="basket-filter">
-							<div class="form has-feedback">
-								<input type="text" class="form-control"
-									placeholder="<?=Loc::getMessage('SBB_BASKET_FILTER')?>"
-									data-entity="basket-filter-input">
-								<span class="form-control-feedback basket-clear" data-entity="basket-filter-clear-btn"></span>
-							</div>
-						</div>
-						<div class="basket-items-list-header-filter">
-							<a href="javascript:void(0)" class="basket-items-list-header-filter-item active"
-								data-entity="basket-items-count" data-filter="all" style="display: none;"></a>
-							<a href="javascript:void(0)" class="basket-items-list-header-filter-item"
-								data-entity="basket-items-count" data-filter="similar" style="display: none;"></a>
-							<a href="javascript:void(0)" class="basket-items-list-header-filter-item"
-								data-entity="basket-items-count" data-filter="warning" style="display: none;"></a>
-							<a href="javascript:void(0)" class="basket-items-list-header-filter-item"
-								data-entity="basket-items-count" data-filter="delayed" style="display: none;"></a>
-							<a href="javascript:void(0)" class="basket-items-list-header-filter-item"
-								data-entity="basket-items-count" data-filter="not-available" style="display: none;"></a>
-						</div>
-					</div>
 					<div class="basket-items-list-container" id="basket-items-list-container">
 						<div class="basket-items-list-overlay" id="basket-items-list-overlay" style="display: none;"></div>
 						<div class="basket-items-list" id="basket-item-list">
@@ -250,7 +274,19 @@ if (empty($arResult['ERROR_MESSAGE']))
 									<?=Loc::getMessage('SBB_FILTER_EMPTY_RESULT')?>
 								</div>
 							</div>
-							<table class="basket-items-list-table" id="basket-item-table"></table>
+							<table class="basket-items-list-table" id="basket-item-table">
+                                    <tr class="table-header">
+                                        <th></th>
+                                        <th style="min-width: 170px;">Артикул</th>
+                                        <th>Наименование</th>
+                                        <th>Склад</th>
+                                        <th>Остаток</th>
+                                        <th>Количество</th>
+                                        <th style="min-width: 130px;">Цена (РЦЦ 2022)</th>
+                                        <th>Сумма</th>
+                                        <th></th>
+                                    </tr>
+                            </table>
 						</div>
 					</div>
 				</div>

@@ -432,7 +432,7 @@
 		showItemsCount: function()
 		{
 			var itemCountNode = this.getEntity(
-				this.getCacheNode(this.ids.itemListWrapper),
+				this.getCacheNode(this.ids.basketRoot),
 				'basket-items-count',
 				'[data-filter="all"]'
 			);
