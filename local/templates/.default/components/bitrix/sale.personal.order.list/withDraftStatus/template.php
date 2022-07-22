@@ -7,12 +7,6 @@ use Bitrix\Main,
 	Bitrix\Main\Page\Asset,
 	Intervolga\Custom\Tools\SaleUtil;
 
-?>
-<pre>
-    <?var_dump()?>
-</pre>
-<?php
-
 Asset::getInstance()->addJs("/bitrix/components/bitrix/sale.order.payment.change/templates/.default/script.js");
 Asset::getInstance()->addCss("/bitrix/components/bitrix/sale.order.payment.change/templates/.default/style.css");
 $this->addExternalCss("/bitrix/css/main/bootstrap.css");
@@ -171,10 +165,6 @@ else
 				</div>
 				<div class="row">
 					<div class="col-md-12 sale-order-list-inner-container">
-						<span class="sale-order-list-inner-title-line">
-							<span class="sale-order-list-inner-title-line-item"><?=Loc::getMessage('SPOL_TPL_PAYMENT')?></span>
-							<span class="sale-order-list-inner-title-line-border"></span>
-						</span>
 						<?
 						$showDelimeter = false;
 						foreach ($order['PAYMENT'] as $payment)
@@ -341,15 +331,6 @@ else
 										<i class="fa fa-long-arrow-left"></i> <?=Loc::getMessage('SPOL_CANCEL_PAYMENT')?>
 									</a>
 								</div>
-							</div>
-							<?
-						}
-						if (!empty($order['SHIPMENT']))
-						{
-							?>
-							<div class="sale-order-list-inner-title-line">
-								<span class="sale-order-list-inner-title-line-item"><?=Loc::getMessage('SPOL_TPL_DELIVERY')?></span>
-								<span class="sale-order-list-inner-title-line-border"></span>
 							</div>
 							<?
 						}
@@ -623,7 +604,6 @@ else
                 BX.closeWait(this,wait);
             }
         });
-
     }
 
     function moveDraftToNeedPay(idDraft){
