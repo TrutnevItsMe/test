@@ -414,7 +414,8 @@ else
 
 				<? if ($arParams['DELIVERY_TO_PAYSYSTEM'] === 'p2d'): ?>
 					<!--	PAY SYSTEMS BLOCK	-->
-					<div id="bx-soa-paysystem" data-visited="false" class="bx-soa-section bx-active">
+                <div <? if ($arParams["SHOW_PAYMENT_BLOCK"] === "N"):?>style="display: none;"<?endif;?>>
+					<div id="bx-soa-paysystem" data-visited="false" class="bx-soa-section bx-active" >
 						<div class="bx-soa-section-title-container">
 							<h2 class="bx-soa-section-title col-sm-9">
 								<span class="bx-soa-section-title-count"></span><?=$arParams['MESS_PAYMENT_BLOCK_NAME']?>
@@ -423,6 +424,7 @@ else
 						</div>
 						<div class="bx-soa-section-content container-fluid"></div>
 					</div>
+                </div>
 					<!--	DELIVERY BLOCK	-->
 					<div id="bx-soa-delivery" data-visited="false" class="bx-soa-section bx-active" <?=($hideDelivery ? 'style="display:none"' : '')?>>
 						<div class="bx-soa-section-title-container">
@@ -465,6 +467,7 @@ else
 						<div class="bx-soa-section-content container-fluid"></div>
 					</div>
 					<!--	PAY SYSTEMS BLOCK	-->
+                <div <? if ($arParams["SHOW_PAYMENT_BLOCK"] === "N"):?>style="display: none;"<?endif;?>>
 					<div id="bx-soa-paysystem" data-visited="false" class="bx-soa-section bx-active">
 						<div class="bx-soa-section-title-container">
 							<h2 class="bx-soa-section-title col-sm-9">
@@ -474,6 +477,7 @@ else
 						</div>
 						<div class="bx-soa-section-content container-fluid"></div>
 					</div>
+                    </div>
 				<? endif ?>
 				<!--	BUYER PROPS BLOCK	-->
 				<div id="bx-soa-properties" data-visited="false" class="bx-soa-section bx-active">
@@ -523,7 +527,7 @@ else
 						}
 						?>
 					</div>
-                    <a href="javascript:void(0)" style="margin: 10px 0" class="pull-left btn btn-default btn-lg hidden-xs" data-save-button="true" data-is-draft="true">
+                    <a href="javascript:void(0)" style="margin: 10px 0" class="pull-left btn btn-default btn-lg hidden-xs <? if ($arParams["ACTIVE_SAVE_DRAFT_ORDER"] == "N"):?>disabled<?endif;?>" data-save-button="true" data-is-draft="true">
 						<?=$arParams['MESS_ORDER_DRAFT']?>
                     </a>
 					<a href="javascript:void(0)" style="margin: 10px 0" class="pull-right btn btn-default btn-lg hidden-xs" data-save-button="true">

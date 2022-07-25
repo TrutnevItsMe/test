@@ -47,6 +47,18 @@ $arTemplateParameters = array(
 		),
 		"PARENT" => "VISUAL",
 	),
+	"SHOW_PAYMENT_BLOCK" => array(
+		"NAME" => GetMessage("SHOW_PAYMENT_BLOCK"),
+		"TYPE" => "CHECKBOX",
+		"DEFAULT" => "Y",
+		"PARENT" => "VISUAL"
+	),
+	"ACTIVE_SAVE_DRAFT_ORDER" => array(
+		"NAME" => GetMessage("ACTIVE_SAVE_DRAFT_ORDER"),
+		"TYPE" => "CHECKBOX",
+		"DEFAULT" => "Y",
+		"PARENT" => "VISUAL"
+	),
 	"SHOW_TOTAL_ORDER_BUTTON" => array(
 		"NAME" => GetMessage("SHOW_TOTAL_ORDER_BUTTON"),
 		"TYPE" => "CHECKBOX",
