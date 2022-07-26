@@ -76,7 +76,7 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 								<a href="{{DETAIL_PAGE_URL}}" class="basket-item-image-link">
 							{{/DETAIL_PAGE_URL}}
 
-							<img class="basket-item-image" alt="{{NAME}}"
+							<img style="width:50%" class="basket-item-image" alt="{{NAME}}"
 								src="{{{IMAGE_URL}}}{{^IMAGE_URL}}<?=$templateFolder?>/images/no_photo.png{{/IMAGE_URL}}">
 
 							{{#SHOW_LABEL}}
