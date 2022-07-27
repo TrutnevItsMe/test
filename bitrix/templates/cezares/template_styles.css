@@ -7445,3 +7445,12 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 .brand-left-dropdown-menu .brand-dropdown{
 	left: 256px !important;
 }
+
+.managers-block .contact-table{
+	width: 74.5%;
+	margin: 0;
+}
+
+.managers-block td{
+	padding: 0;
+}
