@@ -92,6 +92,16 @@ $arTemplateParameters['TOTAL_BLOCK_DISPLAY'] = array(
 	'DEFAULT' => array('top'),
 	'MULTIPLE' => 'Y'
 );
+$arTemplateParameters["DISPLAY_MODE_ITEMS"] = array(
+	"PARENT" => "VISUAL",
+	"NAME" => GetMessage("PROPERTIES_LOCATION"),
+	"TYPE" => "LIST",
+	"VALUES" => array(
+		"basket-item-table-props-template" => GetMessage("TABLE_PROPERTIES"),
+		"basket-item-template" => GetMessage("NEAR_ITEM")
+	),
+	"DEFAUIL" => "basket-item-template"
+);
 $arTemplateParameters['DISPLAY_MODE'] = array(
 	'PARENT' => 'VISUAL',
 	'NAME' => GetMessage('CP_SBB_TPL_DISPLAY_MODE'),

@@ -177,9 +177,10 @@
 	display: -ms-flexbox;
 	display: -webkit-box;
 	display: flex;
+	justify-content: flex-end;
+	align-items: flex-start;
 	-ms-flex-pack: end;
 	-webkit-box-pack: end;
-	justify-content: space-around;
 }
 
 .basket-checkout-block { }

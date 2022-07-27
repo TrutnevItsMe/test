@@ -5,6 +5,8 @@ use Bitrix\Main\Localization\Loc;
 
 \Bitrix\Main\UI\Extension::load("ui.fonts.ruble");
 
+CJSCore::Init(["jquery"]);
+
 /**
  * @var array $arParams
  * @var array $arResult
@@ -160,6 +162,7 @@ if (empty($arResult['ERROR_MESSAGE']))
 	if ($arParams['USE_GIFTS'] === 'Y' && $arParams['GIFTS_PLACE'] === 'TOP')
 	{
 		?>
+
 		<div data-entity="parent-container">
 			<div class="catalog-block-header"
 					data-entity="header"
@@ -189,9 +192,12 @@ if (empty($arResult['ERROR_MESSAGE']))
 	}
 	?>
 	<div id="basket-root" class="bx-basket bx-<?=$arParams['TEMPLATE_THEME']?> bx-step-opacity" style="opacity: 0;">
-        <?
-        $APPLICATION->IncludeComponent("intervolga:managersByUser", "");
-        ?>
+
+        <div class="row">
+            <?
+            $APPLICATION->IncludeComponent("intervolga:managersByUser","");
+            ?>
+        </div>
 		<?
 		if (
 			$arParams['BASKET_WITH_ORDER_INTEGRATION'] !== 'Y'
@@ -231,18 +237,9 @@ if (empty($arResult['ERROR_MESSAGE']))
 									<?=Loc::getMessage('SBB_FILTER_EMPTY_RESULT')?>
 								</div>
 							</div>
+
 							<table class="basket-items-list-table" id="basket-item-table">
-                                    <tr class="table-header">
-                                        <th></th>
-                                        <th style="min-width: 170px;">Артикул</th>
-                                        <th>Наименование</th>
-                                        <th>Склад</th>
-                                        <th>Остаток</th>
-                                        <th>Количество</th>
-                                        <th style="min-width: 130px;">Цена (РЦЦ 2022)</th>
-                                        <th>Сумма</th>
-                                        <th></th>
-                                    </tr>
+                                <tr class="table-header"></tr>
                             </table>
 						</div>
 					</div>
@@ -289,8 +286,15 @@ if (empty($arResult['ERROR_MESSAGE']))
 			signedParamsString: '<?=CUtil::JSEscape($signedParams)?>',
 			siteId: '<?=CUtil::JSEscape($component->getSiteId())?>',
 			siteTemplateId: '<?=CUtil::JSEscape($component->getSiteTemplateId())?>',
-			templateFolder: '<?=CUtil::JSEscape($templateFolder)?>'
+			templateFolder: '<?=CUtil::JSEscape($templateFolder)?>',
+            templateItemsDisplay: '<?=$arParams["DISPLAY_MODE_ITEMS"]?>'
 		});
+
+        $(document).ready(function(){
+            $(".basket-items-list-table .table-header").prepend($(".basket-header").html());
+            $(".basket-header").remove();
+        });
+
 	</script>
 	<?
 	if ($arParams['USE_GIFTS'] === 'Y' && $arParams['GIFTS_PLACE'] === 'BOTTOM')
