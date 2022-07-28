@@ -21,10 +21,12 @@ list($bPhoneAuthSupported, $bPhoneAuthShow, $bPhoneAuthRequired, $bPhoneAuthUse)
 	<?if($arResult["SHOW_SMS_FIELD"] && !$arResult["strProfileError"]):?>
 		<div class="alert alert-success"><?=GetMessage('main_profile_code_sent')?></div>
 	<?endif;?>
-	<?
-	$APPLICATION->IncludeComponent("intervolga:managersByUser",
-		"");
-	?>
+    <div class="managers-block managers-block-profile">
+		<?
+		$APPLICATION->IncludeComponent("intervolga:managersByUser",
+			"");
+		?>
+    </div>
     <?if ($arParams["MANAGERS_ONLY"] != "Y") :?>
 	<div class="form-block-wr">
 		<?if($arResult["SHOW_SMS_FIELD"] && !$arResult["strProfileError"]):?>

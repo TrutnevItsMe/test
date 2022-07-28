@@ -7454,3 +7454,7 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 .managers-block td{
 	padding: 0;
 }
+
+.managers-block-profile .contact-table{
+	width: 100%;
+}
