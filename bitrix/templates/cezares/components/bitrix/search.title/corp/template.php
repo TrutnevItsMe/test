@@ -29,7 +29,7 @@ if(isset($isFixedTopSearch) && $isFixedTopSearch)
 				<div id="<?=$CONTAINER_ID?>">
 					<form action="<?=$arResult["FORM_ACTION"]?>" class="search">
 						<div class="search-input-div">
-							<input class="search-input" id="<?=$INPUT_ID?>" type="text" name="q" value="" placeholder="<?=GetMessage("CT_BST_SEARCH_BUTTON")?>" size="20" maxlength="50" autocomplete="off" />
+							<input class="search-input" id="<?=$INPUT_ID?>" type="text" name="q" value="" placeholder="<?=GetMessage("CT_BST_SEARCH_BUTTON")?>" size="20" maxlength="<?=($arParams["MAX_LENGTH"] > 0?$arParams["MAX_LENGTH"]:50)?>" autocomplete="off" />
 						</div>
 						<div class="search-button-div">
 							<button class="btn btn-search" type="submit" name="s" value="<?=GetMessage("CT_BST_SEARCH_BUTTON2")?>"><i class="svg svg-search svg-black"></i></button>

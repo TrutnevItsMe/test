@@ -21,5 +21,10 @@ $arTemplateParameters = array(
 		"TYPE" => "STRING",
 		"DEFAULT" => "title-search",
 	),
+	"MAX_LENGTH" => array(
+		"NAME" => GetMessage("MAX_LENGTH"),
+		"TYPE" => "STRING",
+		"DEFAULT" => "50"
+	)
 );
 ?>
