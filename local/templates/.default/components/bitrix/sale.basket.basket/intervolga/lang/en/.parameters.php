@@ -35,4 +35,8 @@ $MESS["CP_SBB_TPL_LABEL_PROP_MOBILE"] = "Product tag properties for mobile devic
 $MESS["CP_SBB_TPL_LABEL_PROP_POSITION"] = "Product tag position";
 $MESS["CP_SBB_TPL_SHOW_DISCOUNT_PERCENT"] = "Show discount percent beside the image";
 $MESS["CP_SBB_TPL_DISCOUNT_PERCENT_POSITION"] = "Discount percent position";
+$MESS["PROPERTIES_LOCATION"] = "Item`s properties location";
+$MESS["TABLE_PROPERTIES"] = "Table";
+$MESS["NEAR_ITEM"] = "Next to the product";
+$MESS["DISPLAY_RESTS"] = "Display rests";
 ?>

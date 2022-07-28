@@ -83,6 +83,8 @@
 			this.useDynamicScroll = this.params.USE_DYNAMIC_SCROLL === 'Y';
 			this.useItemsFilter = this.params.SHOW_FILTER === 'Y' && !this.isMobile;
 
+			this.templateItemsDisplay = parameters.templateItemsDisplay;
+
 			this.initializeFilter();
 			this.applyBasketResult(parameters.result);
 			this.initializeActionPool();
@@ -1193,7 +1195,8 @@
 				return;
 			}
 
-			var basketItemTemplate = this.getTemplate('basket-item-template');
+			// var basketItemTemplate = this.getTemplate('basket-item-template');
+			var basketItemTemplate = this.getTemplate(this.templateItemsDisplay);
 			if (basketItemTemplate)
 			{
 				var basketItemHtml = this.renderBasketItem(basketItemTemplate, this.items[itemId]);
@@ -1596,7 +1599,7 @@
 			if (!this.items[itemId] || !BX.type.isDomNode(basketItemNode))
 				return;
 
-			var basketItemTemplate = this.getTemplate('basket-item-template');
+			var basketItemTemplate = this.getTemplate(this.templateItemsDisplay);
 			if (basketItemTemplate)
 			{
 				var nodeAligner = BX(this.ids.itemHeightAligner + itemId),

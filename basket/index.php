@@ -64,6 +64,7 @@ $APPLICATION->SetTitle("Корзина");
 		"USE_PREPAYMENT" => "N",
 		"USE_PRICE_ANIMATION" => "Y",
 		"DEF_STORE_ID" => 376,
+		"BASKET_WITH_ORDER_INTEGRATION" => "N"
 	)
 );?>
 <?$APPLICATION->IncludeComponent(

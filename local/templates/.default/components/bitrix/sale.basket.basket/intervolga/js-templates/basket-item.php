@@ -109,15 +109,7 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 						<?
 					}
 					?>
-            </td>
-
-            <td class="basket-items-list-item-descriptions">
-                <div class="basket-item-block-info">
-                    {{{ARTICLE}}}
-                </div>
-            </td>
-            <td class="basket-items-list-item-descriptions">
-                <div class="basket-item-block-info">
+					<div class="basket-item-block-info">
 						<?
 						if (isset($mobileColumns['DELETE']))
 						{
@@ -164,24 +156,211 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 								</div>
 							</div>
 						{{/WARNINGS.length}}
+						<div class="basket-item-block-properties">
+							<?
+							if (!empty($arParams['PRODUCT_BLOCKS_ORDER']))
+							{
+								foreach ($arParams['PRODUCT_BLOCKS_ORDER'] as $blockName)
+								{
+									switch (trim((string)$blockName))
+									{
+										case 'props':
+											if (in_array('PROPS', $arParams['COLUMNS_LIST']))
+											{
+												?>
+												{{#PROPS}}
+													<div class="basket-item-property<?=(!isset($mobileColumns['PROPS']) ? ' hidden-xs' : '')?>">
+														<div class="basket-item-property-name">
+															{{{NAME}}}
+														</div>
+														<div class="basket-item-property-value"
+															data-entity="basket-item-property-value" data-property-code="{{CODE}}">
+															{{{VALUE}}}
+														</div>
+													</div>
+												{{/PROPS}}
+												<?
+											}
+
+											break;
+										case 'sku':
+											?>
+											{{#SKU_BLOCK_LIST}}
+												{{#IS_IMAGE}}
+													<div class="basket-item-property basket-item-property-scu-image"
+														data-entity="basket-item-sku-block">
+														<div class="basket-item-property-name">{{NAME}}</div>
+														<div class="basket-item-property-value">
+															<ul class="basket-item-scu-list">
+																{{#SKU_VALUES_LIST}}
+																	<li class="basket-item-scu-item{{#SELECTED}} selected{{/SELECTED}}
+																		{{#NOT_AVAILABLE_OFFER}} not-available{{/NOT_AVAILABLE_OFFER}}"
+																		title="{{NAME}}"
+																		data-entity="basket-item-sku-field"
+																		data-initial="{{#SELECTED}}true{{/SELECTED}}{{^SELECTED}}false{{/SELECTED}}"
+																		data-value-id="{{VALUE_ID}}"
+																		data-sku-name="{{NAME}}"
+																		data-property="{{PROP_CODE}}">
+																				<span class="basket-item-scu-item-inner"
+																					style="background-image: url({{PICT}});"></span>
+																	</li>
+																{{/SKU_VALUES_LIST}}
+															</ul>
+														</div>
+													</div>
+												{{/IS_IMAGE}}
+
+												{{^IS_IMAGE}}
+													<div class="basket-item-property basket-item-property-scu-text"
+														data-entity="basket-item-sku-block">
+														<div class="basket-item-property-name">{{NAME}}</div>
+														<div class="basket-item-property-value">
+															<ul class="basket-item-scu-list">
+																{{#SKU_VALUES_LIST}}
+																	<li class="basket-item-scu-item{{#SELECTED}} selected{{/SELECTED}}
+																		{{#NOT_AVAILABLE_OFFER}} not-available{{/NOT_AVAILABLE_OFFER}}"
+																		title="{{NAME}}"
+																		data-entity="basket-item-sku-field"
+																		data-initial="{{#SELECTED}}true{{/SELECTED}}{{^SELECTED}}false{{/SELECTED}}"
+																		data-value-id="{{VALUE_ID}}"
+																		data-sku-name="{{NAME}}"
+																		data-property="{{PROP_CODE}}">
+																		<span class="basket-item-scu-item-inner">{{NAME}}</span>
+																	</li>
+																{{/SKU_VALUES_LIST}}
+															</ul>
+														</div>
+													</div>
+												{{/IS_IMAGE}}
+											{{/SKU_BLOCK_LIST}}
+
+											{{#HAS_SIMILAR_ITEMS}}
+												<div class="basket-items-list-item-double" data-entity="basket-item-sku-notification">
+													<div class="alert alert-info alert-dismissable text-center">
+														{{#USE_FILTER}}
+															<a href="javascript:void(0)"
+																class="basket-items-list-item-double-anchor"
+																data-entity="basket-item-show-similar-link">
+														{{/USE_FILTER}}
+														<?=Loc::getMessage('SBB_BASKET_ITEM_SIMILAR_P1')?>{{#USE_FILTER}}</a>{{/USE_FILTER}}
+														<?=Loc::getMessage('SBB_BASKET_ITEM_SIMILAR_P2')?>
+														{{SIMILAR_ITEMS_QUANTITY}} {{MEASURE_TEXT}}
+														<br>
+														<a href="javascript:void(0)" class="basket-items-list-item-double-anchor"
+															data-entity="basket-item-merge-sku-link">
+															<?=Loc::getMessage('SBB_BASKET_ITEM_SIMILAR_P3')?>
+															{{TOTAL_SIMILAR_ITEMS_QUANTITY}} {{MEASURE_TEXT}}?
+														</a>
+													</div>
+												</div>
+											{{/HAS_SIMILAR_ITEMS}}
+											<?
+											break;
+										case 'columns':
+											?>
+											{{#COLUMN_LIST}}
+												{{#IS_IMAGE}}
+													<div class="basket-item-property-custom basket-item-property-custom-photo
+														{{#HIDE_MOBILE}}hidden-xs{{/HIDE_MOBILE}}"
+														data-entity="basket-item-property">
+														<div class="basket-item-property-custom-name">{{NAME}}</div>
+														<div class="basket-item-property-custom-value">
+															{{#VALUE}}
+																<span>
+																	<img class="basket-item-custom-block-photo-item"
+																		src="{{{IMAGE_SRC}}}" data-image-index="{{INDEX}}"
+																		data-column-property-code="{{CODE}}">
+																</span>
+															{{/VALUE}}
+														</div>
+													</div>
+												{{/IS_IMAGE}}
+
+												{{#IS_TEXT}}
+													<div class="basket-item-property-custom basket-item-property-custom-text
+														{{#HIDE_MOBILE}}hidden-xs{{/HIDE_MOBILE}}"
+														data-entity="basket-item-property">
+														<div class="basket-item-property-custom-name">{{NAME}}</div>
+														<div class="basket-item-property-custom-value"
+															data-column-property-code="{{CODE}}"
+															data-entity="basket-item-property-column-value">
+															{{VALUE}}
+														</div>
+													</div>
+												{{/IS_TEXT}}
+
+												{{#IS_HTML}}
+													<div class="basket-item-property-custom basket-item-property-custom-text
+														{{#HIDE_MOBILE}}hidden-xs{{/HIDE_MOBILE}}"
+														data-entity="basket-item-property">
+														<div class="basket-item-property-custom-name">{{NAME}}</div>
+														<div class="basket-item-property-custom-value"
+															data-column-property-code="{{CODE}}"
+															data-entity="basket-item-property-column-value">
+															{{{VALUE}}}
+														</div>
+													</div>
+												{{/IS_HTML}}
+
+												{{#IS_LINK}}
+													<div class="basket-item-property-custom basket-item-property-custom-text
+														{{#HIDE_MOBILE}}hidden-xs{{/HIDE_MOBILE}}"
+														data-entity="basket-item-property">
+														<div class="basket-item-property-custom-name">{{NAME}}</div>
+														<div class="basket-item-property-custom-value"
+															data-column-property-code="{{CODE}}"
+															data-entity="basket-item-property-column-value">
+															{{#VALUE}}
+															{{{LINK}}}{{^IS_LAST}}<br>{{/IS_LAST}}
+															{{/VALUE}}
+														</div>
+													</div>
+												{{/IS_LINK}}
+											{{/COLUMN_LIST}}
+											<?
+											break;
+									}
+								}
+							}
+							?>
+						</div>
 					</div>
 					{{#SHOW_LOADING}}
 						<div class="basket-items-list-item-overlay"></div>
 					{{/SHOW_LOADING}}
 				</div>
 			</td>
+			<?
+			if ($usePriceInAdditionalColumn)
+			{
+				?>
+				<td class="basket-items-list-item-price basket-items-list-item-price-for-one<?=(!isset($mobileColumns['PRICE']) ? ' hidden-xs' : '')?>">
+					<div class="basket-item-block-price">
+						{{#SHOW_DISCOUNT_PRICE}}
+							<div class="basket-item-price-old">
+								<span class="basket-item-price-old-text">
+									{{{FULL_PRICE_FORMATED}}}
+								</span>
+							</div>
+						{{/SHOW_DISCOUNT_PRICE}}
 
-            <td class="basket-items-list-item-descriptions">
-                <div class="basket-item-block-info">
-                    {{{STORE.STORE_TITLE}}}
-                </div>
-            </td>
+						<div class="basket-item-price-current">
+							<span class="basket-item-price-current-text" id="basket-item-price-{{ID}}">
+								{{{PRICE_FORMATED}}}
+							</span>
+						</div>
 
-            <td class="basket-items-list-item-descriptions">
-                <div class="basket-item-block-info">
-                    {{{STORE.AMOUNT}}}
-                </div>
-            </td>
+						<div class="basket-item-price-title">
+							<?=Loc::getMessage('SBB_BASKET_ITEM_PRICE_FOR')?> {{MEASURE_RATIO}} {{MEASURE_TEXT}}
+						</div>
+						{{#SHOW_LOADING}}
+							<div class="basket-items-list-item-overlay"></div>
+						{{/SHOW_LOADING}}
+					</div>
+				</td>
+				<?
+			}
+			?>
 			<td class="basket-items-list-item-amount">
 				<div class="basket-item-block-amount{{#NOT_AVAILABLE}} disabled{{/NOT_AVAILABLE}}"
 					data-entity="basket-item-quantity-block">
@@ -220,37 +399,6 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 					{{/SHOW_LOADING}}
 				</div>
 			</td>
-        <?
-        if ($usePriceInAdditionalColumn)
-        {
-            ?>
-            <td class="basket-items-list-item-price basket-items-list-item-price-for-one<?=(!isset($mobileColumns['PRICE']) ? ' hidden-xs' : '')?>">
-                <div class="basket-item-block-price">
-                    {{#SHOW_DISCOUNT_PRICE}}
-                    <div class="basket-item-price-old">
-								<span class="basket-item-price-old-text">
-									{{{FULL_PRICE_FORMATED}}}
-								</span>
-                    </div>
-                    {{/SHOW_DISCOUNT_PRICE}}
-
-                    <div class="basket-item-price-current">
-							<span class="basket-item-price-current-text" id="basket-item-price-{{ID}}">
-								{{{PRICE_FORMATED}}}
-							</span>
-                    </div>
-
-                    <div class="basket-item-price-title">
-                        <?=Loc::getMessage('SBB_BASKET_ITEM_PRICE_FOR')?> {{MEASURE_RATIO}} {{MEASURE_TEXT}}
-                    </div>
-                    {{#SHOW_LOADING}}
-                    <div class="basket-items-list-item-overlay"></div>
-                    {{/SHOW_LOADING}}
-                </div>
-            </td>
-            <?
-        }
-        ?>
 			<?
 			if ($useSumColumn)
 			{

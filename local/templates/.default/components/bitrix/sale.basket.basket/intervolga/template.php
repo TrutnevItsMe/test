@@ -5,6 +5,8 @@ use Bitrix\Main\Localization\Loc;
 
 \Bitrix\Main\UI\Extension::load("ui.fonts.ruble");
 
+CJSCore::Init(["jquery"]);
+
 /**
  * @var array $arParams
  * @var array $arResult
@@ -160,6 +162,7 @@ if (empty($arResult['ERROR_MESSAGE']))
 	if ($arParams['USE_GIFTS'] === 'Y' && $arParams['GIFTS_PLACE'] === 'TOP')
 	{
 		?>
+
 		<div data-entity="parent-container">
 			<div class="catalog-block-header"
 					data-entity="header"
@@ -189,51 +192,11 @@ if (empty($arResult['ERROR_MESSAGE']))
 	}
 	?>
 	<div id="basket-root" class="bx-basket bx-<?=$arParams['TEMPLATE_THEME']?> bx-step-opacity" style="opacity: 0;">
+
         <div class="row">
-            <div class="col-xs-12">
-                <div class="basket-checkout-container">
-                    <div class="row" style="width: 100%; margin: 0">
-                        <div class="col-md-4">
-                            <div class="row">
-                                <div class="col-12">
-                                    <?=$arResult["USER"]["NAME"]?>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <?=$arResult["USER"]["LOGIN"]?>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="row">
-                                <div class="col-12">
-                                    <b>Менеджер:</b> <?=$arResult["USER"]["MANAGERS"]["UF_OSNOVNOYMENEDZHER"]?>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <a href="tel:<?=$arResult["USER"]["MANAGERS"]["UF_OSNMENEDZHERTELEF"]?>"><?=$arResult["USER"]["MANAGERS"]["UF_OSNMENEDZHERTELEF"]?></a>,
-                                    <a href="mailto:<?=$arResult["USER"]["MANAGERS"]["UF_OSNMENEDZHERADRES"]?>"><?=$arResult["USER"]["MANAGERS"]["UF_OSNMENEDZHERADRES"]?></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="row">
-                                <div class="col-12">
-                                    <b>Помошник менеджера:</b> <?=$arResult["USER"]["MANAGERS"]["UF_POMOSHNIK1"]?>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <a href="tel:<?=$arResult["USER"]["MANAGERS"]["UF_POMOSHNIKTELEFON1"]?>"><?=$arResult["USER"]["MANAGERS"]["UF_POMOSHNIKTELEFON1"]?></a>,
-                                    <a href="mailto:<?=$arResult["USER"]["MANAGERS"]["UF_POMOSHNIKADRES1"]?>"><?=$arResult["USER"]["MANAGERS"]["UF_POMOSHNIKADRES1"]?></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?
+            $APPLICATION->IncludeComponent("intervolga:managersByUser","");
+            ?>
         </div>
 		<?
 		if (
@@ -274,18 +237,9 @@ if (empty($arResult['ERROR_MESSAGE']))
 									<?=Loc::getMessage('SBB_FILTER_EMPTY_RESULT')?>
 								</div>
 							</div>
+
 							<table class="basket-items-list-table" id="basket-item-table">
-                                    <tr class="table-header">
-                                        <th></th>
-                                        <th style="min-width: 170px;">Артикул</th>
-                                        <th>Наименование</th>
-                                        <th>Склад</th>
-                                        <th>Остаток</th>
-                                        <th>Количество</th>
-                                        <th style="min-width: 130px;">Цена (РЦЦ 2022)</th>
-                                        <th>Сумма</th>
-                                        <th></th>
-                                    </tr>
+                                <tr class="table-header"></tr>
                             </table>
 						</div>
 					</div>
@@ -332,8 +286,15 @@ if (empty($arResult['ERROR_MESSAGE']))
 			signedParamsString: '<?=CUtil::JSEscape($signedParams)?>',
 			siteId: '<?=CUtil::JSEscape($component->getSiteId())?>',
 			siteTemplateId: '<?=CUtil::JSEscape($component->getSiteTemplateId())?>',
-			templateFolder: '<?=CUtil::JSEscape($templateFolder)?>'
+			templateFolder: '<?=CUtil::JSEscape($templateFolder)?>',
+            templateItemsDisplay: '<?=$arParams["DISPLAY_MODE_ITEMS"]?>'
 		});
+
+        $(document).ready(function(){
+            $(".basket-items-list-table .table-header").prepend($(".basket-header").html());
+            $(".basket-header").remove();
+        });
+
 	</script>
 	<?
 	if ($arParams['USE_GIFTS'] === 'Y' && $arParams['GIFTS_PLACE'] === 'BOTTOM')
