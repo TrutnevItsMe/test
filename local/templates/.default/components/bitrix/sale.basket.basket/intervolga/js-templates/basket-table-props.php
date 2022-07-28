@@ -8,6 +8,8 @@ use Bitrix\Main\Localization\Loc;
  * @var string $templateFolder
  */
 
+//\Bitrix\Main\Diag\Debug::dumpToFile($arResult, $varName = '', $fileName = '/log.txt');
+
 $usePriceInAdditionalColumn = in_array('PRICE', $arParams['COLUMNS_LIST']) && $arParams['PRICE_DISPLAY_MODE'] === 'Y';
 $useSumColumn = in_array('SUM', $arParams['COLUMNS_LIST']);
 $useActionColumn = in_array('DELETE', $arParams['COLUMNS_LIST']);
@@ -368,6 +370,15 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 				}
 				?>
             </div>
+            <? if ($arParams["DISPLAY_RESTS"] === "Y")
+			{
+                ?>
+                <td class="rests">
+                    {{STORE.AMOUNT}}
+                </td>
+                <?
+			}?>
+
             <td class="basket-items-list-item-amount" style="display: flex">
                 <div class="basket-item-block-amount{{#NOT_AVAILABLE}} disabled{{/NOT_AVAILABLE}}"
                      data-entity="basket-item-quantity-block">
@@ -523,6 +534,13 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 					?>
                 <?}?>
 			<?}?>
+			<? if ($arParams["DISPLAY_RESTS"] === "Y")
+			{
+			?>
+                <td>
+                    Остаток
+                </td>
+            <?}?>
             <td>
                 Кол-во
             </td>
@@ -543,6 +561,37 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
             <?}?>
         </tr>
 </script>
+
+<? if ($arParams["DISPLAY_RESTS"] === "Y")
+{
+?>
+    <script>
+        $(document).ready(function(){
+
+            $(".rests").each(function (rest){
+
+                let currentRest = $(this).html();
+                let topAmount = '<?=COption::GetOptionString("aspro.next","MAX_AMOUNT")?>';
+                let botAmount = '<?=COption::GetOptionString("aspro.next","MIN_AMOUNT")?>';
+
+                if (currentRest > topAmount){
+                    let qntyText = '<?=CNext::GetQuantityArray(COption::GetOptionString("aspro.next","MAX_AMOUNT") + 1)["TEXT"]?>';
+                    $(this).html(qntyText);
+                }
+                else if (currentRest < botAmount){
+                    let qntyText = '<?=CNext::GetQuantityArray(COption::GetOptionString("aspro.next","MIN_AMOUNT") - 1)["TEXT"]?>';
+                    $(this).html(qntyText);
+                }
+                else{
+                    let qntyText = '<?=CNext::GetQuantityArray((COption::GetOptionString("aspro.next","MAX_AMOUNT") - COption::GetOptionString("aspro.next","MIN_AMOUNT")) / 2)["TEXT"]?>';
+                    $(this).html(qntyText);
+                }
+            });
+        });
+    </script>
+	<?
+}?>
+
 
 
 <?php

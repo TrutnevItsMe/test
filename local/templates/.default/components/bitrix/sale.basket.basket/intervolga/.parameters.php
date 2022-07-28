@@ -118,6 +118,12 @@ $arTemplateParameters['PRICE_DISPLAY_MODE'] = array(
 	'TYPE' => 'CHECKBOX',
 	'DEFAULT' => 'Y'
 );
+$arTemplateParameters["DISPLAY_RESTS"] = array(
+	"PARENT" => "VISUAL",
+	"NAME" => GetMessage("DISPLAY_RESTS"),
+	"TYPE" => "CHECKBOX",
+	"DEFAULT" => "Y"
+);
 $arTemplateParameters['SHOW_DISCOUNT_PERCENT'] = array(
 	'PARENT' => 'VISUAL',
 	'NAME' => GetMessage('CP_SBB_TPL_SHOW_DISCOUNT_PERCENT'),

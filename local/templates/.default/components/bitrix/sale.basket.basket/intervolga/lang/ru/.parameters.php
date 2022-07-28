@@ -38,5 +38,6 @@ $MESS["CP_SBB_TPL_BRAND_PROPERTY"] = "Свойство брендов";
 $MESS["EMPTY_BASKET_HINT_PATH_TIP"] = "Ссылка для продолжения покупок отображается в случае если корзина пуста.<br>При условии, что путь пустой, текст не будет отображен.";
 $MESS["PROPERTIES_LOCATION"] = "Расположение свойств товара";
 $MESS["TABLE_PROPERTIES"] = "Таблицей";
-$MESS["NEAR_ITEM"] = "Рядом с товаром"
+$MESS["NEAR_ITEM"] = "Рядом с товаром";
+$MESS["DISPLAY_RESTS"] = "Отображать остатки";
 ?>

@@ -37,5 +37,6 @@ $MESS["CP_SBB_TPL_SHOW_DISCOUNT_PERCENT"] = "Show discount percent beside the im
 $MESS["CP_SBB_TPL_DISCOUNT_PERCENT_POSITION"] = "Discount percent position";
 $MESS["PROPERTIES_LOCATION"] = "Item`s properties location";
 $MESS["TABLE_PROPERTIES"] = "Table";
-$MESS["NEAR_ITEM"] = "Next to the product"
+$MESS["NEAR_ITEM"] = "Next to the product";
+$MESS["DISPLAY_RESTS"] = "Display rests";
 ?>
