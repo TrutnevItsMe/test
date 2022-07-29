@@ -373,9 +373,7 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
             <? if ($arParams["DISPLAY_RESTS"] === "Y")
 			{
                 ?>
-                <td class="rests">
-                    {{STORE.AMOUNT}}
-                </td>
+                <td class="rests">{{STORE.AMOUNT}}</td>
                 <?
 			}?>
 
@@ -566,28 +564,25 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 {
 ?>
     <script>
+
+
+
         $(document).ready(function(){
 
-            $(".rests").each(function (rest){
+            // showTextRests();
+            //
+            // $(".basket-item-amount-btn-minus").on("click", function(){
+            //     console.log("click -");
+            //     showTextRests();
+            // });
 
-                let currentRest = $(this).html();
-                let topAmount = '<?=COption::GetOptionString("aspro.next","MAX_AMOUNT")?>';
-                let botAmount = '<?=COption::GetOptionString("aspro.next","MIN_AMOUNT")?>';
 
-                if (currentRest > topAmount){
-                    let qntyText = '<?=CNext::GetQuantityArray(COption::GetOptionString("aspro.next","MAX_AMOUNT") + 1)["TEXT"]?>';
-                    $(this).html(qntyText);
-                }
-                else if (currentRest < botAmount){
-                    let qntyText = '<?=CNext::GetQuantityArray(COption::GetOptionString("aspro.next","MIN_AMOUNT") - 1)["TEXT"]?>';
-                    $(this).html(qntyText);
-                }
-                else{
-                    let qntyText = '<?=CNext::GetQuantityArray((COption::GetOptionString("aspro.next","MAX_AMOUNT") - COption::GetOptionString("aspro.next","MIN_AMOUNT")) / 2)["TEXT"]?>';
-                    $(this).html(qntyText);
-                }
-            });
+            // $(".basket-item-amount-btn-plus").on("click", function(){
+            //     console.log("click +");
+            //     showTextRests();
+            // });
         });
+
     </script>
 	<?
 }?>

@@ -287,7 +287,8 @@ if (empty($arResult['ERROR_MESSAGE']))
 			siteId: '<?=CUtil::JSEscape($component->getSiteId())?>',
 			siteTemplateId: '<?=CUtil::JSEscape($component->getSiteTemplateId())?>',
 			templateFolder: '<?=CUtil::JSEscape($templateFolder)?>',
-            templateItemsDisplay: '<?=$arParams["DISPLAY_MODE_ITEMS"]?>'
+            templateItemsDisplay: '<?=$arParams["DISPLAY_MODE_ITEMS"]?>',
+            displayRests: !!<?=($arParams["DISPLAY_RESTS"] === "Y")?>
 		});
 
         $(document).ready(function(){
