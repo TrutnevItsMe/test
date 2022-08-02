@@ -77,6 +77,12 @@ $arTemplateParameters = array(
 		"DEFAULT" => "Y",
 		"PARENT" => "VISUAL",
 	),
+	"ACTIVE_SAVE_DRAFT_ORDER" => array(
+		"NAME" => GetMessage("ACTIVE_SAVE_DRAFT_ORDER"),
+		"TYPE" => "CHECKBOX",
+		"DEFAULT" => "Y",
+		"PARENT" => "VISUAL",
+	),
 	"SHOW_DELIVERY_PARENT_NAMES" => array(
 		"NAME" => GetMessage("DELIVERY_PARENT_NAMES"),
 		"TYPE" => "CHECKBOX",
