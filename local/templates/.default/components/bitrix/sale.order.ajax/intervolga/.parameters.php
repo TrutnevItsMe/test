@@ -101,6 +101,12 @@ $arTemplateParameters = array(
 		"DEFAULT" => "Y",
 		"PARENT" => "VISUAL",
 	),
+	"ACTIVE_SAVE_DRAFT_ORDER" => array(
+	"NAME" => GetMessage("ACTIVE_SAVE_DRAFT_ORDER"),
+	"TYPE" => "CHECKBOX",
+	"DEFAULT" => "Y",
+	"PARENT" => "VISUAL",
+),
 	"BASKET_POSITION" => array(
 		"NAME" => GetMessage("BASKET_POSITION"),
 		"TYPE" => "LIST",
