@@ -3374,7 +3374,11 @@ div.item-title a span{padding:0px 0px 0px;}
 .item-stock .icon.stock{background-position:-111px -50px;}
 .sa_block{font-size:0px;}
 .sa_block > div{display:inline-block;}
-.catalog_block .item-stock, .catalog_block .article_block{display:inline-block;margin:0px 6px;}
+.catalog_block .item-stock, .catalog_block .article_block{display:inline-block;margin:0px 20px;}
+.catalog_block .item-stock{
+	position: absolute;
+	left: 0;
+}
 .catalog_block .article_block{font-size:12px;color:#999999;}
 
 .counter_wrapp .more_text{color:#b3b3b3;font-size:11px;line-height:14px;margin:16px 0px 0px;white-space:normal;}
@@ -7453,6 +7457,10 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 
 .managers-block td{
 	padding: 0;
+}
+
+.managers-block-profile .contact-table{
+	width: 100%;
 }
 
 .table-header td{
