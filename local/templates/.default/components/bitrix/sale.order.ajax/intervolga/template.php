@@ -333,28 +333,12 @@ else
 	$hideDelivery = empty($arResult['DELIVERY']);
 	?>
 
-        <table class="contact-table">
-            <thead>
-            <tr>
-                <td>Головной партнер</td>
-                <td>Менеджер</td>
-                <td>Помощник менеджера</td>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr>
-                <td><?=$arResult["PARTNER"]["UF_NAME"]?></td>
-                <td><?=$arResult["PARTNER"]["UF_OSNOVNOYMENEDZHER"]?></td>
-                <td><?=$arResult["PARTNER"]["UF_POMOSHNIK1"]?></td>
-            </tr>
-            <tr>
-                <td><a href="mailto:<?=$arResult["PARTNER"]["UF_IMLOGIN"]?>"><?=$arResult["PARTNER"]["UF_IMLOGIN"]?></a></td>
-                <td><a href="mailto:<?=$arResult["PARTNER"]["UF_OSNMENEDZHERADRES"]?>"><?=$arResult["PARTNER"]["UF_OSNMENEDZHERADRES"]?></a></td>
-                <td><a href="mailto:<?=$arResult["PARTNER"]["UF_POMOSHNIKADRES1"]?>"><?=$arResult["PARTNER"]["UF_POMOSHNIKADRES1"]?></a></td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="managers-block">
+	<?
+	$APPLICATION->IncludeComponent("intervolga:managersByUser",
+		"");
+	?>
+    </div>
 
 	<form action="<?=POST_FORM_ACTION_URI?>" method="POST" name="ORDER_FORM" id="bx-soa-order-form" enctype="multipart/form-data">
 		<?
@@ -527,7 +511,7 @@ else
 						}
 						?>
 					</div>
-                    <a href="javascript:void(0)" style="margin: 10px 0" class="pull-left btn btn-default btn-lg hidden-xs" data-save-button="true" data-is-draft="true">
+                    <a href="javascript:void(0)" style="margin: 10px 0" class="pull-left btn btn-default btn-lg hidden-xs <? if ($arParams["ACTIVE_SAVE_DRAFT_ORDER"] == "N"):?>disabled<?endif;?>" data-save-button="true" data-is-draft="true">
 						<?=$arParams['MESS_ORDER_DRAFT']?>
                     </a>
 					<a href="javascript:void(0)" style="margin: 10px 0" class="pull-right btn btn-default btn-lg hidden-xs" data-save-button="true">
