@@ -197,6 +197,10 @@
 		{
 			this.trySendPool();
 		}
+
+		if (this.component.displayRests){
+			this.component.removeDoubleHeader();
+		}
 	};
 
 	BX.Sale.BasketActionPool.prototype.trySendPool = function()

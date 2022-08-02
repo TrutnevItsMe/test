@@ -79,6 +79,9 @@
 			this.siteTemplateId = parameters.siteTemplateId || '';
 			this.ajaxUrl = this.params.AJAX_PATH || '';
 			this.templateFolder = parameters.templateFolder || '';
+			this.selectorRemovableHeader = parameters.selectorRemovableHeader || ".basket-header";
+			this.selectorRestItem = parameters.selectorRestItem || ".rests";
+			this.displayRests = parameters.displayRests || false;
 
 			this.useDynamicScroll = this.params.USE_DYNAMIC_SCROLL === 'Y';
 			this.useItemsFilter = this.params.SHOW_FILTER === 'Y' && !this.isMobile;
@@ -100,6 +103,10 @@
 			this.editWarnings();
 
 			this.getCacheNode(this.ids.basketRoot).style.opacity = 1;
+
+			if (this.displayRests){
+				this.showTextRests();
+			}
 
 			this.bindInitialEvents();
 		},
@@ -675,6 +682,10 @@
 					if (this.isBasketIntegrated() && this.isBasketChanged())
 					{
 						BX.Sale.OrderAjaxComponent.sendRequest();
+					}
+					if (this.displayRests){
+						this.showTextRests();
+						this.removeDoubleHeader();
 					}
 				}, this),
 				onfailure: BX.delegate(function() {
@@ -1712,6 +1723,40 @@
 				BX.bind(entity, 'change', BX.proxy(this.quantityChange, this));
 			}
 		},
+
+		removeDoubleHeader: function(){
+			if (document.querySelector(this.selectorRemovableHeader)){
+				document.querySelector(this.selectorRemovableHeader).remove();
+			}
+		},
+
+		showTextRests: function(){
+		$(this.selectorRestItem).each(function (rest){
+
+			let currentRest = $(this).html();
+			// let topAmount = '<?=COption::GetOptionString("aspro.next","MAX_AMOUNT")?>';
+			let topAmount = 10;
+			// let botAmount = '<?=COption::GetOptionString("aspro.next","MIN_AMOUNT")?>';
+			let botAmount = 2;
+
+			if (currentRest > topAmount){
+				// let qntyText = '<?=CNext::GetQuantityArray(COption::GetOptionString("aspro.next","MAX_AMOUNT") + 1)["TEXT"]?>';
+				let qntyText = "Много";
+				$(this).html(qntyText);
+			}
+			else if (currentRest < botAmount){
+				// let qntyText = '<?=CNext::GetQuantityArray(COption::GetOptionString("aspro.next","MIN_AMOUNT") - 1)["TEXT"]?>';
+				let qntyText = "Мало";
+				$(this).html(qntyText);
+			}
+			else{
+				// let qntyText = '<?=CNext::GetQuantityArray((COption::GetOptionString("aspro.next","MAX_AMOUNT") - COption::GetOptionString("aspro.next","MIN_AMOUNT")) / 2)["TEXT"]?>';
+				let qntyText = "Достаточно";
+				$(this).html(qntyText);
+			}
+
+		});
+	},
 
 		startQuantityInterval: function()
 		{
