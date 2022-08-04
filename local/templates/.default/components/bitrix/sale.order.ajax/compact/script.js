@@ -449,6 +449,8 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
  * @param values
  */
 function activateAgreementsField(data) {
+	debugger;
+
     window.currentAgreementId = '';
     setInterval(function () {
 		var $profile = $('[name=PROFILE_ID]');
