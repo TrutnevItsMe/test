@@ -449,6 +449,7 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
  * @param values
  */
 function activateAgreementsField(data) {
+
     window.currentAgreementId = '';
     setInterval(function () {
 		var $profile = $('[name=PROFILE_ID]');
@@ -485,7 +486,6 @@ function activateAgreementsField(data) {
 		}
 		if ($('#bx-soa-properties input').length > 0) {
 			$('#bx-soa-properties input, #bx-soa-properties textarea').prop("disabled", true);
-			document.querySelector('#bx-soa-properties .bx-soa-more-btn .pull-right').click();
 		}
 		$('#bx-soa-properties a.bx-soa-editstep').hide();
     }, 300)
@@ -505,8 +505,6 @@ function addGetCustomPricesButton(data) {
         if (!data.counterparties[profileId]) { return; }
         var counterpartyXmlId = data.counterparties[profileId].XML_ID;
         var agreementXmlId = $('#soa-property-' + data.agreementFieldId).val();
-		console.log(counterpartyXmlId);
-		console.log(agreementXmlId);
         $.post(
             '/ajax/getCustomPrices.php',
             {

@@ -3882,19 +3882,6 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
                 }
 
                 regionNode.appendChild(regionNodeCol);
-                var id,group, property,propsIterator, groupIterator = this.propertyCollection.getGroupIterator();
-                let arId = [
-                    this.CLIENT_AGREEMENTS_ID
-                ]
-                while (group = groupIterator()){
-                    propsIterator =  group.getIterator();
-                    while (property = propsIterator()) {
-                        id=property.getId();
-                        if (arId.indexOf(id)>=0){
-                            this.getPropertyRowNode(property, regionNodeCol, false);
-                        }
-                    }
-                }
 
                 regionContent.appendChild(regionNode);
                 this.getBlockFooter(regionContent);
