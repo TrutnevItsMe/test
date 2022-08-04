@@ -505,8 +505,6 @@ function addGetCustomPricesButton(data) {
         if (!data.counterparties[profileId]) { return; }
         var counterpartyXmlId = data.counterparties[profileId].XML_ID;
         var agreementXmlId = $('#soa-property-' + data.agreementFieldId).val();
-		console.log(counterpartyXmlId);
-		console.log(agreementXmlId);
         $.post(
             '/ajax/getCustomPrices.php',
             {
