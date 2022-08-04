@@ -586,6 +586,7 @@
 	display: -ms-flexbox;
 	display: -webkit-box;
 	display: flex;
+	align-items: center;
 }
 
 /*region Image*/
@@ -602,7 +603,6 @@
 	-ms-flex: 1;
 	flex: 1;
 	-webkit-box-ordinal-group: 2;
-	order: 1;
 }
 
 .basket-items-list-wrapper-compact .basket-item-block-image {
@@ -2288,4 +2288,20 @@ body.bx-theme-yellow .catalog-block-header{border-color:#f4b236;}
 .basket-item-info-name-link {
 	display: block;
 	margin-top: -2px;
+}
+
+.article-before-name-section{
+	width: 222px;
+	white-space: nowrap;
+}
+
+td{
+	text-align: center;
+	padding: 5px;
+	vertical-align: middle;
+}
+
+.basket-items-list-item-price,
+.basket-items-list-item-amount{
+	vertical-align: middle;
 }
