@@ -45,7 +45,6 @@ if (is_array($arResult["GRID"]["ROWS"])) {
 		$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["DISCOUNT_PRICE_PERCENT"] = 1 - $newPrice / $oldPrice;
 		$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["DISCOUNT_PRICE_PERCENT_FORMATED"] = round($arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["DISCOUNT_PRICE_PERCENT"] * 100, 2) . "%";
 
-
 		$productId = $arItem["data"]["PRODUCT_ID"];
 		$rsProperty = CIBlockElement::GetProperty(
 			$catalogIblockID,
@@ -134,5 +133,3 @@ $arUser = $rsUser->fetch();
 $HlBlock = new HlbWrap(HL_BLOCK_CODE_PARTNERY);
 $dbPartnery = $HlBlock->getList(["filter" => ["UF_XML_ID" => $arUser["XML_ID"]]]);
 
-$partner = $dbPartnery->fetch();
-$arResult["PARTNER"] = $partner;
