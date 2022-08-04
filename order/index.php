@@ -4,7 +4,7 @@ $APPLICATION->SetTitle("Оформление заказа");
 
 <?$APPLICATION->IncludeComponent(
 	"bitrix:sale.order.ajax", 
-	"intervolga", 
+	"compact", 
 	array(
 		"PAY_FROM_ACCOUNT" => "N",
 		"ONLY_FULL_PAY_FROM_ACCOUNT" => "N",
@@ -31,7 +31,7 @@ $APPLICATION->SetTitle("Оформление заказа");
 		"DISABLE_BASKET_REDIRECT" => "N",
 		"DISPLAY_IMG_WIDTH" => "90",
 		"DISPLAY_IMG_HEIGHT" => "90",
-		"COMPONENT_TEMPLATE" => "intervolga",
+		"COMPONENT_TEMPLATE" => "compact",
 		"ALLOW_NEW_PROFILE" => "N",
 		"SHOW_PAYMENT_SERVICES_NAMES" => "Y",
 		"COMPATIBLE_MODE" => "Y",
@@ -117,9 +117,10 @@ $APPLICATION->SetTitle("Оформление заказа");
 		"USE_PHONE_NORMALIZATION" => "Y",
 		"ADDITIONAL_PICT_PROP_17" => "-",
 		"ADDITIONAL_PICT_PROP_20" => "-",
-		"HIDE_ORDER_DESCRIPTION" => "N",
+		"HIDE_ORDER_DESCRIPTION" => "Y",
 		"USE_ENHANCED_ECOMMERCE" => "N",
-		"ADDITIONAL_PICT_PROP_26" => "-"
+		"ADDITIONAL_PICT_PROP_26" => "-",
+		"ACTIVE_SAVE_DRAFT_ORDER" => "N"
 	),
 	false
 );?>
