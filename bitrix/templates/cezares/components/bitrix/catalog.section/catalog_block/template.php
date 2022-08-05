@@ -277,7 +277,6 @@
 										</table>
 									</div>
 									<?if ($arQuantityData["HTML"]):?>
-                                        <br>
 										<?=$arQuantityData["HTML"];?>
 									<?endif;?>
                                 </div>
