@@ -642,7 +642,7 @@ if (!empty($arResult['ITEMS'])){
 				if($propKey=="CML2_ARTICLE"){
 					$arItem['ARTICLE']=$arDispProp;
 				}
-				if ('F' == $arDispProp['PROPERTY_TYPE'] || $propKey=="CML2_ARTICLE")
+				if ('F' == $arDispProp['PROPERTY_TYPE'])
 					unset($arItem['DISPLAY_PROPERTIES'][$propKey]);
 			}
 		}
