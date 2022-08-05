@@ -250,30 +250,20 @@
 								<?endif;?>
 								<div class="sa_block" style="min-height: 190px;">
 									<div class="article_block" <?if(isset($arItem['ARTICLE']) && $arItem['ARTICLE']['VALUE']):?>data-name="<?=$arItem['ARTICLE']['NAME'];?>" data-value="<?=$arItem['ARTICLE']['VALUE'];?>"<?endif;?>>
-										<?if(isset($arItem['ARTICLE']) && $arItem['ARTICLE']['VALUE']){?>
-											<div ><?=$arItem['ARTICLE']['NAME'];?>: <?=$arItem['ARTICLE']['VALUE'];?></div>
-										<?}?>
 										<table>
-											<tr><td>Код: <?=$arItem["ID"]?></td></tr>
-											
-											<!--<?if($arItem["PROPERTIES"]["VYSOTA_IZDELIYA_SM"]["VALUE"] AND $arItem["PROPERTIES"]["SHIRINA_IZDELIYA_SM"]["VALUE"] AND $arItem["PROPERTIES"]["DLINA_IZDELIYA_SM"]["VALUE"]){?>
-											<tr><td>Габариты см</td><td><?=$arItem["PROPERTIES"]["VYSOTA_IZDELIYA_SM"]["VALUE"]?>x<?=$arItem["PROPERTIES"]["SHIRINA_IZDELIYA_SM"]["VALUE"]?>x<?=$arItem["PROPERTIES"]["DLINA_IZDELIYA_SM"]["VALUE"]?></td></tr>
-											<?}?>-->
-											<?if($arItem["PROPERTIES"]["REZHIM_SLIVA_VODY"]["VALUE"]){?>
-											<tr><td>Кнопки слива: <?=$arItem["PROPERTIES"]["REZHIM_SLIVA_VODY"]["VALUE"]?></td></tr>
-											<?}?>
-											<?if($arItem["PROPERTIES"]["KRYSHKA_SIDENE_S_MIKROLIFTOM"]["VALUE"]){?>
-											<tr><td>Микролифт: <?=$arItem["PROPERTIES"]["KRYSHKA_SIDENE_S_MIKROLIFTOM"]["VALUE"]?></td></tr>
-											<?}?>
-											<?if($arItem["PROPERTIES"]["NAPRAVLENIE_VYPUSKA"]["VALUE"]){?>
-											<tr><td>Направление выпуска: <?=$arItem["PROPERTIES"]["NAPRAVLENIE_VYPUSKA"]["VALUE"]?></td></tr>
-											<?}?>
-											<?if($arItem["PROPERTIES"]["BEZOBODKOVYY_UNITAZ"]["VALUE"]){?>
-											<tr><td>Безободковый: <?=$arItem["PROPERTIES"]["BEZOBODKOVYY_UNITAZ"]["VALUE"]?></td></tr>
-											<?}?>
-											<?if($arItem["PROPERTIES"]["DLINA_CHASHI_SM"]["VALUE"]){?>
-											<tr><td>Длинна чаши: <?=$arItem["PROPERTIES"]["DLINA_CHASHI_SM"]["VALUE"]?></td></tr>
-											<?}?>
+
+                                            <? foreach ($arParams["PROPERTY_CODE"] as $propertyCode): ?>
+
+                                                <? if($arItem["DISPLAY_PROPERTIES"][$propertyCode]): ?>
+                                                    <tr>
+                                                        <td>
+                                                            <?=$arItem["DISPLAY_PROPERTIES"][$propertyCode]["NAME"]?>: <?=$arItem["DISPLAY_PROPERTIES"][$propertyCode]["DISPLAY_VALUE"]?>
+                                                        </td>
+                                                    </tr>
+                                                <? endif; ?>
+
+                                            <? endforeach; ?>
+
 										</table>
 									</div>
 									<?if ($arQuantityData["HTML"]):?>
