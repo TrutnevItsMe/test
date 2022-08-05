@@ -6192,7 +6192,7 @@ body #basket-root .basket-item-label-text span, body #basket-root .basket-item-l
 #basket-root .basket-items-list-header-filter-item:not(.active):hover{color:#222;}
 #basket-root .basket-items-list{padding-left:0px;padding-right:0px;}
 #basket-root .basket-items-list .basket-items-list-overlay{left:41px;right:41px;}
-#basket-root .basket-items-list .basket-items-list-item-container > td:first-child{padding-left:41px;}
+#basket-root .basket-items-list .basket-items-list-item-container > td:first-child{padding-left:10px;}
 #basket-root .basket-items-list .basket-items-list-item-container > td:last-child{padding-right:2px;}
 #basket-root .basket-items-list-item-descriptions{padding-top:29px;}
 #basket-root .basket-items-list .basket-item-block-image{padding-bottom:0px;}
