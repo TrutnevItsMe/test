@@ -848,8 +848,9 @@
 	text-decoration: none;
 	word-break: break-all;
 	word-break: break-word;
-	font: 400 16px/26px "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font: 400 14px/24px "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	transition: 300ms all ease;
+	line-height: 15px;
 }
 
 /*.basket-item-actions-remove + .basket-item-info-name {
@@ -2289,9 +2290,10 @@ body.bx-theme-yellow .catalog-block-header{border-color:#f4b236;}
 }
 
 .article-before-name-section{
-	width: 400px;
+	width: 300px;
 	white-space: nowrap;
 	padding-left:40px;
+	text-align: left;
 }
 
 td{

@@ -6192,7 +6192,7 @@ body #basket-root .basket-item-label-text span, body #basket-root .basket-item-l
 #basket-root .basket-items-list-header-filter-item:not(.active):hover{color:#222;}
 #basket-root .basket-items-list{padding-left:0px;padding-right:0px;}
 #basket-root .basket-items-list .basket-items-list-overlay{left:41px;right:41px;}
-#basket-root .basket-items-list .basket-items-list-item-container > td:first-child{padding-left:10px;}
+#basket-root .basket-items-list .basket-items-list-item-container > td:first-child{padding-left:41px;}
 #basket-root .basket-items-list .basket-items-list-item-container > td:last-child{padding-right:2px;}
 #basket-root .basket-items-list-item-descriptions{padding-top:29px;}
 #basket-root .basket-items-list .basket-item-block-image{padding-bottom:0px;}
@@ -6203,7 +6203,7 @@ body #basket-root .basket-item-label-text span, body #basket-root .basket-item-l
 	position:absolute;top:-4px;left:0px;border-radius:100%;}
 #basket-root .basket-items-list .basket-item-block-info .basket-items-list-item-warning-container .alert.alert-warning:before{background:#fff url('images/not-available.png') 0px 0px;}
 #basket-root .basket-items-list .basket-item-block-info .basket-items-list-item-warning-container .alert.alert-warning a[data-entity="basket-item-remove-delayed"]:before{background:#ddd url('images/svg/icons_wish.svg') 5px -44px;}
-#basket-root .basket-item-info-name, #basket-root .basket-item-info-name-link{font-weight:bold;font-size:15px;}
+#basket-root .basket-item-info-name, #basket-root .basket-item-info-name-link{font-weight:bold;font-size:10pt;}
 #basket-root .basket-item-property-name, #basket-root .basket-item-property-custom-name{color:#888;font-size:13px;padding-top:6px;}
 #basket-root .basket-item-property-value, #basket-root .basket-item-property-custom-value{color:#333333;font-size:13px;font-weight:normal;padding-top:6px;}
 
@@ -7433,7 +7433,7 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 	margin: 10px auto;
 }
 .contact-table td{
-	padding: 10px;
+	padding: 0;
 	margin: 0 auto;
 	text-align: center;
 }
@@ -7446,24 +7446,10 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 	left: 256px !important;
 }
 
-.managers-block .contact-table{
-	width: 74.5%;
-	margin: 0;
-}
-
 .managers-block td{
 	padding: 0;
 }
 
-.table-header td{
-	text-align: center;
-}
-
-.td-basket-item-property{
-	text-align: center;
-}
-
-.basket-item-property-custom{
-	display: inline-block;
-	padding: 0;
+.managers-block-profile .contact-table{
+	width: 100%;
 }
