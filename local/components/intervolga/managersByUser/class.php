@@ -20,6 +20,7 @@ class ManagersByUser extends CBitrixComponent{
 			while ($partner = $dbPartnery->fetch()){
 				$partner["DISPLAY_OSNMENEDZHERTELEF"] = Parser::getInstance()->parse($partner["UF_OSNMENEDZHERTELEF"])->format(Format::NATIONAL);
 				$partner["DISPLAY_POMOSHNIKTELEFON1"] = Parser::getInstance()->parse($partner["UF_POMOSHNIKTELEFON1"])->format(Format::NATIONAL);
+				$partner["DISPLAY_POMOSHNIKTELEFON2"] = Parser::getInstance()->parse($partner["UF_POMOSHNIKTELEFON2"])->format(Format::NATIONAL);
 				$this->arResult["PARTNERS"][] = $partner;
 			}
 		}
