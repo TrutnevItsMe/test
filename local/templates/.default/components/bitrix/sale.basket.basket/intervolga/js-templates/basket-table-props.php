@@ -506,7 +506,7 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 			{{#SHOW_RESTORE}}
 			<td colspan="<?= $restoreColSpan ?>">{{NAME}}</td>
 			{{/SHOW_RESTORE}}
-			<td>
+			<td class="img-header">
 				<?
 				if (in_array('PREVIEW_PICTURE', $arParams['COLUMNS_LIST']))
 				{
@@ -548,8 +548,6 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 			{
 				foreach ($arParams['PRODUCT_BLOCKS_ORDER'] as $blockName)
 				{
-					?>
-					<?
 					switch (trim((string)$blockName))
 					{
 						case 'props':
@@ -585,10 +583,7 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 							<?
 							break;
 					}
-					?>
-					<?
-				} ?>
-				<?
+				}
 			} ?>
 
 			<? if ($arParams["SHOW_DISCOUNT_PERCENT_COLUMN"] === "Y"): ?>
@@ -601,7 +596,7 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 			if ($usePriceInAdditionalColumn)
 			{
 				?>
-				<td class="basket-items-list-item-price basket-items-list-item-price-for-one<?= (!isset($mobileColumns['PRICE']) ? ' hidden-xs' : '') ?>">
+				<td class="price-header">
 					<?= Loc::getMessage("PRICE") ?>
 				</td>
 				<?
@@ -611,7 +606,7 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 			if ($useSumColumn)
 			{
 				?>
-				<td class="basket-items-list-item-price<?= (!isset($mobileColumns['SUM']) ? ' hidden-xs' : '') ?>">
+				<td class="sum-header">
 					<?= Loc::getMessage("SUM") ?>
 				</td>
 				<?

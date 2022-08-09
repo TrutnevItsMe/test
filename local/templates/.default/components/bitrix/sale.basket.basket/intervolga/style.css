@@ -1492,8 +1492,7 @@ h2.basket-item-info-name {
 
 /*region Actions*/
 .basket-items-list-item-remove {
-	padding-top: 17px !important;
-	vertical-align: top;
+	vertical-align: middle;
 }
 
 .basket-item-block-actions {
@@ -1579,7 +1578,6 @@ h2.basket-item-info-name {
 
 	td.basket-items-list-item-amount,
 	td.basket-items-list-item-price,
-	td.basket-items-list-item-remove { display: inline-block; }
 
 	td.basket-items-list-item-descriptions {
 		padding-bottom: 10px;
@@ -1594,22 +1592,11 @@ h2.basket-item-info-name {
 
 	.basket-items-list-item-price { padding: 3px 0; }
 
-	td.basket-items-list-item-remove { padding: 34px 0 0 !important; }
 }
 
 @media (max-width: 580px) {
 
 	.basket-items-list-item-price .basket-item-block-price .basket-item-price-title { display: block; }
-
-	td.basket-items-list-item-remove {
-		display: block;
-		padding: 0;
-	}
-
-	td.basket-items-list-item-remove {
-		padding: 0 !important;
-		text-align: center;
-	}
 
 	.basket-item-block-actions { display: inline-block; }
 }
@@ -2251,10 +2238,6 @@ body.bx-theme-yellow .catalog-block-header{border-color:#f4b236;}
 	padding-right: 15px;
 }
 
-.table-header td{
-	text-align: center;
-}
-
 #basket-root .basket-item-actions-remove:after, #basket-root .basket-item-actions-remove:before {
 	height:80%!important;
 	transition: 0.5s;
@@ -2264,12 +2247,6 @@ body.bx-theme-yellow .catalog-block-header{border-color:#f4b236;}
 }
 #basket-root .basket-item-actions-remove:hover:after {
 	transform: translate3d(-50%, -50%, 0) rotate(135deg);
-}
-#basket-root .basket-items-list-item-remove.td-remove {
-	padding-top: 0!important;
-}
-#basket-root .basket-item-block-actions {
-	padding-top: 29px;
 }
 
 #basket-root .basket-items-list .basket-item-block-info {
@@ -2309,4 +2286,28 @@ td{
 .basket-items-list-item-descriptions-header .preview-image-header,
 .basket-items-list-item-descriptions-header .article-header{
 	margin-left: -50px;
+}
+
+.article-header{
+	padding-left: 15%;
+}
+
+.product-header{
+	padding-left: 10%;
+}
+
+.price-header, .td-header-amount{
+	padding-left: 1.5%;
+}
+
+.sum-header{
+	padding-left: 1%;
+}
+
+.img-header{
+	padding-left: 3%;
+}
+
+.td-header-rests{
+	width: 70px;
 }
