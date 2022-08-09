@@ -5,6 +5,8 @@ use Bitrix\Main\Localization\Loc;
 
 \Bitrix\Main\UI\Extension::load("ui.fonts.ruble");
 
+CJSCore::Init(["jquery"]);
+
 /**
  * @var array $arParams
  * @var array $arResult
@@ -160,6 +162,7 @@ if (empty($arResult['ERROR_MESSAGE']))
 	if ($arParams['USE_GIFTS'] === 'Y' && $arParams['GIFTS_PLACE'] === 'TOP')
 	{
 		?>
+
 		<div data-entity="parent-container">
 			<div class="catalog-block-header"
 					data-entity="header"
@@ -189,6 +192,15 @@ if (empty($arResult['ERROR_MESSAGE']))
 	}
 	?>
 	<div id="basket-root" class="bx-basket bx-<?=$arParams['TEMPLATE_THEME']?> bx-step-opacity" style="opacity: 0;">
+
+        <div class="row">
+			<div class="col-xs-12">
+				<?
+				$APPLICATION->IncludeComponent("intervolga:managersByUser","");
+				?>
+			</div>
+        </div>
+		<br>
 		<?
 		if (
 			$arParams['BASKET_WITH_ORDER_INTEGRATION'] !== 'Y'
@@ -196,9 +208,9 @@ if (empty($arResult['ERROR_MESSAGE']))
 		)
 		{
 			?>
-			<div class="row">
+            <div class="row">
 				<div class="col-xs-12" data-entity="basket-total-block"></div>
-			</div>
+            </div>
 			<?
 		}
 		?>
@@ -219,28 +231,6 @@ if (empty($arResult['ERROR_MESSAGE']))
 			<div class="col-xs-12">
 				<div class="basket-items-list-wrapper basket-items-list-wrapper-height-fixed basket-items-list-wrapper-light<?=$displayModeClass?>"
 					id="basket-items-list-wrapper">
-					<div class="basket-items-list-header" data-entity="basket-items-list-header">
-						<div class="basket-items-search-field" data-entity="basket-filter">
-							<div class="form has-feedback">
-								<input type="text" class="form-control"
-									placeholder="<?=Loc::getMessage('SBB_BASKET_FILTER')?>"
-									data-entity="basket-filter-input">
-								<span class="form-control-feedback basket-clear" data-entity="basket-filter-clear-btn"></span>
-							</div>
-						</div>
-						<div class="basket-items-list-header-filter">
-							<a href="javascript:void(0)" class="basket-items-list-header-filter-item active"
-								data-entity="basket-items-count" data-filter="all" style="display: none;"></a>
-							<a href="javascript:void(0)" class="basket-items-list-header-filter-item"
-								data-entity="basket-items-count" data-filter="similar" style="display: none;"></a>
-							<a href="javascript:void(0)" class="basket-items-list-header-filter-item"
-								data-entity="basket-items-count" data-filter="warning" style="display: none;"></a>
-							<a href="javascript:void(0)" class="basket-items-list-header-filter-item"
-								data-entity="basket-items-count" data-filter="delayed" style="display: none;"></a>
-							<a href="javascript:void(0)" class="basket-items-list-header-filter-item"
-								data-entity="basket-items-count" data-filter="not-available" style="display: none;"></a>
-						</div>
-					</div>
 					<div class="basket-items-list-container" id="basket-items-list-container">
 						<div class="basket-items-list-overlay" id="basket-items-list-overlay" style="display: none;"></div>
 						<div class="basket-items-list" id="basket-item-list">
@@ -250,7 +240,10 @@ if (empty($arResult['ERROR_MESSAGE']))
 									<?=Loc::getMessage('SBB_FILTER_EMPTY_RESULT')?>
 								</div>
 							</div>
-							<table class="basket-items-list-table" id="basket-item-table"></table>
+
+							<table class="basket-items-list-table" id="basket-item-table">
+                                <tr class="table-header"></tr>
+                            </table>
 						</div>
 					</div>
 				</div>
@@ -296,8 +289,23 @@ if (empty($arResult['ERROR_MESSAGE']))
 			signedParamsString: '<?=CUtil::JSEscape($signedParams)?>',
 			siteId: '<?=CUtil::JSEscape($component->getSiteId())?>',
 			siteTemplateId: '<?=CUtil::JSEscape($component->getSiteTemplateId())?>',
-			templateFolder: '<?=CUtil::JSEscape($templateFolder)?>'
+			templateFolder: '<?=CUtil::JSEscape($templateFolder)?>',
+            templateItemsDisplay: '<?=$arParams["DISPLAY_MODE_ITEMS"]?>',
+            displayRests: !!<?=($arParams["DISPLAY_RESTS"] === "Y")?>,
+            maxAmount: '<?=COption::GetOptionString("aspro.next","MAX_AMOUNT")?>',
+            minAmount: '<?=COption::GetOptionString("aspro.next","MIN_AMOUNT")?>',
+            manyText: '<?=CNext::GetQuantityArray(COption::GetOptionString("aspro.next","MAX_AMOUNT") + 1)["TEXT"]?>',
+            enoughText: '<?=CNext::GetQuantityArray((COption::GetOptionString("aspro.next","MAX_AMOUNT") - COption::GetOptionString("aspro.next","MIN_AMOUNT")) / 2)["TEXT"]?>',
+            fewText: '<?=CNext::GetQuantityArray(COption::GetOptionString("aspro.next","MIN_AMOUNT") - 1)["TEXT"]?>',
+            displayArticleBeforeName: !!<?=$arParams["SHOW_ARTICLE_BEFORE_NAME"] === "Y"?>,
+            displayDiscountPercent: !!<?=$arParams["SHOW_DISCOUNT_PERCENT_COLUMN"] === "Y"?>
 		});
+
+        $(document).ready(function(){
+            $(".basket-items-list-table .table-header").prepend($(".basket-header").html());
+            $(".basket-header").remove();
+        });
+
 	</script>
 	<?
 	if ($arParams['USE_GIFTS'] === 'Y' && $arParams['GIFTS_PLACE'] === 'BOTTOM')
