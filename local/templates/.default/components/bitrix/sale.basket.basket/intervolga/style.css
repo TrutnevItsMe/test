@@ -853,10 +853,6 @@
 	line-height: 15px;
 }
 
-/*.basket-item-actions-remove + .basket-item-info-name {
-	margin-right: 30px;
-}*/
-
 h2.basket-item-info-name {
 	margin-bottom: 5px;
 	padding-top: 0;
@@ -953,7 +949,6 @@ h2.basket-item-info-name {
 		align-items: flex-end;
 	}
 
-	/*.basket-item-price-old { right: 10px; }*/
 	.basket-item-price-current { text-align: right; }
 }
 
@@ -1177,7 +1172,6 @@ h2.basket-item-info-name {
 /*region Amount*/
 .basket-items-list-item-amount {
 	-ms-flex-order: 3;
-	padding-top: 20px;
 	vertical-align: top;
 	-webkit-box-ordinal-group: 4;
 	order: 3;
@@ -1363,7 +1357,6 @@ h2.basket-item-info-name {
 
 .basket-item-block-price {
 	position: relative;
-	padding-top: 20px;
 	text-align: right;
 	white-space: nowrap;
 }
@@ -1469,7 +1462,6 @@ h2.basket-item-info-name {
 
 	.basket-items-list-item-amount {
 		display: block;
-		padding: 0 0 20px;
 		min-width: 100%;
 	}
 
@@ -2259,6 +2251,10 @@ body.bx-theme-yellow .catalog-block-header{border-color:#f4b236;}
 	padding-right: 15px;
 }
 
+.table-header td{
+	text-align: center;
+}
+
 #basket-root .basket-item-actions-remove:after, #basket-root .basket-item-actions-remove:before {
 	height:80%!important;
 	transition: 0.5s;
@@ -2297,9 +2293,7 @@ body.bx-theme-yellow .catalog-block-header{border-color:#f4b236;}
 }
 
 td{
-	text-align: center;
-	padding: 5px;
-	vertical-align: middle;
+	padding: 2px;
 }
 
 .basket-items-list-item-price,
