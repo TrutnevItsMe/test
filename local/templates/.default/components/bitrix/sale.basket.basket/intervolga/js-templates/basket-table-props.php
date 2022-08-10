@@ -411,12 +411,6 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 				?>
 			</div>
 
-			<? if ($arParams["SHOW_DISCOUNT_PERCENT_COLUMN"] === "Y"): ?>
-				<td class="td-discount-percent">
-					{{DISCOUNT_PRICE_PERCENT_FORMATED}}
-				</td>
-			<? endif; ?>
-
 			<?
 			if ($usePriceInAdditionalColumn)
 			{
@@ -585,12 +579,6 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 					}
 				}
 			} ?>
-
-			<? if ($arParams["SHOW_DISCOUNT_PERCENT_COLUMN"] === "Y"): ?>
-				<td class="td-header-discount-percent">
-					<?= Loc::getMessage("DISCOUNT") ?>
-				</td>
-			<? endif; ?>
 
 			<?
 			if ($usePriceInAdditionalColumn)
