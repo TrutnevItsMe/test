@@ -1,10 +1,12 @@
 <? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
+
 use Bitrix\Main\Config\Option;
 use CNextCache;
 use CSaleOrderUserProps;
 use Bitrix\Main\UserTable;
 use Intervolga\Custom\Import\Sets;
 use Intervolga\Common\Highloadblock\HlbWrap;
+use \Bitrix\Main\Localization\Loc;
 
 /**
  * @var array $arParams
@@ -15,35 +17,115 @@ use Intervolga\Common\Highloadblock\HlbWrap;
 $component = $this->__component;
 $component::scaleImages($arResult['JS_DATA'], $arParams['SERVICES_IMAGES_SCALING']);
 
+const STORE_CODE = "STORE";
+const RESTS_CODE = "RESTS";
+
 /*
  *
  * Вычисление скидки
  * */
-foreach ($arResult["BASKET_ITEMS"] as $ID => $arRow){
+foreach ($arResult["BASKET_ITEMS"] as $ID => $arRow)
+{
 	$oldPrice = $arResult["BASKET_ITEMS"][$ID]["SUM_BASE"];
 	$newPrice = $arResult["BASKET_ITEMS"][$ID]["SUM_NUM"];
 	$arResult["BASKET_ITEMS"][$ID]["DISCOUNT_PRICE_PERCENT"] = 1 - $newPrice / $oldPrice;
 	$arResult["BASKET_ITEMS"][$ID]["DISCOUNT_PRICE_PERCENT_FORMATED"] = round($arResult["BASKET_ITEMS"][$ID]["DISCOUNT_PRICE_PERCENT"] * 100, 2) . "%";
 }
 
+if (is_array($arResult["GRID"]["ROWS"]))
+{
 
-// https://youtrack.ivsupport.ru/issue/iberisweb-8
-if (is_array($arResult["GRID"]["ROWS"])) {
+	// Перестраиваем положение столбцов
+	$newIndexPicture = ($arParams["INDEX_PICTURE"] >= 0) ? $arParams["INDEX_PICTURE"] : 0;
+	$newIndexPicture = ($newIndexPicture < count($arResult['JS_DATA']["GRID"]["HEADERS"])) ? $newIndexPicture : count($arResult['JS_DATA']["GRID"]["HEADERS"]) - 1;
+
+	$headerCodes = array_column($arResult['JS_DATA']["GRID"]["HEADERS"], "id");
+	$previewPictureIndex = array_search("PREVIEW_PICTURE", $headerCodes);
+
+	if ($previewPictureIndex !== false)
+	{
+
+		$tmp = $arResult['JS_DATA']["GRID"]["HEADERS"][$previewPictureIndex];
+		$arResult['JS_DATA']["GRID"]["HEADERS"][$previewPictureIndex] =
+			$arResult['JS_DATA']["GRID"]["HEADERS"][$newIndexPicture];
+		$arResult['JS_DATA']["GRID"]["HEADERS"][$newIndexPicture] = $tmp;
+	} else
+	{
+
+		$detailPictureIndex = array_search("PREVIEW_PICTURE", $headerCodes);
+
+		if ($detailPictureIndex !== false)
+		{
+
+			$tmp = $arResult['JS_DATA']["GRID"]["HEADERS"][$detailPictureIndex];
+			$arResult['JS_DATA']["GRID"]["HEADERS"][$detailPictureIndex] =
+				$arResult['JS_DATA']["GRID"]["HEADERS"][$newIndexPicture];
+			$arResult['JS_DATA']["GRID"]["HEADERS"][$newIndexPicture] = $tmp;
+		}
+
+	}
+
+	$headerCodes = array_column($arResult['JS_DATA']["GRID"]["HEADERS"], "id");
+
+	// Перемещаем кол-во после названия
+
+	$nameIndex = array_search("NAME", $headerCodes);
+	$qntyIndex = array_search("QUANTITY", $headerCodes);
+
+	if ($nameIndex != count($arResult['JS_DATA']["GRID"]["HEADERS"]) - 1){
+
+		$tmp = $arResult['JS_DATA']["GRID"]["HEADERS"][$nameIndex + 1];
+		$arResult['JS_DATA']["GRID"]["HEADERS"][$nameIndex + 1] = $arResult['JS_DATA']["GRID"]["HEADERS"][$qntyIndex];
+		$arResult['JS_DATA']["GRID"]["HEADERS"][$qntyIndex] = $tmp;
+	}
+
+	$headerCodes = array_column($arResult['JS_DATA']["GRID"]["HEADERS"], "id");
+
+	// Выводим склад
+	if ($arParams["SHOW_STORE"])
+	{
+		$nameIndex = array_search("NAME", $headerCodes);
+		$sliceBeforeName = array_slice($arResult['JS_DATA']["GRID"]["HEADERS"], 0, $nameIndex + 1);
+		$sliceAfterName = array_slice($arResult['JS_DATA']["GRID"]["HEADERS"], $nameIndex + 1,
+			count($arResult['JS_DATA']["GRID"]["HEADERS"]));
+		$arResult['JS_DATA']["GRID"]["HEADERS"] = array_merge($sliceBeforeName, [["id" => STORE_CODE, "name" =>
+		Loc::getMessage("STORE")]]);
+		$arResult['JS_DATA']["GRID"]["HEADERS"] = array_merge($arResult['JS_DATA']["GRID"]["HEADERS"], $sliceAfterName);
+	}
+
+	$headerCodes = array_column($arResult['JS_DATA']["GRID"]["HEADERS"], "id");
+
+	// Вывод остатков
+	if ($arParams["SHOW_RESTS"]){
+		$qntyIndex = array_search("QUANTITY", $headerCodes);
+		$sliceBeforeQnty = array_slice($arResult['JS_DATA']["GRID"]["HEADERS"], 0, $qntyIndex + 1);
+		$sliceAfterQnty = array_slice($arResult['JS_DATA']["GRID"]["HEADERS"], $qntyIndex + 1,
+			count($arResult['JS_DATA']["GRID"]["HEADERS"]));
+		$arResult['JS_DATA']["GRID"]["HEADERS"] = array_merge($sliceBeforeQnty, [["id" => RESTS_CODE, "name" =>
+			Loc::getMessage("RESTS")]]);
+		$arResult['JS_DATA']["GRID"]["HEADERS"] = array_merge($arResult['JS_DATA']["GRID"]["HEADERS"], $sliceAfterQnty);
+	}
+
+	// Ставим цену перед суммой
+	$headerCodes = array_column($arResult['JS_DATA']["GRID"]["HEADERS"], "id");
+	$priceIndex = array_search("PRICE_FORMATED", $headerCodes);
+	$sumIndex = array_search("SUM", $headerCodes);
+
+	if ($sumIndex != 0){
+
+		$tmp = $arResult['JS_DATA']["GRID"]["HEADERS"][$priceIndex];
+		$arResult['JS_DATA']["GRID"]["HEADERS"][$priceIndex] = $arResult['JS_DATA']["GRID"]["HEADERS"][$sumIndex - 1];
+		$arResult['JS_DATA']["GRID"]["HEADERS"][$sumIndex - 1] = $tmp;
+	}
+
 	$catalogIblockID = Option::get(
 		'aspro.next',
 		'CATALOG_IBLOCK_ID',
 		CNextCache::$arIBlocks[SITE_ID]['aspro_next_catalog']['aspro_next_catalog'][0]
 	);
 
-	?>
-<!--	<pre>-->
-<!--		--><?//var_dump($arResult['JS_DATA']["GRID"]["ROWS"])?>
-<!--	</pre>-->
-	<?php
-
-	$arResult['JS_DATA']["GRID"]["HEADERS"][] = ["name" => "NEW_COLUMN", "id" => "NEW_COLUMN"];
-
-	foreach ($arResult['JS_DATA']["GRID"]["ROWS"] as $key => $arItem) {
+	foreach ($arResult['JS_DATA']["GRID"]["ROWS"] as $key => $arItem)
+	{
 
 		/*
 		 *
@@ -62,44 +144,41 @@ if (is_array($arResult["GRID"]["ROWS"])) {
 			["CODE" => "COMPOSITION"]
 		);
 
-//		$arResult['JS_DATA']["GRID"]["ROWS"][$key . "_" . $arItem["data"]["PRODUCT_ID"]]["data"]['NAME'] = "NAME_" . $arItem["data"]["PRODUCT_ID"];
-//		$arResult['JS_DATA']["GRID"]["ROWS"][$key . "_" . $arItem["data"]["PRODUCT_ID"]]["data"]["PROPS"][0]['VALUE'] =
-//			"VALUE_" . $arItem["data"]["PRODUCT_ID"];
+		if ($arParams["SHOW_STORE"]){
+			$res = CCatalogStoreProduct::GetList([],
+				["=PRODUCT_ID" => $arItem["data"]["PRODUCT_ID"],
+					'=STORE.ACTIVE'=>'Y',
+					"!=AMOUNT" => 0]);
 
-		$keys = array_keys($arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]);
-		$key_ = array_search("NAME", $keys);
+			if ($arStore = $res->GetNext())
+			{
+				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][STORE_CODE] = $arStore["STORE_NAME"];
 
-//		$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]['NEW_COLUMN'] = $arItem["data"]["PRODUCT_ID"];
+			}
+		}
 
-		?>
-<!--		<pre>-->
-<!--			--><?// var_dump($arResult['JS_DATA']["GRID"]["ROWS"][$key]$arResult['JS_DATA']["GRID"]["ROWS"][$key]) ?>
-<!--		</pre>-->
-		<?php
+		if ($arParams["SHOW_RESTS"]){
+			$res = CCatalogStoreProduct::GetList([],
+				["=PRODUCT_ID" => $arItem["data"]["PRODUCT_ID"],
+					'=STORE.ACTIVE'=>'Y',
+					"!=AMOUNT" => 0]);
 
-		$sliceBefore = array_slice($arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"],
-			0, $key_, true);
+			if ($arStoreProduct = $res->GetNext())
+			{
+				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][RESTS_CODE] = CNext::GetQuantityArray($arStore["AMOUNT"])["TEXT"];
+			}
+		}
 
-		$sliceAfter = array_slice($arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"], $key_ + 1,
-			count($arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]), true);
 
-//		?>
-<!--		<pre>--><?//var_dump($key_)?><!--</pre>-->
-<!--		<pre>--><?//var_dump($sliceBefore)?><!--</pre>-->
-<!--		<pre>--><?//var_dump($sliceAfter)?><!--</pre>-->
-<!--		--><?php
 
-		$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"] = $sliceBefore + array("NEW_COLUMN" => $arItem["data"]["PRODUCT_ID"]) + $sliceAfter;
-
-		?>
-		<pre><?var_dump($arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"])?></pre>
-		<?php
-
-		if ($property = $rsProperty->Fetch()) {
-			if (is_array($value = $property['VALUE'])) {
+		if ($property = $rsProperty->Fetch())
+		{
+			if (is_array($value = $property['VALUE']))
+			{
 				$set = Sets::getSet($value['TEXT']);
-				$set = array_column ($set['SET'], 'NAME');
-				if (count ($set) > 0) {
+				$set = array_column($set['SET'], 'NAME');
+				if (count($set) > 0)
+				{
 					$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]['SET'] = $set;
 				}
 			}
@@ -115,8 +194,10 @@ $dbProfiles = CSaleOrderUserProps::GetList(
 	['ID', 'XML_ID', 'USER_ID']
 );
 $profiles = [];
-while ($profile = $dbProfiles -> Fetch()) {
-	if($profile['XML_ID']) {
+while ($profile = $dbProfiles->Fetch())
+{
+	if ($profile['XML_ID'])
+	{
 		$profiles[$profile['ID']] = $profile;
 	}
 }
@@ -126,7 +207,8 @@ $user = UserTable::getRow([
 	'select' => ['ID', 'XML_ID']
 ]);
 
-if ($user) {
+if ($user)
+{
 	$userXmlId = $user['XML_ID'];
 }
 
@@ -136,24 +218,30 @@ $dbSoglashenia = $soglasheniyaSKlientami->getList([
 	'select' => ['UF_KONTRAGENT', 'UF_NAME', "UF_XML_ID"]
 ]);
 $soglashenia = [];
-while ($soglashenie = $dbSoglashenia->fetch()) {
+while ($soglashenie = $dbSoglashenia->fetch())
+{
 	$key = $soglashenie['UF_KONTRAGENT'];
 	$soglashenia[$key][] = $soglashenie;
 }
 $agreementField = false;
-foreach ($arResult['ORDER_PROP']['USER_PROPS_N'] as $prop) {
-	if($prop['CODE'] == 'AGREEMENT') {
+foreach ($arResult['ORDER_PROP']['USER_PROPS_N'] as $prop)
+{
+	if ($prop['CODE'] == 'AGREEMENT')
+	{
 		$agreementField = $prop;
 	}
 }
 \Bitrix\Main\Diag\Debug::dumpToFile($arResult['ORDER_PROP'], $varName = '', $fileName = '/log.txt');
-foreach ($arResult['ORDER_PROP']['USER_PROPS_Y'] as $prop) {
-	if($prop['IS_PROFILE_NAME'] == 'Y') {
+foreach ($arResult['ORDER_PROP']['USER_PROPS_Y'] as $prop)
+{
+	if ($prop['IS_PROFILE_NAME'] == 'Y')
+	{
 		$arResult['PROFILE_FIELD'] = $prop;
 	}
 }
 $basketItems = [];
-foreach ($arResult['BASKET_ITEMS'] as $row => $item) {
+foreach ($arResult['BASKET_ITEMS'] as $row => $item)
+{
 	$xmlId = $item['PRODUCT_XML_ID'];
 	$basketItems[$xmlId] = [
 		'row' => $row,

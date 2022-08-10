@@ -229,6 +229,24 @@ $arTemplateParameters = array(
 		"REFRESH" => "Y",
 		"PARENT" => "VISUAL",
 	),
+	"INDEX_PICTURE" => array(
+		"NAME" => GetMessage("INDEX_PICTURE"),
+		"TYPE" => "STRING",
+		"DEFAULT" => "0",
+		"PARENT" => "VISUAL",
+	),
+	"SHOW_STORE" => array(
+		"NAME" => GetMessage("SHOW_STORE"),
+		"TYPE" => "CHECKBOX",
+		"DEFAULT" => "N",
+		"PARENT" => "VISUAL",
+	),
+	"SHOW_RESTS" => array(
+		"NAME" => GetMessage("SHOW_RESTS"),
+		"TYPE" => "CHECKBOX",
+		"DEFAULT" => "N",
+		"PARENT" => "VISUAL",
+	),
 	"USE_YM_GOALS" => array(
 		"NAME" => GetMessage("USE_YM_GOALS1"),
 		"TYPE" => "CHECKBOX",

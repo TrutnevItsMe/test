@@ -1534,12 +1534,6 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
             }
 
             this.checkNotifications();
-
-            // if (this.activeSectionId !== this.regionBlockNode.id)
-            //     this.editFadeRegionContent(this.regionBlockNode.querySelector('.bx-soa-section-content'));
-            //
-            // if (this.activeSectionId != this.propsBlockNode.id)
-            //     this.editFadePropsContent(this.propsBlockNode.querySelector('.bx-soa-section-content'));
         },
 
         fixLocationsStyle: function (section, hiddenSection) {
@@ -3060,27 +3054,13 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
             if (!basketItemsNode)
                 return;
 
-            var headers = [
-                    BX.create('DIV', {
-                        props: {className: 'bx-soa-item-td'},
-                        style: {paddingBottom: '5px'},
-                        children: [
-                            BX.create('DIV', {
-                                props: {className: 'bx-soa-item-td-title'},
-                                text: BX.message('SOA_SUM_NAME')
-                            })
-                        ]
-                    })
-                ],
+            var headers = [],
                 toRight = false, column, basketColumnIndex = 0, i;
 
             for (i = 0; i < this.result.GRID.HEADERS.length; i++) {
                 column = this.result.GRID.HEADERS[i];
 
-                if (column.id === 'NAME' || column.id === 'PREVIEW_PICTURE' || column.id === 'PROPS')
-                    continue;
-
-                if (column.id === 'DETAIL_PICTURE' && !this.options.showPreviewPicInBasket)
+                if (column.id === 'PROPS')
                     continue;
 
                 toRight = BX.util.in_array(column.id, ["QUANTITY", "PRICE_FORMATED", "DISCOUNT_PRICE_PERCENT_FORMATED", "SUM"]);
@@ -3119,18 +3099,10 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
                 currentColumn, basketColumnIndex = 0,
                 i, tr, cols;
 
-            if (this.options.showPreviewPicInBasket || this.options.showDetailPicInBasket)
-                mainColumns.push(this.createBasketItemImg(item.data));
-
-            mainColumns.push(this.createBasketItemContent(item.data));
-
             for (i = 0; i < this.result.GRID.HEADERS.length; i++) {
                 currentColumn = this.result.GRID.HEADERS[i];
 
-                if (currentColumn.id === 'NAME' || currentColumn.id === 'PREVIEW_PICTURE' || currentColumn.id === 'PROPS')
-                    continue;
-
-                if (currentColumn.id === 'DETAIL_PICTURE' && !this.options.showPreviewPicInBasket)
+                if (currentColumn.id === 'PROPS')
                     continue;
 
                 otherColumns.push(this.createBasketItemColumn(currentColumn, item, active));
@@ -3152,18 +3124,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
                 }
             }
 
-            cols = [
-                BX.create('DIV', {
-                    props: {className: 'bx-soa-item-td'},
-                    style: {minWidth: '300px'},
-                    children: [
-                        BX.create('DIV', {
-                            props: {className: 'bx-soa-item-block'},
-                            children: mainColumns
-                        })
-                    ]
-                })
-            ].concat(otherColumns);
+            cols = [].concat(otherColumns);
 
             basketItemsNode.appendChild(
                 BX.create('DIV', {
@@ -3382,7 +3343,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
                     props: {className: 'bx-price'},
                     text: data.DISCOUNT_PRICE_PERCENT_FORMATED
                 }));
-            } else if (column.id === 'DETAIL_PICTURE') {
+            } else if (column.id === 'DETAIL_PICTURE' || column.id === 'PREVIEW_PICTURE') {
                 logotype = this.getImageSources(allData.data, column.id),
                     img = BX.create('IMG', {props: {src: logotype && logotype.src_1x || this.defaultBasketItemLogo}});
 
@@ -3427,7 +3388,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
                         );
                     }
                 } else if (columnData) {
-                    textNode.appendChild(BX.create('SPAN', {html: BX.util.htmlspecialchars(columnData)}));
+                    textNode.appendChild(BX.create('SPAN', {html: columnData}));
                 }
             }
 
