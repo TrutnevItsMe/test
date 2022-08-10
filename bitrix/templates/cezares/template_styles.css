@@ -7432,12 +7432,12 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 	border: 1px solid #f2f2f2;
 	margin: 10px auto;
 }
-.contact-table td{
+.contact-table td, .contact-table th{
 	padding: 0;
 	margin: 0 auto;
 	text-align: center;
 }
-.contact-table thead{
+.contact-table th{
 	color: #107bb1;
 	font-weight: 1000;
 }

@@ -1,22 +1,36 @@
 <? if ($arResult["PARTNERS"]): ?>
 
 	<table class="contact-table">
-		<thead>
-		<tr>
-			<td><?= \Bitrix\Main\Localization\Loc::getMessage("PARTNER") ?></td>
-			<td><?= \Bitrix\Main\Localization\Loc::getMessage("MANAGER") ?></td>
-			<td><?= \Bitrix\Main\Localization\Loc::getMessage("MANAGER_HELPER1") ?></td>
-			<td><?= \Bitrix\Main\Localization\Loc::getMessage("MANAGER_HELPER2") ?></td>
-		</tr>
-		</thead>
 
 		<tbody>
 
-		<?
-		$countPartners = 0;
-		?>
-
 		<? foreach ($arResult["PARTNERS"] as $partner): ?>
+
+			<tr>
+				<th>
+					<? if ($partner["UF_NAME"]): ?>
+						<?= \Bitrix\Main\Localization\Loc::getMessage("PARTNER") ?>
+					<? endif; ?>
+				</th>
+
+				<th>
+					<? if ($partner["UF_OSNOVNOYMENEDZHER"]): ?>
+						<?= \Bitrix\Main\Localization\Loc::getMessage("MANAGER") ?>
+					<? endif; ?>
+				</th>
+
+				<th>
+					<? if ($partner["UF_POMOSHNIK1"]): ?>
+						<?= \Bitrix\Main\Localization\Loc::getMessage("MANAGER_HELPER") ?>
+					<? endif; ?>
+				</th>
+
+				<th>
+					<? if ($partner["UF_POMOSHNIK2"]): ?>
+						<?= \Bitrix\Main\Localization\Loc::getMessage("MANAGER_HELPER") ?>
+					<? endif; ?>
+				</th>
+			</tr>
 
 			<tr>
 				<td><?= $partner["UF_NAME"] ?></td>
@@ -27,24 +41,41 @@
 
 			<tr>
 				<td>
-					<a href="mailto:<?= $partner["UF_IMLOGIN"] ?>"><?= $partner["UF_IMLOGIN"] ?></a>
+					<? if ($partner["UF_IMLOGIN"]): ?>
+						<a href="mailto:<?= $partner["UF_IMLOGIN"] ?>"><?= $partner["UF_IMLOGIN"] ?></a>
+					<? endif; ?>
 				</td>
 				<td>
-					<a href="tel:<?= $partner["UF_OSNMENEDZHERTELEF"] ?>"><?= $partner["DISPLAY_OSNMENEDZHERTELEF"] ?></a>
-					<a href="mailto:<?= $partner["UF_OSNMENEDZHERADRES"] ?>"><?= $partner["UF_OSNMENEDZHERADRES"] ?></a>
+					<? if ($partner["UF_OSNMENEDZHERTELEF"]): ?>
+						<a href="tel:<?= $partner["UF_OSNMENEDZHERTELEF"] ?>"><?= $partner["DISPLAY_OSNMENEDZHERTELEF"] ?></a>
+					<? endif; ?>
+
+					<? if ($partner["UF_OSNMENEDZHERADRES"]): ?>
+						<a href="mailto:<?= $partner["UF_OSNMENEDZHERADRES"] ?>"><?= $partner["UF_OSNMENEDZHERADRES"] ?></a>
+					<? endif; ?>
 				</td>
 				<td>
-					<a href="tel:<?= $partner["UF_POMOSHNIKTELEFON1"] ?>"><?= $partner["DISPLAY_POMOSHNIKTELEFON1"] ?></a>
-					<a href="mailto:<?= $partner["UF_POMOSHNIKADRES1"] ?>"><?= $partner["UF_POMOSHNIKADRES1"] ?></a>
+					<? if ($partner["UF_POMOSHNIKTELEFON1"]): ?>
+						<a href="tel:<?= $partner["UF_POMOSHNIKTELEFON1"] ?>"><?= $partner["DISPLAY_POMOSHNIKTELEFON1"] ?></a>
+					<? endif; ?>
+
+					<? if ($partner["UF_POMOSHNIKADRES1"]): ?>
+						<a href="mailto:<?= $partner["UF_POMOSHNIKADRES1"] ?>"><?= $partner["UF_POMOSHNIKADRES1"] ?></a>
+					<? endif; ?>
 				</td>
 				<td>
-					<a href="tel:<?= $partner["UF_POMOSHNIKTELEFON2"] ?>"><?= $partner["DISPLAY_POMOSHNIKTELEFON2"] ?></a>
-					<a href="mailto:<?= $partner["UF_POMOSHNIKADRES2"] ?>"><?= $partner["UF_POMOSHNIKADRES2"] ?></a>
+					<? if ($partner["UF_POMOSHNIKTELEFON2"]): ?>
+						<a href="tel:<?= $partner["UF_POMOSHNIKTELEFON2"] ?>"><?= $partner["DISPLAY_POMOSHNIKTELEFON2"] ?></a>
+					<? endif; ?>
+
+					<? if ($partner["UF_POMOSHNIKADRES2"]): ?>
+						<a href="mailto:<?= $partner["UF_POMOSHNIKADRES2"] ?>"><?= $partner["UF_POMOSHNIKADRES2"] ?></a>
+					<? endif; ?>
 				</td>
 			</tr>
 
+			<tr style="height: 20px"></tr>
 
-			<? ++$countPartners; ?>
 		<? endforeach; ?>
 
 
