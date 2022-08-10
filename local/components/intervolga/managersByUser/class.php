@@ -17,11 +17,12 @@ class ManagersByUser extends CBitrixComponent{
 			$HlBlock = new HlbWrap(HL_BLOCK_CODE_PARTNERY);
 			$dbPartnery = $HlBlock->getList(["filter" => ["UF_XML_ID" => $arUser["XML_ID"]]]);
 
-			$partner = $dbPartnery->fetch();
-			$this->arResult["PARTNER"] = $partner;
-
-			$this->arResult["PARTNER"]["DISPLAY_OSNMENEDZHERTELEF"] = Parser::getInstance()->parse($partner["UF_OSNMENEDZHERTELEF"])->format(Format::NATIONAL);
-			$this->arResult["PARTNER"]["DISPLAY_POMOSHNIKTELEFON1"] = Parser::getInstance()->parse($partner["UF_POMOSHNIKTELEFON1"])->format(Format::NATIONAL);
+			while ($partner = $dbPartnery->fetch()){
+				$partner["DISPLAY_OSNMENEDZHERTELEF"] = Parser::getInstance()->parse($partner["UF_OSNMENEDZHERTELEF"])->format(Format::NATIONAL);
+				$partner["DISPLAY_POMOSHNIKTELEFON1"] = Parser::getInstance()->parse($partner["UF_POMOSHNIKTELEFON1"])->format(Format::NATIONAL);
+				$partner["DISPLAY_POMOSHNIKTELEFON2"] = Parser::getInstance()->parse($partner["UF_POMOSHNIKTELEFON2"])->format(Format::NATIONAL);
+				$this->arResult["PARTNERS"][] = $partner;
+			}
 		}
 	}
 
