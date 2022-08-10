@@ -40,4 +40,6 @@ $MESS["PROPERTIES_LOCATION"] = "Расположение свойств това
 $MESS["TABLE_PROPERTIES"] = "Таблицей";
 $MESS["NEAR_ITEM"] = "Рядом с товаром";
 $MESS["DISPLAY_RESTS"] = "Отображать остатки";
+$MESS["SHOW_STORE_NAME"] = "Отображать склад";
+$MESS["SHOW_ARTICLE_BEFORE_NAME"] = "Отображать артикул перед названием товара";
 ?>
