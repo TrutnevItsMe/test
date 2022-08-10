@@ -79,12 +79,29 @@
 			this.siteTemplateId = parameters.siteTemplateId || '';
 			this.ajaxUrl = this.params.AJAX_PATH || '';
 			this.templateFolder = parameters.templateFolder || '';
+
 			this.selectorRemovableHeader = parameters.selectorRemovableHeader || ".basket-header";
 			this.selectorRestItem = parameters.selectorRestItem || ".rests";
+			this.selectorBasketItemContainer = parameters.selectorBasketItemContainer || ".basket-items-list-item-container";
+			this.selectorArticleContainer = parameters.selectorArticleContainer || ".td-basket-item-property-PROPERTY_CML2_ARTICLE_VALUE";
+			this.selectorArticleHeader = parameters.selectorArticleHeader || ".td-basket-header-property-PROPERTY_CML2_ARTICLE_VALUE";
+			this.selectorArticleBeforeNameSection = parameters.selectorArticleBeforeNameSection || ".article-before-name-section";
+			this.selectorPropertySkidkaContainer = parameters.selectorPropertySkidkaContainer || ".td-basket-item-property-PROPERTY_SKIDKA_VALUE";
+			this.selectorPropertySkidkaHeader = parameters.selectorPropertySkidkaHeader || ".td-basket-header-property-PROPERTY_SKIDKA_VALUE";
+			this.selectorDiscountPercentSection = parameters.selectorDiscountPercentSection || ".td-discount-percent";
+
 			this.displayRests = parameters.displayRests || false;
+			this.displayArticleBeforeName = parameters.displayArticleBeforeName || false;
+			this.displayDiscountPercent = parameters.displayDiscountPercent || false;
 
 			this.useDynamicScroll = this.params.USE_DYNAMIC_SCROLL === 'Y';
 			this.useItemsFilter = this.params.SHOW_FILTER === 'Y' && !this.isMobile;
+
+			this.maxAmount = parameters.maxAmount || 10;
+			this.minAmount = parameters.minAmount || 2;
+			this.manyText = parameters.manyText || "Много";
+			this.fewText = parameters.fewText || "Мало";
+			this.enoughText = parameters.enoughText || "Достаточно";
 
 			this.templateItemsDisplay = parameters.templateItemsDisplay;
 
@@ -108,11 +125,21 @@
 				this.showTextRests();
 			}
 
+			if (this.displayArticleBeforeName){
+				this.moveArticleBlock();
+			}
+
+			if (this.displayDiscountPercent){
+				this.moveDiscountPercentBlock();
+			}
+
 			this.bindInitialEvents();
 		},
 
 		getTemplate: function(templateName)
 		{
+			console.log(this.items);
+
 			if (!this.templates.hasOwnProperty(templateName))
 			{
 				var template = BX(templateName);
@@ -687,6 +714,15 @@
 						this.showTextRests();
 						this.removeDoubleHeader();
 					}
+
+					if (this.displayArticleBeforeName){
+						this.moveArticleBlock();
+					}
+
+					if (this.displayDiscountPercent){
+						this.moveDiscountPercentBlock();
+					}
+
 				}, this),
 				onfailure: BX.delegate(function() {
 					this.actionPool.doProcessing(false);
@@ -1730,32 +1766,47 @@
 			}
 		},
 
-		showTextRests: function(){
-		$(this.selectorRestItem).each(function (rest){
+		moveDiscountPercentBlock: function(){
 
-			let currentRest = $(this).html();
-			// let topAmount = '<?=COption::GetOptionString("aspro.next","MAX_AMOUNT")?>';
-			let topAmount = 10;
-			// let botAmount = '<?=COption::GetOptionString("aspro.next","MIN_AMOUNT")?>';
-			let botAmount = 2;
+			$(this.selectorBasketItemContainer).each(function(){
 
-			if (currentRest > topAmount){
-				// let qntyText = '<?=CNext::GetQuantityArray(COption::GetOptionString("aspro.next","MAX_AMOUNT") + 1)["TEXT"]?>';
-				let qntyText = "Много";
-				$(this).html(qntyText);
-			}
-			else if (currentRest < botAmount){
-				// let qntyText = '<?=CNext::GetQuantityArray(COption::GetOptionString("aspro.next","MIN_AMOUNT") - 1)["TEXT"]?>';
-				let qntyText = "Мало";
-				$(this).html(qntyText);
-			}
-			else{
-				// let qntyText = '<?=CNext::GetQuantityArray((COption::GetOptionString("aspro.next","MAX_AMOUNT") - COption::GetOptionString("aspro.next","MIN_AMOUNT")) / 2)["TEXT"]?>';
-				let qntyText = "Достаточно";
-				$(this).html(qntyText);
-			}
+				let skidkaContainerNode = $(this).find(BX.Sale.BasketComponent.selectorPropertySkidkaContainer);
 
-		});
+				if (skidkaContainerNode.length > 0){
+
+					$(BX.Sale.BasketComponent.selectorPropertySkidkaHeader).remove();
+					$(this).find(BX.Sale.BasketComponent.selectorDiscountPercentSection).html(skidkaContainerNode.html());
+					skidkaContainerNode.remove();
+				}
+			});
+		},
+
+		moveArticleBlock: function(){
+
+			$(this.selectorBasketItemContainer).each(function (){
+
+				let articleNode = $(this).find(BX.Sale.BasketComponent.selectorArticleContainer);
+				$(BX.Sale.BasketComponent.selectorArticleHeader).remove();
+
+				$(this).find(BX.Sale.BasketComponent.selectorArticleBeforeNameSection).append(articleNode.html());
+				articleNode.remove();
+			});
+		},
+
+		showTextRests: function () {
+			$(this.selectorRestItem).each(function () {
+
+				let currentRest = $(this).html();
+
+				if (currentRest > BX.Sale.BasketComponent.maxAmount) {
+					$(this).html(BX.Sale.BasketComponent.manyText);
+				} else if (currentRest < BX.Sale.BasketComponent.minAmount) {
+					$(this).html(BX.Sale.BasketComponent.fewText);
+				} else {
+					$(this).html(BX.Sale.BasketComponent.enoughText);
+				}
+
+			});
 	},
 
 		startQuantityInterval: function()

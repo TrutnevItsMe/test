@@ -112,6 +112,18 @@ $arTemplateParameters['DISPLAY_MODE'] = array(
 	),
 	'DEFAULT' => 'extended'
 );
+$arTemplateParameters['SHOW_STORE_NAME'] = array(
+	'PARENT' => 'VISUAL',
+	'NAME' => GetMessage('SHOW_STORE_NAME'),
+	'TYPE' => 'CHECKBOX',
+	'DEFAULT' => 'Y'
+);
+$arTemplateParameters['SHOW_ARTICLE_BEFORE_NAME'] = array(
+	'PARENT' => 'VISUAL',
+	'NAME' => GetMessage('SHOW_ARTICLE_BEFORE_NAME'),
+	'TYPE' => 'CHECKBOX',
+	'DEFAULT' => 'N'
+);
 $arTemplateParameters['PRICE_DISPLAY_MODE'] = array(
 	'PARENT' => 'VISUAL',
 	'NAME' => GetMessage('CP_SBB_TPL_PRICE_DISPLAY_MODE'),

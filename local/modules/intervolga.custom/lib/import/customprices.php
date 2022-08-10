@@ -35,6 +35,15 @@ class CustomPrices {
 				'discount' => self::getValueFloat($item, "Discount"),
 			];
 		}
+
+		$log = ["DATE" => date("d.m.Y H:m"),
+			"CLIENT_ID" => $clientId,
+			"COUNTERPARTY_ID" => $counterpartyId,
+			"AGREEMENT_ID" => $agreementId,
+			"PRODUCTS" => $products];
+
+		\Bitrix\Main\Diag\Debug::dumpToFile($log, $varName = '', $fileName = '/log/getCustomPrices.log');
+
 		return $products;
 	}
 	public static function set($prices, $basket) {
