@@ -8,9 +8,7 @@ use Bitrix\Main,
 	Intervolga\Custom\Tools\SaleUtil;
 
 ?>
-<pre>
-    <? var_dump() ?>
-</pre>
+
 <?php
 
 Asset::getInstance()->addJs("/bitrix/components/bitrix/sale.order.payment.change/templates/.default/script.js");
