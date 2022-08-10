@@ -22,6 +22,8 @@ $component::scaleImages($arResult['JS_DATA'], $arParams['SERVICES_IMAGES_SCALING
 foreach ($arResult["BASKET_ITEMS"] as $ID => $arRow){
 	$oldPrice = $arResult["BASKET_ITEMS"][$ID]["SUM_BASE"];
 	$newPrice = $arResult["BASKET_ITEMS"][$ID]["SUM_NUM"];
+	\Bitrix\Main\Diag\Debug::writeToFile(__FILE__ . ':' . __LINE__ . "\n(" . date('Y-m-d H:i:s') . ")\n" . print_r($newPrice, true) . "\n\n", '', 'log/__debug_erofeev.log');
+	\Bitrix\Main\Diag\Debug::writeToFile(__FILE__ . ':' . __LINE__ . "\n(" . date('Y-m-d H:i:s') . ")\n" . print_r($oldPrice, true) . "\n\n", '', 'log/__debug_erofeev.log');
 	$arResult["BASKET_ITEMS"][$ID]["DISCOUNT_PRICE_PERCENT"] = 1 - $newPrice / $oldPrice;
 	$arResult["BASKET_ITEMS"][$ID]["DISCOUNT_PRICE_PERCENT_FORMATED"] = round($arResult["BASKET_ITEMS"][$ID]["DISCOUNT_PRICE_PERCENT"] * 100, 2) . "%";
 }
