@@ -11,16 +11,17 @@ $APPLICATION->SetTitle("Корзина");
 		"AJAX_MODE_CUSTOM" => "Y",
 		"AUTO_CALCULATION" => "Y",
 		"BASKET_IMAGES_SCALING" => "adaptive",
+		"BASKET_WITH_ORDER_INTEGRATION" => "N",
 		"COLUMNS_LIST" => array(0=>"NAME",1=>"DISCOUNT",2=>"PROPS",3=>"DELETE",4=>"DELAY",5=>"TYPE",6=>"PRICE",7=>"QUANTITY",8=>"SUM",),
 		"COLUMNS_LIST_EXT" => array("PREVIEW_PICTURE","DELETE","DELAY","TYPE","SUM","PROPERTY_CML2_ARTICLE","PROPERTY_SKIDKA","PROPERTY_ARTICLE"),
 		"COLUMNS_LIST_MOBILE" => array("PREVIEW_PICTURE","DELETE","DELAY","TYPE","SUM"),
 		"COMPATIBLE_MODE" => "Y",
-		"COMPONENT_TEMPLATE" => "intervolga",
 		"COMPOSITE_FRAME_MODE" => "A",
 		"COMPOSITE_FRAME_TYPE" => "AUTO",
 		"CORRECT_RATIO" => "Y",
 		"COUNT_DISCOUNT_4_ALL_QUANTITY" => "N",
 		"DEFERRED_REFRESH" => "N",
+		"DEF_STORE_ID" => 376,
 		"DISCOUNT_PERCENT_POSITION" => "bottom-right",
 		"DISPLAY_MODE" => "extended",
 		"DISPLAY_MODE_ITEMS" => "basket-item-table-props-template",
@@ -56,6 +57,7 @@ $APPLICATION->SetTitle("Корзина");
 		"SET_TITLE" => "N",
 		"SHOW_ARTICLE_BEFORE_NAME" => "Y",
 		"SHOW_DISCOUNT_PERCENT" => "Y",
+		"SHOW_DISCOUNT_PERCENT_COLUMN" => "Y",
 		"SHOW_FAST_ORDER_BUTTON" => "Y",
 		"SHOW_FILTER" => "N",
 		"SHOW_FULL_ORDER_BUTTON" => "Y",
@@ -63,14 +65,12 @@ $APPLICATION->SetTitle("Корзина");
 		"SHOW_RESTORE" => "Y",
 		"SHOW_STORE_NAME" => "Y",
 		"TEMPLATE_THEME" => "blue",
-		"TOTAL_BLOCK_DISPLAY" => array(0=>"top",),
+		"TOTAL_BLOCK_DISPLAY" => array("top"),
 		"USE_DYNAMIC_SCROLL" => "Y",
 		"USE_ENHANCED_ECOMMERCE" => "N",
 		"USE_GIFTS" => "Y",
 		"USE_PREPAYMENT" => "N",
-		"USE_PRICE_ANIMATION" => "Y",
-		"DEF_STORE_ID" => 376,
-		"BASKET_WITH_ORDER_INTEGRATION" => "N"
+		"USE_PRICE_ANIMATION" => "Y"
 	)
 );?>
 <?$APPLICATION->IncludeComponent(

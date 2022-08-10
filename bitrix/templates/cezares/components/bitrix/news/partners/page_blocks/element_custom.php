@@ -83,8 +83,6 @@
 			}
 			?>
 
-
-
 			<div class="top_block_filter_section toggle_menu">
 				<div class="title"><a class="dark_link" title="<?=GetMessage("FILTER_ALL_SECTON");?>" href="<?=$APPLICATION->GetCurPageParam('', $arDeleteParams)?>"><?=GetMessage("FILTER_SECTON");?></a></div>
 				<?$APPLICATION->IncludeComponent("bitrix:menu", "left_brand_catalog", array(
@@ -281,15 +279,13 @@
 					<div class="title"><a class="dark_link" title="<?=GetMessage("FILTER_ALL_SECTON");?>" href="<?=$APPLICATION->GetCurPageParam('', $arDeleteParams)?>"><?=GetMessage("FILTER_SECTON");?></a></div>
 					<div class="">
 						<?
-						//$cntToShow = ($cntToShow = intval($arParams['SECTIONS_DETAIL_COUNT'])) > 0 ? $cntToShow : count($arSections_1);
-						$cntToShow = 300;//($cntToShow = intval($arParams['SECTIONS_DETAIL_COUNT'])) > 0 ? $cntToShow : count($arSections_1);
+						$cntToShow = 300;
 						$cntShow = 0;
 						$bCurrentShowed = false;
 						$bNeedShowCurrent = in_array($setionIDRequest, $arSectionsID);
 						?>
 						<?foreach($arSections_1 as $sId => $arSection):?>
 							<?
-							//var_dump($arSection);
 							$bCurrent = $setionIDRequest && $sId == $setionIDRequest;
 							$bCurrentShowed |= $bCurrent;
 							$bLastToShow = $cntShow == ($cntToShow - 1);
@@ -313,12 +309,9 @@
 					</div>
 				</div>
 			<?}
-			//$APPLICATION->ShowViewContent('section_view_new');
-			//die('dct');
 		}
 		else{
 			?>
-
 			<?if($arItems){?>
 				<div class="right_block1 clearfix catalog vertical with_filter" id="right_block_ajax">
 					<?
@@ -456,7 +449,6 @@
 							"USE_REGION" => ($arRegion ? "Y" : "N"),
 							"STORES" => $arParams["STORES"],
 							"DEFAULT_COUNT" => $arParams["DEFAULT_COUNT"],
-							//"BASKET_URL" => $arTheme["BASKET_PAGE_URL"]["VALUE"],
 							"OFFERS_CART_PROPERTIES" => $arParams["OFFERS_CART_PROPERTIES"],
 							"PRODUCT_PROPERTIES" => $arParams["PRODUCT_PROPERTIES"],
 							"PARTIAL_PRODUCT_PROPERTIES" => $arParams["PARTIAL_PRODUCT_PROPERTIES"],
@@ -476,7 +468,6 @@
 							<?$APPLICATION->IncludeComponent(
 								"bitrix:catalog.section",
 								"catalog_block",
-								//$listElementsTemplate,
 								Array(
 									"USE_REGION" => ($arRegion ? "Y" : "N"),
 									"STORES" => $arParams['STORES'],
@@ -543,7 +534,7 @@
 									"SHOW_404" => "N",
 									"MESSAGE_404" => "",
 									"FILE_404" => "",
-									"PRICE_CODE" => array(10,11),//$arParams['PRICE_CODE'],
+									"PRICE_CODE" => array(10,11),
 									"USE_PRICE_COUNT" => $arParams["USE_PRICE_COUNT"],
 									"SHOW_PRICE_COUNT" => $arParams["SHOW_PRICE_COUNT"],
 									"PRICE_VAT_INCLUDE" => $arParams["PRICE_VAT_INCLUDE"],
@@ -670,7 +661,6 @@
 			"USE_REGION" => ($arRegion ? "Y" : "N"),
 			"STORES" => $arParams["STORES"],
 			"DEFAULT_COUNT" => $arParams["DEFAULT_COUNT"],
-			//"BASKET_URL" => $arTheme["BASKET_PAGE_URL"]["VALUE"],
 			"OFFERS_CART_PROPERTIES" => $arParams["OFFERS_CART_PROPERTIES"],
 			"PRODUCT_PROPERTIES" => $arParams["PRODUCT_PROPERTIES"],
 			"PARTIAL_PRODUCT_PROPERTIES" => $arParams["PARTIAL_PRODUCT_PROPERTIES"],
@@ -691,7 +681,6 @@
 			<? $APPLICATION->IncludeComponent(
 				"bitrix:catalog.section",
 				"catalog_block",
-				//$listElementsTemplate,
 				array(
 					"USE_REGION" => ($arRegion ? "Y" : "N"),
 					"STORES" => $arParams['STORES'],
@@ -758,7 +747,7 @@
 					"SHOW_404" => "N",
 					"MESSAGE_404" => "",
 					"FILE_404" => "",
-					"PRICE_CODE" => array(10, 11),//$arParams['PRICE_CODE'],
+					"PRICE_CODE" => array(10, 11),
 					"USE_PRICE_COUNT" => $arParams["USE_PRICE_COUNT"],
 					"SHOW_PRICE_COUNT" => $arParams["SHOW_PRICE_COUNT"],
 					"PRICE_VAT_INCLUDE" => $arParams["PRICE_VAT_INCLUDE"],

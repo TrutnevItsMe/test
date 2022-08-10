@@ -148,4 +148,5 @@ $MESS["YM_GOALS_NEXT_PROPERTIES"] = "Goal ID for transfer from product propertie
 $MESS["YM_GOALS_NEXT_REGION"] = "Goal ID for transfer from delivery area to 'Next' button";
 $MESS["YM_GOALS_SAVE_ORDER"] = "Goal ID for order processing";
 $MESS["SHOW_PAYMENT_BLOCK"] = 'Show payment block';
+$MESS["ACTIVE_SAVE_DRAFT_ORDER"] = "Use save order such a draft";
 ?>

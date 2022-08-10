@@ -3,7 +3,7 @@ $MESS ['PERSONAL_DATA'] = "Персональные данные";
 $MESS ["PERSONAL_EMAIL"] = "E-mail";
 $MESS ["PERSONAL_LOGIN"] = "Логин";
 $MESS ["PERSONAL_NAME"] = "Имя";
-$MESS ["PERSONAL_FIO"] = "Фамилия Имя Отчество";
+$MESS ["PERSONAL_FIO"] = "Головной контрагент";
 $MESS ["PERSONAL_LASTNAME"] = "Фамилия";
 $MESS ["PERSONAL_SECONDNAME"] = "Отчество";
 $MESS ["PERSONAL_PHONE"] = "Телефон";
@@ -19,7 +19,7 @@ $MESS ["MAIN_SAVE_TITLE"] = "Сохранить изменения";
 
 $MESS ['PERSONAL_EMAIL_DESCRIPTION'] = "Для отправки уведомлений о статусе заказа. Используйте как логин для входа в личный кабинет";
 $MESS ['PERSONAL_EMAIL_SHORT_DESCRIPTION'] = "Для отправки уведомлений о статусе заказа";
-$MESS ["PERSONAL_NAME_DESCRIPTION"] = "Заполните, чтобы мы знали, как к вам обращаться";
+$MESS ["PERSONAL_NAME_DESCRIPTION"] = "Имя, используемое как обращение";
 $MESS ["PERSONAL_PHONE_DESCRIPTION"] = "Необходим для уточнения деталей заказа";
 
 $MESS ["PROFILE_DATA_SAVED"] = "Изменения сохранены";

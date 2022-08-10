@@ -194,10 +194,13 @@ if (empty($arResult['ERROR_MESSAGE']))
 	<div id="basket-root" class="bx-basket bx-<?=$arParams['TEMPLATE_THEME']?> bx-step-opacity" style="opacity: 0;">
 
         <div class="row">
-            <?
-            $APPLICATION->IncludeComponent("intervolga:managersByUser","");
-            ?>
+			<div class="col-xs-12">
+				<?
+				$APPLICATION->IncludeComponent("intervolga:managersByUser","");
+				?>
+			</div>
         </div>
+		<br>
 		<?
 		if (
 			$arParams['BASKET_WITH_ORDER_INTEGRATION'] !== 'Y'

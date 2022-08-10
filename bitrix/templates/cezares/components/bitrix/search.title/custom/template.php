@@ -9,6 +9,14 @@ $CONTAINER_ID = trim($arParams["~CONTAINER_ID"]);
 if(strlen($CONTAINER_ID) <= 0)
 	$CONTAINER_ID = "title-search";
 $CONTAINER_ID = CUtil::JSEscape($CONTAINER_ID);
+
+global $isFixedTopSearch;
+$INPUT_ID_TMP = $INPUT_ID;
+if(isset($isFixedTopSearch) && $isFixedTopSearch)
+{
+	$CONTAINER_ID .= 'tf';
+	$INPUT_ID .= 'tf';
+}
 ?>
 <?if($arParams["SHOW_INPUT"] !== "N"):?>
 	<div class="inline-search-block fixed with-close big">
@@ -18,7 +26,7 @@ $CONTAINER_ID = CUtil::JSEscape($CONTAINER_ID);
 					<div id="<?=$CONTAINER_ID?>">
 						<form action="<?=$arResult["FORM_ACTION"]?>" class="search">
 							<div class="search-input-div">
-								<input class="search-input" id="<?=$INPUT_ID?>" type="text" name="q" value="" placeholder="<?=GetMessage("CT_BST_SEARCH_BUTTON")?>" size="20" maxlength="500" autocomplete="off" />
+								<input class="search-input" id="<?=$INPUT_ID?>" type="text" name="q" value="" placeholder="<?=GetMessage("CT_BST_SEARCH_BUTTON")?>" size="20" maxlength="50" autocomplete="off" />
 							</div>
 							<div class="search-button-div">
 								<button class="btn btn-search btn-default bold btn-lg" type="submit" name="s" value="<?=GetMessage("CT_BST_SEARCH_BUTTON2")?>"><?=GetMessage("CT_BST_SEARCH_BUTTON2")?></button>
@@ -37,7 +45,7 @@ $CONTAINER_ID = CUtil::JSEscape($CONTAINER_ID);
 		'AJAX_PAGE' : '<?=CUtil::JSEscape(POST_FORM_ACTION_URI)?>',
 		'CONTAINER_ID': '<?=$CONTAINER_ID?>',
 		'INPUT_ID': '<?=$INPUT_ID?>',
-		'INPUT_ID_TMP': '<?=$INPUT_ID?>',
+		'INPUT_ID_TMP': '<?=$INPUT_ID_TMP?>',
 		'MIN_QUERY_LEN': 2
 	});
 </script>

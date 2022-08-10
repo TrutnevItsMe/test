@@ -5,39 +5,66 @@ $arSectionsFilter = array('IBLOCK_ID' => $catalog_id, 'ACTIVE' => 'Y', 'GLOBAL_A
 $arSections = CNextCache::CIBlockSection_GetList(array('SORT' => 'ASC', "ACTIVE" => "Y", 'ID' => 'ASC', 'CACHE' => array('TAG' => CNextCache::GetIBlockCacheTag($catalog_id), 'GROUP' => array('ID'))), CNext::makeSectionFilterInRegion($arSectionsFilter), false, array("ID", "IBLOCK_ID", "NAME", "PICTURE", "LEFT_MARGIN", "RIGHT_MARGIN", "DEPTH_LEVEL", "SECTION_PAGE_URL", "IBLOCK_SECTION_ID", "UF_CATALOG_ICON", "UF_DISABLE_MENU"));
 $brandSections = $arParams["BRAND_IBLOCK_SECTIONS"];
 
-if ($arSections && $brandSections) {
-	$arResult = array();
-	$arBrandSections = []; // Секции бренда
+$arResult = array();
+$cur_page = $GLOBALS['APPLICATION']->GetCurPage(true);
+$cur_page_no_index = $GLOBALS['APPLICATION']->GetCurPage(false);
+// IBLOCK_SECTION_ID из разделов бренда
+$arBrandsIblockSectionsIds = array_column($brandSections, "IBLOCK_SECTION_ID");
+// ID разделов бренда
+$arBrandsIds = array_column($brandSections, "ID");
 
-	$cur_page = $GLOBALS['APPLICATION']->GetCurPage(false);
+foreach ($arSections as $ID => $arSection) {
 
-	// Пробежимся по всем секциям и выберем только те, которые есть у брендов
-	foreach ($brandSections as $key => $brandSection){
+	$arSections[$ID]['SELECTED'] = CMenu::IsItemSelected($arSection['SECTION_PAGE_URL'], $cur_page, $cur_page_no_index);
 
-		// ID раздела -- подраздел глобальной секции
-		if ($brandSection['IBLOCK_SECTION_ID']) {
-
-			//
-			$arBrandSections[$brandSection['IBLOCK_SECTION_ID']] = &$arSections[$brandSection['IBLOCK_SECTION_ID']];
-
-			if (!isset($arBrandSections[$brandSection['IBLOCK_SECTION_ID']]['CHILD'])) {
-				$arBrandSections[$brandSection['IBLOCK_SECTION_ID']]['CHILD'] = array();
-			}
-
-			// Картинка секции бренда
-			if ($brandSection['PICTURE']){
-				$img = CFile::ResizeImageGet($brandSection['PICTURE'], array('width' => 50, 'height' => 50), BX_RESIZE_IMAGE_PROPORTIONAL, true);
-				$brandSection['IMAGES'] = $img;
-			}
-			// Устанавливаем ссылку перехода на товары бренда
-			$brandSection["SECTION_PAGE_URL"] = $cur_page . "?section_id=" . $brandSection["ID"];
-			$arBrandSections[$brandSection['IBLOCK_SECTION_ID']]['CHILD'][] = $brandSection;
-		}
-		else{
-			$arBrandSections[] = $brandSection;
-		}
+	if ($arSection['UF_CATALOG_ICON']) {
+		$img = CFile::ResizeImageGet($arSection['UF_CATALOG_ICON'], array('width' => 36, 'height' => 36), BX_RESIZE_IMAGE_PROPORTIONAL, true);
+		$arSections[$ID]['IMAGES'] = $img;
+	} elseif ($arSection['PICTURE']) {
+		$img = CFile::ResizeImageGet($arSection['PICTURE'], array('width' => 50, 'height' => 50), BX_RESIZE_IMAGE_PROPORTIONAL, true);
+		$arSections[$ID]['IMAGES'] = $img;
 	}
-	foreach ($arBrandSections as $ID => $brandSection){
+	if ($arSection['IBLOCK_SECTION_ID'] && in_array($arSection["IBLOCK_SECTION_ID"], $arBrandsIblockSectionsIds)) {
+		if (!isset($arSections[$arSection['IBLOCK_SECTION_ID']]['CHILD'])) {
+			$arSections[$arSection['IBLOCK_SECTION_ID']]['CHILD'] = array();
+		}
+
+		// Id секции == Id секции бренда (есть в списке брендов)
+		$isIdInBrandId = in_array($arSections[$arSection['ID']]["ID"], $arBrandsIds);
+		// Id секции == IBLOCK_SECTION_ID бренда (есть в списке брендов)
+		$isIdInIdSection = in_array($arSections[$arSection['ID']]["ID"], $arBrandsIblockSectionsIds);
+		// IBLOCK_SECTION_ID раздела (папки) == IBLOCK_SECTION_ID бренда
+		$isSectionIdInIdSection = in_array($arSections[$arSection['ID']]["IBLOCK_SECTION_ID"], $arBrandsIblockSectionsIds);
+
+		// DEPTH_LEVEL == 2 -- Текущий уровень вложенности секции в брендах
+		if ($arSections[$arSection['ID']]["DEPTH_LEVEL"] == 2 &&
+			($isIdInIdSection || $isIdInBrandId)) {
+
+			$section_id = $arSections[$arSection['ID']]["ID"];
+			$arSections[$arSection['ID']]["SECTION_PAGE_URL"] = $cur_page . "?section_id=" . $section_id;
+			$arSections[$arSection['IBLOCK_SECTION_ID']]['CHILD'][] = &$arSections[$arSection['ID']];
+		}
+		// Вложенная в секцию бренда
+		elseif ($isSectionIdInIdSection && $isIdInBrandId) {
+
+			$section_id = $arSections[$arSection['ID']]["ID"];
+			$arSections[$arSection['ID']]["SECTION_PAGE_URL"] = $cur_page . "?section_id=" . $section_id;
+			$arSections[$arSection['IBLOCK_SECTION_ID']]['CHILD'][] = &$arSections[$arSection['ID']];
+		}
+
+	}
+	// Формируем левое меню
+	if ($arSection['DEPTH_LEVEL'] == 1 && in_array($arSection["ID"], $arBrandsIblockSectionsIds)) {
+		$arResult[] = &$arSections[$arSection['ID']];
+	}
+}
+
+// Добавляем такие разделы, как снято с производтсва и т.п.
+foreach ($brandSections as $brandSection) {
+	if (!$brandSection['IBLOCK_SECTION_ID']) {
+		$brandSection["SECTION_PAGE_URL"] = $cur_page . "?section_id=" . $brandSection["ID"];
 		$arResult[] = $brandSection;
 	}
-} ?>
+}
+
+?>

@@ -54,7 +54,7 @@ if ($arParams["SET_TITLE"] == "Y")
 						if (empty($arPaySystem["ERROR"]))
 						{
 							?>
-
+                            
 							<?
 						}
 						else

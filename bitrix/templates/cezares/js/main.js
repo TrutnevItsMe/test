@@ -6724,7 +6724,7 @@ if(!funcDefined('orderActions')){
 											BX.Sale.OrderAjaxComponent.allowOrderSave();
 										}
 										if(typeof BX.Sale.OrderAjaxComponent.doSaveAction == 'function'){
-
+											
 											let isDraft_ = $(event.srcElement).attr("data-is-draft");
 											if (isDraft_ === undefined){
 												BX.Sale.OrderAjaxComponent.isDraft = false;

@@ -68,17 +68,7 @@ $iVisibleItemsMenu = 5;
 						</div>
 					</td>
 				<?endforeach;?>
-
-				<td class="menu-item dropdown js-dropdown nosave unvisible">
-					<div class="wrap">
-						<a class="dropdown-toggle more-items" href="#">
-							<span><?=\Bitrix\Main\Localization\Loc::getMessage("S_MORE_ITEMS");?></span>
-						</a>
-						<span class="tail"></span>
-						<ul class="dropdown-menu"></ul>
-					</div>
-				</td>
-
+                
 			</tr>
 		</table>
 	</div>
