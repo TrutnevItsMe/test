@@ -505,8 +505,6 @@ function addGetCustomPricesButton(data) {
         if (!data.counterparties[profileId]) { return; }
         var counterpartyXmlId = data.counterparties[profileId].XML_ID;
         var agreementXmlId = $('#soa-property-' + data.agreementFieldId).val();
-		console.log(counterpartyXmlId);
-		console.log(agreementXmlId);
         $.post(
             '/ajax/getCustomPrices.php',
             {
@@ -518,7 +516,20 @@ function addGetCustomPricesButton(data) {
             },
             function(res) {
                 if (res.result == 'ok') {
-                    document.location.reload();
+
+					let form = document.createElement("form");
+					form.setAttribute("action", document.location.href);
+					form.setAttribute("method", "post");
+
+					res.data.forEach(function (product){
+						form.innerHTML += "<input type='text' name='xml_id[]' value='" + product["xml_id"] + "'>";
+						form.innerHTML += "<input type='text' name='quantity[]' value='" + product["quantity"] + "'>";
+						form.innerHTML += "<input type='text' name='price[]' value='" + product["price"] + "'>";
+						form.innerHTML += "<input type='text' name='discount[]' value='" + product["discount"] + "'>";
+					});
+
+					document.querySelector("body").append(form);
+					form.submit();
                 } else {
                     console.error(res.data.errorText);
                 }

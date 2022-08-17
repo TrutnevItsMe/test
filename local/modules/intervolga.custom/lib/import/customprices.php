@@ -7,27 +7,13 @@ use Bitrix\Main\Config\Option;
 class CustomPrices {
 	public static function get($clientId, $counterpartyId, $agreementId, $products) {
 		$xml = self::getRequestXml($clientId, $counterpartyId, $agreementId, $products);
-		\Bitrix\Main\Diag\Debug::writeToFile(__FILE__ . ':' . __LINE__ . "\n(" . date('Y-m-d H:i:s') . ")\n" . print_r($xml, true) . "\n\n", '', 'log/__debug_erofeev.log');
 		$httpClient = new HttpClient();
 		$httpClient->setHeader('Content-Type', 'application/xml; charset=UTF-8', true);
 
-
-
-		/* TODO: DELETE
-		\Bitrix\Main\Diag\Debug::dumpToFile($xml, $varName = '', $fileName = 'log.txt');
-				$url = "URL: " . Option::get("grain.customsettings","custom_prices_url");
-		\Bitrix\Main\Diag\Debug::dumpToFile($url, $varName = '', $fileName = 'log.txt');
-		*/
-
-		\Bitrix\Main\Diag\Debug::writeToFile(__FILE__ . ':' . __LINE__ . "\n(" . date('Y-m-d H:i:s') . ")\n" . print_r(Option::get("grain.customsettings","custom_prices_url"), true) . "\n\n", '', 'log/__debug_erofeev.log');
 		$httpClient->query("PUT", Option::get("grain.customsettings","custom_prices_url"), $xml);
 		$xml = new CDataXML();
-		\Bitrix\Main\Diag\Debug::writeToFile(__FILE__ . ':' . __LINE__ . "\n(" . date('Y-m-d H:i:s') . ")\n" . print_r($httpClient->getResult(), true) . "\n\n", '', 'log/__debug_erofeev.log');
 		$xml->LoadString($httpClient->getResult());
-		/* TODO: DELETE
 
-		\Bitrix\Main\Diag\Debug::dumpToFile($httpClient->getResult(), $varName = '', $fileName = 'log.txt');
-		*/
 		$items = $xml->SelectNodes("/CalcDiscountResponse")->elementsByName('Products');
 		$products = [];
 		foreach ($items as $item) {
@@ -38,14 +24,6 @@ class CustomPrices {
 				'discount' => self::getValueFloat($item, "Discount"),
 			];
 		}
-
-		$log = ["DATE" => date("d.m.Y H:m"),
-			"CLIENT_ID" => $clientId,
-			"COUNTERPARTY_ID" => $counterpartyId,
-			"AGREEMENT_ID" => $agreementId,
-			"PRODUCTS" => $products];
-
-		\Bitrix\Main\Diag\Debug::dumpToFile($log, $varName = '', $fileName = '/log/getCustomPrices.log');
 
 		return $products;
 	}
