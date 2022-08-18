@@ -6912,10 +6912,10 @@ if(!funcDefined('basketActions')){
 					$('.basket-items-list-header-filter a[data-filter="'+hash+'"]')[0].click();
 			}
 
-			$('.bx_sort_container').append('<div class="top_control basket_sort"><span style="opacity:0;" class="delete_all btn btn-default white white-bg grey remove_all_basket">'+BX.message("BASKET_CLEAR_ALL_BUTTON")+'</span></div>');
+			$('.bx_sort_container').append('<div class="top_control basket_sort"><span style="opacity:0;" class="delete_all btn btn-lg btn-default basket-btn-checkout white remove_all_basket">'+BX.message("BASKET_CLEAR_ALL_BUTTON")+'</span></div>');
 			if($('.basket-items-list-header-filter').length)
 			{
-				$('.basket-items-list-header-filter').append('<div class="top_control basket_sort"><span style="opacity:1;" class="delete_all btn btn-default white white-bg grey remove_all_basket">'+BX.message("BASKET_CLEAR_ALL_BUTTON")+'</span></div>');
+				$('.basket-items-list-header-filter').append('<div class="top_control basket_sort"><span style="opacity:1;" class="delete_all btn btn-lg btn-default basket-btn-checkout white remove_all_basket">'+BX.message("BASKET_CLEAR_ALL_BUTTON")+'</span></div>');
 
 				var cur_index = $('.basket-items-list-header-filter > a.active').index();
 				//fix delayed

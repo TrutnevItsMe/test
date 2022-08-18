@@ -30,6 +30,11 @@ use Bitrix\Main\Localization\Loc;
 		?>
 		<div class="basket-checkout-section">
 			<div class="basket-checkout-section-inner">
+
+				<div class="count-info">
+					<span data-entity="basket-items-count" data-filter="all" style="display: none;"</span>
+				</div>
+
 				<div class="basket-checkout-block basket-checkout-block-total">
 					<div class="basket-checkout-block-total-inner">
 						<div class="basket-checkout-block-total-title">
@@ -56,10 +61,6 @@ use Bitrix\Main\Localization\Loc;
                             data-entity="basket-checkout-button">
                             <?=Loc::getMessage('SBB_ORDER')?>
                         </button>
-                    </div>
-
-                    <div class="count-info">
-                        <span data-entity="basket-items-count" data-filter="all" style="display: none;"</span>
                     </div>
                 </div>
 
