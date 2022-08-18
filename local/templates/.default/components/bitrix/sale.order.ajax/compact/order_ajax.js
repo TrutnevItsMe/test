@@ -3060,24 +3060,13 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
             if (!basketItemsNode)
                 return;
 
-            var headers = [
-                    BX.create('DIV', {
-                        props: {className: 'bx-soa-item-td'},
-                        style: {paddingBottom: '5px'},
-                        children: [
-                            BX.create('DIV', {
-                                props: {className: 'bx-soa-item-td-title'},
-                                text: BX.message('SOA_SUM_NAME')
-                            })
-                        ]
-                    })
-                ],
+            var headers = [],
                 toRight = false, column, basketColumnIndex = 0, i;
 
             for (i = 0; i < this.result.GRID.HEADERS.length; i++) {
                 column = this.result.GRID.HEADERS[i];
 
-                if (column.id === 'NAME' || column.id === 'PREVIEW_PICTURE' || column.id === 'PROPS')
+                if (column.id === 'PROPS')
                     continue;
 
                 if (column.id === 'DETAIL_PICTURE' && !this.options.showPreviewPicInBasket)
@@ -3127,10 +3116,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
             for (i = 0; i < this.result.GRID.HEADERS.length; i++) {
                 currentColumn = this.result.GRID.HEADERS[i];
 
-                if (currentColumn.id === 'NAME' || currentColumn.id === 'PREVIEW_PICTURE' || currentColumn.id === 'PROPS')
-                    continue;
-
-                if (currentColumn.id === 'DETAIL_PICTURE' && !this.options.showPreviewPicInBasket)
+                if (currentColumn.id === 'PROPS')
                     continue;
 
                 otherColumns.push(this.createBasketItemColumn(currentColumn, item, active));
@@ -3152,18 +3138,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
                 }
             }
 
-            cols = [
-                BX.create('DIV', {
-                    props: {className: 'bx-soa-item-td'},
-                    style: {minWidth: '300px'},
-                    children: [
-                        BX.create('DIV', {
-                            props: {className: 'bx-soa-item-block'},
-                            children: mainColumns
-                        })
-                    ]
-                })
-            ].concat(otherColumns);
+            cols = [].concat(otherColumns);
 
             basketItemsNode.appendChild(
                 BX.create('DIV', {
@@ -3364,10 +3339,6 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
                     }));
                 }
 
-                if (this.options.showPriceNotesInBasket && active) {
-                    textNode.appendChild(BX.create('BR'));
-                    textNode.appendChild(BX.create('SMALL', {text: data.NOTES}));
-                }
             } else if (column.id === 'SUM') {
                 textNode.appendChild(BX.create('STRONG', {props: {className: 'bx-price all'}, html: data.SUM}));
                 if (parseFloat(data.DISCOUNT_PRICE) > 0) {
@@ -3427,7 +3398,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
                         );
                     }
                 } else if (columnData) {
-                    textNode.appendChild(BX.create('SPAN', {html: BX.util.htmlspecialchars(columnData)}));
+                    textNode.appendChild(BX.create('SPAN', {html: columnData}));
                 }
             }
 
@@ -3882,19 +3853,6 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
                 }
 
                 regionNode.appendChild(regionNodeCol);
-                var id,group, property,propsIterator, groupIterator = this.propertyCollection.getGroupIterator();
-                let arId = [
-                    this.CLIENT_AGREEMENTS_ID
-                ]
-                while (group = groupIterator()){
-                    propsIterator =  group.getIterator();
-                    while (property = propsIterator()) {
-                        id=property.getId();
-                        if (arId.indexOf(id)>=0){
-                            this.getPropertyRowNode(property, regionNodeCol, false);
-                        }
-                    }
-                }
 
                 regionContent.appendChild(regionNode);
                 this.getBlockFooter(regionContent);

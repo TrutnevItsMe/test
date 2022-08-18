@@ -449,6 +449,7 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
  * @param values
  */
 function activateAgreementsField(data) {
+
     window.currentAgreementId = '';
     setInterval(function () {
 		var $profile = $('[name=PROFILE_ID]');
@@ -485,7 +486,6 @@ function activateAgreementsField(data) {
 		}
 		if ($('#bx-soa-properties input').length > 0) {
 			$('#bx-soa-properties input, #bx-soa-properties textarea').prop("disabled", true);
-			document.querySelector('#bx-soa-properties .bx-soa-more-btn .pull-right').click();
 		}
 		$('#bx-soa-properties a.bx-soa-editstep').hide();
     }, 300)
@@ -518,7 +518,24 @@ function addGetCustomPricesButton(data) {
             },
             function(res) {
                 if (res.result == 'ok') {
-                    document.location.reload();
+					console.log(res);
+
+					let form = document.createElement("form");
+					form.setAttribute("action", document.location.href);
+					form.setAttribute("method", "post");
+
+					res.data.forEach(function (product){
+						form.innerHTML += "<input type='text' name='xml_id[]' value='" + product["xml_id"] + "'>";
+						form.innerHTML += "<input type='text' name='quantity[]' value='" + product["quantity"] + "'>";
+						form.innerHTML += "<input type='text' name='price[]' value='" + product["price"] + "'>";
+						form.innerHTML += "<input type='text' name='discount[]' value='" + product["discount"] + "'>";
+					});
+
+					document.querySelector("body").append(form);
+					form.submit();
+
+					// window.location.href = document.location.href;
+                    // document.location.reload();
                 } else {
                     console.error(res.data.errorText);
                 }
