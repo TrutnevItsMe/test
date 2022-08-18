@@ -420,9 +420,9 @@ else
 				</div>
 
 				<? if ($arParams['BASKET_POSITION'] === 'after'): ?>
-                    <div class="flex">
-                        <h4 class="items-title">Товары в заказе: </h4>
-                        <a class="btn" href="/basket/">Изменить заказ</a>
+                    <div class="edit-order-section flex">
+                        <h4 class="items-title"><?= Loc::getMessage("ORDER_ITEMS") ?></h4>
+                        <a class="btn" href="/basket/"><?= Loc::getMessage("EDIT_ORDER") ?></a>
                     </div>
 					<!--	BASKET ITEMS BLOCK	-->
 					<div id="bx-soa-basket" data-visited="false" class="bx-soa-section bx-active">

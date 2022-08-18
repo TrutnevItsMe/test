@@ -6288,7 +6288,6 @@ body #basket-root .basket-item-label-text span, body #basket-root .basket-item-l
 #bx-soa-order ul li:before{display:none;}
 #bx-soa-order .alert-danger{font-size:14px;line-height:20px;border-radius:0;padding:15px 29px;background:#ffeeee;color:#e83333;}
 #bx-soa-order .bx-soa-section{border-radius:0;margin:0 0 20px;}
-#bx-soa-order .bx-soa-section.bx-selected{border:1px solid #f2f2f2;}
 #bx-soa-order .bx-soa-section .bx-soa-section-title-container{padding:29px 19px 29px 79px;border-bottom:1px solid #f2f2f2;background:#fbfbfb;cursor:pointer;}
 #bx-soa-order .bx-soa-section.bx-selected .bx-soa-section-title-container{cursor:default;}
 #bx-soa-order .bx-soa-section .bx-soa-section-title{position:relative;font-size:20px;line-height:24px;color:#333;padding-left:0!important;padding-top:1px;font-weight:bold;}
@@ -6299,8 +6298,6 @@ body #basket-root .basket-item-label-text span, body #basket-root .basket-item-l
 #bx-soa-order .bx-soa-editstep:first-letter{text-transform:uppercase;}
 #bx-soa-order .bx-soa-editstep:hover{text-decoration:none;}
 #bx-soa-order .bx-soa-section.bx-selected .bx-soa-editstep{display:none;}
-#bx-soa-order #bx-soa-region{border:1px solid #f2f2f2;}
-#bx-soa-order #bx-soa-region .bx_soa_location{}
 #bx-soa-order #bx-soa-region .bx_soa_location .form-group .bx-soa-custom-label{display:block;}
 #bx-soa-order #bx-soa-region .bx_soa_location .form-group:first-child br{display:none;}
 #bx-soa-order #bx-soa-region .bx_soa_location .form-group:first-child>label{margin:0 0 5px;}
@@ -6421,8 +6418,6 @@ body .filter.label_block input + label{padding-left:23px;font-size:13px;color:#8
 #bx-soa-order .bx-soa-pp-desc-container .checkbox .bx-soa-service-small{margin:1px 0 0;}
 #bx-soa-order .bx-soa-pp-desc-container .bx-soa-pp-field{margin:13px 0 0;}
 #bx-soa-order .bx-soa-pp-desc-container .bx-soa-pp-field:first-of-type{margin-top:22px;}
-#bx-soa-order .bx-soa-section{border:1px solid #f2f2f2;}
-#bx-soa-order .bx-soa-section.bx-step-completed{border:1px solid #f2f2f2;}
 #bx-soa-order .bx-soa-pp-company-block .form-control{font-size:12px;}
 #bx-soa-order .form-control{margin-bottom:0px;}
 body #bx-soa-order .bx-soa-cart-total-line.bx-soa-cart-total-line-highlighted{background:#ffd02e;padding:3px 8px 2px;border-radius:3px;margin:10px 0px 10px;}
@@ -7437,6 +7432,10 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 .contact-table thead{
 	color: #107bb1;
 	font-weight: 1000;
+}
+
+.contact-table th{
+	text-align: center;
 }
 
 .brand-left-dropdown-menu .brand-dropdown{
