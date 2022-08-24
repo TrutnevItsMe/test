@@ -18,14 +18,12 @@
 						<div class="toggle_block"></div>
 						<div class="clearfix"></div>
 					</a>
-					<?if($arItem["CHILD"]){?>
+					<? if($arItem["CHILD"]){ ?>
 						<ul class="dropdown brand-dropdown">
 							<?foreach($arItem["CHILD"] as $arChildItem){
-								####################################bart ##########################################
+
 								if($arChildItem["UF_DISABLE_MENU"] == 1) continue;
-								####################################bart ##########################################
-								
-								
+
 								?>
 								<li class="<?=($arChildItem["CHILD"] ? "has-childs" : "");?> <?if($arChildItem["SELECTED"]){?> current <?}?>">
 									<?if($arChildItem["IMAGES"] && $arTheme['SHOW_CATALOG_SECTIONS_ICONS']['VALUE'] == 'Y' && $arTheme["MENU_TYPE_VIEW"]["VALUE"] !== 'BOTTOM'){?>
@@ -34,14 +32,10 @@
 									<a class="section" href="<?=$arChildItem["SECTION_PAGE_URL"];?>"><span><?=$arChildItem["NAME"];?></span></a>
 									<?if($arChildItem["CHILD"]){?>
 										<ul class="dropdown">
-									
+
 											<?foreach($arChildItem["CHILD"] as $arChildItem1){
-												 
-												#print_r($arChildItem1);
-										 		
-							   ####################################bart ##########################################
-								if($arChildItem1["UF_DISABLE_MENU"] == 1) continue;
-							   ####################################bart ##########################################
+
+												if($arChildItem1["UF_DISABLE_MENU"] == 1) continue;
 
 												?>
 												<li class="menu_item <?if($arChildItem1["SELECTED"]){?> current <?}?>">
