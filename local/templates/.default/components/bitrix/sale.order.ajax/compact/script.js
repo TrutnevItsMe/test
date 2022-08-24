@@ -530,6 +530,9 @@ function addGetCustomPricesButton(data) {
 
 					document.querySelector("body").append(form);
 					form.submit();
+
+					// window.location.href = document.location.href;
+                    // document.location.reload();
                 } else {
                     console.error(res.data.errorText);
                 }
