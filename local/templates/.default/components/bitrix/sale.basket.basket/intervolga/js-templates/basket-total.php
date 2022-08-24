@@ -31,10 +31,6 @@ use Bitrix\Main\Localization\Loc;
 		<div class="basket-checkout-section">
 			<div class="basket-checkout-section-inner">
 
-				<div class="count-info">
-					<span data-entity="basket-items-count" data-filter="all" style="display: none;"</span>
-				</div>
-
 				<div class="basket-checkout-block basket-checkout-block-total">
 					<div class="basket-checkout-block-total-inner">
 						<div class="basket-checkout-block-total-title">
@@ -52,6 +48,9 @@ use Bitrix\Main\Localization\Loc;
 								<?=Loc::getMessage('SBB_VAT')?>: {{{VAT_SUM_FORMATED}}}
 							{{/SHOW_VAT}}
 						</div>
+					</div>
+					<div class="count-info">
+						<span data-entity="basket-items-count" data-filter="all" style="display: none;"</span>
 					</div>
 				</div>
 

@@ -176,7 +176,7 @@
 	display: -webkit-box;
 	display: flex;
 	justify-content: flex-end;
-	align-items: baseline;
+	align-items: center;
 	-ms-flex-pack: end;
 	-webkit-box-pack: end;
 }
@@ -187,7 +187,6 @@
 .basket-checkout-block-total {
 	padding-right: 10px;
 	text-align: right;
-	align-self: center;
 }
 
 .basket-checkout-block-total-inner {
@@ -2198,11 +2197,6 @@ body.bx-theme-yellow .catalog-block-header{border-color:#f4b236;}
 	font-size: 16px!important;
 }
 
-.count-info {
-	padding-top: 18px;
-	padding-right: 15px;
-}
-
 #clear-box {
 	display: flex;
 	flex-direction: column;
@@ -2303,4 +2297,8 @@ td{
 
 .td-header-rests{
 	width: 70px;
+}
+
+#basket-root .contact-table{
+	border: none;
 }
