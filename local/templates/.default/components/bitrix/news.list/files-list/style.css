@@ -1,0 +1,16 @@
+.d-flex
+{
+	display: flex;
+}
+
+.justify-content-space-around{
+	justify-content: space-around;
+}
+
+.align-items-baseline{
+	align-items: baseline
+}
+
+.align-content-center{
+	align-content: center
+}
