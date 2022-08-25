@@ -13,12 +13,8 @@ $res = CIBlockSection::GetList(Array("NAME"=>"ASC"),
 		}
 	}
 unset($res);
-	#print_r($arNotShowSections);
 global $NEXT_SMART_FILTER;
 $NEXT_SMART_FILTER[0] = array('!SECTION_ID' => $arNotShowSections);
-			######################################powerd by bart####################
-			##########################################################################
-			#pr();
 
 global $arTheme;?>
 <?if($arSeoItem):?>

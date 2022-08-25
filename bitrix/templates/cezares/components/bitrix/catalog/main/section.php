@@ -122,8 +122,6 @@ else{
 		,$arParams["FILE_404"]
 	);
 }
-//echo "<pre>";
-//die(var_dump($arRegion));
 if($arRegion)
 {
 	if($arRegion['LIST_PRICES'])

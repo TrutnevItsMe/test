@@ -1340,8 +1340,8 @@ hr.bxe-light{
     border: none;
     border-radius: 1px;
     font-size: 14px;
-    padding: 15px;
-    margin-bottom: 20px;
+    padding: 0;
+    margin-bottom: 0px;
 }
 .bxe-aleft-title{
     font-weight: bold;
@@ -1606,4 +1606,13 @@ select, input, textarea{
 
 .edit-order-section{
 	padding-bottom: 10px;
+}
+
+@media (max-width: 1450px){
+	.bx-soa-customer{
+		display: block;
+	}
+	.bx-soa-customer [data-property-id-row]{
+		justify-content: center;
+	}
 }
