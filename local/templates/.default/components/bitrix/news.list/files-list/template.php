@@ -76,7 +76,7 @@ $this->setFrameMode(true);
 
 							<? if ($arItem["DISPLAY_PROPERTIES"]["FILE"]): ?>
 							<h4><?=$arItem["NAME"]?></h4>
-								<? foreach ($arItem["DISPLAY_PROPERTIES"]["FILE"] as $file): ?>
+								<? $file = $arItem["DISPLAY_PROPERTIES"]["FILE"]; ?>
 
 										<?
 										$img = CFile::ResizeImageGet($arItem["PREVIEW_PICTURE"], [
@@ -113,7 +113,6 @@ $this->setFrameMode(true);
 											</a>
 										</div>
 									</div>
-								<? endforeach; ?>
 
 							<? endif; ?>
 
