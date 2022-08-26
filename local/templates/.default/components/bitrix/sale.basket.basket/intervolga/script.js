@@ -15,10 +15,6 @@ BasketPoolQuantity.prototype.updateQuantity = function()
 {
 	var items = BX('basket_items');
 
-	if (basketJSParams['USE_ENHANCED_ECOMMERCE'] === 'Y')
-	{
-		checkAnalytics(this.lastStableQuantities, items);
-	}
 
 	if (!!items && items.rows.length > 0)
 	{
@@ -1418,6 +1414,4 @@ BX.ready(function() {
 	if (BX.type.isElementNode(basketItems))
 		BX.bindDelegate(basketItems, 'click', {tagName: 'li', 'attr': { 'data-sku-selector': 'Y' }}, skuPropClickHandler);
 
-	if (BX.type.isNotEmptyString(basketJSParams['EVENT_ONCHANGE_ON_START']) && basketJSParams['EVENT_ONCHANGE_ON_START'] == "Y")
-		BX.onCustomEvent('OnBasketChange');
 });
