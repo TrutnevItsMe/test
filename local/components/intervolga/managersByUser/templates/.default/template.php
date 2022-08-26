@@ -77,10 +77,10 @@
 						<a href="tel:<?= $partner["UF_POMOSHNIKTELEFON1"] ?>"><?= $partner["DISPLAY_POMOSHNIKTELEFON1"] ?></a>
 					<? endif; ?>
 
-					<? if ($partner["UF_POMOSHNIKRABTELEF"]): ?>
+					<? if ($partner["UF_POMRABTELEFON1"]): ?>
 						<br>
 						<span>Раб. тел: </span>
-						<a href="tel:<?= $partner["UF_POMOSHNIKRABTELEF"] ?>"><?= $partner["DISPLAY_POMOSHNIKRABTELEF"] ?></a>
+						<a href="tel:<?= $partner["UF_POMRABTELEFON1"] ?>"><?= $partner["DISPLAY_POMRABTELEFON1"] ?></a>
 					<? endif; ?>
 
 					<? if ($partner["UF_POMOSHNIKADRES1"]): ?>
@@ -95,10 +95,10 @@
 						<a href="tel:<?= $partner["UF_POMOSHNIKTELEFON2"] ?>"><?= $partner["DISPLAY_POMOSHNIKTELEFON2"] ?></a>
 					<? endif; ?>
 
-					<? if ($partner["UF_POMOSHNIKRABTELEF"]): ?>
+					<? if ($partner["UF_POMRABTELEFON2"]): ?>
 						<br>
 						<span>Раб. тел: </span>
-						<a href="tel:<?= $partner["UF_POMOSHNIKRABTELEF"] ?>"><?= $partner["DISPLAY_POMOSHNIKRABTELEF"] ?></a>
+						<a href="tel:<?= $partner["UF_POMRABTELEFON2"] ?>"><?= $partner["DISPLAY_POMRABTELEFON2"] ?></a>
 					<? endif; ?>
 
 					<? if ($partner["UF_POMOSHNIKADRES2"]): ?>
@@ -113,10 +113,10 @@
 						<a href="tel:<?= $partner["UF_POMOSHNIKTELEFON3"] ?>"><?= $partner["DISPLAY_POMOSHNIKTELEFON3"] ?></a>
 					<? endif; ?>
 
-					<? if ($partner["UF_POMOSHNIKRABTELEF"]): ?>
+					<? if ($partner["UF_POMRABTELEFON3"]): ?>
 						<br>
 						<span>Раб. тел: </span>
-						<a href="tel:<?= $partner["UF_POMOSHNIKRABTELEF"] ?>"><?= $partner["DISPLAY_POMOSHNIKRABTELEF"] ?></a>
+						<a href="tel:<?= $partner["UF_POMRABTELEFON3"] ?>"><?= $partner["DISPLAY_POMRABTELEFON3"] ?></a>
 					<? endif; ?>
 
 					<? if ($partner["UF_POMOSHNIKADRES3"]): ?>

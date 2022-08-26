@@ -23,7 +23,9 @@ class ManagersByUser extends CBitrixComponent{
 				$partner["DISPLAY_POMOSHNIKTELEFON2"] = Parser::getInstance()->parse($partner["UF_POMOSHNIKTELEFON2"])->format(Format::NATIONAL);
 				$partner["DISPLAY_POMOSHNIKTELEFON3"] = Parser::getInstance()->parse($partner["UF_POMOSHNIKTELEFON3"])->format(Format::NATIONAL);
 				$partner["DISPLAY_OSNMENEDZHERRABTE"] = Parser::getInstance()->parse($partner["UF_OSNMENEDZHERRABTE"])->format(Format::NATIONAL);
-				$partner["DISPLAY_POMOSHNIKRABTELEF"] = Parser::getInstance()->parse($partner["UF_POMOSHNIKRABTELEF"])->format(Format::NATIONAL);
+				$partner["DISPLAY_POMRABTELEFON1"] = Parser::getInstance()->parse($partner["UF_POMRABTELEFON1"])->format(Format::NATIONAL);
+				$partner["DISPLAY_POMRABTELEFON2"] = Parser::getInstance()->parse($partner["UF_POMRABTELEFON2"])->format(Format::NATIONAL);
+				$partner["DISPLAY_POMRABTELEFON3"] = Parser::getInstance()->parse($partner["UF_POMRABTELEFON3"])->format(Format::NATIONAL);
 				$this->arResult["PARTNERS"][] = $partner;
 			}
 		}
