@@ -13,57 +13,55 @@ $arBrandsIblockSectionsIds = array_column($brandSections, "IBLOCK_SECTION_ID");
 // ID разделов бренда
 $arBrandsIds = array_column($brandSections, "ID");
 
-foreach ($arSections as $ID => $arSection) {
-
-	$arSections[$ID]['SELECTED'] = CMenu::IsItemSelected($arSection['SECTION_PAGE_URL'], $cur_page, $cur_page_no_index);
-
-	if ($arSection['UF_CATALOG_ICON']) {
-		$img = CFile::ResizeImageGet($arSection['UF_CATALOG_ICON'], array('width' => 36, 'height' => 36), BX_RESIZE_IMAGE_PROPORTIONAL, true);
-		$arSections[$ID]['IMAGES'] = $img;
-	} elseif ($arSection['PICTURE']) {
-		$img = CFile::ResizeImageGet($arSection['PICTURE'], array('width' => 50, 'height' => 50), BX_RESIZE_IMAGE_PROPORTIONAL, true);
-		$arSections[$ID]['IMAGES'] = $img;
-	}
-	if ($arSection['IBLOCK_SECTION_ID'] && in_array($arSection["IBLOCK_SECTION_ID"], $arBrandsIblockSectionsIds)) {
-		if (!isset($arSections[$arSection['IBLOCK_SECTION_ID']]['CHILD'])) {
-			$arSections[$arSection['IBLOCK_SECTION_ID']]['CHILD'] = array();
-		}
-
-		// Id секции == Id секции бренда (есть в списке брендов)
-		$isIdInBrandId = in_array($arSections[$arSection['ID']]["ID"], $arBrandsIds);
-		// Id секции == IBLOCK_SECTION_ID бренда (есть в списке брендов)
-		$isIdInIdSection = in_array($arSections[$arSection['ID']]["ID"], $arBrandsIblockSectionsIds);
-		// IBLOCK_SECTION_ID раздела (папки) == IBLOCK_SECTION_ID бренда
-		$isSectionIdInIdSection = in_array($arSections[$arSection['ID']]["IBLOCK_SECTION_ID"], $arBrandsIblockSectionsIds);
-
-		// DEPTH_LEVEL == 2 -- Текущий уровень вложенности секции в брендах
-		if ($arSections[$arSection['ID']]["DEPTH_LEVEL"] == 2 &&
-			($isIdInIdSection || $isIdInBrandId)) {
-
-			$section_id = $arSections[$arSection['ID']]["ID"];
-			$arSections[$arSection['ID']]["SECTION_PAGE_URL"] = $cur_page . "?section_id=" . $section_id;
-			$arSections[$arSection['IBLOCK_SECTION_ID']]['CHILD'][] = &$arSections[$arSection['ID']];
-		}
-		// Вложенная в секцию бренда
-		elseif ($isSectionIdInIdSection && $isIdInBrandId) {
-
-			$section_id = $arSections[$arSection['ID']]["ID"];
-			$arSections[$arSection['ID']]["SECTION_PAGE_URL"] = $cur_page . "?section_id=" . $section_id;
-			$arSections[$arSection['IBLOCK_SECTION_ID']]['CHILD'][] = &$arSections[$arSection['ID']];
-		}
-
-	}
-	// Формируем левое меню
-	if ($arSection['DEPTH_LEVEL'] == 1 && in_array($arSection["ID"], $arBrandsIblockSectionsIds)) {
-		$arResult[] = &$arSections[$arSection['ID']];
-	}
+if (is_array($arParams["READY_MENU"])){
+	$arResult = $arParams["READY_MENU"];
 }
+else{
 
-// Добавляем такие разделы, как снято с производтсва и т.п.
-foreach ($brandSections as $brandSection) {
-	if (!$brandSection['IBLOCK_SECTION_ID']) {
-		$brandSection["SECTION_PAGE_URL"] = $cur_page . "?section_id=" . $brandSection["ID"];
-		$arResult[] = $brandSection;
+	foreach ($arSections as $ID => $arSection) {
+
+		$arSections[$ID]['SELECTED'] = CMenu::IsItemSelected($arSection['SECTION_PAGE_URL'], $cur_page, $cur_page_no_index);
+
+		if ($arSection['UF_CATALOG_ICON']) {
+			$img = CFile::ResizeImageGet($arSection['UF_CATALOG_ICON'], array('width' => 36, 'height' => 36), BX_RESIZE_IMAGE_PROPORTIONAL, true);
+			$arSections[$ID]['IMAGES'] = $img;
+		} elseif ($arSection['PICTURE']) {
+			$img = CFile::ResizeImageGet($arSection['PICTURE'], array('width' => 50, 'height' => 50), BX_RESIZE_IMAGE_PROPORTIONAL, true);
+			$arSections[$ID]['IMAGES'] = $img;
+		}
+		if ($arSection['IBLOCK_SECTION_ID'] && in_array($arSection["IBLOCK_SECTION_ID"], $arBrandsIblockSectionsIds)) {
+			if (!isset($arSections[$arSection['IBLOCK_SECTION_ID']]['CHILD'])) {
+				$arSections[$arSection['IBLOCK_SECTION_ID']]['CHILD'] = array();
+			}
+
+			// Id секции == Id секции бренда (есть в списке брендов)
+			$isIdInBrandId = in_array($arSections[$arSection['ID']]["ID"], $arBrandsIds);
+			// Id секции == IBLOCK_SECTION_ID бренда (есть в списке брендов)
+			$isIdInIdSection = in_array($arSections[$arSection['ID']]["ID"], $arBrandsIblockSectionsIds);
+			// IBLOCK_SECTION_ID раздела (папки) == IBLOCK_SECTION_ID бренда
+			$isSectionIdInIdSection = in_array($arSections[$arSection['ID']]["IBLOCK_SECTION_ID"], $arBrandsIblockSectionsIds);
+
+			// DEPTH_LEVEL == 2 -- Текущий уровень вложенности секции в брендах
+			if ($arSections[$arSection['ID']]["DEPTH_LEVEL"] == 2 &&
+				($isIdInIdSection || $isIdInBrandId)) {
+
+				$section_id = $arSections[$arSection['ID']]["ID"];
+				$arSections[$arSection['ID']]["SECTION_PAGE_URL"] = $cur_page . "?section_id=" . $section_id;
+				$arSections[$arSection['IBLOCK_SECTION_ID']]['CHILD'][] = &$arSections[$arSection['ID']];
+			}
+			// Вложенная в секцию бренда
+			elseif ($isSectionIdInIdSection && $isIdInBrandId) {
+
+				$section_id = $arSections[$arSection['ID']]["ID"];
+				$arSections[$arSection['ID']]["SECTION_PAGE_URL"] = $cur_page . "?section_id=" . $section_id;
+				$arSections[$arSection['IBLOCK_SECTION_ID']]['CHILD'][] = &$arSections[$arSection['ID']];
+			}
+
+		}
+		// Формируем левое меню
+		if ($arSection['DEPTH_LEVEL'] == 1 && in_array($arSection["ID"], $arBrandsIblockSectionsIds)) {
+			$arResult[] = &$arSections[$arSection['ID']];
+		}
 	}
 }
 

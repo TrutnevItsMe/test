@@ -518,7 +518,24 @@ function addGetCustomPricesButton(data) {
             },
             function(res) {
                 if (res.result == 'ok') {
-                    document.location.reload();
+					console.log(res);
+
+					let form = document.createElement("form");
+					form.setAttribute("action", document.location.href);
+					form.setAttribute("method", "post");
+
+					res.data.forEach(function (product){
+						form.innerHTML += "<input type='text' name='xml_id[]' value='" + product["xml_id"] + "'>";
+						form.innerHTML += "<input type='text' name='quantity[]' value='" + product["quantity"] + "'>";
+						form.innerHTML += "<input type='text' name='price[]' value='" + product["price"] + "'>";
+						form.innerHTML += "<input type='text' name='discount[]' value='" + product["discount"] + "'>";
+					});
+
+					document.querySelector("body").append(form);
+					form.submit();
+
+					// window.location.href = document.location.href;
+                    // document.location.reload();
                 } else {
                     console.error(res.data.errorText);
                 }
