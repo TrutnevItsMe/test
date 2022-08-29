@@ -48,6 +48,7 @@
 	}
 	if ($arParams["LINE_ELEMENT_COUNT"] > 5)
 		$col = 5; ?>
+
 	<? foreach ($arResult["ITEMS"] as $arItem) { ?>
 		<div class="item_block col-<?= $col; ?> col-md-<?= ceil(12 / $col); ?> col-sm-<?= ceil(12 / round($col / 2)) ?> col-xs-6">
 			<div class="catalog_item_wrapp item">

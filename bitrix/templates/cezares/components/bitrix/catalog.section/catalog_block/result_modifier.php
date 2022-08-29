@@ -755,239 +755,241 @@ if (!empty($arResult['ITEMS']))
 	$priceMatrix = 0;
 	foreach ($arResult['ITEMS'] as $key => $arItem)
 	{
-//		$catalogIblockID = Option::get(
-//			'aspro.next',
-//			'CATALOG_IBLOCK_ID',
-//			CNextCache::$arIBlocks[SITE_ID]['aspro_next_catalog']['aspro_next_catalog'][0]
-//		);
-//		$productId = $arItem['ID'];
-//		$rsProperty = CIBlockElement::GetProperty(
-//			$catalogIblockID,
-//			$productId,
-//			[],
-//			["CODE" => "COMPOSITION"]
-//		);
-//		if (!function_exists('array_key_first'))
-//		{
-//			function array_key_first(array $arr)
-//			{
-//				foreach ($arr as $key => $unused)
-//				{
-//					return $key;
-//				}
-//				return NULL;
-//			}
-//		}
-//
-//		if ($property = $rsProperty->Fetch())
-//		{
-//			if (is_array($value = $property['VALUE']))
-//			{
-//				$arItem["SET"] = Sets::getSet($value['TEXT']);
-//				// Посчитаем цену комплекта
-//				$price = 0;
-//				$oldPrice = 0;
-//				$price_discount = 0;
-//
-//				foreach ($arItem['SET']['SET'] as $item)
-//				{
-//					$db_res = CPrice::GetList(
-//						array(),
-//						array(
-//							"PRODUCT_ID" => $item['ID'],
-//							"CATALOG_GROUP_ID" => 13
-//						)
-//					);
-//					if ($ar_res13 = $db_res->Fetch())
-//					{
-//						$item['PRICE_DISCOUNT'] = $ar_res13["PRICE"];
-//					}
-//					else
-//					{
-//						$item['PRICE_DISCOUNT'] = $item['PRICE'];
-//					}
-//					$db_res = CPrice::GetList(
-//						array(),
-//						array(
-//							"PRODUCT_ID" => $item['ID'],
-//							"CATALOG_GROUP_ID" => 14
-//						)
-//					);
-//					if ($ar_res14 = $db_res->Fetch())
-//					{
-//						$item['PRICE'] = $ar_res14["PRICE"];
-//					}
-//					else
-//					{
-//						$item['PRICE'] = $item['PRICE'];
-//					}
-//
-//					$price += floatval($item['PRICE']) * intval($item['AMOUNT']);
-//					$price_discount += floatval($item['PRICE_DISCOUNT']) * intval($item['AMOUNT']);
-//					$oldPrice += floatval(isset($item['OLD_PRICE']) ? $item['OLD_PRICE'] : $item['PRICE'])
-//						* intval($item['AMOUNT']);
-//
-//					$ar_res13 = 0;
-//					$ar_res14 = 0;
-//				}
-//
-//				foreach ($arItem['SET']['OPTIONAL'] as $item)
-//				{
-//					$db_res = CPrice::GetList(
-//						array(),
-//						array(
-//							"PRODUCT_ID" => $item['ID'],
-//							"CATALOG_GROUP_ID" => 13
-//						)
-//					);
-//					if ($ar_res13 = $db_res->Fetch())
-//					{
-//						$item['PRICE_DISCOUNT'] = $ar_res13["PRICE"];
-//					}
-//					else
-//					{
-//						$item['PRICE_DISCOUNT'] = $item['PRICE'];
-//					}
-//					$db_res = CPrice::GetList(
-//						array(),
-//						array(
-//							"PRODUCT_ID" => $item['ID'],
-//							"CATALOG_GROUP_ID" => 14
-//						)
-//					);
-//					if ($ar_res14 = $db_res->Fetch())
-//					{
-//						$item['PRICE'] = $ar_res14["PRICE"];
-//					}
-//					else
-//					{
-//						$item['PRICE'] = $item['PRICE'];
-//					}
-//
-//					if ($item['DEFAULT'])
-//					{
-//						$price += floatval($item['PRICE']) * intval($item['AMOUNT']);
-//						$price_discount += floatval($item['PRICE_DISCOUNT']) * intval($item['AMOUNT']);
-//						$oldPrice += floatval(isset($item['OLD_PRICE']) ? $item['OLD_PRICE'] : $item['PRICE'])
-//							* intval($item['AMOUNT']);
-//					}
-//				}
-//
-//				$priceId = reset($arPriceTypeID);
-//
-//				if (isset($arItem['PRICE_MATRIX']) && is_array($arItem['PRICE_MATRIX']))
-//				{
-//					$priceMatrix = $arItem['PRICE_MATRIX'];
-//				}
-//				else
-//				{
-//					// Шаблонная матрица цен, если цены из 1С нет, но есть расчётная
-//					$priceMatrix = [
-//						"ROWS" => ["ZERO-INF" => ["QUANTITY_FROM" => 0, "QUANTITY_TO" => 0,]],
-//						"COLS" => [
-//							$priceId => [
-//								"ID" => $priceId,
-//								"NAME" => "",
-//								"BASE" => "Y",
-//							]],
-//						"MATRIX" => [
-//							$priceId => [
-//								"ZERO-INF" => [
-//									"ID" => $arItem["ID"],
-//									"PRICE" => 0,
-//									"DISCOUNT_PRICE" => 0,
-//									"PRINT_PRICE" => "0",
-//									"PRINT_DISCOUNT_PRICE" => "0",
-//									"CURRENCY" => "RUB",
-//								]
-//							]
-//						],
-//						"CAN_BUY" => $arPriceTypeID,
-//					];
-//				}
-//				if (is_array($priceMatrix))
-//				{
-//					$curPriceId = "ZERO-INF";
-//					$priceMatrix['MATRIX'][14][$curPriceId]['PRICE'] = $price;
-//					$priceMatrix['MATRIX'][13][$curPriceId]['DISCOUNT_PRICE'] = $price_discount;
-//					$priceMatrix['MATRIX'][13][$curPriceId]['PRICE'] = $price_discount;
-//					$priceMatrix['MATRIX'][14][$curPriceId]['PRINT_PRICE'] =
-//						number_format($oldPrice, 2, '.', '&nbsp;') . "&nbsp;руб.";
-//					$priceMatrix['MATRIX'][13][$curPriceId]['PRINT_DISCOUNT_PRICE'] =
-//						number_format($price_discount, 2, '.', '&nbsp;') . "&nbsp;руб.";
-//				}
-//
-//				$arItem['PRICE_MATRIX'] = $priceMatrix;
-//				if (isset($arItem['PRICE_MATRIX']) && is_array($arItem['PRICE_MATRIX']))
-//				{
-//					$minPrice = $arItem['MIN_PRICE'];
-//				}
-//				else
-//				{
-//					$minPrice = [
-//						"CURRENCY" => "RUB",
-//						"CAN_BUY" => "Y"
-//					];
-//				}
-//
-//				$minPrice["VALUE"] = $oldPrice;
-//				$minPrice["DISCOUNT_VALUE"] = $price;
-//				$minPrice["PRINT_DISCOUNT_VALUE"] = number_format($price, 2, '.', '&nbsp;')
-//					. "&nbsp;руб.";
-//			}
-//			else
-//			{
-//				$db_res = CPrice::GetList(
-//					array(),
-//					array(
-//						"PRODUCT_ID" => $arItem['ID'],
-//						"CATALOG_GROUP_ID" => 13
-//					)
-//				);
-//				if ($ar_res13 = $db_res->Fetch())
-//				{
-//					$item['PRICE_DISCOUNT'] = $ar_res13["PRICE"];
-//				}
-//				else
-//				{
-//					$item['PRICE_DISCOUNT'] = $item['PRICE'];
-//				}
-//
-//				$arItem["PRICE_MATRIX"]['MATRIX'][13]["ZERO-INF"]['PRICE'] = floatval($item['PRICE_DISCOUNT']);
-//
-//				$db_res = CPrice::GetList(
-//					array(),
-//					array(
-//						"PRODUCT_ID" => $arItem['ID'],
-//						"CATALOG_GROUP_ID" => 14
-//					)
-//				);
-//				if ($ar_res14 = $db_res->Fetch())
-//				{
-//					$item['PRICE'] = $ar_res14["PRICE"];
-//				}
-//				else
-//				{
-//					$item['PRICE'] = $item['PRICE'];
-//
-//				}
-//
-//				$arItem["PRICE_MATRIX"]['MATRIX'][14]["ZERO-INF"]['PRICE'] = floatval($item['PRICE']);
-//			}
-//
-//		}
+		$catalogIblockID = Option::get(
+			'aspro.next',
+			'CATALOG_IBLOCK_ID',
+			CNextCache::$arIBlocks[SITE_ID]['aspro_next_catalog']['aspro_next_catalog'][0]
+		);
+		$productId = $arItem['ID'];
+		$rsProperty = CIBlockElement::GetProperty(
+			$catalogIblockID,
+			$productId,
+			[],
+			["CODE" => "COMPOSITION"]
+		);
+		if (!function_exists('array_key_first'))
+		{
+			function array_key_first(array $arr)
+			{
+				foreach ($arr as $key => $unused)
+				{
+					return $key;
+				}
+				return NULL;
+			}
+		}
+
+		if ($property = $rsProperty->Fetch())
+		{
+			if (is_array($value = $property['VALUE']))
+			{
+				$arItem["SET"] = Sets::getSet($value['TEXT']);
+				// Посчитаем цену комплекта
+				$price = 0;
+				$oldPrice = 0;
+				$price_discount = 0;
+				foreach ($arItem['SET']['SET'] as $item)
+				{
+
+					$db_res = CPrice::GetList(
+						array(),
+						array(
+							"PRODUCT_ID" => $item['ID'],
+							"CATALOG_GROUP_ID" => 13
+						)
+					);
+					if ($ar_res13 = $db_res->Fetch())
+					{
+						$item['PRICE_DISCOUNT'] = $ar_res13["PRICE"];
+						//var_dump($ar_res["PRICE"]);
+
+					}
+					else
+					{
+						$item['PRICE_DISCOUNT'] = $item['PRICE'];
+
+					}
+					$db_res = CPrice::GetList(
+						array(),
+						array(
+							"PRODUCT_ID" => $item['ID'],
+							"CATALOG_GROUP_ID" => 14
+						)
+					);
+					if ($ar_res14 = $db_res->Fetch())
+					{
+						$item['PRICE'] = $ar_res14["PRICE"];
+					}
+					else
+					{
+						$item['PRICE'] = $item['PRICE'];
+
+					}
+
+					$price += floatval($item['PRICE']) * intval($item['AMOUNT']);
+					$price_discount += floatval($item['PRICE_DISCOUNT']) * intval($item['AMOUNT']);
+					$oldPrice += floatval(isset($item['OLD_PRICE']) ? $item['OLD_PRICE'] : $item['PRICE'])
+						* intval($item['AMOUNT']);
+
+					$ar_res13 = 0;
+					$ar_res14 = 0;
+				}
+				foreach ($arItem['SET']['OPTIONAL'] as $item)
+				{
+
+					$db_res = CPrice::GetList(
+						array(),
+						array(
+							"PRODUCT_ID" => $item['ID'],
+							"CATALOG_GROUP_ID" => 13
+						)
+					);
+					if ($ar_res13 = $db_res->Fetch())
+					{
+						$item['PRICE_DISCOUNT'] = $ar_res13["PRICE"];
+					}
+					else
+					{
+						$item['PRICE_DISCOUNT'] = $item['PRICE'];
+
+					}
+					$db_res = CPrice::GetList(
+						array(),
+						array(
+							"PRODUCT_ID" => $item['ID'],
+							"CATALOG_GROUP_ID" => 14
+						)
+					);
+					if ($ar_res14 = $db_res->Fetch())
+					{
+						$item['PRICE'] = $ar_res14["PRICE"];
+					}
+					else
+					{
+						$item['PRICE'] = $item['PRICE'];
+
+					}
+
+					if ($item['DEFAULT'])
+					{
+						$price += floatval($item['PRICE']) * intval($item['AMOUNT']);
+						$price_discount += floatval($item['PRICE_DISCOUNT']) * intval($item['AMOUNT']);
+						$oldPrice += floatval(isset($item['OLD_PRICE']) ? $item['OLD_PRICE'] : $item['PRICE'])
+							* intval($item['AMOUNT']);
+					}
+				}
+
+				$priceId = reset($arPriceTypeID);
+
+				if (isset($arItem['PRICE_MATRIX']) && is_array($arItem['PRICE_MATRIX']))
+				{
+					$priceMatrix = $arItem['PRICE_MATRIX'];
+
+				}
+				else
+				{
+					// Шаблонная матрица цен, если цены из 1С нет, но есть расчётная
+					$priceMatrix = [
+						"ROWS" => ["ZERO-INF" => ["QUANTITY_FROM" => 0, "QUANTITY_TO" => 0,]],
+						"COLS" => [
+							$priceId => [
+								"ID" => $priceId,
+								"NAME" => "",
+								"BASE" => "Y",
+							]],
+						"MATRIX" => [
+							$priceId => [
+								"ZERO-INF" => [
+									"ID" => $arItem["ID"],
+									"PRICE" => 0,
+									"DISCOUNT_PRICE" => 0,
+									"PRINT_PRICE" => "0",
+									"PRINT_DISCOUNT_PRICE" => "0",
+									"CURRENCY" => "RUB",
+								]
+							]
+						],
+						"CAN_BUY" => $arPriceTypeID,
+					];
+				}
+				if (is_array($priceMatrix))
+				{
+					$curPriceId = "ZERO-INF";
+					$priceMatrix['MATRIX'][14][$curPriceId]['PRICE'] = $price;
+					$priceMatrix['MATRIX'][13][$curPriceId]['DISCOUNT_PRICE'] = $price_discount;
+					$priceMatrix['MATRIX'][13][$curPriceId]['PRICE'] = $price_discount;
+					$priceMatrix['MATRIX'][14][$curPriceId]['PRINT_PRICE'] =
+						number_format($oldPrice, 2, '.', '&nbsp;') . "&nbsp;руб.";
+					$priceMatrix['MATRIX'][13][$curPriceId]['PRINT_DISCOUNT_PRICE'] =
+						number_format($price_discount, 2, '.', '&nbsp;') . "&nbsp;руб.";
+				}
+
+				$arItem['PRICE_MATRIX'] = $priceMatrix;
+				if (isset($arItem['PRICE_MATRIX']) && is_array($arItem['PRICE_MATRIX']))
+				{
+					$minPrice = $arItem['MIN_PRICE'];
+				}
+				else
+				{
+					$minPrice = [
+						"CURRENCY" => "RUB",
+						"CAN_BUY" => "Y"
+					];
+				}
+
+				$minPrice["VALUE"] = $oldPrice;
+				$minPrice["DISCOUNT_VALUE"] = $price;
+				$minPrice["PRINT_DISCOUNT_VALUE"] = number_format($price, 2, '.', '&nbsp;')
+					. "&nbsp;руб.";
+			}
+			else
+			{
+
+				$db_res = CPrice::GetList(
+					array(),
+					array(
+						"PRODUCT_ID" => $arItem['ID'],
+						"CATALOG_GROUP_ID" => 13
+					)
+				);
+				if ($ar_res13 = $db_res->Fetch())
+				{
+					$item['PRICE_DISCOUNT'] = $ar_res13["PRICE"];
+				}
+				else
+				{
+					$item['PRICE_DISCOUNT'] = $item['PRICE'];
+
+				}
+
+				$arItem["PRICE_MATRIX"]['MATRIX'][13]["ZERO-INF"]['PRICE'] = floatval($item['PRICE_DISCOUNT']);
+
+				$db_res = CPrice::GetList(
+					array(),
+					array(
+						"PRODUCT_ID" => $arItem['ID'],
+						"CATALOG_GROUP_ID" => 14
+					)
+				);
+				if ($ar_res14 = $db_res->Fetch())
+				{
+					$item['PRICE'] = $ar_res14["PRICE"];
+				}
+				else
+				{
+					$item['PRICE'] = $item['PRICE'];
+
+				}
+
+				$arItem["PRICE_MATRIX"]['MATRIX'][14]["ZERO-INF"]['PRICE'] = floatval($item['PRICE']);
+			}
+		}
 
 		$items_new[] = $arItem;
 		$arItem = '';
 		$item['PRICE'] = '';
 	}
 }
-
-?>
-<!--<pre>-->
-<!--	--><?// var_dump($arResult['ITEMS']) ?>
-<!--</pre>-->
-<?php
 
 $arResult['ITEMS'] = '';
 $arResult['ITEMS'] = $items_new;

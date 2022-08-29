@@ -2,7 +2,6 @@
 $APPLICATION->SetTitle("Каталог");
 $APPLICATION->IncludeComponent("bart:stopsovetnik", "", array(), false);
 
-
 $APPLICATION->IncludeComponent(
 	"bitrix:catalog", 
 	"main", 

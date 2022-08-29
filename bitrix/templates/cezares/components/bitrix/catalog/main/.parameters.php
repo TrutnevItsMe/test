@@ -177,7 +177,12 @@
 			"SORT" => 100,
 			"NAME" => GetMessage("SORT_BUTTONS"),
 			"TYPE" => "LIST",
-			"VALUES" => array("POPULARITY"=>GetMessage("SORT_BUTTONS_POPULARITY"), "NAME"=>GetMessage("SORT_BUTTONS_NAME"), "PRICE"=>GetMessage("SORT_BUTTONS_PRICE"), "QUANTITY"=>GetMessage("SORT_BUTTONS_QUANTITY")),
+			"VALUES" => array(
+				"POPULARITY"=>GetMessage("SORT_BUTTONS_POPULARITY"),
+				"NAME"=>GetMessage("SORT_BUTTONS_NAME"),
+				"PRICE"=>GetMessage("SORT_BUTTONS_PRICE"),
+				"QUANTITY"=>GetMessage("SORT_BUTTONS_QUANTITY")
+			),
 			"DEFAULT" => array("POPULARITY", "NAME", "PRICE"),
 			"PARENT" => "LIST_SETTINGS",
 			"TYPE" => "LIST",
