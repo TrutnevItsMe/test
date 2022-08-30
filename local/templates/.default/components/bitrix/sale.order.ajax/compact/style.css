@@ -1340,8 +1340,8 @@ hr.bxe-light{
     border: none;
     border-radius: 1px;
     font-size: 14px;
-    padding: 0;
-    margin-bottom: 0px;
+    padding: 15px;
+    margin-bottom: 20px;
 }
 .bxe-aleft-title{
     font-weight: bold;
@@ -1608,11 +1608,14 @@ select, input, textarea{
 	padding-bottom: 10px;
 }
 
-@media (max-width: 1450px){
-	.bx-soa-customer{
-		display: block;
-	}
-	.bx-soa-customer [data-property-id-row]{
-		justify-content: center;
-	}
+.bx-soa-item-td.bx-soa-item-properties:nth-child(2){
+	width: 300px;
+}
+
+.bx-soa-item-td.bx-soa-item-properties:nth-child(2) span{
+	white-space: nowrap;
+}
+
+[data-type="informer"]{
+	margin: 0;
 }
