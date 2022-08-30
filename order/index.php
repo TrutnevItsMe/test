@@ -1,10 +1,8 @@
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Оформление заказа");
-?>
-
-<?$APPLICATION->IncludeComponent(
+$APPLICATION->IncludeComponent(
 	"bitrix:sale.order.ajax", 
-	"intervolga", 
+	"compact", 
 	array(
 		"PAY_FROM_ACCOUNT" => "N",
 		"ONLY_FULL_PAY_FROM_ACCOUNT" => "N",
@@ -31,7 +29,7 @@ $APPLICATION->SetTitle("Оформление заказа");
 		"DISABLE_BASKET_REDIRECT" => "N",
 		"DISPLAY_IMG_WIDTH" => "90",
 		"DISPLAY_IMG_HEIGHT" => "90",
-		"COMPONENT_TEMPLATE" => "intervolga",
+		"COMPONENT_TEMPLATE" => "compact",
 		"ALLOW_NEW_PROFILE" => "N",
 		"SHOW_PAYMENT_SERVICES_NAMES" => "Y",
 		"COMPATIBLE_MODE" => "Y",
@@ -66,30 +64,15 @@ $APPLICATION->SetTitle("Оформление заказа");
 		),
 		"PROPS_FADE_LIST_2" => "",
 		"PRODUCT_COLUMNS_VISIBLE" => array(
-			0 => "PREVIEW_PICTURE",
-			1 => "PROPS",
-			2 => "NOTES",
-			3 => "DISCOUNT_PRICE_PERCENT_FORMATED",
-			4 => "PRICE_FORMATED",
-			5 => "WEIGHT_FORMATED",
+			0 => "PROPS",
+			1 => "NOTES",
+			2 => "DISCOUNT_PRICE_PERCENT_FORMATED",
+			3 => "PRICE_FORMATED",
+			4 => "PROPERTY_CML2_ARTICLE",
 		),
 		"ADDITIONAL_PICT_PROP_13" => "-",
 		"ADDITIONAL_PICT_PROP_14" => "-",
 		"PRODUCT_COLUMNS_HIDDEN" => array(
-			0 => "PREVIEW_PICTURE",
-			1 => "DETAIL_PICTURE",
-			2 => "PREVIEW_TEXT",
-			3 => "PROPS",
-			4 => "NOTES",
-			5 => "DISCOUNT_PRICE_PERCENT_FORMATED",
-			6 => "PRICE_FORMATED",
-			7 => "WEIGHT_FORMATED",
-			8 => "PROPERTY_HIT",
-			9 => "PROPERTY_BRAND",
-			10 => "PROPERTY_MINIMUM_PRICE",
-			11 => "PROPERTY_MAXIMUM_PRICE",
-			12 => "PROPERTY_PROP_2033",
-			13 => "PROPERTY_IN_STOCK",
 		),
 		"USE_YM_GOALS" => "N",
 		"USE_CUSTOM_MAIN_MESSAGES" => "N",
@@ -119,9 +102,13 @@ $APPLICATION->SetTitle("Оформление заказа");
 		"ADDITIONAL_PICT_PROP_20" => "-",
 		"HIDE_ORDER_DESCRIPTION" => "N",
 		"USE_ENHANCED_ECOMMERCE" => "N",
-		"ADDITIONAL_PICT_PROP_26" => "-"
+		"ADDITIONAL_PICT_PROP_26" => "-",
+		"ACTIVE_SAVE_DRAFT_ORDER" => "Y",
+		"INDEX_PICTURE" => "0",
+		"SHOW_STORE" => "Y",
+		"SHOW_RESTS" => "Y",
+		"ADDITIONAL_PICT_PROP_27" => "-"
 	),
 	false
-);?>
-
-<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+);
+require_once ($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");
