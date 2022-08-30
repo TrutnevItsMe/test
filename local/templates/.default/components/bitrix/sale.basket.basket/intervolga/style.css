@@ -186,7 +186,6 @@
 /**/
 .basket-checkout-block-total {
 	padding-right: 10px;
-	text-align: right;
 }
 
 .basket-checkout-block-total-inner {
@@ -2301,4 +2300,15 @@ td{
 
 #basket-root .contact-table{
 	border: none;
+}
+
+.fixed-top-managers-block
+{
+	height: 0;
+	display: none;
+	position: fixed;
+	left: 0;
+	z-index: 1000;
+	width: 100%;
+	background-color: #FFF;
 }
