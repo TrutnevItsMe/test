@@ -91,11 +91,6 @@ if($typeTmpSKU)
 
 if($arRegion)
 {
-	if($arRegion['LIST_PRICES'])
-	{
-		//if(reset($arRegion['LIST_PRICES']) != 'component')
-			//$arParams['PRICE_CODE'] = array_keys($arRegion['LIST_PRICES']);
-	}
 	if($arRegion['LIST_STORES'])
 	{
 		if(reset($arRegion['LIST_STORES']) != 'component')
