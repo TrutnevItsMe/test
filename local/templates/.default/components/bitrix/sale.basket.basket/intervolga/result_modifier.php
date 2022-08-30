@@ -64,14 +64,3 @@ if (is_array($arResult["GRID"]["ROWS"])) {
 	}
 }
 
-global $USER;
-$user = $USER->GetById($USER->getId())->fetch();
-$arResult["USER"] = [
-    "NAME" =>  $USER->GetFullName(),
-    "LOGIN" =>  $user["LOGIN"],
-    "XML_ID" => $user["XML_ID"],
-];
-
-$arResult["USER"]["MANAGERS"] = \Intervolga\Custom\ORM\PartneryTable::getByXmlId($user["XML_ID"]);
-
-

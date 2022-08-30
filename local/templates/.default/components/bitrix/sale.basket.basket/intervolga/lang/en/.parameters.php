@@ -41,5 +41,4 @@ $MESS["NEAR_ITEM"] = "Next to the product";
 $MESS["DISPLAY_RESTS"] = "Display rests";
 $MESS["SHOW_STORE_NAME"] = "Display store";
 $MESS["SHOW_ARTICLE_BEFORE_NAME"] = "Show article before product`s name";
-$MESS["SHOW_DISCOUNT_PERCENT_COLUMN"] = "Show discount percent in column";
 ?>
