@@ -207,7 +207,6 @@ if (empty($arResult['ERROR_MESSAGE']))
 				?>
 			</div>
         </div>
-		<br>
 		<?
 		if (
 			$arParams['BASKET_WITH_ORDER_INTEGRATION'] !== 'Y'

@@ -6163,7 +6163,6 @@ body #basket-root .basket-item-label-text span, body #basket-root .basket-item-l
 #basket-root #basket-warning .close{filter:alpha(opacity=50);opacity:.5;}
 #basket-root .basket-items-list-wrapper .basket-items-list-header{background:#f9f9f9;border-bottom-color:#f2f2f2;position:static;padding-left:15px;padding-right:15px;}
 #basket-root .basket-items-list-wrapper .basket-items-list-header.basket-items-list-header-fixed{border:1px solid #f2f2f2;border-top-width:0px;}
-#basket-root .basket-items-list-wrapper .basket-checkout-container{border-color:#f2f2f2;}
 #basket-root .basket-items-list-wrapper .basket-items-search-field .form-control,
 #basket-root .basket-items-list-wrapper .basket-items-search-field .form-control:focus{background:#fff;border-color:#f2f2f2;box-shadow:none;}
 #basket-root .basket-items-list-wrapper .basket-clear{width:37px;height:37px;line-height:37px;}
@@ -6172,7 +6171,7 @@ body #basket-root .basket-item-label-text span, body #basket-root .basket-item-l
 #basket-root .basket-items-list-item-container .basket-items-list-item-notification{padding-top:20px;padding-bottom:20px;}
 #basket-root .basket-items-list-item-notification .basket-items-list-item-removed-container{background:#fff;}
 #basket-root .basket-items-list-item-container>td{padding-bottom:33px;}
-#basket-root .basket-checkout-container{border-color:#f2f2f2;position:static;padding-left:32px;padding-right:32px;padding-top:19px;}
+#basket-root .basket-checkout-container{border:none;position:static;padding-left:32px;padding-right:32px;padding-top:19px;}
 #basket-root .basket-checkout-container .basket-coupon-block-field-description{color:#333333;font-size:13px;padding-bottom:10px;}
 #basket-root .basket-coupon-block-field .form .form-control{background:#fff;}
 #basket-root .basket-coupon-block-coupon-btn{position:absolute;right:0;top:0;width:35px;height:37px;border-radius:0;padding:0;font-size:0;line-height:0;-webkit-transition:all .1s ease-in-out;
