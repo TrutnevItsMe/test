@@ -448,10 +448,11 @@
 		<?if($isAjax == "Y"):?>
 			<?die();?>
 		<?endif;?>
-		<?=$htmlSections;?>
 	</div>
 
 	<div class="clearfix"></div>
+	<? // Костыль, без него или съезжает левое меню, или едет верстка (почему не знаю, не разобрался)?>
+	<div style="display: none;"><?=$htmlSections;?></div>
 
 		<?
 		// Выводим список элементов, если не перешли на страницу какого-либо раздела
@@ -694,7 +695,7 @@
 	<?$bHideBackUrl = true;?>
 </div>
 <div class="left_block filter_visible">
-	<?$APPLICATION->ShowViewContent('filter_section');?>
+<!--	--><?//$APPLICATION->ShowViewContent('filter_section');?>
 
 	<?$APPLICATION->ShowViewContent('filter_content');?>
 
