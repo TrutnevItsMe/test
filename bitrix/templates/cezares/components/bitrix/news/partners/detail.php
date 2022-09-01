@@ -2,21 +2,8 @@
 <?$this->setFrameMode(true);?>
 <?
 use \Bitrix\Main\Localization\Loc;
-// get element
-
-
-
-
-
-
 
 $arItemFilter = CNext::GetCurrentElementFilter($arResult["VARIABLES"], $arParams);
-#$arItemFilter[] = array('!SECTION_ID' => $arNotShowSections);
-
-#print_r($arItemFilter);
-
-
-
 
 $arElement = CNextCache::CIblockElement_GetList(array("CACHE" => array("TAG" => CNextCache::GetIBlockCacheTag($arParams["IBLOCK_ID"]), "MULTI" => "N")), $arItemFilter, false, false, array("ID", 'NAME', 'PREVIEW_TEXT', "IBLOCK_SECTION_ID", 'DETAIL_PICTURE', 'DETAIL_PAGE_URL', 'PROPERTY_LINK_PROJECTS', 'PROPERTY_LINK_REVIEWS', 'PROPERTY_DOCUMENTS'));
 ?>
@@ -67,14 +54,8 @@ $arElement = CNextCache::CIblockElement_GetList(array("CACHE" => array("TAG" => 
 	<?//element?>
 	<?$sViewElementTemplate = ($arParams["ELEMENT_TYPE_VIEW"] == "FROM_MODULE" ? $arTheme["PARTNERS_PAGE_DETAIL"]["VALUE"] : $arParams["ELEMENT_TYPE_VIEW"]);?>
 
-    <?@include_once('page_blocks/'.$sViewElementTemplate.'.php');
-//echo 'page_blocks/'.$sViewElementTemplate.'.php';?>
+    <?@include_once('page_blocks/'.$sViewElementTemplate.'.php');?>
 
-	<?/*
-	if(is_array($arElement["IBLOCK_SECTION_ID"]) && count($arElement["IBLOCK_SECTION_ID"]) > 1){
-		CNext::CheckAdditionalChainInMultiLevel($arResult, $arParams, $arElement);
-	}*/
-	?>
 	<?$APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH.'/css/animation/animate.min.css');?>
 	<?$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH.'/js/jquery.history.js');?>
 <?endif;?>

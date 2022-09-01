@@ -979,6 +979,7 @@ if (!empty($arResult['ITEMS']))
 				$arItem["PRICE_MATRIX"]['MATRIX'][14]["ZERO-INF"]['PRICE'] = floatval($item['PRICE']);
 			}
 		}
+
 		$items_new[] = $arItem;
 		$arItem = '';
 		$item['PRICE'] = '';
