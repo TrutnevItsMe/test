@@ -440,7 +440,7 @@
 						$GLOBALS[$arParams["FILTER_NAME"]][] = array("SECTION_ID" => $setionIDRequest);
 					}
 					?>
-					<?=$htmlSections;?>
+
 
 				</div>
 			<?}?>
@@ -448,6 +448,7 @@
 		<?if($isAjax == "Y"):?>
 			<?die();?>
 		<?endif;?>
+		<?=$htmlSections;?>
 	</div>
 
 	<div class="clearfix"></div>
