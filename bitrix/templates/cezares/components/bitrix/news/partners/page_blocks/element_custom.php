@@ -577,11 +577,12 @@
 	</div>
 
 
-	<?
-	// Выводим список элементов, если не перешли на страницу какого-либо раздела
-	if (!$_GET["section_id"])
-	{
-		$arBrandItemsId = [];
+
+		<?
+		// Выводим список элементов, если не перешли на страницу какого-либо раздела
+		if (!$_GET["section_id"]) {
+
+			$arBrandItemsId = [];
 
 		foreach ($arAllBrandSections as $sectionId => $arSection)
 		{
@@ -590,37 +591,23 @@
 				continue;
 			}
 
-			$arBrandItemsId = array_merge($arBrandItemsId, $arAllSections[$sectionId]["ITEMS"]);
+				$arBrandItemsId = array_merge($arBrandItemsId, $arAllSections[$sectionId]["ITEMS"]);
+			}
+
+			// Настраиваем фильтр
+			$GLOBALS[$arParams["FILTER_NAME"]]['ID'] = $arBrandItemsId;
+			$GLOBALS[$arParams["FILTER_NAME"]]['SECTION_GLOBAL_ACTIVE'] = 'Y';
 		}
-		// Настраиваем фильтр
-		$GLOBALS[$arParams["FILTER_NAME"]]['ID'] = $arBrandItemsId;
-		$GLOBALS[$arParams["FILTER_NAME"]]['SECTION_GLOBAL_ACTIVE'] = 'Y';
-	}
-	else{
-		$arBrandItemsId = [];
+		else
+		{
+			$GLOBALS[$arParams["FILTER_NAME"]]['ID'] = [];
+			$arBrandItemsId = [];
+			$subsectionIds = array_column($subsections, "ID");
 
-		$res = CIBlockElement::GetList([],
-			["IBLOCK_ID" => $catalogIBlockID,
-				"ACTIVE" => "Y",
-				"SECTION_ID" => $sectionIds],
-			false,
-			false,
-			["ID", "NAME", "PREVIEW_PICTURE"]);
-
-		while ($elem = $res->GetNext()){
-
-			$arBrandItemsId[$elem["ID"]]["ID"] = $elem["ID"];
-			$arBrandItemsId[$elem["ID"]]["IBLOCK_ID"] = $catalogIBlockID;
-			$arBrandItemsId[$elem["ID"]]["NAME"] = $elem["NAME"];
-			$arBrandItemsId[$elem["ID"]]["PICTURE"] = $elem["PREVIEW_PICTURE"];
-		}
-
-		$GLOBALS[$arParams["FILTER_NAME"]]['ID'] = $arBrandItemsId;
-		$GLOBALS[$arParams["FILTER_NAME"]]['SECTION_GLOBAL_ACTIVE'] = 'Y';
-		$GLOBALS[$arParams["FILTER_NAME"]][1]["SECTION_ID"] = $subsectionIds;
-
-	}
-
+			foreach ($subsectionIds as $sectionId)
+			{
+				$arBrandItemsId = array_merge($arBrandItemsId, $arAllSections[$sectionId]["ITEMS"]);
+			}
 
 			$GLOBALS[$arParams["FILTER_NAME"]]['ID'] = $arBrandItemsId;
 			$GLOBALS[$arParams["FILTER_NAME"]]['SECTION_GLOBAL_ACTIVE'] = 'Y';

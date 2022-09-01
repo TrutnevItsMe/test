@@ -476,11 +476,6 @@ if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFE
 		}
 
 		$arOffer['MORE_PHOTO_COUNT'] = count($arOffer['MORE_PHOTO']);
-
-		/*if (CIBlockPriceTools::clearProperties($arOffer['DISPLAY_PROPERTIES'], $arParams['OFFER_TREE_PROPS']))
-		{
-			$boolSKUDisplayProps = true;
-		}*/
 		$boolSKUDisplayProps = !empty($arOffer['DISPLAY_PROPERTIES']);
 
 		$arDouble[$arOffer['ID']] = true;
