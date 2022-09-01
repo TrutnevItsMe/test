@@ -1,8 +1,8 @@
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Предварительный заказ");
-?><?$APPLICATION->IncludeComponent(
+$APPLICATION->IncludeComponent(
 	"bitrix:sale.order.ajax", 
-	"compact", 
+	"compact",
 	array(
 		"ACTION_VARIABLE" => "soa-action",
 		"ACTIVE_SAVE_DRAFT_ORDER" => "N",
@@ -61,19 +61,55 @@ $APPLICATION->SetTitle("Предварительный заказ");
 		"SEND_NEW_USER_NOTIFY" => "Y",
 		"SERVICES_IMAGES_SCALING" => "standard",
 		"SET_TITLE" => "Y",
-		"SHOW_BASKET_HEADERS" => "Y",
-		"SHOW_COUPONS" => "N",
-		"SHOW_COUPONS_BASKET" => "N",
-		"SHOW_COUPONS_DELIVERY" => "N",
-		"SHOW_COUPONS_PAY_SYSTEM" => "N",
-		"SHOW_DELIVERY_INFO_NAME" => "Y",
+		"PRODUCT_COLUMNS" => "",
+		"DISABLE_BASKET_REDIRECT" => "N",
+		"DISPLAY_IMG_WIDTH" => "90",
+		"DISPLAY_IMG_HEIGHT" => "90",
+		"COMPONENT_TEMPLATE" => "compact",
+		"ALLOW_NEW_PROFILE" => "N",
+		"SHOW_PAYMENT_SERVICES_NAMES" => "Y",
+		"COMPATIBLE_MODE" => "Y",
+		"BASKET_IMAGES_SCALING" => "adaptive",
+		"ALLOW_USER_PROFILES" => "Y",
+		"TEMPLATE_THEME" => "blue",
+		"SHOW_TOTAL_ORDER_BUTTON" => "Y",
+		"SHOW_PAY_SYSTEM_LIST_NAMES" => "Y",
+		"SHOW_PAY_SYSTEM_INFO_NAME" => "Y",
 		"SHOW_DELIVERY_LIST_NAMES" => "Y",
 		"SHOW_DELIVERY_PARENT_NAMES" => "Y",
 		"SHOW_MAP_FOR_DELIVERIES" => array(
 		),
 		"SHOW_MAP_IN_PROPS" => "Y",
 		"SHOW_NEAREST_PICKUP" => "Y",
-		"SHOW_NOT_CALCULATED_DELIVERIES" => "N",
+		"DELIVERIES_PER_PAGE" => "8",
+		"PAY_SYSTEMS_PER_PAGE" => "8",
+		"PICKUPS_PER_PAGE" => "5",
+		"SHOW_MAP_IN_PROPS" => "Y",
+		"SHOW_MAP_FOR_DELIVERIES" => array(
+		),
+		"PROPS_FADE_LIST_1" => array(
+			0 => "1",
+			1 => "2",
+			2 => "3",
+			3 => "4",
+			4 => "7",
+		),
+		"PROPS_FADE_LIST_2" => "",
+		"PRODUCT_COLUMNS_VISIBLE" => array(
+			0 => "PROPS",
+			1 => "NOTES",
+			2 => "DISCOUNT_PRICE_PERCENT_FORMATED",
+			3 => "PRICE_FORMATED",
+			4 => "PROPERTY_CML2_ARTICLE",
+		),
+		"ADDITIONAL_PICT_PROP_13" => "-",
+		"ADDITIONAL_PICT_PROP_14" => "-",
+		"PRODUCT_COLUMNS_HIDDEN" => array(
+		),
+		"USE_YM_GOALS" => "N",
+		"USE_CUSTOM_MAIN_MESSAGES" => "N",
+		"USE_CUSTOM_ADDITIONAL_MESSAGES" => "N",
+		"USE_CUSTOM_ERROR_MESSAGES" => "N",
 		"SHOW_ORDER_BUTTON" => "final_step",
 		"SHOW_PAYMENT_BLOCK" => "N",
 		"SHOW_PAYMENT_SERVICES_NAMES" => "Y",
@@ -95,14 +131,13 @@ $APPLICATION->SetTitle("Предварительный заказ");
 		"USE_CUSTOM_ERROR_MESSAGES" => "N",
 		"USE_CUSTOM_MAIN_MESSAGES" => "N",
 		"USE_ENHANCED_ECOMMERCE" => "N",
-		"USE_PHONE_NORMALIZATION" => "Y",
-		"USE_PRELOAD" => "Y",
-		"USE_PREPAYMENT" => "N",
-		"USE_YM_GOALS" => "N",
-		"COMPONENT_TEMPLATE" => "compact",
+		"ADDITIONAL_PICT_PROP_26" => "-",
+		"ACTIVE_SAVE_DRAFT_ORDER" => "Y",
 		"INDEX_PICTURE" => "0",
-		"SHOW_STORE" => "N",
-		"SHOW_RESTS" => "N"
+		"SHOW_STORE" => "Y",
+		"SHOW_RESTS" => "Y",
+		"ADDITIONAL_PICT_PROP_27" => "-"
 	),
 	false
-);?><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+);
+require_once ($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");

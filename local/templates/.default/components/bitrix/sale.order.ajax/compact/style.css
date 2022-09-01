@@ -1607,3 +1607,11 @@ select, input, textarea{
 .edit-order-section{
 	padding-bottom: 10px;
 }
+
+.bx-soa-item-td.bx-soa-item-properties:nth-child(2){
+	width: 300px;
+}
+
+.bx-soa-item-td.bx-soa-item-properties:nth-child(2) span{
+	white-space: nowrap;
+}

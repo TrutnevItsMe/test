@@ -173,11 +173,20 @@ class UpdateSetPricesAgent
 
 				$obPrice = new \CPrice;
 
-				if ($curPrice = $resPrice->GetNext())
+				if ($curPrice = $resPrice->Fetch())
 				{
 					$arFields["PRICE"] = $price_discount;
 					$arFields["CATALOG_GROUP_ID"] = self::PRICE_RRP_2022_ID;
 					$obPrice->Update($curPrice["ID"], $arFields);
+				}
+				else
+				{
+					\CPrice::Add([
+						"PRODUCT_ID" => $elem["ID"],
+						"CATALOG_GROUP_ID" => self::PRICE_RRP_2022_ID,
+						"PRICE" => $price_discount,
+						"CURRENCY" => "RUB"
+					]);
 				}
 
 				$resPrice = \CPrice::GetList(
@@ -188,11 +197,20 @@ class UpdateSetPricesAgent
 					)
 				);
 
-				if ($curPrice = $resPrice->GetNext())
+				if ($curPrice = $resPrice->Fetch())
 				{
 					$arFields["PRICE"] = $price;
 					$arFields["CATALOG_GROUP_ID"] = self::PRICE_RRP_CONSTANT_ID;
 					$obPrice->Update($curPrice["ID"], $arFields);
+				}
+				else
+				{
+					\CPrice::Add([
+						"PRODUCT_ID" => $elem["ID"],
+						"CATALOG_GROUP_ID" => self::PRICE_RRP_CONSTANT_ID,
+						"PRICE" => $price,
+						"CURRENCY" => "RUB"
+					]);
 				}
 			}
 

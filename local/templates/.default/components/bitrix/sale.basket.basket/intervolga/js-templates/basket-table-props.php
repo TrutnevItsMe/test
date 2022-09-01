@@ -102,11 +102,11 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 					if ($arParams['SHOW_DISCOUNT_PERCENT'] === 'Y')
 					{
 						?>
-                        {{#DISCOUNT_PRICE_PERCENT}}
-                        <div class="basket-item-label-ring basket-item-label-small <?=$discountPositionClass?>">
-                            -{{DISCOUNT_PRICE_PERCENT_FORMATED}}
-                        </div>
-                        {{/DISCOUNT_PRICE_PERCENT}}
+						{{#DISCOUNT_PRICE_PERCENT}}
+						<div class="basket-item-label-ring basket-item-label-small <?= $discountPositionClass ?>">
+							-{{DISCOUNT_PRICE_PERCENT_FORMATED}}
+						</div>
+						{{/DISCOUNT_PRICE_PERCENT}}
 						<?
 					}
 					?>
@@ -177,68 +177,67 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 					</div>
 					{{/WARNINGS.length}}
 
-                </div>
-                {{#SHOW_LOADING}}
-                <div class="basket-items-list-item-overlay"></div>
-                {{/SHOW_LOADING}}
-                </div>
+				</div>
+				{{#SHOW_LOADING}}
+				<div class="basket-items-list-item-overlay"></div>
+				{{/SHOW_LOADING}}
+				</div>
 
-            </td>
+			</td>
 
 			<? if ($arParams["SHOW_STORE_NAME"] === "Y"): ?>
 
-                <td>
-                    {{STORE.STORE_TITLE}}
-                </td>
+				<td>
+					{{STORE.STORE_TITLE}}
+				</td>
 			<? endif; ?>
 
-            <td class="basket-items-list-item-amount">
-                <div class="basket-item-block-amount{{#NOT_AVAILABLE}} disabled{{/NOT_AVAILABLE}}"
-                     data-entity="basket-item-quantity-block">
-                    <span class="basket-item-amount-btn-minus" data-entity="basket-item-quantity-minus"></span>
-                    <div class="basket-item-amount-filed-block">
-                        <input type="text" class="basket-item-amount-filed" value="{{QUANTITY}}"
-                               {{#NOT_AVAILABLE}} disabled="disabled"{{/NOT_AVAILABLE}}
-                        data-value="{{QUANTITY}}" data-entity="basket-item-quantity-field"
-                        id="basket-item-quantity-{{ID}}">
-                    </div>
-                    <span class="basket-item-amount-btn-plus" data-entity="basket-item-quantity-plus"></span>
-                    <div class="basket-item-amount-field-description">
+			<td class="basket-items-list-item-amount">
+				<div class="basket-item-block-amount{{#NOT_AVAILABLE}} disabled{{/NOT_AVAILABLE}}"
+					 data-entity="basket-item-quantity-block">
+					<span class="basket-item-amount-btn-minus" data-entity="basket-item-quantity-minus"></span>
+					<div class="basket-item-amount-filed-block">
+						<input type="text" class="basket-item-amount-filed" value="{{QUANTITY}}"
+							   {{#NOT_AVAILABLE}} disabled="disabled" {{/NOT_AVAILABLE}}
+						data-value="{{QUANTITY}}" data-entity="basket-item-quantity-field"
+						id="basket-item-quantity-{{ID}}">
+					</div>
+					<span class="basket-item-amount-btn-plus" data-entity="basket-item-quantity-plus"></span>
+					<div class="basket-item-amount-field-description">
 						<?
 						if ($arParams['PRICE_DISPLAY_MODE'] === 'Y')
 						{
 							?>
-                            {{MEASURE_TEXT}}
+							{{MEASURE_TEXT}}
 							<?
-						}
-						else
+						} else
 						{
 							?>
-                            {{#SHOW_PRICE_FOR}}
-                            {{MEASURE_RATIO}} {{MEASURE_TEXT}} =
-                            <span id="basket-item-price-{{ID}}">{{{PRICE_FORMATED}}}</span>
-                            {{/SHOW_PRICE_FOR}}
-                            {{^SHOW_PRICE_FOR}}
-                            {{MEASURE_TEXT}}
-                            {{/SHOW_PRICE_FOR}}
+							{{#SHOW_PRICE_FOR}}
+							{{MEASURE_RATIO}} {{MEASURE_TEXT}} =
+							<span id="basket-item-price-{{ID}}">{{{PRICE_FORMATED}}}</span>
+							{{/SHOW_PRICE_FOR}}
+							{{^SHOW_PRICE_FOR}}
+							{{MEASURE_TEXT}}
+							{{/SHOW_PRICE_FOR}}
 							<?
 						}
 						?>
-                    </div>
-                    {{#SHOW_LOADING}}
-                    <div class="basket-items-list-item-overlay"></div>
-                    {{/SHOW_LOADING}}
-                </div>
-            </td>
+					</div>
+					{{#SHOW_LOADING}}
+					<div class="basket-items-list-item-overlay"></div>
+					{{/SHOW_LOADING}}
+				</div>
+			</td>
 
 			<? if ($arParams["DISPLAY_RESTS"] === "Y")
 			{
 				?>
-                <td class="rests">{{STORE.AMOUNT}}</td>
+				<td class="rests">{{STORE.AMOUNT}}</td>
 				<?
-			}?>
+			} ?>
 
-            <div class="basket-item-block-properties">
+			<div class="basket-item-block-properties">
 				<?
 				if (!empty($arParams['PRODUCT_BLOCKS_ORDER']))
 				{
@@ -410,42 +409,36 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 					}
 				}
 				?>
-            </div>
-
-			<? if ($arParams["SHOW_DISCOUNT_PERCENT_COLUMN"] === "Y"): ?>
-                <td class="td-discount-percent">
-                    {{DISCOUNT_PRICE_PERCENT_FORMATED}}
-                </td>
-			<? endif; ?>
+			</div>
 
 			<?
 			if ($usePriceInAdditionalColumn)
 			{
 				?>
-                <td class="basket-items-list-item-price basket-items-list-item-price-for-one<?=(!isset($mobileColumns['PRICE']) ? ' hidden-xs' : '')?>">
-                    <div class="basket-item-block-price">
-                        {{#SHOW_DISCOUNT_PRICE}}
-                        <div class="basket-item-price-old">
+				<td class="basket-items-list-item-price basket-items-list-item-price-for-one<?= (!isset($mobileColumns['PRICE']) ? ' hidden-xs' : '') ?>">
+					<div class="basket-item-block-price">
+						{{#SHOW_DISCOUNT_PRICE}}
+						<div class="basket-item-price-old">
 								<span class="basket-item-price-old-text">
 									{{{FULL_PRICE_FORMATED}}}
 								</span>
-                        </div>
-                        {{/SHOW_DISCOUNT_PRICE}}
+						</div>
+						{{/SHOW_DISCOUNT_PRICE}}
 
-                        <div class="basket-item-price-current">
+						<div class="basket-item-price-current">
 							<span class="basket-item-price-current-text" id="basket-item-price-{{ID}}">
 								{{{PRICE_FORMATED}}}
 							</span>
-                        </div>
+						</div>
 
-                        <div class="basket-item-price-title">
-							<?=Loc::getMessage('SBB_BASKET_ITEM_PRICE_FOR')?> {{MEASURE_RATIO}} {{MEASURE_TEXT}}
-                        </div>
-                        {{#SHOW_LOADING}}
-                        <div class="basket-items-list-item-overlay"></div>
-                        {{/SHOW_LOADING}}
-                    </div>
-                </td>
+						<div class="basket-item-price-title">
+							<?= Loc::getMessage('SBB_BASKET_ITEM_PRICE_FOR') ?> {{MEASURE_RATIO}} {{MEASURE_TEXT}}
+						</div>
+						{{#SHOW_LOADING}}
+						<div class="basket-items-list-item-overlay"></div>
+						{{/SHOW_LOADING}}
+					</div>
+				</td>
 				<?
 			}
 			?>
@@ -503,36 +496,46 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 			{{/SHOW_RESTORE}}
 		</tr>
 
-        <tr class="basket-header" id="basket-header">
-            {{#SHOW_RESTORE}}
-            <td colspan="<?=$restoreColSpan?>">{{NAME}}</td>
-            {{/SHOW_RESTORE}}
-            <td>
+		<tr class="basket-header" id="basket-header">
+			{{#SHOW_RESTORE}}
+			<td colspan="<?= $restoreColSpan ?>">{{NAME}}</td>
+			{{/SHOW_RESTORE}}
+			<td class="img-header">
 				<?
 				if (in_array('PREVIEW_PICTURE', $arParams['COLUMNS_LIST']))
 				{
-				?>
-                    Товар
-                <?}?>
-            </td>
+					?>
+					<div class="preview-image-header"><?= Loc::getMessage("IMAGE") ?></div>
+					<?
+				} ?>
+			</td>
+			<td>
+				<? if ($arParams["SHOW_ARTICLE_BEFORE_NAME"] === "Y"): ?>
+					<div class="article-header"><?= Loc::getMessage("ARTICLE") ?></div>
+				<? endif; ?>
+			</td>
+			<td>
+				<div class="product-header"><?= Loc::getMessage("SBB_GOOD_CAP") ?></div>
+			</td>
 
 			<? if ($arParams["SHOW_STORE_NAME"] === "Y"): ?>
-                <td>
-                    Склад
-                </td>
+				<td>
+					<?= Loc::getMessage("STORE") ?>
+				</td>
 			<? endif; ?>
 
-            <td class="td-header-amount">
-                Кол-во
-            </td>
+			<td class="td-header-amount">
+				<?= Loc::getMessage("AMOUNT") ?>
+			</td>
 
 			<? if ($arParams["DISPLAY_RESTS"] === "Y")
 			{
 				?>
-                <td class="td-header-rests">
-                    Остаток
-                </td>
-			<?}?>
+				<td class="td-header-rests">
+					<?= Loc::getMessage("RESTS") ?>
+				</td>
+				<?
+			} ?>
 
 			<?
 			if (!empty($arParams['PRODUCT_BLOCKS_ORDER']))
@@ -574,26 +577,20 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 							<?
 							break;
 					}
-					?>
-                <?}?>
-			<?}?>
-
-            <? if ($arParams["SHOW_DISCOUNT_PERCENT_COLUMN"] === "Y"): ?>
-                <td class="td-header-discount-percent">
-                    Скидка
-                </td>
-            <? endif; ?>
+				}
+			} ?>
 
 			<?
-			if ($usePriceInAdditionalColumn) {
+			if ($usePriceInAdditionalColumn)
+			{
 				?>
-                <td class="basket-items-list-item-price basket-items-list-item-price-for-one<?= (!isset($mobileColumns['PRICE']) ? ' hidden-xs' : '') ?>">
-                    Цена
-                </td>
+				<td class="price-header">
+					<?= Loc::getMessage("PRICE") ?>
+				</td>
 				<?
 			} ?>
 
-            <?
+			<?
 			if ($useSumColumn)
 			{
 				?>
@@ -605,11 +602,12 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 			<?
 			if ($useActionColumn)
 			{
-			?>
-            <td>
-            </td>
-            <?}?>
-        </tr>
-</script>
+				?>
+				<td>
+				</td>
+				<?
+			} ?>
+		</tr>
+	</script>
 
 <?php

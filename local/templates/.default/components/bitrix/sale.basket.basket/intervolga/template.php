@@ -6,6 +6,7 @@ use Bitrix\Main\Localization\Loc;
 \Bitrix\Main\UI\Extension::load("ui.fonts.ruble");
 
 CJSCore::Init(["jquery"]);
+\Bitrix\Main\Page\Asset::getInstance()->addJs($templateFolder . "/stickManagersBlock.js");
 
 /**
  * @var array $arParams
@@ -191,6 +192,12 @@ if (empty($arResult['ERROR_MESSAGE']))
 		<?
 	}
 	?>
+		<div class="fixed-top-managers-block">
+			<?
+			$APPLICATION->IncludeComponent("intervolga:managersByUser","");
+			?>
+		</div>
+
 	<div id="basket-root" class="bx-basket bx-<?=$arParams['TEMPLATE_THEME']?> bx-step-opacity" style="opacity: 0;">
 
         <div class="row">
@@ -305,6 +312,7 @@ if (empty($arResult['ERROR_MESSAGE']))
             $(".basket-items-list-table .table-header").prepend($(".basket-header").html());
             $(".basket-header").remove();
         });
+
 
 	</script>
 	<?

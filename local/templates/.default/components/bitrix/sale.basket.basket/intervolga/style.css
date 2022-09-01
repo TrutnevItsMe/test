@@ -2251,6 +2251,7 @@ body.bx-theme-yellow .catalog-block-header{border-color:#f4b236;}
 .article-before-name-section{
 	width: 300px;
 	white-space: nowrap;
+	padding-left:40px;
 	text-align: left;
 }
 
