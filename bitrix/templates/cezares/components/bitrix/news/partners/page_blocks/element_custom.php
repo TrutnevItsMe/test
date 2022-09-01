@@ -1,45 +1,14 @@
 <? $APPLICATION->SetPageProperty("HIDE_LEFT_BLOCK", "Y") ?><? $APPLICATION->SetPageProperty("HIDE_LEFT_BLOCK", "Y") ?>
 
-<? $isAjax = "N"; ?>
-<? if (isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest" && isset($_GET["ajax_get"]) && $_GET["ajax_get"] == "Y" || (isset($_GET["ajax_basket"]) && $_GET["ajax_basket"] == "Y"))
-{
-	$isAjax = "Y";
-} ?>
-<? if (isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest" && isset($_GET["ajax_get_filter"]) && $_GET["ajax_get_filter"] == "Y")
-{
-	$isAjaxFilter = "Y";
-} ?>
-<? global $arTheme, $arRegion; ?>
+<?$isAjax="N";?>
+<?if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest"  && isset($_GET["ajax_get"]) && $_GET["ajax_get"] == "Y" || (isset($_GET["ajax_basket"]) && $_GET["ajax_basket"]=="Y")){
+	$isAjax="Y";
+}?>
+<?if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest" && isset($_GET["ajax_get_filter"]) && $_GET["ajax_get_filter"] == "Y" ){
+	$isAjaxFilter="Y";
+}?>
 
-<style>
-	.cat-item
-	{
-		width: 200px;
-		height: 200px;
-		float: left;
-		text-align: center;
-		margin: 5px;
-		padding: 5px;
-		border: 1px solid #ccc;
-	}
-
-	.cat-item span
-	{
-		float: left;
-	}
-
-	.cat-item span img
-	{
-		padding: 0px 35px;
-		max-width: 190px
-	}
-
-	.cat-item .item_title
-	{
-		padding: 0px 30px;
-	}
-</style>
-
+<?global $arTheme, $arRegion;?>
 <div class="right_block wide_N">
 	<div class="middle">
 		<?
@@ -218,7 +187,6 @@
 			}
 			?>
 
-
 			<div class="top_block_filter_section toggle_menu">
 				<div class="title"><a class="dark_link" title="<?= GetMessage("FILTER_ALL_SECTON"); ?>"
 									  href="<?= $APPLICATION->GetCurPageParam('', $arDeleteParams) ?>"><?= GetMessage("FILTER_SECTON"); ?></a>
@@ -235,8 +203,7 @@
 					"USE_EXT" => "Y",
 					"DELAY" => "N",
 					"ALLOW_MULTI_SELECT" => "N",
-					"BRAND_IBLOCK_SECTIONS" => $arSections,
-					"READY_MENU" => $arCurrentTopSections
+					"BRAND_IBLOCK_SECTIONS" => $arSections
 				),
 					false, array("ACTIVE_COMPONENT" => "Y")
 				); ?>
@@ -424,10 +391,16 @@
 						$cntShow = 0;
 						$bCurrentShowed = false;
 						$bNeedShowCurrent = in_array($setionIDRequest, $arSectionsID);
+
+						$catalog_id = \Bitrix\Main\Config\Option::get("aspro.next", "CATALOG_IBLOCK_ID", CNextCache::$arIBlocks[SITE_ID]['aspro_next_catalog']['aspro_next_catalog'][0]);
+						$arSectionsFilter = array('IBLOCK_ID' => $catalog_id, 'ACTIVE' => 'Y', 'GLOBAL_ACTIVE' =>
+							'Y', 'ACTIVE_DATE' => 'Y', 'DEPTH_LEVEL' => 1);
+						$arTopSections = CNextCache::CIBlockSection_GetList(array('SORT' => 'ASC', "ACTIVE" => "Y", 'ID' => 'ASC', 'CACHE' => array('TAG' => CNextCache::GetIBlockCacheTag($catalog_id), 'GROUP' => array('ID'))), CNext::makeSectionFilterInRegion($arSectionsFilter), false, array("ID", "IBLOCK_ID", "NAME", "PICTURE", "LEFT_MARGIN", "RIGHT_MARGIN", "DEPTH_LEVEL", "SECTION_PAGE_URL", "IBLOCK_SECTION_ID", "UF_CATALOG_ICON", "UF_DISABLE_MENU"));
+
 						?>
 						<? foreach ($arCurrentTopSections as $sId => $arSection):?>
 							<?
-							$bCurrent = $setionIDRequest && $sId == $setionIDRequest;
+							$bCurrent = $setionIDRequest && $arSection["ID"] == $setionIDRequest;
 							$bCurrentShowed |= $bCurrent;
 							$bLastToShow = $cntShow == ($cntToShow - 1);
 							$bCollapsed = ($bLastToShow && $bNeedShowCurrent && !$bCurrentShowed) ? true : !$bCurrent && $cntShow >= $cntToShow;
@@ -444,21 +417,20 @@
 								$arSection['PICTURE'] = CFile::GetPath($arSection['PICTURE']);
 							}
 							?>
-							<div class="cat-item <?= ($bCurrent ? ' current' : '') ?><?= ($bCollapsed ? ' collapsed' : '') ?>">
-								<a href="<?= $APPLICATION->GetCurPageParam('section_id=' . $sId, $arDeleteParams) ?>"
-								   class="dark_link">
-									<span><img src="<?= $arSection['PICTURE']; ?>"/></span>
-									<span class="item_title"><?= $arSection['NAME'] ?></span>
-								</a>
+							<div class="cat-item <?=($bCurrent ? ' current' : '')?><?=($bCollapsed ? ' collapsed' : '')?>"><!--noindex-->
+								<a href="<?=$APPLICATION->GetCurPageParam('section_id='.$arSection["ID"], $arDeleteParams)?>" class="dark_link">
+									<span><img src="<?=$arSection['PICTURE'];?>" /></span>
+									<span class="item_title"><?=$arSection['NAME']?></span>
+								</a><!-- /noindex -->
 							</div>
-						<?endforeach; ?>
+						<?endforeach;?>
+						<?$cntMore = count($arSections_1) - $cntShow;?>
+
 					</div>
 				</div>
-			<?
-			}
+			<?}
 		}
-		else
-		{
+		else{
 			?>
 
 			<?// Выводим вложенные разделы
@@ -650,6 +622,13 @@
 	}
 
 
+			$GLOBALS[$arParams["FILTER_NAME"]]['ID'] = $arBrandItemsId;
+			$GLOBALS[$arParams["FILTER_NAME"]]['SECTION_GLOBAL_ACTIVE'] = 'Y';
+			$GLOBALS[$arParams["FILTER_NAME"]][1]["SECTION_ID"] = $subsectionIds;
+		}
+		?>
+
+		<?
 		if ($isAjax == "N") {
 			$frame = new \Bitrix\Main\Page\FrameHelper("viewtype-brand-block");
 			$frame->begin();

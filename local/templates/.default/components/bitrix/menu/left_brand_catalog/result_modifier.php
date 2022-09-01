@@ -21,6 +21,7 @@ else{
 	foreach ($arSections as $ID => $arSection) {
 
 		$arSections[$ID]['SELECTED'] = CMenu::IsItemSelected($arSection['SECTION_PAGE_URL'], $cur_page, $cur_page_no_index);
+		$arSections[$ID]["SECTION_PAGE_URL"] = $cur_page . "?section_id=" . $ID;
 
 		if ($arSection['UF_CATALOG_ICON']) {
 			$img = CFile::ResizeImageGet($arSection['UF_CATALOG_ICON'], array('width' => 36, 'height' => 36), BX_RESIZE_IMAGE_PROPORTIONAL, true);
