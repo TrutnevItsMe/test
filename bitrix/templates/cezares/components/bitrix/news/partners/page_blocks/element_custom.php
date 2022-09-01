@@ -709,7 +709,7 @@
 	<?$bHideBackUrl = true;?>
 </div>
 <div class="left_block filter_visible">
-<!--	--><?//$APPLICATION->ShowViewContent('filter_section');?>
+	<?$APPLICATION->ShowViewContent('filter_section');?>
 
 	<?$APPLICATION->ShowViewContent('filter_content');?>
 
