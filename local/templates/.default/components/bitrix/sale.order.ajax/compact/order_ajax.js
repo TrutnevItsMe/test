@@ -81,6 +81,9 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
             this.defaultDeliveryLogo = this.templateFolder + "/images/delivery_logo.png";
             this.defaultPaySystemLogo = this.templateFolder + "/images/pay_system_logo.png";
 
+			this.ajaxUpdateBasketUrl = parameters.ajaxUpdateBasketUrl || "ajax/updateBasket.php";
+			this.updateBasketData = parameters.updateBasketData;
+
             this.orderBlockNode = BX(parameters.orderBlockId);
             this.totalBlockNode = BX(parameters.totalBlockId);
             this.mobileTotalBlockNode = BX(parameters.totalBlockId + '-mobile');
@@ -167,24 +170,36 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 
                 this.isDraft = Boolean(this.isDraft);
 
-                BX.ajax.submitAjax(
-                    BX('bx-soa-order-form'),
-                    {
-                        url: this.ajaxUrl,
-                        method: 'POST',
-                        dataType: 'json',
-                        data: {
-                            via_ajax: 'Y',
-                            action: 'saveOrderAjax',
-                            sessid: BX.bitrix_sessid(),
-                            SITE_ID: this.siteId,
-                            signedParamsString: this.signedParamsString,
-                            isDraft: this.isDraft
-                        },
-                        onsuccess: BX.proxy(this.saveOrderWithJson, this),
-                        onfailure: BX.proxy(this.handleNotRedirected, this)
-                    }
-                );
+				BX.ajax({
+					url: this.ajaxUpdateBasketUrl,
+					data: this.updateBasketData,
+					dataType: "json",
+					method: "POST",
+					onsuccess: function(result){
+						BX.ajax.submitAjax(
+							BX('bx-soa-order-form'),
+							{
+								url: BX.Sale.OrderAjaxComponent.ajaxUrl,
+								method: 'POST',
+								dataType: 'json',
+								data: {
+									via_ajax: 'Y',
+									action: 'saveOrderAjax',
+									sessid: BX.bitrix_sessid(),
+									SITE_ID: BX.Sale.OrderAjaxComponent.siteId,
+									signedParamsString: BX.Sale.OrderAjaxComponent.signedParamsString,
+									isDraft: BX.Sale.OrderAjaxComponent.isDraft
+								},
+								onsuccess: BX.proxy(BX.Sale.OrderAjaxComponent.saveOrderWithJson, BX.Sale.OrderAjaxComponent),
+								onfailure: BX.proxy(BX.Sale.OrderAjaxComponent.handleNotRedirected, BX.Sale.OrderAjaxComponent)
+							}
+						);
+					},
+					onfailure: function (){
+						console.log("failure update prices");
+					}
+				});
+
             } else {
                 BX.ajax({
                     method: 'POST',
@@ -3060,24 +3075,13 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
             if (!basketItemsNode)
                 return;
 
-            var headers = [
-                    BX.create('DIV', {
-                        props: {className: 'bx-soa-item-td'},
-                        style: {paddingBottom: '5px'},
-                        children: [
-                            BX.create('DIV', {
-                                props: {className: 'bx-soa-item-td-title'},
-                                text: BX.message('SOA_SUM_NAME')
-                            })
-                        ]
-                    })
-                ],
+            var headers = [],
                 toRight = false, column, basketColumnIndex = 0, i;
 
             for (i = 0; i < this.result.GRID.HEADERS.length; i++) {
                 column = this.result.GRID.HEADERS[i];
 
-                if (column.id === 'NAME' || column.id === 'PREVIEW_PICTURE' || column.id === 'PROPS')
+                if (column.id === 'PROPS')
                     continue;
 
                 if (column.id === 'DETAIL_PICTURE' && !this.options.showPreviewPicInBasket)
@@ -3127,10 +3131,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
             for (i = 0; i < this.result.GRID.HEADERS.length; i++) {
                 currentColumn = this.result.GRID.HEADERS[i];
 
-                if (currentColumn.id === 'NAME' || currentColumn.id === 'PREVIEW_PICTURE' || currentColumn.id === 'PROPS')
-                    continue;
-
-                if (currentColumn.id === 'DETAIL_PICTURE' && !this.options.showPreviewPicInBasket)
+                if (currentColumn.id === 'PROPS')
                     continue;
 
                 otherColumns.push(this.createBasketItemColumn(currentColumn, item, active));
@@ -3152,18 +3153,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
                 }
             }
 
-            cols = [
-                BX.create('DIV', {
-                    props: {className: 'bx-soa-item-td'},
-                    style: {minWidth: '300px'},
-                    children: [
-                        BX.create('DIV', {
-                            props: {className: 'bx-soa-item-block'},
-                            children: mainColumns
-                        })
-                    ]
-                })
-            ].concat(otherColumns);
+            cols = [].concat(otherColumns);
 
             basketItemsNode.appendChild(
                 BX.create('DIV', {
@@ -3364,10 +3354,6 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
                     }));
                 }
 
-                if (this.options.showPriceNotesInBasket && active) {
-                    textNode.appendChild(BX.create('BR'));
-                    textNode.appendChild(BX.create('SMALL', {text: data.NOTES}));
-                }
             } else if (column.id === 'SUM') {
                 textNode.appendChild(BX.create('STRONG', {props: {className: 'bx-price all'}, html: data.SUM}));
                 if (parseFloat(data.DISCOUNT_PRICE) > 0) {
@@ -3427,7 +3413,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
                         );
                     }
                 } else if (columnData) {
-                    textNode.appendChild(BX.create('SPAN', {html: BX.util.htmlspecialchars(columnData)}));
+                    textNode.appendChild(BX.create('SPAN', {html: columnData}));
                 }
             }
 

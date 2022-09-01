@@ -138,4 +138,5 @@ If the information is correct, click \"#ORDER_BUTTON#\".
 $MESS["USE_COUPON_DEFAULT"] = "Apply coupon";
 $MESS["ORDER_ITEMS"] = "Products in order";
 $MESS["EDIT_ORDER"] = "Edit order";
+$MESS["RESTS"] = "Rests";
 ?>

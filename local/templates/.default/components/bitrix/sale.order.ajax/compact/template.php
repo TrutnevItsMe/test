@@ -571,7 +571,9 @@ else
 			deliveryBlockId: 'bx-soa-delivery',
 			pickUpBlockId: 'bx-soa-pickup',
 			propsBlockId: 'bx-soa-properties',
-			totalBlockId: 'bx-soa-total'
+			totalBlockId: 'bx-soa-total',
+			ajaxUpdateBasketUrl: "<?=$templateFolder . "/ajax/updateBasket.php"?>",
+			updateBasketData: <?=CUtil::PhpToJSObject($arResult["UPDATE_BASKET_DATA"])?>
 		});
 
         $(document).ready(function(){
