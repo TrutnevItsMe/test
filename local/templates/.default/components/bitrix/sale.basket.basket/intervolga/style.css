@@ -2313,3 +2313,7 @@ td{
 	width: 100%;
 	background-color: #FFF;
 }
+
+.fixed-top-managers-block .contact-table{
+	border: none;
+}
