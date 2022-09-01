@@ -290,6 +290,13 @@
 						?>
 						<?foreach($arTopSections as $sId => $arSection):?>
 							<?
+
+							// Снято с производства
+							if ($arSection["ID"] == OUT_OF_PRODUCTION_IBLOCK_ID)
+							{
+								continue;
+							}
+
 							$bCurrent = $setionIDRequest && $arSection["ID"] == $setionIDRequest;
 							$bCurrentShowed |= $bCurrent;
 							$bLastToShow = $cntShow == ($cntToShow - 1);
@@ -335,6 +342,13 @@
 					?>
 					<?foreach($subsections as $sId => $arSection):?>
 						<?
+
+						// Снято с производства
+						if ($arSection["ID"] == OUT_OF_PRODUCTION_IBLOCK_ID)
+						{
+							continue;
+						}
+
 						if(!$arSection['PICTURE']){$arSection['PICTURE']="/bitrix/templates/cezares/images/no_photo_medium.png";}else{$arSection['PICTURE']=CFile::GetPath($arSection['PICTURE']);}
 						?>
 						<? if ($arAllSections[$arSection["ID"]]['COUNT']): ?>
