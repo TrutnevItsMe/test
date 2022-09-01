@@ -104,9 +104,11 @@ $this->setFrameMode(true);
 										<div>
 											<a href="<?= $arItem["DETAIL_PAGE_URL"] ?>"><p><?= $file["ORIGINAL_NAME"] ?></p></a>
 										</div>
-										<div>
-											<p><?= $file["TIMESTAMP_X"]->format("d.m.Y") ?></p>
-										</div>
+										<? if ($file["TIMESTAMP_X"]): ?>
+											<div>
+												<p><?= $file["TIMESTAMP_X"]->format("d.m.Y") ?></p>
+											</div>
+										<? endif; ?>
 										<div>
 											<a href="<?=$file["SRC"] ?>" download="<?= $file["ORIGINAL_NAME"] ?>">
 												<p class="btn btn-info"><?=\Bitrix\Main\Localization\Loc::getMessage("DOWNLOAD")?></p>
