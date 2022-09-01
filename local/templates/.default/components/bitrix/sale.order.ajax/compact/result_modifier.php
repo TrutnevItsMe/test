@@ -20,6 +20,40 @@ $component::scaleImages($arResult['JS_DATA'], $arParams['SERVICES_IMAGES_SCALING
 const STORE_CODE = "STORE";
 const RESTS_CODE = "RESTS";
 
+$request = \Bitrix\Main\Application::getInstance()->getContext()->getRequest();
+$postPrices = [];
+$postDiscounts = [];
+$postQuantities = [];
+$postXmlIds = [];
+
+session_start();
+
+if ($request->isPost() &&
+	$request->get("price") &&
+	$request->get("discount") &&
+	$request->get("quantity") &&
+	$request->get("xml_id"))
+{
+	$_SESSION["price"] = $request->get("price");
+	$_SESSION["discount"] = $request->get("discount");
+	$_SESSION["quantity"] = $request->get("quantity");
+	$_SESSION["xml_id"] = $request->get("xml_id");
+
+	$postPrices = $request->get("price");
+	$postDiscounts = $request->get("discount");
+	$postQuantities = $request->get("quantity");
+	$postXmlIds = $request->get("xml_id");
+}
+else
+{
+	$postPrices = $_SESSION["price"];
+	$postDiscounts = $_SESSION["discount"];
+	$postQuantities = $_SESSION["quantity"];
+	$postXmlIds = $_SESSION["xml_id"];
+}
+
+session_commit();
+
 $arResult['JS_DATA']["TOTAL"]["PRICE_WITHOUT_DISCOUNT"] = 0;
 $arResult['JS_DATA']["TOTAL"]["ORDER_PRICE"] = 0;
 $arResult['JS_DATA']["TOTAL"]["DISCOUNT_PRICE"] = 0;
@@ -133,14 +167,14 @@ if (is_array($arResult["GRID"]["ROWS"]))
 		$arResult['JS_DATA']["TOTAL"]["PRICE_WITHOUT_DISCOUNT"] +=
 			$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["SUM_NUM"];
 
-		if (in_array($arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["PRODUCT_XML_ID"], $_POST["xml_id"])){
+		if (in_array($arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["PRODUCT_XML_ID"], $postXmlIds)){
 
-			$index = array_search($arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["PRODUCT_XML_ID"], $_POST["xml_id"]);
+			$index = array_search($arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["PRODUCT_XML_ID"], $postXmlIds);
 
-			if ($_POST['price'][$index] > 0)
+			if ($postPrices[$index] > 0)
 			{
-				$price = $_POST['price'][$index] - ($_POST['discount'][$index] / $_POST['quantity'][$index]);
-				$sum = $price * $_POST['quantity'][$index];
+				$price = $postPrices[$index] - ($postDiscounts[$index] / $postQuantities[$index]);
+				$sum = $price * $postQuantities[$index];
 				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["PRICE"] = $price;
 				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["PRICE_FORMATED"] = number_format($price) . " Р";
 				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["SUM_NUM"] = $sum;
@@ -299,19 +333,23 @@ $arResult['PARTNERS'] = [
 	'basket' => $basketItems,
 ];
 
+$rsUser = UserTable::GetByID($USER->GetID());
+$arUser = $rsUser->fetch();
+$HlBlock = new HlbWrap(HL_BLOCK_CODE_PARTNERY);
+$dbPartnery = $HlBlock->getList(["filter" => ["UF_XML_ID" => $arUser["XML_ID"]]]);
+
 $arResult["UPDATE_BASKET_DATA"] = [
 		"prices" => [],
 		"basket" => $basketItems];
 
+if ($postPrices){
 
-if ($_POST["price"]){
-
-	for ($i = 0; $i < count($_POST["price"]); ++$i){
+	for ($i = 0; $i < count($postPrices); ++$i){
 		$product = [];
-		$product["price"] = $_POST["price"][$i];
-		$product["discount"] = $_POST["discount"][$i];
-		$product["quantity"] = $_POST["quantity"][$i];
-		$product["xml_id"] = $_POST["xml_id"][$i];
+		$product["price"] = $postPrices[$i];
+		$product["discount"] = $postDiscounts[$i];
+		$product["quantity"] = $postQuantities[$i];
+		$product["xml_id"] = $postXmlIds[$i];
 		$arResult["UPDATE_BASKET_DATA"]["prices"][] = $product;
 	}
 }

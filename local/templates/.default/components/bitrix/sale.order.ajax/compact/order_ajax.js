@@ -81,6 +81,9 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
             this.defaultDeliveryLogo = this.templateFolder + "/images/delivery_logo.png";
             this.defaultPaySystemLogo = this.templateFolder + "/images/pay_system_logo.png";
 
+			this.ajaxUpdateBasketUrl = parameters.ajaxUpdateBasketUrl || "ajax/updateBasket.php";
+			this.updateBasketData = parameters.updateBasketData;
+
             this.orderBlockNode = BX(parameters.orderBlockId);
             this.totalBlockNode = BX(parameters.totalBlockId);
             this.mobileTotalBlockNode = BX(parameters.totalBlockId + '-mobile');
@@ -167,24 +170,36 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 
                 this.isDraft = Boolean(this.isDraft);
 
-                BX.ajax.submitAjax(
-                    BX('bx-soa-order-form'),
-                    {
-                        url: this.ajaxUrl,
-                        method: 'POST',
-                        dataType: 'json',
-                        data: {
-                            via_ajax: 'Y',
-                            action: 'saveOrderAjax',
-                            sessid: BX.bitrix_sessid(),
-                            SITE_ID: this.siteId,
-                            signedParamsString: this.signedParamsString,
-                            isDraft: this.isDraft
-                        },
-                        onsuccess: BX.proxy(this.saveOrderWithJson, this),
-                        onfailure: BX.proxy(this.handleNotRedirected, this)
-                    }
-                );
+				BX.ajax({
+					url: this.ajaxUpdateBasketUrl,
+					data: this.updateBasketData,
+					dataType: "json",
+					method: "POST",
+					onsuccess: function(result){
+						BX.ajax.submitAjax(
+							BX('bx-soa-order-form'),
+							{
+								url: BX.Sale.OrderAjaxComponent.ajaxUrl,
+								method: 'POST',
+								dataType: 'json',
+								data: {
+									via_ajax: 'Y',
+									action: 'saveOrderAjax',
+									sessid: BX.bitrix_sessid(),
+									SITE_ID: BX.Sale.OrderAjaxComponent.siteId,
+									signedParamsString: BX.Sale.OrderAjaxComponent.signedParamsString,
+									isDraft: BX.Sale.OrderAjaxComponent.isDraft
+								},
+								onsuccess: BX.proxy(BX.Sale.OrderAjaxComponent.saveOrderWithJson, BX.Sale.OrderAjaxComponent),
+								onfailure: BX.proxy(BX.Sale.OrderAjaxComponent.handleNotRedirected, BX.Sale.OrderAjaxComponent)
+							}
+						);
+					},
+					onfailure: function (){
+						console.log("failure update prices");
+					}
+				});
+
             } else {
                 BX.ajax({
                     method: 'POST',

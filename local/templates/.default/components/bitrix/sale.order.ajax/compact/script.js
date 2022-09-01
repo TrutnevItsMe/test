@@ -505,8 +505,6 @@ function addGetCustomPricesButton(data) {
         if (!data.counterparties[profileId]) { return; }
         var counterpartyXmlId = data.counterparties[profileId].XML_ID;
         var agreementXmlId = $('#soa-property-' + data.agreementFieldId).val();
-		console.log(counterpartyXmlId);
-		console.log(agreementXmlId);
         $.post(
             '/ajax/getCustomPrices.php',
             {
@@ -518,7 +516,6 @@ function addGetCustomPricesButton(data) {
             },
             function(res) {
                 if (res.result == 'ok') {
-					console.log(res);
 
 					let form = document.createElement("form");
 					form.setAttribute("action", document.location.href);
@@ -533,9 +530,6 @@ function addGetCustomPricesButton(data) {
 
 					document.querySelector("body").append(form);
 					form.submit();
-
-					// window.location.href = document.location.href;
-                    // document.location.reload();
                 } else {
                     console.error(res.data.errorText);
                 }

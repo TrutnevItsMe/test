@@ -99,7 +99,10 @@ $APPLICATION->SetTitle("Предварительный заказ");
 		"USE_PRELOAD" => "Y",
 		"USE_PREPAYMENT" => "N",
 		"USE_YM_GOALS" => "N",
-		"COMPONENT_TEMPLATE" => "compact"
+		"COMPONENT_TEMPLATE" => "compact",
+		"INDEX_PICTURE" => "0",
+		"SHOW_STORE" => "N",
+		"SHOW_RESTS" => "N"
 	),
 	false
 );?><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
