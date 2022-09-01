@@ -11,7 +11,7 @@ class ManagersByUser extends CBitrixComponent{
 
 		global $USER;
 
-		if ($USER){
+		if ($USER->IsAuthorized()){
 			$rsUser = UserTable::GetByID($USER->GetID());
 			$arUser = $rsUser->fetch();
 			$HlBlock = new HlbWrap(HL_BLOCK_CODE_PARTNERY);
