@@ -6474,7 +6474,6 @@ body #bx-soa-order .bx-soa-cart-total-line.bx-soa-cart-total-line-highlighted{ba
 #bx-soa-order #bx-soa-properties.bx-selected .form-group label{position:relative;top:0px;left:0px;cursor:text;font-size:13px;margin-bottom:6px;}
 
 #bx-soa-order #bx-soa-properties.bx-selected .form-group.value_y label{background:#FFF;top:-10px;left:10px;padding:0 7px;}
-#bx-soa-order #bx-soa-properties .form-group textarea{height:106px;border:1px solid #ececec;}
 #bx-soa-order #propsMap{margin:0 0 20px;height:332px!important;}
 #bx-soa-order #propsMap>ymaps{height:332px!important;}
 #bx-soa-order .bx-soa-cart-total{padding:30px 29px 40px;border:1px solid #f2f2f2;border-radius:0;background:#FFF;}

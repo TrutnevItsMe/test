@@ -100,16 +100,7 @@ if (is_array($arResult["GRID"]["ROWS"]))
 	}
 }
 
-$headerCodes = array_column($arResult['JS_DATA']["GRID"]["HEADERS"], "id");
 
-// Перемещаем артикул  перед названием
-$headerCodes = array_column($arResult['JS_DATA']["GRID"]["HEADERS"], "id");
-$nameIndex = array_search("NAME", $headerCodes);
-$articleIndex = array_search("PROPERTY_CML2_ARTICLE_VALUE", $headerCodes);
-
-$tmp = $arResult['JS_DATA']["GRID"]["HEADERS"][$nameIndex + 1];
-$arResult['JS_DATA']["GRID"]["HEADERS"][$nameIndex + 1] = $arResult['JS_DATA']["GRID"]["HEADERS"][$articleIndex];
-$arResult['JS_DATA']["GRID"]["HEADERS"][$articleIndex] = $tmp;
 
 $headerCodes = array_column($arResult['JS_DATA']["GRID"]["HEADERS"], "id");
 
@@ -124,6 +115,17 @@ if ($arParams["SHOW_STORE"])
 		Loc::getMessage("SOA_PICKUP_STORE")]]);
 	$arResult['JS_DATA']["GRID"]["HEADERS"] = array_merge($arResult['JS_DATA']["GRID"]["HEADERS"], $sliceAfterName);
 }
+
+$headerCodes = array_column($arResult['JS_DATA']["GRID"]["HEADERS"], "id");
+
+// Перемещаем артикул  перед названием
+$headerCodes = array_column($arResult['JS_DATA']["GRID"]["HEADERS"], "id");
+$nameIndex = array_search("NAME", $headerCodes);
+$articleIndex = array_search("PROPERTY_CML2_ARTICLE_VALUE", $headerCodes);
+
+$tmp = $arResult['JS_DATA']["GRID"]["HEADERS"][$nameIndex];
+$arResult['JS_DATA']["GRID"]["HEADERS"][$nameIndex] = $arResult['JS_DATA']["GRID"]["HEADERS"][$articleIndex];
+$arResult['JS_DATA']["GRID"]["HEADERS"][$articleIndex] = $tmp;
 
 $headerCodes = array_column($arResult['JS_DATA']["GRID"]["HEADERS"], "id");
 
