@@ -304,7 +304,7 @@ function updateBasketTable(basketItemId, res)
 										continue;
 								}
 
-								cellItemHTML += BX.util.htmlspecialchars(val['NAME']) + ':&nbsp;<span>' + val['VALUE'] + '</span><br/>';
+								cellItemHTML += val['NAME'] + ':&nbsp;<span>' + val['VALUE'] + '</span><br/>';
 							}
 						}
 						cellItemHTML += '</div>';
@@ -362,7 +362,7 @@ function updateBasketTable(basketItemId, res)
 									if (bIsImageProperty)
 									{
 										cellItemHTML += '<div class="bx_item_detail_scu_small_noadaptive ' + full + '">';
-										cellItemHTML += '<span class="bx_item_section_name_gray">' + BX.util.htmlspecialchars(arProp['NAME']) + '</span>';
+										cellItemHTML += '<span class="bx_item_section_name_gray">' + arProp['NAME'] + '</span>';
 										cellItemHTML += '<div class="bx_scu_scroller_container">';
 										cellItemHTML += '<div class="bx_scu">';
 
@@ -399,7 +399,7 @@ function updateBasketTable(basketItemId, res)
 									else // not image
 									{
 										cellItemHTML += '<div class="bx_item_detail_size_small_noadaptive ' + full + '">';
-										cellItemHTML += '<span class="bx_item_section_name_gray">' + BX.util.htmlspecialchars(arProp['NAME']) + '</span>';
+										cellItemHTML += '<span class="bx_item_section_name_gray">' + arProp['NAME'] + '</span>';
 										cellItemHTML += '<div class="bx_size_scroller_container">';
 										cellItemHTML += '<div class="bx_size">';
 
@@ -420,7 +420,7 @@ function updateBasketTable(basketItemId, res)
 															data-element="' + arItem['ID'] + '" \
 															data-property="' + arProp['CODE'] + '" \
 															>\
-															<a href="javascript:void(0)" class="cnt">' + BX.util.htmlspecialchars(arSkuValue['NAME']) + '</a>\
+															<a href="javascript:void(0)" class="cnt">' + arSkuValue['NAME'] + '</a>\
 														</li>';
 										}
 
@@ -487,7 +487,7 @@ function updateBasketTable(basketItemId, res)
 						}
 
 						if (arItem.hasOwnProperty('MEASURE_TEXT') && arItem['MEASURE_TEXT'].length > 0)
-							oCellQuantityHTML += '<td style="text-align: left">' + BX.util.htmlspecialchars(arItem['MEASURE_TEXT']) + '</td>';
+							oCellQuantityHTML += '<td style="text-align: left">' + arItem['MEASURE_TEXT'] + '</td>';
 
 						oCellQuantityHTML += '</tr>';
 						oCellQuantityHTML += '</table>';

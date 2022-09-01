@@ -186,7 +186,6 @@
 /**/
 .basket-checkout-block-total {
 	padding-right: 10px;
-	text-align: right;
 }
 
 .basket-checkout-block-total-inner {
@@ -2237,7 +2236,7 @@ body.bx-theme-yellow .catalog-block-header{border-color:#f4b236;}
 }
 
 #basket-root .basket-items-list .basket-item-block-info {
-	padding-left: 15px!important;
+	padding-left: 0px!important;
 	padding-right: 0!important;
 }
 
@@ -2313,7 +2312,6 @@ td{
 	width: 100%;
 	background-color: #FFF;
 }
-
 .fixed-top-managers-block .contact-table{
 	border: none;
 }
