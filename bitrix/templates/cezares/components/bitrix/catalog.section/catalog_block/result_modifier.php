@@ -1,5 +1,4 @@
 <?
-
 use Bitrix\Main\Type\Collection;
 use Bitrix\Currency\CurrencyTable;
 use Bitrix\Iblock;
@@ -374,7 +373,6 @@ if (!empty($arResult['ITEMS']))
 						{
 							if (!isset($arItem['OFFERS'][$keyOffer]['TREE']))
 								$arItem['OFFERS'][$keyOffer]['TREE'] = array();
-
 							$arItem['OFFERS'][$keyOffer]['TREE']['PROP_' . $arSKUPropList[$strOneCode]['ID']] = $arMatrix[$keyOffer][$strOneCode]['VALUE'];
 							$arItem['OFFERS'][$keyOffer]['SKU_SORT_' . $strOneCode] = $arMatrix[$keyOffer][$strOneCode]['SORT'];
 							$arUsedFields[$strOneCode] = true;

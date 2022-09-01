@@ -439,27 +439,6 @@ else
                     </div>
 
                     <div>
-                        <div class="checkbox">
-							<?
-							if ($arParams['USER_CONSENT'] === 'Y') {
-								$APPLICATION->IncludeComponent(
-									'bitrix:main.userconsent.request',
-									'',
-									array(
-										'ID' => $arParams['USER_CONSENT_ID'],
-										'IS_CHECKED' => $arParams['USER_CONSENT_IS_CHECKED'],
-										'IS_LOADED' => $arParams['USER_CONSENT_IS_LOADED'],
-										'AUTO_SAVE' => 'N',
-										'SUBMIT_EVENT_NAME' => 'bx-soa-order-save',
-										'REPLACE' => array(
-											'button_caption' => isset($arParams['~MESS_ORDER']) ? $arParams['~MESS_ORDER'] : $arParams['MESS_ORDER'],
-											'fields' => $arResult['USER_CONSENT_PROPERTY_DATA']
-										)
-									)
-								);
-							}
-							?>
-                        </div>
                         <!--	ORDER SAVE BLOCK	-->
                         <div id="bx-soa-orderSave">
 
@@ -476,7 +455,6 @@ else
                         </div>
                     </div>
                 </div>
-
 
 				<div style="display: none;">
 					<div id='bx-soa-basket-hidden' class="bx-soa-section"></div>

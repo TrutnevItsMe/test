@@ -1615,3 +1615,7 @@ select, input, textarea{
 .bx-soa-item-td.bx-soa-item-properties:nth-child(2) span{
 	white-space: nowrap;
 }
+
+[data-type="informer"]{
+	margin: 0;
+}
