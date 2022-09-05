@@ -3,36 +3,56 @@
 <?$isAjax="N";?>
 <?if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest"  && isset($_GET["ajax_get"]) && $_GET["ajax_get"] == "Y" || (isset($_GET["ajax_basket"]) && $_GET["ajax_basket"]=="Y")){
 	$isAjax="Y";
-}?>
-<?if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest" && isset($_GET["ajax_get_filter"]) && $_GET["ajax_get_filter"] == "Y" ){
+}
+if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest" && isset($_GET["ajax_get_filter"]) && $_GET["ajax_get_filter"] == "Y" ){
 	$isAjaxFilter="Y";
-}?>
-<?global $arTheme, $arRegion;?>
+}
+
+$sectionIDRequest = (isset($_GET["section_id"]) && $_GET["section_id"] ? $_GET["section_id"] : 0);
+
+global $arTheme, $arRegion;?>
+
 <div class="right_block wide_N">
 	<div class="middle">
 		<?
-		if($arParams["FILTER_NAME"] == '' || !preg_match("/^[A-Za-z_][A-Za-z01-9_]*$/", $arParams["FILTER_NAME"])){
+		if($arParams["FILTER_NAME"] == '' || !preg_match("/^[A-Za-z_][A-Za-z01-9_]*$/", $arParams["FILTER_NAME"]))
+		{
 			$arParams["FILTER_NAME"] = "arrFilter";
 		}
 
-		if(!in_array($arParams["LIST_OFFERS_FIELD_CODE"], "DETAIL_PAGE_URL")){
+		if(!in_array($arParams["LIST_OFFERS_FIELD_CODE"], "DETAIL_PAGE_URL"))
+		{
 			$arParams["LIST_OFFERS_FIELD_CODE"][] = "DETAIL_PAGE_URL";
 		}
 
 		$catalogIBlockID = ($arParams["IBLOCK_CATALOG_ID"] ? $arParams["IBLOCK_CATALOG_ID"] : $arTheme["CATALOG_IBLOCK_ID"]["VALUE"]);
 
-		$arItemsFilter = array("IBLOCK_ID" => $catalogIBlockID, "ACTIVE"=>"Y", "PROPERTY_".$arParams["LINKED_PRODUCTS_PROPERTY"] => $arElement["ID"], 'SECTION_GLOBAL_ACTIVE' => 'Y');
+		$arItemsFilter = [
+			"IBLOCK_ID" => $catalogIBlockID,
+			"ACTIVE"=>"Y",
+			"PROPERTY_".$arParams["LINKED_PRODUCTS_PROPERTY"] => $arElement["ID"], // выбираем элементы текущего бренда
+			'SECTION_GLOBAL_ACTIVE' => 'Y',
+		];
 		CNext::makeElementFilterInRegion($arItemsFilter);
-		$arItems = CNextCache::CIBLockElement_GetList(array('CACHE' => array("MULTI" =>"Y", "TAG" => CNextCache::GetIBlockCacheTag($catalogIBlockID))), $arItemsFilter, false, false, array("ID", "IBLOCK_ID", "IBLOCK_SECTION_ID"));
+		$arItems = CNextCache::CIBLockElement_GetList(
+				[
+					'CACHE' => [
+						"MULTI" =>"Y",
+						"TAG" => CNextCache::GetIBlockCacheTag($catalogIBlockID),
+					]
+				],
+				$arItemsFilter,
+				false,
+				false, 
+				["ID", "IBLOCK_ID", "IBLOCK_SECTION_ID"]
+		);
 
-		$arAllSections = $arSectionsID = $arItemsID = array();
+		$arAllSections = $arSectionsID = $arItemsID = [];
 
 		$arParams["AJAX_FILTER_CATALOG"] = "N";
 
 		if($arItems)
 		{
-			$setionIDRequest = (isset($_GET["section_id"]) && $_GET["section_id"] ? $_GET["section_id"] : 0);
-
 			foreach($arItems as $arItem)
 			{
 				$arItemsID[$arItem["ID"]] = $arItem["ID"];
@@ -60,24 +80,58 @@
 			<?if(count($arAllSections) > 1):?>
 			<?
 ###########################bart#######################################
-			$res = CIBlockSection::GetList(Array("NAME"=>"ASC"),
-				array("IBLOCK_ID"=>17), false,
-				array("ID","UF_*"));
-			$arNotShowSections = array();
-			while($ar_result = $res->GetNext()){
+			$res = CIBlockSection::GetList(
+				["NAME"=>"ASC"],
+				[
+					"IBLOCK_ID" => $catalogIBlockID,
+				],
+				false,
+				["ID","UF_*"]
+			);
+			$arNotShowSections = [];
 
-				if($ar_result["UF_DISABLE_GLOBAL"]){
+			while($ar_result = $res->GetNext())
+			{
+				if($ar_result["UF_DISABLE_GLOBAL"])
+				{
 					$arNotShowSections[] = $ar_result['ID'];
 				}
 			}
+
 			unset($res);
 ###########################bart#######################################
-			$ar_SELECT = array("ID" => $arSectionsID, "IBLOCK_ID" => $catalogIBlockID, "!ID" =>$arNotShowSections);
+			$ar_SELECT = [
+				"ID" => $arSectionsID,
+				"IBLOCK_ID" => $catalogIBlockID,
+				"!ID" =>$arNotShowSections
+			];
 
-			$arSections = CNextCache::CIBlockSection_GetList(array('NAME' => 'ASC', 'CACHE' => array("MULTI" => "N", "GROUP" => array("ID"), "TAG" => CNextCache::GetIBlockCacheTag($catalogIBlockID))), $ar_SELECT, false, array("ID", "IBLOCK_SECTION_ID", "IBLOCK_ID", "NAME", 'SECTION_PAGE_URL', "UF_CATALOG_ICON", "PICTURE"));
+			// Получаем все разделы / подразделы текущего бренда
+			$arBrandSections = CNextCache::CIBlockSection_GetList(
+				[
+					'NAME' => 'ASC',
+					'CACHE' => [
+						"MULTI" => "N",
+						"GROUP" => ["ID"],
+						"TAG" => CNextCache::GetIBlockCacheTag($catalogIBlockID)
+					]
+				],
+				$ar_SELECT,
+				false,
+				[
+					"ID",
+					"IBLOCK_SECTION_ID",
+					"IBLOCK_ID",
+					"NAME",
+					'SECTION_PAGE_URL',
+					"UF_CATALOG_ICON",
+					"PICTURE",
+				]
+			);
 
-			$arDeleteParams = array('section_id');
-			if(preg_match_all('/PAGEN_\d+/i'.BX_UTF_PCRE_MODIFIER, $_SERVER['QUERY_STRING'], $arMatches)){
+			$arDeleteParams = ['section_id'];
+			if(preg_match_all('/PAGEN_\d+/i'.BX_UTF_PCRE_MODIFIER, $_SERVER['QUERY_STRING'], $arMatches))
+			{
 				$arPagenParams = $arMatches[0];
 				$arDeleteParams = array_merge($arDeleteParams, $arPagenParams);
 			}
@@ -85,11 +139,11 @@
 
 			<div class="top_block_filter_section toggle_menu">
 				<div class="title"><a class="dark_link" title="<?=GetMessage("FILTER_ALL_SECTON");?>" href="<?=$APPLICATION->GetCurPageParam('', $arDeleteParams)?>"><?=GetMessage("FILTER_SECTON");?></a></div>
-				<?$APPLICATION->IncludeComponent("bitrix:menu",
+				<?php $APPLICATION->IncludeComponent("bitrix:menu",
 					"left_brand_catalog",
-					array(
+					[
 					"ROOT_MENU_TYPE" => "left",
-					"MENU_CACHE_TYPE" => "A",
+					"MENU_CACHE_TYPE" => "N",
 					"MENU_CACHE_TIME" => "3600000",
 					"MENU_CACHE_USE_GROUPS" => "N",
 					"CACHE_SELECTED_ITEMS" => "N",
@@ -99,9 +153,10 @@
 					"USE_EXT" => "Y",
 					"DELAY" => "N",
 					"ALLOW_MULTI_SELECT" => "N",
-					"BRAND_IBLOCK_SECTIONS" => $arSections
-				),
-					false, array( "ACTIVE_COMPONENT" => "Y" )
+					"BRAND_IBLOCK_SECTIONS" => $arBrandSections
+					],
+					false,
+					[ "ACTIVE_COMPONENT" => "Y"]
 				);?>
 			</div>
 		<?endif;?>
@@ -121,14 +176,14 @@
 
 				<?php
 				#######################bart			#######################bart
-				global $arrFilter; #echo $arParams["FILTER_NAME"] ;
-				$arrFilter[0] = array('!SECTION_ID' => $arNotShowSections);
+				global $arrFilter;
+				$arrFilter[0] = ['!SECTION_ID' => $arNotShowSections];
 				#######################bart			#######################bart
 
 					$APPLICATION->IncludeComponent(
 					"bitrix:catalog.smart.filter",
 					($arParams["AJAX_FILTER_CATALOG"]=="Y" ? "main_ajax" : "main"),
-					Array(
+					[
 						"IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
 						"IBLOCK_ID" => $catalogIBlockID,
 						"AJAX_FILTER_FLAG" => $isAjaxFilter,
@@ -139,12 +194,12 @@
 						"CACHE_TIME" => $arParams["CACHE_TIME"],
 						"CACHE_NOTES" => "",
 						"CACHE_GROUPS" => $arParams["CACHE_GROUPS"],
-						"SECTION_IDS" => ($setionIDRequest ? array($setionIDRequest) : $arSectionsID),
-						"ELEMENT_IDS" => ($setionIDRequest ? $arAllSections[$setionIDRequest]["ITEMS"] : $arItemsID),
+						"SECTION_IDS" => ($sectionIDRequest ? [$sectionIDRequest] : $arSectionsID),
+						"ELEMENT_IDS" => ($sectionIDRequest ? $arAllSections[$sectionIDRequest]["ITEMS"] : $arItemsID),
 						"SAVE_IN_SESSION" => "N",
 						"XML_EXPORT" => "Y",
 						"SECTION_TITLE" => "NAME",
-						"HIDDEN_PROP" => array("BRAND"),
+						"HIDDEN_PROP" => ["BRAND"],
 						"SECTION_DESCRIPTION" => "DESCRIPTION",
 						"SHOW_HINTS" => $arParams["SHOW_HINTS"],
 						'CONVERT_CURRENCY' => $arParams['CONVERT_CURRENCY'],
@@ -161,7 +216,7 @@
 						"AVAILABLE_SORT" => $arAvailableSort,
 						"SORT" => $sort,
 						"SORT_ORDER" => $sort_order,
-					),
+					],
 					$component);
 				?>
 			</div>
@@ -175,7 +230,7 @@
 		<?$APPLICATION->IncludeComponent(
 			"bitrix:news.detail",
 			"partners",
-			Array(
+			[
 				"DISPLAY_DATE" => $arParams["DISPLAY_DATE"],
 				"DISPLAY_NAME" => $arParams["DISPLAY_NAME"],
 				"SHOW_GALLERY" => $arParams["SHOW_GALLERY"],
@@ -222,7 +277,7 @@
 				"SHARE_SHORTEN_URL_LOGIN"	=> $arParams["SHARE_SHORTEN_URL_LOGIN"],
 				"SHARE_SHORTEN_URL_KEY" => $arParams["SHARE_SHORTEN_URL_KEY"],
 				"SHOW_TOP_BANNER" => "Y",
-			),
+			],
 			$component
 		);?>
 
@@ -244,30 +299,59 @@
 		</style>
 
 		<?
-		if(!$_GET['section_id'] AND (!$_GET['set_filter']))
+
+		if(!$sectionIDRequest AND (!$_GET['set_filter']))
 		{
-		?>
+			?>
 			<?if(count($arAllSections) > 1){?>
 
 				<?
 				###########################bart#######################################
-				$res = CIBlockSection::GetList(Array("NAME"=>"ASC"),
-					array("IBLOCK_ID"=>17), false,
-					array("ID","UF_*"));
-				$arNotShowSections = array();
-				while($ar_result = $res->GetNext()){
+				$res = CIBlockSection::GetList(
+					["NAME" => "ASC"],
+					[
+						"IBLOCK_ID" => $catalogIBlockID,
+					],
+					false,
+					["ID", "UF_*"]
+				);
+				$arNotShowSections = [];
 
-					if($ar_result["UF_DISABLE_GLOBAL"]){
+				while($ar_result = $res->GetNext())
+				{
+					if($ar_result["UF_DISABLE_GLOBAL"])
+					{
 						$arNotShowSections[] = $ar_result['ID'];
 					}
 				}
 				unset($res);
 				###########################bart#######################################
-				$ar_SELECT_1 = array("ID" => $arSectionsID, "IBLOCK_ID" => $catalogIBlockID, "!ID" =>$arNotShowSections);
+				$ar_SELECT_1 = [
+					"ID" => $arSectionsID,
+					"IBLOCK_ID" => $catalogIBlockID,
+					"!ID" =>$arNotShowSections
+				];
 
-				$arSections_1 = CNextCache::CIBlockSection_GetList(array('NAME' => 'ASC', 'CACHE' => array("MULTI" => "N", "GROUP" => array("ID"), "TAG" => CNextCache::GetIBlockCacheTag($catalogIBlockID))), $ar_SELECT_1, false, array("ID", "IBLOCK_ID", "NAME","PICTURE"));
+				$arSections_1 = CNextCache::CIBlockSection_GetList(
+						[
+							'NAME' => 'ASC',
+							'CACHE' => [
+								"MULTI" => "N",
+								"GROUP" => ["ID"],
+								"TAG" => CNextCache::GetIBlockCacheTag($catalogIBlockID)
+							]
+						],
+						$ar_SELECT_1,
+						false,
+						[
+							"ID",
+							"IBLOCK_ID",
+							"NAME",
+							"PICTURE"
+						]
+				);
 
-				$arDeleteParams = array('section_id');
+				$arDeleteParams = ['section_id'];
 				if(preg_match_all('/PAGEN_\d+/i'.BX_UTF_PCRE_MODIFIER, $_SERVER['QUERY_STRING'], $arMatches)){
 					$arPagenParams = $arMatches[0];
 					$arDeleteParams = array_merge($arDeleteParams, $arPagenParams);
@@ -280,13 +364,21 @@
 						$cntToShow = 300;
 						$cntShow = 0;
 						$bCurrentShowed = false;
-						$bNeedShowCurrent = in_array($setionIDRequest, $arSectionsID);
+						$bNeedShowCurrent = in_array($sectionIDRequest, $arSectionsID);
+						$arTopSections = [];
 
-						$catalog_id = \Bitrix\Main\Config\Option::get("aspro.next", "CATALOG_IBLOCK_ID", CNextCache::$arIBlocks[SITE_ID]['aspro_next_catalog']['aspro_next_catalog'][0]);
-						$arSectionsFilter = array('IBLOCK_ID' => $catalog_id, 'ACTIVE' => 'Y', 'GLOBAL_ACTIVE' =>
-							'Y', 'ACTIVE_DATE' => 'Y', 'DEPTH_LEVEL' => 1);
-						$arTopSections = CNextCache::CIBlockSection_GetList(array('SORT' => 'ASC', "ACTIVE" => "Y", 'ID' => 'ASC', 'CACHE' => array('TAG' => CNextCache::GetIBlockCacheTag($catalog_id), 'GROUP' => array('ID'))), CNext::makeSectionFilterInRegion($arSectionsFilter), false, array("ID", "IBLOCK_ID", "NAME", "PICTURE", "LEFT_MARGIN", "RIGHT_MARGIN", "DEPTH_LEVEL", "SECTION_PAGE_URL", "IBLOCK_SECTION_ID", "UF_CATALOG_ICON", "UF_DISABLE_MENU"));
+						// Получаем верхний уровень раздела для бренда
+						foreach ($arBrandSections as $id => $arSection)
+						{
+							$list = CIBlockSection::GetNavChain($catalogIBlockID, $arSection["ID"], [], true);
 
+							if (!$arTopSections[$list[0]["ID"]] && $list[0]["ID"])
+							{
+								$arTopSections[$list[0]["ID"]] = $list[0];
+							}
+						}
+
+						// Выводим плитку разделов
 						?>
 						<?foreach($arTopSections as $sId => $arSection):?>
 							<?
@@ -297,15 +389,26 @@
 								continue;
 							}
 
-							$bCurrent = $setionIDRequest && $arSection["ID"] == $setionIDRequest;
+							$bCurrent = $sectionIDRequest && $arSection["ID"] == $sectionIDRequest;
 							$bCurrentShowed |= $bCurrent;
 							$bLastToShow = $cntShow == ($cntToShow - 1);
 							$bCollapsed = ($bLastToShow && $bNeedShowCurrent && !$bCurrentShowed) ? true : !$bCurrent && $cntShow >= $cntToShow;
-							if(!$bCollapsed){
+
+							if(!$bCollapsed)
+							{
 								++$cntShow;
 							}
-							if(!$arSection['PICTURE']){$arSection['PICTURE']="/bitrix/templates/cezares/images/no_photo_medium.png";}else{$arSection['PICTURE']=CFile::GetPath($arSection['PICTURE']);}
+
+							if(!$arSection['PICTURE'])
+							{
+								$arSection['PICTURE']= SITE_TEMPLATE_PATH."/images/no_photo_medium.png";
+							}
+							else
+							{
+								$arSection['PICTURE']=CFile::GetPath($arSection['PICTURE']);
+							}
 							?>
+
 							<div class="cat-item <?=($bCurrent ? ' current' : '')?><?=($bCollapsed ? ' collapsed' : '')?>"><!--noindex-->
 								<a href="<?=$APPLICATION->GetCurPageParam('section_id='.$arSection["ID"], $arDeleteParams)?>" class="dark_link">
 									<span><img src="<?=$arSection['PICTURE'];?>" /></span>
@@ -318,13 +421,20 @@
 					</div>
 				</div>
 			<?}
+
 		}
-		else{
+		else
+		{
 			?>
 
 			<?// Выводим вложенные разделы
-				$sectionId = $_GET['section_id'];
-				$res = CIBlockSection::GetList([], ["SECTION_ID" => $sectionId, "IBLOCK_ID" => $catalogIBlockID]);
+				$res = CIBlockSection::GetList(
+					[],
+					[
+						"SECTION_ID" => $sectionIDRequest,
+						"IBLOCK_ID" => $catalogIBlockID
+					]
+				);
 				$subsections = [];
 
 				while ($sec = $res->GetNext())
@@ -349,18 +459,26 @@
 							continue;
 						}
 
-						if(!$arSection['PICTURE']){$arSection['PICTURE']="/bitrix/templates/cezares/images/no_photo_medium.png";}else{$arSection['PICTURE']=CFile::GetPath($arSection['PICTURE']);}
+						if(!$arSection['PICTURE'])
+						{
+							$arSection['PICTURE']= SITE_TEMPLATE_PATH."/images/no_photo_medium.png";
+						}
+						else
+						{
+							$arSection['PICTURE']=CFile::GetPath($arSection['PICTURE']);
+						}
 						?>
-						<? if ($arAllSections[$arSection["ID"]]['COUNT']): ?>
 							<div class="cat-item">
 								<a href="<?= $APPLICATION->GetCurPageParam('section_id=' . $arSection["ID"], $arDeleteParams) ?>"
 								   class="dark_link">
 									<span><img src="<?= $arSection['PICTURE']; ?>"/></span>
 									<span class="item_title"><?= $arSection['NAME'] ?>&#160;
-									(<?= $arAllSections[$arSection["ID"]]['COUNT'] ?>)</span>
+										<?if ($arAllSections[$arSection["ID"]]['COUNT']):?>
+										(<?= $arAllSections[$arSection["ID"]]['COUNT'] ?>)
+										<? endif; ?>
+									</span>
 								</a>
 							</div>
-						<? endif; ?>
 					<?endforeach;?>
 				</div>
 			</div>
@@ -407,28 +525,28 @@
 						{
 							if($arParams['STORES']){
 								if(CNext::checkVersionModule('18.6.200', 'iblock')){
-									$arStoresFilter = array(
+									$arStoresFilter = [
 										'STORE_NUMBER' => $arParams['STORES'],
 										'>STORE_AMOUNT' => 0,
-									);
+									];
 								}
 								else{
 									if(count($arParams['STORES']) > 1){
-										$arStoresFilter = array('LOGIC' => 'OR');
+										$arStoresFilter = ['LOGIC' => 'OR'];
 										foreach($arParams['STORES'] as $storeID)
 										{
-											$arStoresFilter[] = array(">CATALOG_STORE_AMOUNT_".$storeID => 0);
+											$arStoresFilter[] = [">CATALOG_STORE_AMOUNT_".$storeID => 0];
 										}
 									}
 									else{
 										foreach($arParams['STORES'] as $storeID)
 										{
-											$arStoresFilter = array(">CATALOG_STORE_AMOUNT_".$storeID => 0);
+											$arStoresFilter = [">CATALOG_STORE_AMOUNT_".$storeID => 0];
 										}
 									}
 								}
 
-								$arTmpFilter = array('!TYPE' => '2');
+								$arTmpFilter = ['!TYPE' => '2'];
 								if($arStoresFilter){
 									if(!CNext::checkVersionModule('18.6.200', 'iblock') && count($arStoresFilter) > 1){
 										$arTmpFilter[] = $arStoresFilter;
@@ -437,11 +555,11 @@
 										$arTmpFilter = array_merge($arTmpFilter, $arStoresFilter);
 									}
 
-									$GLOBALS[$arParams["FILTER_NAME"]][] = array(
+									$GLOBALS[$arParams["FILTER_NAME"]][] = [
 										'LOGIC' => 'OR',
-										array('TYPE' => '2'),
+										['TYPE' => '2'],
 										$arTmpFilter,
-									);
+									];
 								}
 							}
 						}
@@ -450,8 +568,8 @@
 					$GLOBALS[$arParams["FILTER_NAME"]]['ID'] = array_column($arItems, 'ID');
 					$GLOBALS[$arParams["FILTER_NAME"]]['SECTION_GLOBAL_ACTIVE'] = 'Y';
 
-					if($setionIDRequest){
-						$GLOBALS[$arParams["FILTER_NAME"]][] = array("SECTION_ID" => $setionIDRequest);
+					if($sectionIDRequest){
+						$GLOBALS[$arParams["FILTER_NAME"]][] = ["SECTION_ID" => $sectionIDRequest];
 					}
 					?>
 
@@ -470,7 +588,7 @@
 
 		<?
 		// Выводим список элементов, если не перешли на страницу какого-либо раздела
-		if (!$_GET["section_id"]) {
+		if (!$sectionIDRequest) {
 
 			$arBrandItemsId = [];
 
@@ -491,12 +609,28 @@
 		{
 			$GLOBALS[$arParams["FILTER_NAME"]]['ID'] = [];
 			$arBrandItemsId = [];
-			$subsectionIds = array_column($subsections, "ID");
-			$subsectionIds = array_merge($subsectionIds, [$_GET["section_id"]]);
+			$subsectionIds = [];
 
-			foreach ($subsectionIds as $sectionId)
+			$rsParentSection = CIBlockSection::GetByID($sectionIDRequest);
+			$arParentSection = $rsParentSection->GetNext();
+			$arFilter = [
+				'IBLOCK_ID' => $catalogIBlockID,
+				'>LEFT_MARGIN' => $arParentSection['LEFT_MARGIN'],
+				'<RIGHT_MARGIN' => $arParentSection['RIGHT_MARGIN'],
+				'>DEPTH_LEVEL' => $arParentSection['DEPTH_LEVEL']
+			]; // выберет потомков без учета активности
+			$rsSect = CIBlockSection::GetList(
+					['left_margin' => 'asc'],
+					$arFilter
+			);
+
+			while ($arSect = $rsSect->GetNext())
 			{
-				$arBrandItemsId = array_merge($arBrandItemsId, $arAllSections[$sectionId]["ITEMS"]);
+				if ($arAllSections[$arSect["ID"]]["ITEMS"])
+				{
+					$subsectionIds[] = $arSect["ID"];
+					$arBrandItemsId = array_merge($arBrandItemsId, $arAllSections[$arSect["ID"]]["ITEMS"]);
+				}
 			}
 
 			$GLOBALS[$arParams["FILTER_NAME"]]['ID'] = $arBrandItemsId;
@@ -515,10 +649,10 @@
 		<div class="inner_wrapper">
 			<?if($arBrandItemsId):?>
 				<hr/>
-				<h5><?=GetMessage("T_GOODS", array("#BRAND_NAME#" => $arElement["NAME"]))?></h5>
+				<h5><?=GetMessage("T_GOODS", ["#BRAND_NAME#" => $arElement["NAME"]])?></h5>
 			<?endif;?>
 
-			<?$arTransferParams = array(
+			<?$arTransferParams = [
 				"SHOW_ABSENT" => $arParams["SHOW_ABSENT"],
 				"HIDE_NOT_AVAILABLE_OFFERS" => $arParams["HIDE_NOT_AVAILABLE_OFFERS"],
 				"PRICE_CODE" => $arParams["PRICE_CODE"],
@@ -554,7 +688,7 @@
 				"PRODUCT_QUANTITY_VARIABLE" => $arParams["PRODUCT_QUANTITY_VARIABLE"],
 				"OFFER_SHOW_PREVIEW_PICTURE_PROPS" => $arParams["OFFER_SHOW_PREVIEW_PICTURE_PROPS"],
 				"MAIN_IBLOCK_ID" => $catalogIBlockID,
-			);?>
+			];?>
 
 			<div class="ajax_load <?=$display;?> js_wrapper_items"
 				 data-params='<?= str_replace('\'', '"', CUtil::PhpToJSObject($arTransferParams, false)) ?>'>
@@ -564,7 +698,7 @@
 				<? $APPLICATION->IncludeComponent(
 					"bitrix:catalog.section",
 					"catalog_block",
-					array(
+					[
 						"USE_REGION" => ($arRegion ? "Y" : "N"),
 						"STORES" => $arParams['STORES'],
 						"SHOW_UNABLE_SKU_PROPS" => $arParams["SHOW_UNABLE_SKU_PROPS"],
@@ -630,7 +764,7 @@
 						"SHOW_404" => "N",
 						"MESSAGE_404" => "",
 						"FILE_404" => "",
-						"PRICE_CODE" => array(10, 11),
+						"PRICE_CODE" => [10, 11],
 						"USE_PRICE_COUNT" => $arParams["USE_PRICE_COUNT"],
 						"SHOW_PRICE_COUNT" => $arParams["SHOW_PRICE_COUNT"],
 						"PRICE_VAT_INCLUDE" => $arParams["PRICE_VAT_INCLUDE"],
@@ -680,7 +814,9 @@
 						"DISPLAY_COMPARE" => ($arParams["DISPLAY_COMPARE"] ? $arParams["DISPLAY_COMPARE"] : "Y"),
 						"ADD_PICT_PROP" => $arParams["ADD_PICT_PROP"],
 						"OFFER_SHOW_PREVIEW_PICTURE_PROPS" => $arParams["OFFER_SHOW_PREVIEW_PICTURE_PROPS"],
-					), $component, array("HIDE_ICONS" => $isAjax)
+					],
+					$component,
+					["HIDE_ICONS" => $isAjax]
 				); ?>
 				<? if ($isAjax == "Y" && $isAjaxFilter != "Y"):?>
 					<? die(); ?>
@@ -698,7 +834,12 @@
 		<div class="col-md-6 share">
 			<?if($arParams["USE_SHARE"] == "Y" && $arElement):?>
 				<div class="line_block">
-					<?$APPLICATION->IncludeFile(SITE_DIR."include/share_buttons.php", Array(), Array("MODE" => "html", "NAME" => GetMessage('CT_BCE_CATALOG_SOC_BUTTON')));?>
+					<?$APPLICATION->IncludeFile(SITE_DIR."include/share_buttons.php",
+						[],
+						[
+							"MODE" => "html",
+							"NAME" => GetMessage('CT_BCE_CATALOG_SOC_BUTTON')
+						]);?>
 				</div>
 			<?endif;?>
 		</div>
@@ -717,14 +858,14 @@
 
 	<?CNext::get_banners_position('SIDE', 'Y');?>
 	<?$APPLICATION->IncludeComponent("bitrix:main.include", ".default",
-		array(
+		[
 			"COMPONENT_TEMPLATE" => ".default",
 			"PATH" => SITE_DIR."include/left_block/comp_subscribe.php",
 			"AREA_FILE_SHOW" => "file",
 			"AREA_FILE_SUFFIX" => "",
 			"AREA_FILE_RECURSIVE" => "Y",
 			"EDIT_TEMPLATE" => "include_area.php"
-		),
+		],
 		false
 	);?>
 </div>

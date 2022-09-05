@@ -1,5 +1,5 @@
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetTitle("Предварительный заказ");
+$APPLICATION->SetPageProperty("HIDETITLE", "Y");
 $APPLICATION->IncludeComponent(
 	"bitrix:sale.order.ajax", 
 	"compact",
