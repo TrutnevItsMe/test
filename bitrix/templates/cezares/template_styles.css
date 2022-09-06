@@ -7452,3 +7452,30 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 .managers-block-profile .contact-table{
 	width: 100%;
 }
+
+.cat-item{
+	width: 200px;
+	height: 200px;
+	float: left;
+	text-align: center;
+	margin: 5px;
+	padding: 5px;
+	border: 1px solid #ccc;
+}
+.cat-item a{
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+}
+.cat-item .cat-img{
+	flex-grow: 1;
+	display: flex;
+}
+.cat-item span img {
+	align-self: center;
+}
+.cat-item .item_title{
+	margin-bottom: 5%;
+}

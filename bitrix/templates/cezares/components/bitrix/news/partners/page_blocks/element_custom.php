@@ -280,24 +280,6 @@ global $arTheme, $arRegion;?>
 			],
 			$component
 		);?>
-
-		<style>
-			.cat-item{
-				width: 200px;
-				height: 200px;
-				float: left;
-				text-align: center;
-				margin: 5px;
-				padding: 5px;
-				border: 1px solid #ccc;
-			}
-			.cat-item span{
-				float: left;
-			}
-			.cat-item span img {padding: 0px 35px;max-width:190px}
-			.cat-item .item_title{ padding: 0px 30px;}
-		</style>
-
 		<?
 
 		if(!$sectionIDRequest AND (!$_GET['set_filter']))
@@ -411,7 +393,7 @@ global $arTheme, $arRegion;?>
 
 							<div class="cat-item <?=($bCurrent ? ' current' : '')?><?=($bCollapsed ? ' collapsed' : '')?>"><!--noindex-->
 								<a href="<?=$APPLICATION->GetCurPageParam('section_id='.$arSection["ID"], $arDeleteParams)?>" class="dark_link">
-									<span><img src="<?=$arSection['PICTURE'];?>" /></span>
+									<span class="cat-img"><img src="<?=$arSection['PICTURE'];?>" /></span>
 									<span class="item_title"><?=$arSection['NAME']?></span>
 								</a><!-- /noindex -->
 							</div>
@@ -471,7 +453,7 @@ global $arTheme, $arRegion;?>
 							<div class="cat-item">
 								<a href="<?= $APPLICATION->GetCurPageParam('section_id=' . $arSection["ID"], $arDeleteParams) ?>"
 								   class="dark_link">
-									<span><img src="<?= $arSection['PICTURE']; ?>"/></span>
+									<span class="cat-img"><img src="<?= $arSection['PICTURE']; ?>"/></span>
 									<span class="item_title"><?= $arSection['NAME'] ?>&#160;
 										<?if ($arAllSections[$arSection["ID"]]['COUNT']):?>
 										(<?= $arAllSections[$arSection["ID"]]['COUNT'] ?>)
