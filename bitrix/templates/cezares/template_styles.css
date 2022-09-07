@@ -6479,8 +6479,8 @@ body #bx-soa-order .bx-soa-cart-total-line.bx-soa-cart-total-line-highlighted{ba
 #bx-soa-order .bx-soa-cart-total{padding:30px 29px 40px;border:1px solid #f2f2f2;border-radius:0;background:#FFF;}
 #bx-soa-order .bx-soa-cart-total .bx-soa-cart-total-line{margin:2px 0 0;padding:0;font-size:14px;line-height:20px;color:#333333;border:none;}
 #bx-soa-order .bx-soa-cart-total .bx-soa-cart-total-line:first-child{margin-top:0;}
-#bx-soa-order .bx-soa-cart-total .bx-soa-cart-total-line .bx-soa-cart-t{width:46%;font-weight:normal;}
-#bx-soa-order .bx-soa-cart-total .bx-soa-cart-total-line .bx-soa-cart-d{width:54%;text-align:right;}
+#bx-soa-order .bx-soa-cart-total .bx-soa-cart-total-line .bx-soa-cart-t{font-weight:normal;}
+#bx-soa-order .bx-soa-cart-total .bx-soa-cart-total-line .bx-soa-cart-d{text-align:right;}
 #bx-soa-order .bx-soa-cart-total .bx-soa-cart-total-line-total{border-top:1px solid #f2f2f2;}
 #bx-soa-order .bx-soa-cart-total .bx-soa-cart-total-line-total .bx-soa-cart-t{font-size:16px;font-weight:bold;}
 #bx-soa-order .bx-soa-cart-total .bx-soa-cart-total-line-total .bx-soa-cart-d{font-size:18px!important;font-weight:bold;}
