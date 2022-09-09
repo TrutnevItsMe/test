@@ -2,45 +2,17 @@
 $aMenuLinks = Array(
 	Array(
 		"О компании", 
-		"/company/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
-		"Услуги", 
-		"/services/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
-		"Как купить", 
-		"/help/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
-		"Производители", 
-		"/info/brands/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
-		"Магазины", 
-		"/contacts/stores/", 
+		"http://www.iberis-pro.ru/about/", 
 		Array(), 
 		Array(), 
 		"" 
 	),
 	Array(
 		"Контакты", 
-		"/contacts/", 
+		"/contacts/sale.php", 
 		Array(), 
 		Array(), 
 		"" 
-	),
+	)
 );
 ?>

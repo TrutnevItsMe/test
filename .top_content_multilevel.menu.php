@@ -23,21 +23,7 @@ $aMenuLinks = Array(
 	),
 	Array(
 		"Акции", 
-		"https://iberis-group.ru/sale/?set_filter=y&arrFilter_136_3771153172=Y", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
-		"Распродажа", 
-		"https://iberis-group.ru/rasprodazha/?set_filter=y&arrFilter_136_125769235=Y", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
-		"Компания", 
-		"/company/", 
+		"/sale/", 
 		Array(), 
 		Array(), 
 		"" 
@@ -50,13 +36,6 @@ $aMenuLinks = Array(
 		"" 
 	),
 	Array(
-		"Где купить", 
-		"/contacts/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
 		"Партнерам", 
 		"/help/", 
 		Array(), 
@@ -64,7 +43,14 @@ $aMenuLinks = Array(
 		"" 
 	),
 	Array(
-		"Контакты", 
+		"О компании", 
+		"http://www.iberis-pro.ru/about/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Где купить", 
 		"/contacts/sale.php", 
 		Array(), 
 		Array(), 
