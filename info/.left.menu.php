@@ -1,22 +1,15 @@
 <?
 $aMenuLinks = Array(
 	Array(
-		"Блог", 
-		"/blog/", 
+		"Документы",
+		"/info/docs/",
 		Array(), 
 		Array(), 
 		"" 
 	),
 	Array(
-		"Вопрос-ответ", 
-		"/info/faq/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
-		"Возможности", 
-		"/info/more/", 
+		"Полезная информация",
+		"/info/partners.php",
 		Array(), 
 		Array(), 
 		"" 

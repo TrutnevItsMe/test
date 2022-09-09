@@ -1,25 +1,18 @@
 <?
-$aMenuLinks = Array(
-	Array(
-		"Семинары и обучение", 
-		"/help/payment/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
+$aMenuLinks = [
+	[
+		"Документы",
+		"/info/docs/ ",
+		[],
+		[],
+		""
+	],
+	[
 		"Полезная информация", 
-		"/help/delivery/", 
-		Array(), 
-		Array(), 
+		"http://www.iberis-pro.ru/partners/ ",
+		[],
+		[],
 		"" 
-	),
-	Array(
-		"Каталоги", 
-		"/help/warranty/", 
-		Array(), 
-		Array(), 
-		"" 
-	)
-);
+	],
+];
 ?>

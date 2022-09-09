@@ -1,51 +1,59 @@
-<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
-<?$isAjax="N";?>
-<?if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest"  && isset($_GET["ajax_get"]) && $_GET["ajax_get"] == "Y" || (isset($_GET["ajax_basket"]) && $_GET["ajax_basket"]=="Y")){
-	$isAjax="Y";
-}?>
-<?if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest" && isset($_GET["ajax_get_filter"]) && $_GET["ajax_get_filter"] == "Y" ){
-	$isAjaxFilter="Y";
-}?>
+<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
+<? $isAjax = "N"; ?>
+<? if (isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest" && isset($_GET["ajax_get"]) && $_GET["ajax_get"] == "Y" || (isset($_GET["ajax_basket"]) && $_GET["ajax_basket"] == "Y"))
+{
+	$isAjax = "Y";
+} ?>
+<? if (isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest" && isset($_GET["ajax_get_filter"]) && $_GET["ajax_get_filter"] == "Y")
+{
+	$isAjaxFilter = "Y";
+} ?>
 <?
 global $arTheme, $arRegion, $searchQuery;
 $catalogIBlockID = $arParams["IBLOCK_ID"];
 $arParams["AJAX_FILTER_CATALOG"] = "N";
 
-if($arParams["FILTER_NAME"] == '' || !preg_match("/^[A-Za-z_][A-Za-z01-9_]*$/", $arParams["FILTER_NAME"])){
+if ($arParams["FILTER_NAME"] == '' || !preg_match("/^[A-Za-z_][A-Za-z01-9_]*$/", $arParams["FILTER_NAME"]))
+{
 	$arParams["FILTER_NAME"] = "searchFilter";
 }
 
 $bShowFilter = ($arTheme["SEARCH_VIEW_TYPE"]["VALUE"] == "with_filter");
-if($bShowFilter){
+if ($bShowFilter)
+{
 	$APPLICATION->SetPageProperty("HIDE_LEFT_BLOCK", "Y");
-	$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH.'/js/jquery.history.js');
+	$APPLICATION->AddHeadScript(SITE_TEMPLATE_PATH . '/js/jquery.history.js');
 }
 
 // bitrix:search.page arrFILTER
 $arSearchPageFilter = array(
-	'arrFILTER' => array('iblock_'.$arParams['IBLOCK_TYPE']),
-	'arrFILTER_iblock_'.$arParams['IBLOCK_TYPE'] => array($arParams['IBLOCK_ID']),
+	'arrFILTER' => array('iblock_' . $arParams['IBLOCK_TYPE']),
+	'arrFILTER_iblock_' . $arParams['IBLOCK_TYPE'] => array($arParams['IBLOCK_ID']),
 );
 
 $arSKU = array();
-if($arParams['IBLOCK_ID']){
+if ($arParams['IBLOCK_ID'])
+{
 	$arSKU = CCatalogSKU::GetInfoByProductIBlock($arParams['IBLOCK_ID']);
-	if($arSKU['IBLOCK_ID']){
+	if ($arSKU['IBLOCK_ID'])
+	{
 		$dbRes = CIBlock::GetByID($arSKU['IBLOCK_ID']);
-		if($arSkuIblock = $dbRes ->Fetch()){
-			$arSearchPageFilter['arrFILTER'][] = 'iblock_'.$arSkuIblock['IBLOCK_TYPE_ID'];
+		if ($arSkuIblock = $dbRes->Fetch())
+		{
+			$arSearchPageFilter['arrFILTER'][] = 'iblock_' . $arSkuIblock['IBLOCK_TYPE_ID'];
 			$arSearchPageFilter['arrFILTER'] = array_unique($arSearchPageFilter['arrFILTER']);
-			if(!$arSearchPageFilter['arrFILTER_iblock_'.$arSkuIblock['IBLOCK_TYPE_ID']]){
-				$arSearchPageFilter['arrFILTER_iblock_'.$arSkuIblock['IBLOCK_TYPE_ID']] = array();
+			if (!$arSearchPageFilter['arrFILTER_iblock_' . $arSkuIblock['IBLOCK_TYPE_ID']])
+			{
+				$arSearchPageFilter['arrFILTER_iblock_' . $arSkuIblock['IBLOCK_TYPE_ID']] = array();
 			}
-			$arSearchPageFilter['arrFILTER_iblock_'.$arSkuIblock['IBLOCK_TYPE_ID']][] = $arSKU['IBLOCK_ID'];
+			$arSearchPageFilter['arrFILTER_iblock_' . $arSkuIblock['IBLOCK_TYPE_ID']][] = $arSKU['IBLOCK_ID'];
 		}
 	}
-}?>
-<?if($bShowFilter):?>
+} ?>
+<? if ($bShowFilter): ?>
 	<div class="right_block wide_N">
-		<div class="middle">
-<?endif;?>
+	<div class="middle">
+<? endif; ?>
 <?
 // show bitrix.search_page content
 $APPLICATION->ShowViewContent('comp_search_page');
@@ -55,14 +63,16 @@ ob_start();
 include 'include_search_page.php';
 $searchPageContent = ob_get_clean();
 
-if(!strlen($searchQuery)){
+if (!strlen($searchQuery))
+{
 	$searchQuery = $_GET['q'];
 }
 
 // find landings in search
 $oSearchQuery = new \Aspro\Next\SearchQuery($searchQuery);
 $arLandingsFilter = array('ACTIVE' => 'Y');
-if($arRegion){
+if ($arRegion)
+{
 	// filter landings by property LINK_REGION (empty or ID of current region)
 	$arLandingsFilter[] = array(
 		'LOGIC' => 'OR',
@@ -71,13 +81,17 @@ if($arRegion){
 	);
 }
 
-if(isset($_REQUEST['ls'])){
-	if(($landingID = intval($_REQUEST['ls'])) > 0){
+if (isset($_REQUEST['ls']))
+{
+	if (($landingID = intval($_REQUEST['ls'])) > 0)
+	{
 		$arLandingsFilter['ID'] = $landingID;
-		if(!strlen($searchQuery)){
+		if (!strlen($searchQuery))
+		{
 			// query is empty
 			$dbRes = \CIBlockElement::GetByID($landingID);
-			if($arElement = $dbRes->Fetch()){
+			if ($arElement = $dbRes->Fetch())
+			{
 				$arElement = \CNextCache::CIBlockElement_GetList(
 					array(
 						'CACHE' => array(
@@ -96,8 +110,10 @@ if(isset($_REQUEST['ls'])){
 				);
 
 				$arQuery = (array)$arElement['PROPERTY_QUERY_VALUE'];
-				if(strlen($query = $arQuery ? trim(htmlspecialchars_decode($arQuery[0])) : '')){
-					if(strlen($query = \Aspro\Next\SearchQuery::getSentenceExampleQuery($query))){
+				if (strlen($query = $arQuery ? trim(htmlspecialchars_decode($arQuery[0])) : ''))
+				{
+					if (strlen($query = \Aspro\Next\SearchQuery::getSentenceExampleQuery($query)))
+					{
 						$searchQuery = $_GET['q'] = $_POST['q'] = $_REQUEST['q'] = $query;
 						$_GET['spell'] = $_POST['spell'] = $_REQUEST['spell'] = 1;
 						$oSearchQuery->setQuery($searchQuery);
@@ -110,8 +126,9 @@ if(isset($_REQUEST['ls'])){
 				}
 			}
 		}
-		else{
-			$_SESSION['q_'.$landingID] = $searchQuery;
+		else
+		{
+			$_SESSION['q_' . $landingID] = $searchQuery;
 		}
 	}
 }
@@ -149,54 +166,70 @@ $arLanding = $oSearchQuery->getLandings(
 	),
 	true
 );
-if($arLanding){
-	if(!$arLanding['PROPERTY_IS_INDEX_VALUE']){
+
+if ($arLanding)
+{
+	if (!$arLanding['PROPERTY_IS_INDEX_VALUE'])
+	{
 		$APPLICATION->AddHeadString('<meta name="robots" content="noindex,nofollow" />');
 	}
 
-	if(strlen($arLanding['PROPERTY_URL_CONDITION_VALUE'])){
+	if (strlen($arLanding['PROPERTY_URL_CONDITION_VALUE']))
+	{
 		$urlCondition = ltrim(trim($arLanding['PROPERTY_URL_CONDITION_VALUE']), '/');
-		$canonicalUrl = '/'.$urlCondition;
+		$canonicalUrl = '/' . $urlCondition;
 
-		if(!isset($_REQUEST['ls'])){
-			$_SESSION['q_'.$arLanding['ID']] = $searchQuery;
+		if (!isset($_REQUEST['ls']))
+		{
+			$_SESSION['q_' . $arLanding['ID']] = $searchQuery;
 			LocalRedirect($canonicalUrl, true, '301 Moved permanently');
 			die();
 
 			// not use APPLICATION->AddHeadString because it`s cached template
-			?><link rel="canonical" href="<?=$canonicalUrl?>" /><?
+			?>
+			<link rel="canonical" href="<?= $canonicalUrl ?>" /><?
 		}
 	}
 
-	if(strlen($arLanding['PROPERTY_REDIRECT_URL_VALUE']) && !strlen($urlCondition)){
-		if(!isset($_REQUEST['ls'])){
+	if (strlen($arLanding['PROPERTY_REDIRECT_URL_VALUE']) && !strlen($urlCondition))
+	{
+		if (!isset($_REQUEST['ls']))
+		{
 			LocalRedirect($arLanding['PROPERTY_REDIRECT_URL_VALUE'], false, '301 Moved Permanently');
 			die();
 		}
 	}
 
-	if($arLanding['PROPERTY_HIDE_QUERY_INPUT_VALUE']){
+	if ($arLanding['PROPERTY_HIDE_QUERY_INPUT_VALUE'])
+	{
 		$searchPageContent = '';
 	}
 
-	if($arLanding['PROPERTY_CUSTOM_FILTER_VALUE'] && $arLanding['PROPERTY_CUSTOM_FILTER_TYPE_VALUE']){
+	if ($arLanding['PROPERTY_CUSTOM_FILTER_VALUE'] && $arLanding['PROPERTY_CUSTOM_FILTER_TYPE_VALUE'])
+	{
 		// decode CUSTOM_FILTER
-		if(\Bitrix\Main\Loader::includeModule('catalog') && class_exists('CNextCondition')){
+		if (\Bitrix\Main\Loader::includeModule('catalog') && class_exists('CNextCondition'))
+		{
 			$arCustomFilter = array();
 			$cond = new CNextCondition();
 			$arLanding['PROPERTY_CUSTOM_FILTER_VALUE'] = (array)$arLanding['PROPERTY_CUSTOM_FILTER_VALUE'];
 
-			foreach($arLanding['PROPERTY_CUSTOM_FILTER_VALUE'] as $customFilter){
-				if(isset($customFilter) && is_string($customFilter)){
-					try{
+			foreach ($arLanding['PROPERTY_CUSTOM_FILTER_VALUE'] as $customFilter)
+			{
+				if (isset($customFilter) && is_string($customFilter))
+				{
+					try
+					{
 						$customFilter = $cond->parseCondition(\Bitrix\Main\Web\Json::decode($customFilter), $arParams);
 					}
-					catch(\Exception $e){
+					catch (\Exception $e)
+					{
 						$customFilter = array();
 					}
 				}
 
-				if($customFilter){
+				if ($customFilter)
+				{
 					$arCustomFilter = array_merge($arCustomFilter, $customFilter);
 				}
 			}
@@ -212,12 +245,13 @@ if($arLanding){
 		);
 	}
 
-	if(
+	if (
 		$bReplaceElementsByCustomFilter = $arCustomFilter &&
 			$arLanding['PROPERTY_CUSTOM_FILTER_TYPE_VALUE'] &&
 			$arCustomFilterTypeEnums &&
 			$arLanding['PROPERTY_CUSTOM_FILTER_TYPE_VALUE'] === $arCustomFilterTypeEnums[\Aspro\Next\SearchQuery::CUSTOM_FILTER_TYPE_SET_XML_ID]
-	){
+	)
+	{
 		// replace $arElements by CUSTOM_FILTER
 		$arItemsFilter = array_merge(
 			array(
@@ -244,7 +278,8 @@ if($arLanding){
 		);
 	}
 
-	if(!$bReplaceElementsByCustomFilter && $arLanding['PROPERTY_QUERY_REPLACEMENT_VALUE'] && $arLanding['PROPERTY_QUERY_REPLACEMENT_VALUE'] !== $searchQuery){
+	if (!$bReplaceElementsByCustomFilter && $arLanding['PROPERTY_QUERY_REPLACEMENT_VALUE'] && $arLanding['PROPERTY_QUERY_REPLACEMENT_VALUE'] !== $searchQuery)
+	{
 		// save oroginal query
 		$originalSearchQuery = $searchQuery;
 
@@ -264,9 +299,11 @@ if($arLanding){
 	$ipropValues = new \Bitrix\Iblock\InheritedProperty\ElementValues($arLanding['IBLOCK_ID'], $arLanding['ID']);
 	$arLanding['IPROPERTY_VALUES'] = $ipropValues->getValues();
 
-	if($arLanding['PROPERTY_SIMILAR_VALUE']){
+	if ($arLanding['PROPERTY_SIMILAR_VALUE'])
+	{
 		$arLanding['PROPERTY_SIMILAR_VALUE'] = (array)$arLanding['PROPERTY_SIMILAR_VALUE'];
-		if(in_array($arLanding['ID'], $arLanding['PROPERTY_SIMILAR_VALUE'])){
+		if (in_array($arLanding['ID'], $arLanding['PROPERTY_SIMILAR_VALUE']))
+		{
 			unset($arLanding['PROPERTY_SIMILAR_VALUE'][array_search($arLanding['ID'], $arLanding['PROPERTY_SIMILAR_VALUE'])]);
 		}
 	}
@@ -281,48 +318,50 @@ if($arLanding){
 	);
 }
 ?>
-<?=$searchPageContent?>
-<?if($arLanding && ($arLanding["DETAIL_PICTURE"] || strlen($arLanding["PREVIEW_TEXT"]) || $arLanding["PROPERTY_FORM_QUESTION_VALUE"]) || $arLanding["PROPERTY_TIZERS_VALUE"]):?>
+<?= $searchPageContent ?>
+<? if ($arLanding && ($arLanding["DETAIL_PICTURE"] || strlen($arLanding["PREVIEW_TEXT"]) || $arLanding["PROPERTY_FORM_QUESTION_VALUE"]) || $arLanding["PROPERTY_TIZERS_VALUE"]): ?>
 	<div class="seo_block">
-		<?if($arLanding["DETAIL_PICTURE"]):?>
-			<img src="<?=CFile::GetPath($arLanding["DETAIL_PICTURE"]);?>" alt="" title="" class="img-responsive"/>
-		<?endif;?>
+		<? if ($arLanding["DETAIL_PICTURE"]): ?>
+			<img src="<?= CFile::GetPath($arLanding["DETAIL_PICTURE"]); ?>" alt="" title="" class="img-responsive"/>
+		<? endif; ?>
 
-		<?if(strlen($arLanding["PREVIEW_TEXT"])):?>
-			<?=$arLanding["PREVIEW_TEXT"]?>
-		<?endif;?>
+		<? if (strlen($arLanding["PREVIEW_TEXT"])): ?>
+			<?= $arLanding["PREVIEW_TEXT"] ?>
+		<? endif; ?>
 
-		<?$APPLICATION->ShowViewContent('sotbit_seometa_top_desc');?>
+		<? $APPLICATION->ShowViewContent('sotbit_seometa_top_desc'); ?>
 
-		<?if($arLanding["PROPERTY_FORM_QUESTION_VALUE"]):?>
+		<? if ($arLanding["PROPERTY_FORM_QUESTION_VALUE"]): ?>
 			<table class="order-block noicons">
 				<tbody>
-					<tr>
-						<td class="col-md-9 col-sm-8 col-xs-7 valign">
-							<div class="text">
-								<?$APPLICATION->IncludeComponent(
-									 'bitrix:main.include',
-									 '',
-									 Array(
-										  'AREA_FILE_SHOW' => 'page',
-										  'AREA_FILE_SUFFIX' => 'ask',
-										  'EDIT_TEMPLATE' => ''
-									 )
-								);?>
-							</div>
-						</td>
-						<td class="col-md-3 col-sm-4 col-xs-5 valign">
-							<div class="btns">
-								<span><span class="btn btn-default btn-lg white transparent animate-load" data-event="jqm" data-param-form_id="ASK" data-name="question"><span><?=(strlen($arParams['S_ASK_QUESTION']) ? $arParams['S_ASK_QUESTION'] : GetMessage('S_ASK_QUESTION'))?></span></span></span>
-							</div>
-						</td>
-					</tr>
+				<tr>
+					<td class="col-md-9 col-sm-8 col-xs-7 valign">
+						<div class="text">
+							<? $APPLICATION->IncludeComponent(
+								'bitrix:main.include',
+								'',
+								array(
+									'AREA_FILE_SHOW' => 'page',
+									'AREA_FILE_SUFFIX' => 'ask',
+									'EDIT_TEMPLATE' => ''
+								)
+							); ?>
+						</div>
+					</td>
+					<td class="col-md-3 col-sm-4 col-xs-5 valign">
+						<div class="btns">
+							<span><span class="btn btn-default btn-lg white transparent animate-load" data-event="jqm"
+										data-param-form_id="ASK"
+										data-name="question"><span><?= (strlen($arParams['S_ASK_QUESTION']) ? $arParams['S_ASK_QUESTION'] : GetMessage('S_ASK_QUESTION')) ?></span></span></span>
+						</div>
+					</td>
+				</tr>
 				</tbody>
 			</table>
-		<?endif;?>
-		<?if($arLanding["PROPERTY_TIZERS_VALUE"]):?>
-			<?$GLOBALS["arLandingTizers"] = array("ID" => $arLanding["PROPERTY_TIZERS_VALUE"]);?>
-			<?$APPLICATION->IncludeComponent(
+		<? endif; ?>
+		<? if ($arLanding["PROPERTY_TIZERS_VALUE"]): ?>
+			<? $GLOBALS["arLandingTizers"] = array("ID" => $arLanding["PROPERTY_TIZERS_VALUE"]); ?>
+			<? $APPLICATION->IncludeComponent(
 				"bitrix:news.list",
 				"next",
 				array(
@@ -348,7 +387,7 @@ if($arLanding){
 					"AJAX_OPTION_JUMP" => "N",
 					"AJAX_OPTION_STYLE" => "Y",
 					"AJAX_OPTION_HISTORY" => "N",
-					"CACHE_TYPE" =>$arParams["CACHE_TYPE"],
+					"CACHE_TYPE" => $arParams["CACHE_TYPE"],
 					"CACHE_TIME" => $arParams["CACHE_TIME"],
 					"CACHE_FILTER" => "Y",
 					"CACHE_GROUPS" => "N",
@@ -381,108 +420,120 @@ if($arLanding){
 					"MESSAGE_404" => ""
 				),
 				false, array("HIDE_ICONS" => "Y")
-			);?>
-		<?endif;?>
-		<?$APPLICATION->ShowViewContent('sotbit_seometa_add_desc');?>
+			); ?>
+		<? endif; ?>
+		<? $APPLICATION->ShowViewContent('sotbit_seometa_add_desc'); ?>
 	</div>
-<?endif;?>
-<?
+<? endif; ?>
+<?;
 if (is_array($arElements) && !empty($arElements))
 {
-	if($arSKU)
+	if ($arSKU)
 	{
-		foreach($arElements as $key => $value)
+		foreach ($arElements as $key => $value)
 		{
-			$arTmp = CIBlockElement::GetProperty($arSKU['IBLOCK_ID'], $value, array("sort" => "asc"), Array("ID"=>$arSKU['SKU_PROPERTY_ID']))->Fetch();
-			if($arTmp['VALUE'])
+			$arTmp = CIBlockElement::GetProperty($arSKU['IBLOCK_ID'], $value, array("sort" => "asc"), array("ID" => $arSKU['SKU_PROPERTY_ID']))->Fetch();
+			if ($arTmp['VALUE'])
 				$arElements[$arTmp['VALUE']] = $arTmp['VALUE'];
 		}
 	}
 	$arrFilter = ($GLOBALS[$arParams["FILTER_NAME"]] ? $GLOBALS[$arParams["FILTER_NAME"]] : []);
 
 	$GLOBALS[$arParams["FILTER_NAME"]] = array(
-		"=ID" => $arElements,
-		'SECTION_GLOBAL_ACTIVE' => 'Y',
-	) + $arrFilter;
+			"=ID" => $arElements,
+			'SECTION_GLOBAL_ACTIVE' => 'Y',
+		) + $arrFilter;
 
-	if($arLanding && $arCustomFilter){
-		if($bReplaceElementsByCustomFilter){
+	if ($arLanding && $arCustomFilter)
+	{
+		if ($bReplaceElementsByCustomFilter)
+		{
 			$GLOBALS[$arParams["FILTER_NAME"]] = array($arCustomFilter) + $arrFilter;
 		}
-		else{
+		else
+		{
 			$GLOBALS[$arParams["FILTER_NAME"]] = array_merge($GLOBALS[$arParams["FILTER_NAME"]], array($arCustomFilter));
 		}
 	}
 
-	if($arParams['HIDE_NOT_AVAILABLE'] === 'Y'){
+	if ($arParams['HIDE_NOT_AVAILABLE'] === 'Y')
+	{
 		$GLOBALS[$arParams["FILTER_NAME"]]['CATALOG_AVAILABLE'] = 'Y';
 	}
 
-	if($arRegion)
+	if ($arRegion)
 	{
-		if($arRegion['LIST_PRICES'])
+		if ($arRegion['LIST_PRICES'])
 		{
-			if(reset($arRegion['LIST_PRICES']) != 'component')
+			if (reset($arRegion['LIST_PRICES']) != 'component')
 				$arParams['PRICE_CODE'] = array_keys($arRegion['LIST_PRICES']);
 		}
-		if($arRegion['LIST_STORES'])
+		if ($arRegion['LIST_STORES'])
 		{
-			if(reset($arRegion['LIST_STORES']) != 'component')
+			if (reset($arRegion['LIST_STORES']) != 'component')
 				$arParams['STORES'] = $arRegion['LIST_STORES'];
 		}
 	}
 
-	if($arParams['LIST_PRICES'])
+	if ($arParams['LIST_PRICES'])
 	{
-		foreach($arParams['LIST_PRICES'] as $key => $price)
+		foreach ($arParams['LIST_PRICES'] as $key => $price)
 		{
-			if(!$price)
+			if (!$price)
 				unset($arParams['LIST_PRICES'][$key]);
 		}
 	}
 
-	if($arParams['STORES'])
+	if ($arParams['STORES'])
 	{
-		foreach($arParams['STORES'] as $key => $store)
+		foreach ($arParams['STORES'] as $key => $store)
 		{
-			if(!$store)
+			if (!$store)
 				unset($arParams['STORES'][$key]);
 		}
 	}
 
-	if($arRegion)
+	if ($arRegion)
 	{
-		if($arRegion['LIST_STORES'] && $arParams["HIDE_NOT_AVAILABLE"] == "Y")
+		if ($arRegion['LIST_STORES'] && $arParams["HIDE_NOT_AVAILABLE"] == "Y")
 		{
-			if($arParams['STORES']){
-				if(CNext::checkVersionModule('18.6.200', 'iblock')){
+			if ($arParams['STORES'])
+			{
+				if (CNext::checkVersionModule('18.6.200', 'iblock'))
+				{
 					$arStoresFilter = array(
 						'STORE_NUMBER' => $arParams['STORES'],
 						'>STORE_AMOUNT' => 0,
 					);
 				}
-				else{
-					if(count($arParams['STORES']) > 1){
+				else
+				{
+					if (count($arParams['STORES']) > 1)
+					{
 						$arStoresFilter = array('LOGIC' => 'OR');
-						foreach($arParams['STORES'] as $storeID)
+						foreach ($arParams['STORES'] as $storeID)
 						{
-							$arStoresFilter[] = array(">CATALOG_STORE_AMOUNT_".$storeID => 0);
+							$arStoresFilter[] = array(">CATALOG_STORE_AMOUNT_" . $storeID => 0);
 						}
 					}
-					else{
-						foreach($arParams['STORES'] as $storeID)
+					else
+					{
+						foreach ($arParams['STORES'] as $storeID)
 						{
-							$arStoresFilter = array(">CATALOG_STORE_AMOUNT_".$storeID => 0);
+							$arStoresFilter = array(">CATALOG_STORE_AMOUNT_" . $storeID => 0);
 						}
 					}
 				}
 
 				$arTmpFilter = array('!TYPE' => '2');
-				if($arStoresFilter){
-					if(!CNext::checkVersionModule('18.6.200', 'iblock') && count($arStoresFilter) > 1){
+				if ($arStoresFilter)
+				{
+					if (!CNext::checkVersionModule('18.6.200', 'iblock') && count($arStoresFilter) > 1)
+					{
 						$arTmpFilter[] = $arStoresFilter;
 					}
-					else{
+					else
+					{
 						$arTmpFilter = array_merge($arTmpFilter, $arStoresFilter);
 					}
 
@@ -515,7 +566,8 @@ if (is_array($arElements) && !empty($arElements))
 
 	$arAllSections = $arSectionsID = $arItemsID = array();
 
-	if($arItems){
+	if ($arItems)
+	{
 		// sections
 		ob_start();
 		include_once 'sections.php';
@@ -535,25 +587,26 @@ if (is_array($arElements) && !empty($arElements))
 		$APPLICATION->AddViewContent('filter_content', $htmlFilter);
 	}
 	?>
-	<?if($isAjax === "Y"):?>
-		<?$APPLICATION->RestartBuffer();?>
-	<?endif;?>
-	<?$APPLICATION->ShowViewContent('search_content');?>
+	<? if ($isAjax === "Y"):?>
+	<? $APPLICATION->RestartBuffer(); ?>
+<?endif; ?>
+	<? $APPLICATION->ShowViewContent('search_content'); ?>
 	<div class="catalog vertical">
-		<?if($arLanding && strlen($arLanding['PROPERTY_H3_GOODS_VALUE'])):?>
-			<h3 class="title_block langing_title_block"><?=$arLanding['PROPERTY_H3_GOODS_VALUE']?></h3>
-		<?endif;?>
+		<? if ($arLanding && strlen($arLanding['PROPERTY_H3_GOODS_VALUE'])):?>
+			<h3 class="title_block langing_title_block"><?= $arLanding['PROPERTY_H3_GOODS_VALUE'] ?></h3>
+		<?endif; ?>
 
-		<?=$htmlSections;?>
+		<?= $htmlSections; ?>
 		<br/>
 
-		<?// sort?>
-		<?=$htmlSort?>
+		<?// sort
+		?>
+		<?= $htmlSort ?>
 
-		<?unset($_GET['q']);?>
+		<? unset($_GET['q']); ?>
 
-		<div class="ajax_load <?=$display?>">
-			<?$arTransferParams = array(
+		<div class="ajax_load <?= $display ?>">
+			<? $arTransferParams = array(
 				"SHOW_ABSENT" => $arParams["SHOW_ABSENT"],
 				"HIDE_NOT_AVAILABLE_OFFERS" => $arParams["HIDE_NOT_AVAILABLE_OFFERS"],
 				"PRICE_CODE" => $arParams["PRICE_CODE"],
@@ -591,13 +644,14 @@ if (is_array($arElements) && !empty($arElements))
 				'CURRENT_BASE_PAGE' => $arLanding && strlen($arLanding['PROPERTY_URL_CONDITION_VALUE']) ? $canonicalUrl : null,
 				"IBINHERIT_TEMPLATES" => $arLanding ? $arIBInheritTemplates : array(),
 				'OFFER_SHOW_PREVIEW_PICTURE_PROPS' => $arParams['OFFER_SHOW_PREVIEW_PICTURE_PROPS'],
-			);?>
-			<div class="catalog <?=$display;?> search js_wrapper_items" data-params='<?=str_replace('\'', '"', CUtil::PhpToJSObject($arTransferParams, false))?>'>
-				<?if($isAjax === "Y" && $isAjaxFilter !== "Y"):?>
-					<?$APPLICATION->RestartBuffer();?>
-				<?endif;?>
-				<?$GLOBALS[$arParams['FILTER_NAME']] += (array)$GLOBALS[$arParams['FILTER_NAME2']];?>
-				<?$APPLICATION->IncludeComponent(
+			); ?>
+			<div class="catalog <?= $display; ?> search js_wrapper_items"
+				 data-params='<?= str_replace('\'', '"', CUtil::PhpToJSObject($arTransferParams, false)) ?>'>
+				<? if ($isAjax === "Y" && $isAjaxFilter !== "Y"):?>
+					<? $APPLICATION->RestartBuffer(); ?>
+				<?endif; ?>
+				<? $GLOBALS[$arParams['FILTER_NAME']] += (array)$GLOBALS[$arParams['FILTER_NAME2']]; ?>
+				<? $APPLICATION->IncludeComponent(
 					"bitrix:catalog.section",
 					$listElementsTemplate,
 					array(
@@ -692,38 +746,41 @@ if (is_array($arElements) && !empty($arElements))
 						'OFFER_SHOW_PREVIEW_PICTURE_PROPS' => $arParams['OFFER_SHOW_PREVIEW_PICTURE_PROPS'],
 					),
 					$arResult["THEME_COMPONENT"]
-				);?>
-				<?if($isAjax === "Y" && $isAjaxFilter !== "Y"):?>
-					<?die();?>
-				<?endif;?>
+				); ?>
+				<? if ($isAjax === "Y" && $isAjaxFilter !== "Y"):?>
+					<? die(); ?>
+				<?endif; ?>
 			</div>
 		</div>
 	</div>
-	<?if($isAjax === "Y"):?>
-		<?die();?>
-	<?endif;?>
+	<? if ($isAjax === "Y"):?>
+	<? die(); ?>
+<?endif; ?>
 
-	<?if (!$arItems):?>
-		<?=GetMessage("CT_BCSE_NOT_FOUND")."<br /><br />";?>
-	<?endif;?>
-<?}else{
-	if(!strlen($searchQuery))
-		echo GetMessage("CT_BCSE_EMPTY_QUERY")."<br /><br />";
+	<? if (!$arItems):?>
+	<?= GetMessage("CT_BCSE_NOT_FOUND") . "<br /><br />"; ?>
+<?endif; ?>
+<?
+}
+else
+{
+	if (!strlen($searchQuery))
+		echo GetMessage("CT_BCSE_EMPTY_QUERY") . "<br /><br />";
 	else
-		echo GetMessage("CT_BCSE_NOT_FOUND")."<br /><br />";
+		echo GetMessage("CT_BCSE_NOT_FOUND") . "<br /><br />";
 }
 ?>
-<?if($arLanding):?>
-	<?if(strlen($arLanding["DETAIL_TEXT"])):?>
-		<?=$arLanding["DETAIL_TEXT"];?>
-	<?endif;?>
+<? if ($arLanding): ?>
+	<? if (strlen($arLanding["DETAIL_TEXT"])): ?>
+		<?= $arLanding["DETAIL_TEXT"]; ?>
+	<? endif; ?>
 
-	<?$APPLICATION->ShowViewContent('sotbit_seometa_bottom_desc');?>
+	<? $APPLICATION->ShowViewContent('sotbit_seometa_bottom_desc'); ?>
 
-	<?if($arParams['SHOW_LANDINGS'] !== 'N' && $arLanding['PROPERTY_SIMILAR_VALUE']):?>
-		<?$arLandingsFilter['ID'] = $arLanding['PROPERTY_SIMILAR_VALUE'];?>
-		<?$GLOBALS["arLandingsFilter"] = $arLandingsFilter;?>
-		<?$APPLICATION->IncludeComponent(
+	<? if ($arParams['SHOW_LANDINGS'] !== 'N' && $arLanding['PROPERTY_SIMILAR_VALUE']): ?>
+		<? $arLandingsFilter['ID'] = $arLanding['PROPERTY_SIMILAR_VALUE']; ?>
+		<? $GLOBALS["arLandingsFilter"] = $arLandingsFilter; ?>
+		<? $APPLICATION->IncludeComponent(
 			"bitrix:news.list",
 			"landings_search_list",
 			array(
@@ -752,7 +809,7 @@ if (is_array($arElements) && !empty($arElements))
 				"AJAX_OPTION_JUMP" => "N",
 				"AJAX_OPTION_STYLE" => "Y",
 				"AJAX_OPTION_HISTORY" => "N",
-				"CACHE_TYPE" =>$arParams["CACHE_TYPE"],
+				"CACHE_TYPE" => $arParams["CACHE_TYPE"],
 				"CACHE_TIME" => $arParams["CACHE_TIME"],
 				"CACHE_FILTER" => "Y",
 				"CACHE_GROUPS" => "N",
@@ -786,46 +843,46 @@ if (is_array($arElements) && !empty($arElements))
 				"MESSAGE_404" => ""
 			),
 			false, array("HIDE_ICONS" => "Y")
-		);?>
-	<?endif;?>
+		); ?>
+	<? endif; ?>
 	<?
 	$langing_seo_h1 = strip_tags(htmlspecialchars_decode($arLanding["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"] != "" ? $arLanding["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"] : $arLanding["NAME"]));
 
 	$APPLICATION->SetTitle($langing_seo_h1);
 
-	if($arLanding["IPROPERTY_VALUES"]["ELEMENT_META_TITLE"])
+	if ($arLanding["IPROPERTY_VALUES"]["ELEMENT_META_TITLE"])
 		$APPLICATION->SetPageProperty("title", strip_tags(htmlspecialchars_decode($arLanding["IPROPERTY_VALUES"]["ELEMENT_META_TITLE"])));
 	else
-		$APPLICATION->SetPageProperty("title", strip_tags(htmlspecialchars_decode($arLanding["NAME"].$postfix)));
+		$APPLICATION->SetPageProperty("title", strip_tags(htmlspecialchars_decode($arLanding["NAME"] . $postfix)));
 
-	if($arLanding["IPROPERTY_VALUES"]["ELEMENT_META_DESCRIPTION"])
+	if ($arLanding["IPROPERTY_VALUES"]["ELEMENT_META_DESCRIPTION"])
 		$APPLICATION->SetPageProperty("description", strip_tags(htmlspecialchars_decode($arLanding["IPROPERTY_VALUES"]["ELEMENT_META_DESCRIPTION"])));
 
-	if($arLanding["IPROPERTY_VALUES"]['ELEMENT_META_KEYWORDS'])
+	if ($arLanding["IPROPERTY_VALUES"]['ELEMENT_META_KEYWORDS'])
 		$APPLICATION->SetPageProperty("keywords", $arLanding["IPROPERTY_VALUES"]['ELEMENT_META_KEYWORDS']);
 	?>
-<?endif;?>
-<?if($bShowFilter):?>
-		</div><!-- middle -->
+<? endif; ?>
+<? if ($bShowFilter): ?>
+	</div><!-- middle -->
 	</div><!-- right_block wide_N -->
 	<div class="left_block filter_visible">
-		<?$APPLICATION->ShowViewContent('filter_section');?>
+		<? $APPLICATION->ShowViewContent('filter_section'); ?>
 
-		<?$APPLICATION->ShowViewContent('filter_content');?>
+		<? $APPLICATION->ShowViewContent('filter_content'); ?>
 
-		<?$APPLICATION->ShowViewContent('under_sidebar_content');?>
+		<? $APPLICATION->ShowViewContent('under_sidebar_content'); ?>
 
-		<?CNext::get_banners_position('SIDE', 'Y');?>
-		<?$APPLICATION->IncludeComponent("bitrix:main.include", ".default",
+		<? CNext::get_banners_position('SIDE', 'Y'); ?>
+		<? $APPLICATION->IncludeComponent("bitrix:main.include", ".default",
 			array(
 				"COMPONENT_TEMPLATE" => ".default",
-				"PATH" => SITE_DIR."include/left_block/comp_subscribe.php",
+				"PATH" => SITE_DIR . "include/left_block/comp_subscribe.php",
 				"AREA_FILE_SHOW" => "file",
 				"AREA_FILE_SUFFIX" => "",
 				"AREA_FILE_RECURSIVE" => "Y",
 				"EDIT_TEMPLATE" => "include_area.php"
 			),
 			false
-		);?>
+		); ?>
 	</div>
-<?endif;?>
+<? endif; ?>
