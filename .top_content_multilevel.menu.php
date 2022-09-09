@@ -44,7 +44,7 @@ $aMenuLinks = Array(
 	),
 	Array(
 		"Где купить", 
-		"/contacts/sale.php", 
+		"/contacts/stores/",
 		Array(), 
 		Array(), 
 		"" 
