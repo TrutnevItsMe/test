@@ -33,6 +33,14 @@ if ($brandIb = $res->GetNext())
 // Формируем меню
 $aMenuLinks = [];
 
+$aMenuLinks[] = [
+	"Наши бренды",
+	"/brands/index.php",
+	[],
+	[],
+	""
+];
+
 foreach ($arBrands as $arBrand)
 {
 	$aMenuLinks[] = [

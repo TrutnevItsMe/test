@@ -22,7 +22,7 @@ $aMenuLinks = Array(
 		"" 
 	),
 	Array(
-		"Акции", 
+		"Акция",
 		"/sale/", 
 		Array(), 
 		Array(), 
@@ -37,14 +37,7 @@ $aMenuLinks = Array(
 	),
 	Array(
 		"Партнерам", 
-		"/help/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
-		"О компании", 
-		"http://www.iberis-pro.ru/about/", 
+		"/info/docs/",
 		Array(), 
 		Array(), 
 		"" 

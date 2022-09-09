@@ -2,7 +2,7 @@
 $aMenuLinks = Array(
 	Array(
 		"О компании", 
-		"http://www.iberis-pro.ru/about/", 
+		"/about/", 
 		Array(), 
 		Array(), 
 		"" 
