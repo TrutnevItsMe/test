@@ -614,7 +614,6 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 				</div>
 
 				<div class="prop_block">
-					<?//=var_dump($arResult["PROPERTIES"])?>
 					
 					<table style="width: 100%;">
 						

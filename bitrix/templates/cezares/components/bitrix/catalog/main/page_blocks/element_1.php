@@ -1,5 +1,4 @@
 <?
-//var_dump($arParams['PRICE_CODE']);
 $ElementID = $APPLICATION->IncludeComponent(
 	"bitrix:catalog.element",
 	"main",

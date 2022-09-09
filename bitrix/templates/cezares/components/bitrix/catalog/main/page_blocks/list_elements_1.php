@@ -193,7 +193,7 @@ if($isAjaxFilter == "Y")
 		</script>
 	<?endif;?>
 
-	<?// filer?>
+	<?// filter?>
 	<?if($arTheme["FILTER_VIEW"]["VALUE"] === "VERTICAL"):?>
 		<?//add filter with ajax?>
 		<?if($arParams['AJAX_MODE'] == 'Y' && strpos($_SERVER['REQUEST_URI'], 'bxajaxid') !== false):?>

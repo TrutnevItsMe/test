@@ -127,7 +127,6 @@ if(CNext::GetFrontParametrValue('CATALOG_COMPARE') == 'N')
 /**/
 
 
-
 if($bFastViewMode)
 	include_once('element_fast_view.php');
 else

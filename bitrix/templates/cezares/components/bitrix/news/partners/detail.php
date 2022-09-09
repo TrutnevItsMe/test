@@ -53,7 +53,6 @@ $arElement = CNextCache::CIblockElement_GetList(array("CACHE" => array("TAG" => 
 	<?global $arTheme;?>
 	<?//element?>
 	<?$sViewElementTemplate = ($arParams["ELEMENT_TYPE_VIEW"] == "FROM_MODULE" ? $arTheme["PARTNERS_PAGE_DETAIL"]["VALUE"] : $arParams["ELEMENT_TYPE_VIEW"]);?>
-
     <?@include_once('page_blocks/'.$sViewElementTemplate.'.php');?>
 
 	<?$APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_PATH.'/css/animation/animate.min.css');?>

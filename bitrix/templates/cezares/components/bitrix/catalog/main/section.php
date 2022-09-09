@@ -277,7 +277,6 @@ if(CNext::GetFrontParametrValue('CATALOG_COMPARE') == 'N')
 
 <?
 
-//die(var_dump($arParams["PRICE_CODE"]));
 $arTransferParams = array(
 	"SHOW_ABSENT" => $arParams["SHOW_ABSENT"],
 	"HIDE_NOT_AVAILABLE_OFFERS" => $arParams["HIDE_NOT_AVAILABLE_OFFERS"],

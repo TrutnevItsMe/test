@@ -1,46 +1,50 @@
-<?$APPLICATION->SetPageProperty("HIDE_LEFT_BLOCK", "Y")?><?$APPLICATION->SetPageProperty("HIDE_LEFT_BLOCK", "Y")?>
+<? $APPLICATION->SetPageProperty("HIDE_LEFT_BLOCK", "Y") ?><? $APPLICATION->SetPageProperty("HIDE_LEFT_BLOCK", "Y") ?>
 
-<?$isAjax="N";?>
-<?if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest"  && isset($_GET["ajax_get"]) && $_GET["ajax_get"] == "Y" || (isset($_GET["ajax_basket"]) && $_GET["ajax_basket"]=="Y")){
-	$isAjax="Y";
-}?>
-<?if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest" && isset($_GET["ajax_get_filter"]) && $_GET["ajax_get_filter"] == "Y" ){
-	$isAjaxFilter="Y";
-}?>
-<?global $arTheme, $arRegion;?>
+<? $isAjax = "N"; ?>
+<? if (isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest" && isset($_GET["ajax_get"]) && $_GET["ajax_get"] == "Y" || (isset($_GET["ajax_basket"]) && $_GET["ajax_basket"] == "Y"))
+{
+	$isAjax = "Y";
+} ?>
+<? if (isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest" && isset($_GET["ajax_get_filter"]) && $_GET["ajax_get_filter"] == "Y")
+{
+	$isAjaxFilter = "Y";
+} ?>
+<? global $arTheme, $arRegion; ?>
 <div class="right_block wide_N">
 	<div class="middle">
 		<?
-		if($arParams["FILTER_NAME"] == '' || !preg_match("/^[A-Za-z_][A-Za-z01-9_]*$/", $arParams["FILTER_NAME"])){
+		if ($arParams["FILTER_NAME"] == '' || !preg_match("/^[A-Za-z_][A-Za-z01-9_]*$/", $arParams["FILTER_NAME"]))
+		{
 			$arParams["FILTER_NAME"] = "arrFilter";
 		}
 
-		if(!in_array($arParams["LIST_OFFERS_FIELD_CODE"], "DETAIL_PAGE_URL")){
+		if (!in_array($arParams["LIST_OFFERS_FIELD_CODE"], "DETAIL_PAGE_URL"))
+		{
 			$arParams["LIST_OFFERS_FIELD_CODE"][] = "DETAIL_PAGE_URL";
 		}
 
 		$catalogIBlockID = ($arParams["IBLOCK_CATALOG_ID"] ? $arParams["IBLOCK_CATALOG_ID"] : $arTheme["CATALOG_IBLOCK_ID"]["VALUE"]);
 
-		$arItemsFilter = array("IBLOCK_ID" => $catalogIBlockID, "ACTIVE"=>"Y", "PROPERTY_".$arParams["LINKED_PRODUCTS_PROPERTY"] => $arElement["ID"], 'SECTION_GLOBAL_ACTIVE' => 'Y');
+		$arItemsFilter = array("IBLOCK_ID" => $catalogIBlockID, "ACTIVE" => "Y", "PROPERTY_" . $arParams["LINKED_PRODUCTS_PROPERTY"] => $arElement["ID"], 'SECTION_GLOBAL_ACTIVE' => 'Y');
 		CNext::makeElementFilterInRegion($arItemsFilter);
-		$arItems = CNextCache::CIBLockElement_GetList(array('CACHE' => array("MULTI" =>"Y", "TAG" => CNextCache::GetIBlockCacheTag($catalogIBlockID))), $arItemsFilter, false, false, array("ID", "IBLOCK_ID", "IBLOCK_SECTION_ID"));
+		$arItems = CNextCache::CIBLockElement_GetList(array('CACHE' => array("MULTI" => "Y", "TAG" => CNextCache::GetIBlockCacheTag($catalogIBlockID))), $arItemsFilter, false, false, array("ID", "IBLOCK_ID", "IBLOCK_SECTION_ID"));
 
 		$arAllSections = $arSectionsID = $arItemsID = array();
 
 		$arParams["AJAX_FILTER_CATALOG"] = "N";
 
-		if($arItems)
+		if ($arItems)
 		{
 			$setionIDRequest = (isset($_GET["section_id"]) && $_GET["section_id"] ? $_GET["section_id"] : 0);
 
-			foreach($arItems as $arItem)
+			foreach ($arItems as $arItem)
 			{
 				$arItemsID[$arItem["ID"]] = $arItem["ID"];
-				if($arItem["IBLOCK_SECTION_ID"])
+				if ($arItem["IBLOCK_SECTION_ID"])
 				{
-					if(is_array($arItem["IBLOCK_SECTION_ID"]))
+					if (is_array($arItem["IBLOCK_SECTION_ID"]))
 					{
-						foreach($arItem["IBLOCK_SECTION_ID"] as $id)
+						foreach ($arItem["IBLOCK_SECTION_ID"] as $id)
 						{
 							$arAllSections[$id]["COUNT"]++;
 							$arAllSections[$id]["ITEMS"][$arItem["ID"]] = $arItem["ID"];
@@ -56,147 +60,151 @@
 
 			$arSectionsID = array_keys($arAllSections);
 			?>
-			<?ob_start()?>
-				<?if(count($arAllSections) > 1):?>
-					<?
+			<? ob_start() ?>
+			<? if (count($arAllSections) > 1):?>
+			<?
 ###########################bart#######################################				
-	$res = CIBlockSection::GetList(Array("NAME"=>"ASC"), 
-	array("IBLOCK_ID"=>17), false,
-	array("ID","UF_*"));
-	$arNotShowSections = array();
-	while($ar_result = $res->GetNext()){
-	
-		if($ar_result["UF_DISABLE_GLOBAL"]){
-			$arNotShowSections[] = $ar_result['ID'];			
-		}
-	}
-unset($res);
+			$res = CIBlockSection::GetList(array("NAME" => "ASC"),
+				array("IBLOCK_ID" => 17), false,
+				array("ID", "UF_*"));
+			$arNotShowSections = array();
+			while ($ar_result = $res->GetNext())
+			{
+
+				if ($ar_result["UF_DISABLE_GLOBAL"])
+				{
+					$arNotShowSections[] = $ar_result['ID'];
+				}
+			}
+			unset($res);
 ###########################bart#######################################		
-$ar_SELECT = array("ID" => $arSectionsID, "IBLOCK_ID" => $catalogIBlockID, "!ID" =>$arNotShowSections);
+			$ar_SELECT = array("ID" => $arSectionsID, "IBLOCK_ID" => $catalogIBlockID, "!ID" => $arNotShowSections);
 
-					$arSections = CNextCache::CIBlockSection_GetList(array('NAME' => 'ASC', 'CACHE' => array("MULTI" => "N", "GROUP" => array("ID"), "TAG" => CNextCache::GetIBlockCacheTag($catalogIBlockID))), $ar_SELECT, false, array("ID", "IBLOCK_ID", "NAME"));
+			$arSections = CNextCache::CIBlockSection_GetList(array('NAME' => 'ASC', 'CACHE' => array("MULTI" => "N", "GROUP" => array("ID"), "TAG" => CNextCache::GetIBlockCacheTag($catalogIBlockID))), $ar_SELECT, false, array("ID", "IBLOCK_ID", "NAME"));
 
-					$arDeleteParams = array('section_id');
-					if(preg_match_all('/PAGEN_\d+/i'.BX_UTF_PCRE_MODIFIER, $_SERVER['QUERY_STRING'], $arMatches)){
-						$arPagenParams = $arMatches[0];
-						$arDeleteParams = array_merge($arDeleteParams, $arPagenParams);
-					}
+			$arDeleteParams = array('section_id');
+			if (preg_match_all('/PAGEN_\d+/i' . BX_UTF_PCRE_MODIFIER, $_SERVER['QUERY_STRING'], $arMatches))
+			{
+				$arPagenParams = $arMatches[0];
+				$arDeleteParams = array_merge($arDeleteParams, $arPagenParams);
+			}
+			?>
+
+			<div class="top_block_filter_section toggle_menu">
+				<div class="title"><a class="dark_link" title="<?= GetMessage("FILTER_ALL_SECTON"); ?>"
+									  href="<?= $APPLICATION->GetCurPageParam('', $arDeleteParams) ?>"><?= GetMessage("FILTER_SECTON"); ?></a>
+				</div>
+				<div class="items">
+					<?
+					$cntToShow = ($cntToShow = intval($arParams['SECTIONS_DETAIL_COUNT'])) > 0 ? $cntToShow : count($arSections);
+					$cntShow = 0;
+					$bCurrentShowed = false;
+					$bNeedShowCurrent = in_array($setionIDRequest, $arSectionsID);
 					?>
-
-					<div class="top_block_filter_section toggle_menu">
-						<div class="title"><a class="dark_link" title="<?=GetMessage("FILTER_ALL_SECTON");?>" href="<?=$APPLICATION->GetCurPageParam('', $arDeleteParams)?>"><?=GetMessage("FILTER_SECTON");?></a></div>
-						<div class="items">
-							<?
-							$cntToShow = ($cntToShow = intval($arParams['SECTIONS_DETAIL_COUNT'])) > 0 ? $cntToShow : count($arSections);
-							$cntShow = 0;
-							$bCurrentShowed = false;
-							$bNeedShowCurrent = in_array($setionIDRequest, $arSectionsID);
-							?>
-							<?foreach($arSections as $sId => $arSection):?>
-								<?
-								$bCurrent = $setionIDRequest && $sId == $setionIDRequest;
-								$bCurrentShowed |= $bCurrent;
-								$bLastToShow = $cntShow == ($cntToShow - 1);
-								$bCollapsed = ($bLastToShow && $bNeedShowCurrent && !$bCurrentShowed) ? true : !$bCurrent && $cntShow >= $cntToShow;
-								if (!$bCollapsed) {
-									++$cntShow;
-								}
-								?>
-                                <div class="item <?= ($bCurrent ? ' current' : '') ?><?= ($bCollapsed ? ' collapsed' : '') ?>">
-                                    <!--noindex--><a
-                                            href="<?= $APPLICATION->GetCurPageParam('section_id=' . $sId, $arDeleteParams) ?>"
-                                            class="dark_link"><span
-                                                class="item_title"><?= $arSection['NAME'] ?></span><span
-                                                class="item_count"><?= $arAllSections[$sId]['COUNT'] ?></span></a>
-                                    <!-- /noindex --></div>
-							<? endforeach; ?>
-							<? $cntMore = count($arSections) - $cntShow; ?>
-							<? if ($cntMore > 0):?>
-                                <div class="item"><span
-                                            class="item_title colored more_items with_dropdown"><?= GetMessage('MORE_SECTIONS') ?> <?= Aspro\Functions\CAsproNext::declOfNum($cntMore, array(GetMessage('MORE_SECTIONS0'), GetMessage('MORE_SECTIONS1'), GetMessage('MORE_SECTIONS2'))) ?></span>
-                                </div>
-							<? endif; ?>
+					<? foreach ($arSections as $sId => $arSection):?>
+						<?
+						$bCurrent = $setionIDRequest && $sId == $setionIDRequest;
+						$bCurrentShowed |= $bCurrent;
+						$bLastToShow = $cntShow == ($cntToShow - 1);
+						$bCollapsed = ($bLastToShow && $bNeedShowCurrent && !$bCurrentShowed) ? true : !$bCurrent && $cntShow >= $cntToShow;
+						if (!$bCollapsed)
+						{
+							++$cntShow;
+						}
+						?>
+						<div class="item <?= ($bCurrent ? ' current' : '') ?><?= ($bCollapsed ? ' collapsed' : '') ?>">
+							<!--noindex--><a
+									href="<?= $APPLICATION->GetCurPageParam('section_id=' . $sId, $arDeleteParams) ?>"
+									class="dark_link"><span
+										class="item_title"><?= $arSection['NAME'] ?></span><span
+										class="item_count"><?= $arAllSections[$sId]['COUNT'] ?></span></a>
+							<!-- /noindex --></div>
+					<? endforeach; ?>
+					<? $cntMore = count($arSections) - $cntShow; ?>
+					<? if ($cntMore > 0): ?>
+						<div class="item"><span
+									class="item_title colored more_items with_dropdown"><?= GetMessage('MORE_SECTIONS') ?> <?= Aspro\Functions\CAsproNext::declOfNum($cntMore, array(GetMessage('MORE_SECTIONS0'), GetMessage('MORE_SECTIONS1'), GetMessage('MORE_SECTIONS2'))) ?></span>
 						</div>
-					</div>
-				<?endif;?>
-			<?$htmlSections=ob_get_clean();?>
-			<?$APPLICATION->AddViewContent('filter_section', $htmlSections);?>
-			
-			
-		
-			
+					<? endif; ?>
+				</div>
+			</div>
+		<? endif; ?>
+			<? $htmlSections = ob_get_clean(); ?>
+			<? $APPLICATION->AddViewContent('filter_section', $htmlSections); ?>
+
+
 			<?
 			// sort
 			ob_start();
-			include_once(__DIR__."/../sort.php");
+			include_once(__DIR__ . "/../sort.php");
 			$htmlSort = ob_get_clean();
 			$listElementsTemplate = $template;
 			?>
 
-			<?ob_start()?>
-				<div class="visible_mobile_filter">
-				
-				
-			<?php
-			#######################bart			#######################bart
-			global $arrFilter; #echo $arParams["FILTER_NAME"] ;
-			$arrFilter[0] = array('!SECTION_ID' => $arNotShowSections);
-			#######################bart			#######################bart			
+			<? ob_start() ?>
+			<div class="visible_mobile_filter">
 
 
-			?>
-					<?$APPLICATION->IncludeComponent(
-						//"aspro:catalog.smart.filter",
-						"bitrix:catalog.smart.filter",
-						($arParams["AJAX_FILTER_CATALOG"]=="Y" ? "main_ajax" : "main"),
-						Array(
-							"IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
-							"IBLOCK_ID" => $catalogIBlockID,
-							"AJAX_FILTER_FLAG" => $isAjaxFilter,
-							"SECTION_ID" => '',
-							"FILTER_NAME" => $arParams["FILTER_NAME"],
-							"PRICE_CODE" => ($arParams["USE_FILTER_PRICE"] == 'Y' ? $arParams["FILTER_PRICE_CODE"] : $arParams["PRICE_CODE"]),
-							"CACHE_TYPE" => $arParams["CACHE_TYPE"],
-							"CACHE_TIME" => $arParams["CACHE_TIME"],
-							"CACHE_NOTES" => "",
-							"CACHE_GROUPS" => $arParams["CACHE_GROUPS"],
-							"SECTION_IDS" => ($setionIDRequest ? array($setionIDRequest) : $arSectionsID),
-							"ELEMENT_IDS" => ($setionIDRequest ? $arAllSections[$setionIDRequest]["ITEMS"] : $arItemsID),
-							"SAVE_IN_SESSION" => "N",
-							"XML_EXPORT" => "Y",
-							"SECTION_TITLE" => "NAME",
-							"HIDDEN_PROP" => array("BRAND"),
-							"SECTION_DESCRIPTION" => "DESCRIPTION",
-							"SHOW_HINTS" => $arParams["SHOW_HINTS"],
-							'CONVERT_CURRENCY' => $arParams['CONVERT_CURRENCY'],
-							'CURRENCY_ID' => $arParams['CURRENCY_ID'],
-							'DISPLAY_ELEMENT_COUNT' => $arParams['DISPLAY_ELEMENT_COUNT'],
-							"INSTANT_RELOAD" => "Y",
-							"VIEW_MODE" => strtolower($arTheme["FILTER_VIEW"]["VALUE"]),
-							"SEF_MODE" => (strlen($arResult["URL_TEMPLATES"]["smart_filter"]) ? "Y" : "N"),
-							"SEF_RULE" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["smart_filter"],
-							"SMART_FILTER_PATH" => $arResult["VARIABLES"]["SMART_FILTER_PATH"],
-							"HIDE_NOT_AVAILABLE" => $arParams["HIDE_NOT_AVAILABLE"],
-							"SORT_BUTTONS" => $arParams["SORT_BUTTONS"],
-							"SORT_PRICES" => $arParams["SORT_PRICES"],
-							"AVAILABLE_SORT" => $arAvailableSort,
-							"SORT" => $sort,
-							"SORT_ORDER" => $sort_order,
-						),
-						$component);
-					?>
-				</div>
-			<?$html=ob_get_clean();?>
-			<?$APPLICATION->AddViewContent('filter_content', $html);?>
-		<?}?>
-		<?if($isAjax=="Y"):?>
-			<?$APPLICATION->RestartBuffer();?>
-		<?endif;?>
-		
-		<?$APPLICATION->IncludeComponent(
+				<?php
+				#######################bart			#######################bart
+				global $arrFilter; #echo $arParams["FILTER_NAME"] ;
+				$arrFilter[0] = array('!SECTION_ID' => $arNotShowSections);
+				#######################bart			#######################bart
+
+
+				?>
+				<? $APPLICATION->IncludeComponent(
+				//"aspro:catalog.smart.filter",
+					"bitrix:catalog.smart.filter",
+					($arParams["AJAX_FILTER_CATALOG"] == "Y" ? "main_ajax" : "main"),
+					array(
+						"IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
+						"IBLOCK_ID" => $catalogIBlockID,
+						"AJAX_FILTER_FLAG" => $isAjaxFilter,
+						"SECTION_ID" => '',
+						"FILTER_NAME" => $arParams["FILTER_NAME"],
+						"PRICE_CODE" => ($arParams["USE_FILTER_PRICE"] == 'Y' ? $arParams["FILTER_PRICE_CODE"] : $arParams["PRICE_CODE"]),
+						"CACHE_TYPE" => $arParams["CACHE_TYPE"],
+						"CACHE_TIME" => $arParams["CACHE_TIME"],
+						"CACHE_NOTES" => "",
+						"CACHE_GROUPS" => $arParams["CACHE_GROUPS"],
+						"SECTION_IDS" => ($setionIDRequest ? array($setionIDRequest) : $arSectionsID),
+						"ELEMENT_IDS" => ($setionIDRequest ? $arAllSections[$setionIDRequest]["ITEMS"] : $arItemsID),
+						"SAVE_IN_SESSION" => "N",
+						"XML_EXPORT" => "Y",
+						"SECTION_TITLE" => "NAME",
+						"HIDDEN_PROP" => array("BRAND"),
+						"SECTION_DESCRIPTION" => "DESCRIPTION",
+						"SHOW_HINTS" => $arParams["SHOW_HINTS"],
+						'CONVERT_CURRENCY' => $arParams['CONVERT_CURRENCY'],
+						'CURRENCY_ID' => $arParams['CURRENCY_ID'],
+						'DISPLAY_ELEMENT_COUNT' => $arParams['DISPLAY_ELEMENT_COUNT'],
+						"INSTANT_RELOAD" => "Y",
+						"VIEW_MODE" => strtolower($arTheme["FILTER_VIEW"]["VALUE"]),
+						"SEF_MODE" => (strlen($arResult["URL_TEMPLATES"]["smart_filter"]) ? "Y" : "N"),
+						"SEF_RULE" => $arResult["FOLDER"] . $arResult["URL_TEMPLATES"]["smart_filter"],
+						"SMART_FILTER_PATH" => $arResult["VARIABLES"]["SMART_FILTER_PATH"],
+						"HIDE_NOT_AVAILABLE" => $arParams["HIDE_NOT_AVAILABLE"],
+						"SORT_BUTTONS" => $arParams["SORT_BUTTONS"],
+						"SORT_PRICES" => $arParams["SORT_PRICES"],
+						"AVAILABLE_SORT" => $arAvailableSort,
+						"SORT" => $sort,
+						"SORT_ORDER" => $sort_order,
+					),
+					$component);
+				?>
+			</div>
+			<? $html = ob_get_clean(); ?>
+			<? $APPLICATION->AddViewContent('filter_content', $html); ?>
+		<? } ?>
+		<? if ($isAjax == "Y"): ?>
+			<? $APPLICATION->RestartBuffer(); ?>
+		<? endif; ?>
+
+		<? $APPLICATION->IncludeComponent(
 			"bitrix:news.detail",
 			"partners",
-			Array(
+			array(
 				"DISPLAY_DATE" => $arParams["DISPLAY_DATE"],
 				"DISPLAY_NAME" => $arParams["DISPLAY_NAME"],
 				"SHOW_GALLERY" => $arParams["SHOW_GALLERY"],
@@ -207,8 +215,8 @@ $ar_SELECT = array("ID" => $arSectionsID, "IBLOCK_ID" => $catalogIBlockID, "!ID"
 				"IBLOCK_ID" => $arParams["IBLOCK_ID"],
 				"FIELD_CODE" => $arParams["DETAIL_FIELD_CODE"],
 				"PROPERTY_CODE" => $arParams["DETAIL_PROPERTY_CODE"],
-				"DETAIL_URL"	=>	$arResult["FOLDER"].$arResult["URL_TEMPLATES"]["detail"],
-				"SECTION_URL"	=>	$arResult["FOLDER"].$arResult["URL_TEMPLATES"]["section"],
+				"DETAIL_URL" => $arResult["FOLDER"] . $arResult["URL_TEMPLATES"]["detail"],
+				"SECTION_URL" => $arResult["FOLDER"] . $arResult["URL_TEMPLATES"]["section"],
 				"META_KEYWORDS" => $arParams["META_KEYWORDS"],
 				"META_DESCRIPTION" => $arParams["META_DESCRIPTION"],
 				"BROWSER_TITLE" => $arParams["BROWSER_TITLE"],
@@ -235,172 +243,214 @@ $ar_SELECT = array("ID" => $arSectionsID, "IBLOCK_ID" => $catalogIBlockID, "!ID"
 				"CHECK_DATES" => $arParams["CHECK_DATES"],
 				"ELEMENT_ID" => $arResult["VARIABLES"]["ELEMENT_ID"],
 				"ELEMENT_CODE" => $arResult["VARIABLES"]["ELEMENT_CODE"],
-				"IBLOCK_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["news"],
-				"USE_SHARE" 			=> $arParams["USE_SHARE"],
-				"SHARE_HIDE" 			=> $arParams["SHARE_HIDE"],
-				"SHARE_TEMPLATE" 		=> $arParams["SHARE_TEMPLATE"],
-				"SHARE_HANDLERS" 		=> $arParams["SHARE_HANDLERS"],
-				"SHARE_SHORTEN_URL_LOGIN"	=> $arParams["SHARE_SHORTEN_URL_LOGIN"],
+				"IBLOCK_URL" => $arResult["FOLDER"] . $arResult["URL_TEMPLATES"]["news"],
+				"USE_SHARE" => $arParams["USE_SHARE"],
+				"SHARE_HIDE" => $arParams["SHARE_HIDE"],
+				"SHARE_TEMPLATE" => $arParams["SHARE_TEMPLATE"],
+				"SHARE_HANDLERS" => $arParams["SHARE_HANDLERS"],
+				"SHARE_SHORTEN_URL_LOGIN" => $arParams["SHARE_SHORTEN_URL_LOGIN"],
 				"SHARE_SHORTEN_URL_KEY" => $arParams["SHARE_SHORTEN_URL_KEY"],
 				"SHOW_TOP_BANNER" => "Y",
 			),
 			$component
-		);?>
-		
-		<?
-		if(!$_GET['section_id'] AND (!$_GET['set_filter'])){
-			//echo "$arItems";?>
-			<?if(count($arAllSections) > 1){?>
-				<style>
-				.cat-item{
-					width: 200px;
-					height: 200px;
-					float: left;
-					text-align: center;
-					margin: 5px;
-					padding: 5px;
-					border: 1px solid #ccc;
-				}
-				.cat-item span{
-				float: left;
-				}
-				.cat-item span img {padding: 0px 35px;max-width:190px}
-				.cat-item .item_title{ padding: 0px 30px;}
-				</style>
-					<?
-					###########################bart#######################################				
-						$res = CIBlockSection::GetList(Array("NAME"=>"ASC"), 
-						array("IBLOCK_ID"=>17), false,
-						array("ID","UF_*"));
-						$arNotShowSections = array();
-						while($ar_result = $res->GetNext()){
-						
-							if($ar_result["UF_DISABLE_GLOBAL"]){
-								$arNotShowSections[] = $ar_result['ID'];			
-							}
-						}
-					unset($res);
-					###########################bart#######################################		
-					$ar_SELECT_1 = array("ID" => $arSectionsID, "IBLOCK_ID" => $catalogIBlockID, "!ID" =>$arNotShowSections);
-					
-					$arSections_1 = CNextCache::CIBlockSection_GetList(array('NAME' => 'ASC', 'CACHE' => array("MULTI" => "N", "GROUP" => array("ID"), "TAG" => CNextCache::GetIBlockCacheTag($catalogIBlockID))), $ar_SELECT_1, false, array("ID", "IBLOCK_ID", "NAME","PICTURE"));
+		); ?>
 
-					$arDeleteParams = array('section_id');
-					if(preg_match_all('/PAGEN_\d+/i'.BX_UTF_PCRE_MODIFIER, $_SERVER['QUERY_STRING'], $arMatches)){
-						$arPagenParams = $arMatches[0];
-						$arDeleteParams = array_merge($arDeleteParams, $arPagenParams);
+		<?
+		if (!$_GET['section_id'] and (!$_GET['set_filter']))
+		{
+
+			if (count($arAllSections) > 1)
+			{
+				?>
+				<style>
+					.cat-item
+					{
+						width: 200px;
+						height: 200px;
+						float: left;
+						text-align: center;
+						margin: 5px;
+						padding: 5px;
+						border: 1px solid #ccc;
 					}
-					?>
-					<div class="">
-						<div class="title"><a class="dark_link" title="<?=GetMessage("FILTER_ALL_SECTON");?>" href="<?=$APPLICATION->GetCurPageParam('', $arDeleteParams)?>"><?=GetMessage("FILTER_SECTON");?></a></div>
-						<div class="">
-							<?
-							//$cntToShow = ($cntToShow = intval($arParams['SECTIONS_DETAIL_COUNT'])) > 0 ? $cntToShow : count($arSections_1);
-							$cntToShow = 300;//($cntToShow = intval($arParams['SECTIONS_DETAIL_COUNT'])) > 0 ? $cntToShow : count($arSections_1);
-							$cntShow = 0;
-							$bCurrentShowed = false;
-							$bNeedShowCurrent = in_array($setionIDRequest, $arSectionsID);
-							?>
-							<?foreach($arSections_1 as $sId => $arSection):?>
-								<?
-								//var_dump($arSection);
-								$bCurrent = $setionIDRequest && $sId == $setionIDRequest;
-								$bCurrentShowed |= $bCurrent;
-								$bLastToShow = $cntShow == ($cntToShow - 1);
-								$bCollapsed = ($bLastToShow && $bNeedShowCurrent && !$bCurrentShowed) ? true : !$bCurrent && $cntShow >= $cntToShow;
-								if(!$bCollapsed){
-									++$cntShow;
-								}
-			if(!$arSection['PICTURE']){$arSection['PICTURE']="/bitrix/templates/cezares/images/no_photo_medium.png";}else{$arSection['PICTURE']=CFile::GetPath($arSection['PICTURE']);}
-								?>
-								<div class="cat-item <?=($bCurrent ? ' current' : '')?><?=($bCollapsed ? ' collapsed' : '')?>"><!--noindex-->
-									<a href="<?=$APPLICATION->GetCurPageParam('section_id='.$sId, $arDeleteParams)?>" class="dark_link">
-										<span><img src="<?=$arSection['PICTURE'];?>" /></span>
-										<span class="item_title"><?=$arSection['NAME']?>&#160;(<?=$arAllSections[$sId]['COUNT']?>)</span>
-									</a><!-- /noindex -->
-								</div>
-							<?endforeach;?>
-							<?$cntMore = count($arSections_1) - $cntShow;?>
-							<?if($cntMore > 0):?>
-								<div class="cat-item"><span class="item_title colored more_items with_dropdown"><?=GetMessage('MORE_SECTIONS')?> <?=Aspro\Functions\CAsproNext::declOfNum($cntMore, array(GetMessage('MORE_SECTIONS0'), GetMessage('MORE_SECTIONS1'), GetMessage('MORE_SECTIONS2')))?></span></div>
-							<?endif;?>
-						</div>
+
+					.cat-item span
+					{
+						float: left;
+					}
+
+					.cat-item span img
+					{
+						padding: 0px 35px;
+						max-width: 190px
+					}
+
+					.cat-item .item_title
+					{
+						padding: 0px 30px;
+					}
+				</style>
+				<?
+				###########################bart#######################################
+				$res = CIBlockSection::GetList(array("NAME" => "ASC"),
+					array("IBLOCK_ID" => 17), false,
+					array("ID", "UF_*"));
+				$arNotShowSections = array();
+				while ($ar_result = $res->GetNext())
+				{
+
+					if ($ar_result["UF_DISABLE_GLOBAL"])
+					{
+						$arNotShowSections[] = $ar_result['ID'];
+					}
+				}
+				unset($res);
+				###########################bart#######################################
+				$ar_SELECT_1 = array("ID" => $arSectionsID, "IBLOCK_ID" => $catalogIBlockID, "!ID" => $arNotShowSections);
+
+				$arSections_1 = CNextCache::CIBlockSection_GetList(array('NAME' => 'ASC', 'CACHE' => array("MULTI" => "N", "GROUP" => array("ID"), "TAG" => CNextCache::GetIBlockCacheTag($catalogIBlockID))), $ar_SELECT_1, false, array("ID", "IBLOCK_ID", "NAME", "PICTURE"));
+
+				$arDeleteParams = array('section_id');
+				if (preg_match_all('/PAGEN_\d+/i' . BX_UTF_PCRE_MODIFIER, $_SERVER['QUERY_STRING'], $arMatches))
+				{
+					$arPagenParams = $arMatches[0];
+					$arDeleteParams = array_merge($arDeleteParams, $arPagenParams);
+				}
+				?>
+				<div class="">
+					<div class="title"><a class="dark_link" title="<?= GetMessage("FILTER_ALL_SECTON"); ?>"
+										  href="<?= $APPLICATION->GetCurPageParam('', $arDeleteParams) ?>"><?= GetMessage("FILTER_SECTON"); ?></a>
 					</div>
-				<?}
+					<div class="">
+						<?
+						//$cntToShow = ($cntToShow = intval($arParams['SECTIONS_DETAIL_COUNT'])) > 0 ? $cntToShow : count($arSections_1);
+						$cntToShow = 300;//($cntToShow = intval($arParams['SECTIONS_DETAIL_COUNT'])) > 0 ? $cntToShow : count($arSections_1);
+						$cntShow = 0;
+						$bCurrentShowed = false;
+						$bNeedShowCurrent = in_array($setionIDRequest, $arSectionsID);
+						?>
+						<? foreach ($arSections_1 as $sId => $arSection):?>
+							<?
+							$bCurrent = $setionIDRequest && $sId == $setionIDRequest;
+							$bCurrentShowed |= $bCurrent;
+							$bLastToShow = $cntShow == ($cntToShow - 1);
+							$bCollapsed = ($bLastToShow && $bNeedShowCurrent && !$bCurrentShowed) ? true : !$bCurrent && $cntShow >= $cntToShow;
+							if (!$bCollapsed)
+							{
+								++$cntShow;
+							}
+							if (!$arSection['PICTURE'])
+							{
+								$arSection['PICTURE'] = "/bitrix/templates/cezares/images/no_photo_medium.png";
+							}
+							else
+							{
+								$arSection['PICTURE'] = CFile::GetPath($arSection['PICTURE']);
+							}
+							?>
+							<div class="cat-item <?= ($bCurrent ? ' current' : '') ?><?= ($bCollapsed ? ' collapsed' : '') ?>">
+								<!--noindex-->
+								<a href="<?= $APPLICATION->GetCurPageParam('section_id=' . $sId, $arDeleteParams) ?>"
+								   class="dark_link">
+									<span><img src="<?= $arSection['PICTURE']; ?>"/></span>
+									<span class="item_title"><?= $arSection['NAME'] ?>&#160;(<?= $arAllSections[$sId]['COUNT'] ?>)</span>
+								</a><!-- /noindex -->
+							</div>
+						<?endforeach; ?>
+						<? $cntMore = count($arSections_1) - $cntShow; ?>
+						<? if ($cntMore > 0):?>
+							<div class="cat-item"><span
+										class="item_title colored more_items with_dropdown"><?= GetMessage('MORE_SECTIONS') ?> <?= Aspro\Functions\CAsproNext::declOfNum($cntMore, array(GetMessage('MORE_SECTIONS0'), GetMessage('MORE_SECTIONS1'), GetMessage('MORE_SECTIONS2'))) ?></span>
+							</div>
+						<?endif; ?>
+					</div>
+				</div>
+			<?
+			}
 			//$APPLICATION->ShowViewContent('section_view_new');
 			//die('dct');
 		}
-		else{
-		?>
-		
-			<?if($arItems){?>
+		else
+		{
+			?>
+
+			<? if ($arItems) {
+			?>
 			<div class="right_block1 clearfix catalog vertical with_filter" id="right_block_ajax">
 				<?
-				if($arRegion)
+				if ($arRegion)
 				{
-					if($arRegion['LIST_PRICES'])
+					if ($arRegion['LIST_PRICES'])
 					{
-						if(reset($arRegion['LIST_PRICES']) != 'component')
+						if (reset($arRegion['LIST_PRICES']) != 'component')
 							$arParams['PRICE_CODE'] = array_keys($arRegion['LIST_PRICES']);
 					}
-					if($arRegion['LIST_STORES'])
+					if ($arRegion['LIST_STORES'])
 					{
-						if(reset($arRegion['LIST_STORES']) != 'component')
+						if (reset($arRegion['LIST_STORES']) != 'component')
 							$arParams['STORES'] = $arRegion['LIST_STORES'];
 					}
 				}
 
-				if($arParams['LIST_PRICES'])
+				if ($arParams['LIST_PRICES'])
 				{
-					foreach($arParams['LIST_PRICES'] as $key => $price)
+					foreach ($arParams['LIST_PRICES'] as $key => $price)
 					{
-						if(!$price)
+						if (!$price)
 							unset($arParams['LIST_PRICES'][$key]);
 					}
 				}
 
-				if($arParams['STORES'])
+				if ($arParams['STORES'])
 				{
-					foreach($arParams['STORES'] as $key => $store)
+					foreach ($arParams['STORES'] as $key => $store)
 					{
-						if(!$store)
+						if (!$store)
 							unset($arParams['STORES'][$key]);
 					}
 				}
 
-				if($arRegion)
+				if ($arRegion)
 				{
-					if($arRegion["LIST_STORES"] && $arParams["HIDE_NOT_AVAILABLE"] == "Y")
+					if ($arRegion["LIST_STORES"] && $arParams["HIDE_NOT_AVAILABLE"] == "Y")
 					{
-						if($arParams['STORES']){
-							if(CNext::checkVersionModule('18.6.200', 'iblock')){
+						if ($arParams['STORES'])
+						{
+							if (CNext::checkVersionModule('18.6.200', 'iblock'))
+							{
 								$arStoresFilter = array(
 									'STORE_NUMBER' => $arParams['STORES'],
 									'>STORE_AMOUNT' => 0,
 								);
 							}
-							else{
-								if(count($arParams['STORES']) > 1){
+							else
+							{
+								if (count($arParams['STORES']) > 1)
+								{
 									$arStoresFilter = array('LOGIC' => 'OR');
-									foreach($arParams['STORES'] as $storeID)
+									foreach ($arParams['STORES'] as $storeID)
 									{
-										$arStoresFilter[] = array(">CATALOG_STORE_AMOUNT_".$storeID => 0);
+										$arStoresFilter[] = array(">CATALOG_STORE_AMOUNT_" . $storeID => 0);
 									}
 								}
-								else{
-									foreach($arParams['STORES'] as $storeID)
+								else
+								{
+									foreach ($arParams['STORES'] as $storeID)
 									{
-										$arStoresFilter = array(">CATALOG_STORE_AMOUNT_".$storeID => 0);
+										$arStoresFilter = array(">CATALOG_STORE_AMOUNT_" . $storeID => 0);
 									}
 								}
 							}
 
 							$arTmpFilter = array('!TYPE' => '2');
-							if($arStoresFilter){
-								if(!CNext::checkVersionModule('18.6.200', 'iblock') && count($arStoresFilter) > 1){
+							if ($arStoresFilter)
+							{
+								if (!CNext::checkVersionModule('18.6.200', 'iblock') && count($arStoresFilter) > 1)
+								{
 									$arTmpFilter[] = $arStoresFilter;
 								}
-								else{
+								else
+								{
 									$arTmpFilter = array_merge($arTmpFilter, $arStoresFilter);
 								}
 
@@ -417,34 +467,37 @@ $ar_SELECT = array("ID" => $arSectionsID, "IBLOCK_ID" => $catalogIBlockID, "!ID"
 				$GLOBALS[$arParams["FILTER_NAME"]]['ID'] = array_column($arItems, 'ID');
 				$GLOBALS[$arParams["FILTER_NAME"]]['SECTION_GLOBAL_ACTIVE'] = 'Y';
 
-				if($setionIDRequest){
+				if ($setionIDRequest)
+				{
 					$GLOBALS[$arParams["FILTER_NAME"]][] = array("SECTION_ID" => $setionIDRequest);
 				}
 				?>
-				<?=$htmlSections;?>
+				<?= $htmlSections; ?>
 				<div class="inner_wrapper">
-					<?if($arItems):?>
+					<? if ($arItems):?>
 						<hr/>
-						<h5><?=GetMessage("T_GOODS", array("#BRAND_NAME#" => $arElement["NAME"]))?></h5>
-					<?endif;?>
+						<h5><?= GetMessage("T_GOODS", array("#BRAND_NAME#" => $arElement["NAME"])) ?></h5>
+					<? endif; ?>
 
-					<?if($isAjax=="N"){
+					<? if ($isAjax == "N")
+					{
 						$frame = new \Bitrix\Main\Page\FrameHelper("viewtype-brand-block");
-						$frame->begin();?>
-					<?}?>
+						$frame->begin(); ?>
+					<? } ?>
 
 					<div class="adaptive_filter">
-						<a class="filter_opener<?=($_REQUEST["set_filter"] === 'y' ? ' active num' : '')?>"><i></i><span><?=GetMessage("CATALOG_SMART_FILTER_TITLE")?></span></a>
+						<a class="filter_opener<?= ($_REQUEST["set_filter"] === 'y' ? ' active num' : '') ?>"><i></i><span><?= GetMessage("CATALOG_SMART_FILTER_TITLE") ?></span></a>
 					</div>
 
-					<?// sort?>
-					<?=$htmlSort?>
+					<? // sort
+					?>
+					<?= $htmlSort ?>
 
-					<?$show = ($arParams["LINKED_ELEMENST_PAGE_COUNT"] ? $arParams["LINKED_ELEMENST_PAGE_COUNT"] : 20);?>
-					<?if(isset($GLOBALS[$arParams["FILTER_NAME"]]["FACET_OPTIONS"]))
-						unset($GLOBALS[$arParams["FILTER_NAME"]]["FACET_OPTIONS"]);?>
+					<? $show = ($arParams["LINKED_ELEMENST_PAGE_COUNT"] ? $arParams["LINKED_ELEMENST_PAGE_COUNT"] : 20); ?>
+					<? if (isset($GLOBALS[$arParams["FILTER_NAME"]]["FACET_OPTIONS"]))
+						unset($GLOBALS[$arParams["FILTER_NAME"]]["FACET_OPTIONS"]); ?>
 
-					<?$arTransferParams = array(
+					<? $arTransferParams = array(
 						"SHOW_ABSENT" => $arParams["SHOW_ABSENT"],
 						"HIDE_NOT_AVAILABLE_OFFERS" => $arParams["HIDE_NOT_AVAILABLE_OFFERS"],
 						"PRICE_CODE" => $arParams["PRICE_CODE"],
@@ -481,20 +534,21 @@ $ar_SELECT = array("ID" => $arSectionsID, "IBLOCK_ID" => $catalogIBlockID, "!ID"
 						"PRODUCT_QUANTITY_VARIABLE" => $arParams["PRODUCT_QUANTITY_VARIABLE"],
 						"OFFER_SHOW_PREVIEW_PICTURE_PROPS" => $arParams["OFFER_SHOW_PREVIEW_PICTURE_PROPS"],
 						"MAIN_IBLOCK_ID" => $catalogIBlockID,
-					);?>
+					); ?>
 
-					<div class="ajax_load <?=$display;?> js_wrapper_items" data-params='<?=str_replace('\'', '"', CUtil::PhpToJSObject($arTransferParams, false))?>'>
-					<?if($isAjax=="Y" && $isAjaxFilter != "Y"):?>
-						<?$APPLICATION->RestartBuffer();?>
-					<?endif;?>
-						<?$APPLICATION->IncludeComponent(
+					<div class="ajax_load <?= $display; ?> js_wrapper_items"
+						 data-params='<?= str_replace('\'', '"', CUtil::PhpToJSObject($arTransferParams, false)) ?>'>
+						<? if ($isAjax == "Y" && $isAjaxFilter != "Y"):?>
+							<? $APPLICATION->RestartBuffer(); ?>
+						<? endif; ?>
+						<? $APPLICATION->IncludeComponent(
 							"bitrix:catalog.section",
 							"catalog_block",
 							//$listElementsTemplate,
-							Array(
+							array(
 								"USE_REGION" => ($arRegion ? "Y" : "N"),
 								"STORES" => $arParams['STORES'],
-								"SHOW_UNABLE_SKU_PROPS"=>$arParams["SHOW_UNABLE_SKU_PROPS"],
+								"SHOW_UNABLE_SKU_PROPS" => $arParams["SHOW_UNABLE_SKU_PROPS"],
 								"ALT_TITLE_GET" => $arParams["ALT_TITLE_GET"],
 								"SEF_URL_TEMPLATES" => $arParams["SEF_URL_TEMPLATES"],
 								"IBLOCK_TYPE" => $arParams["IBLOCK_CATALOG_TYPE"],
@@ -557,7 +611,7 @@ $ar_SELECT = array("ID" => $arSectionsID, "IBLOCK_ID" => $catalogIBlockID, "!ID"
 								"SHOW_404" => "N",
 								"MESSAGE_404" => "",
 								"FILE_404" => "",
-								"PRICE_CODE" => array(10,11),//$arParams['PRICE_CODE'],
+								"PRICE_CODE" => array(10, 11),//$arParams['PRICE_CODE'],
 								"USE_PRICE_COUNT" => $arParams["USE_PRICE_COUNT"],
 								"SHOW_PRICE_COUNT" => $arParams["SHOW_PRICE_COUNT"],
 								"PRICE_VAT_INCLUDE" => $arParams["PRICE_VAT_INCLUDE"],
@@ -608,55 +662,56 @@ $ar_SELECT = array("ID" => $arSectionsID, "IBLOCK_ID" => $catalogIBlockID, "!ID"
 								"ADD_PICT_PROP" => $arParams["ADD_PICT_PROP"],
 								"OFFER_SHOW_PREVIEW_PICTURE_PROPS" => $arParams["OFFER_SHOW_PREVIEW_PICTURE_PROPS"],
 							), $component, array("HIDE_ICONS" => $isAjax)
-						);?>
-						<?if($isAjax=="Y" && $isAjaxFilter != "Y"):?>
-							<?die();?>
-						<?endif;?>
+						); ?>
+						<? if ($isAjax == "Y" && $isAjaxFilter != "Y"):?>
+							<? die(); ?>
+						<? endif; ?>
 					</div>
-					<?if($isAjax != "Y"):?>
-						<?$frame->end();?>
-					<?endif;?>
+					<? if ($isAjax != "Y"):?>
+						<? $frame->end(); ?>
+					<? endif; ?>
 				</div>
 			</div>
-			<?}?>
-		<?}?>
-		<?if($isAjax == "Y"):?>
-			<?die();?>
-		<?endif;?>
+		<? } ?>
+		<? } ?>
+		<? if ($isAjax == "Y"): ?>
+			<? die(); ?>
+		<? endif; ?>
 	</div>
 	<div class="clearfix"></div>
-	<hr class="bottoms" />
+	<hr class="bottoms"/>
 	<div class="row">
 		<div class="col-md-6 share">
-			<?if($arParams["USE_SHARE"] == "Y" && $arElement):?>
+			<? if ($arParams["USE_SHARE"] == "Y" && $arElement): ?>
 				<div class="line_block">
-					<?$APPLICATION->IncludeFile(SITE_DIR."include/share_buttons.php", Array(), Array("MODE" => "html", "NAME" => GetMessage('CT_BCE_CATALOG_SOC_BUTTON')));?>
+					<? $APPLICATION->IncludeFile(SITE_DIR . "include/share_buttons.php", array(), array("MODE" => "html", "NAME" => GetMessage('CT_BCE_CATALOG_SOC_BUTTON'))); ?>
 				</div>
-			<?endif;?>
+			<? endif; ?>
 		</div>
 		<div class="col-md-6">
-			<a class="back-url url-block" href="<?=$arResult['FOLDER'].$arResult['URL_TEMPLATES']['news']?>"><i class="fa fa-angle-left"></i><span><?=GetMessage('BACK_LINK')?></span></a>
+			<a class="back-url url-block" href="<?= $arResult['FOLDER'] . $arResult['URL_TEMPLATES']['news'] ?>"><i
+						class="fa fa-angle-left"></i><span><?= GetMessage('BACK_LINK') ?></span></a>
 		</div>
 	</div>
-	<?$bHideBackUrl = true;?>
+	<? $bHideBackUrl = true; ?>
 </div>
 <div class="left_block filter_visible">
-	<?$APPLICATION->ShowViewContent('filter_section');?>
+	<? $APPLICATION->ShowViewContent('filter_section'); ?>
 
-	<?$APPLICATION->ShowViewContent('filter_content');?>
+	<? $APPLICATION->ShowViewContent('filter_content'); ?>
 
-	<?$APPLICATION->ShowViewContent('under_sidebar_content');?>
+	<? $APPLICATION->ShowViewContent('under_sidebar_content'); ?>
 
-	<?CNext::get_banners_position('SIDE', 'Y');?>
-	<?$APPLICATION->IncludeComponent("bitrix:main.include", ".default",
+	<? CNext::get_banners_position('SIDE', 'Y'); ?>
+	<? $APPLICATION->IncludeComponent("bitrix:main.include", ".default",
 		array(
 			"COMPONENT_TEMPLATE" => ".default",
-			"PATH" => SITE_DIR."include/left_block/comp_subscribe.php",
+			"PATH" => SITE_DIR . "include/left_block/comp_subscribe.php",
 			"AREA_FILE_SHOW" => "file",
 			"AREA_FILE_SUFFIX" => "",
 			"AREA_FILE_RECURSIVE" => "Y",
 			"EDIT_TEMPLATE" => "include_area.php"
 		),
 		false
-	);?>
+	); ?>
 </div>
