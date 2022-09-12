@@ -22,7 +22,7 @@ $aMenuLinks = Array(
 		"" 
 	),
 	Array(
-		"Акция",
+		"Акция", 
 		"/sale/", 
 		Array(), 
 		Array(), 
@@ -37,14 +37,14 @@ $aMenuLinks = Array(
 	),
 	Array(
 		"Партнерам", 
-		"/info/docs/",
+		"/info/docs/", 
 		Array(), 
 		Array(), 
 		"" 
 	),
 	Array(
 		"Где купить", 
-		"/contacts/stores/",
+		"/contacts/", 
 		Array(), 
 		Array(), 
 		"" 
