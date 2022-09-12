@@ -7,11 +7,6 @@ use Bitrix\Main,
 	Bitrix\Main\Page\Asset,
 	Intervolga\Custom\Tools\SaleUtil;
 
-?>
-<pre>
-    <?var_dump()?>
-</pre>
-<?php
 
 Asset::getInstance()->addJs("/bitrix/components/bitrix/sale.order.payment.change/templates/.default/script.js");
 Asset::getInstance()->addCss("/bitrix/components/bitrix/sale.order.payment.change/templates/.default/style.css");
