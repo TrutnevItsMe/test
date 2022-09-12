@@ -1,5 +1,7 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
+use Bitrix\Main\Localization\Loc;
+
 ?>
 <div class="basket_props_block" id="bx_basket_div_<?=$arResult["ID"];?>" style="display: none;">
 	<?if (!empty($arResult['PRODUCT_PROPERTIES_FILL'])){
@@ -746,8 +748,13 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 				</div>
 			</div>
 			<div class="text">
-				<a target="_blank" href="<?=$arResult["DISPLAY_PROPERTIES"]["BRAND"]["LINK_ELEMENT_VALUE"][$arResult["DISPLAY_PROPERTIES"]["BRAND"]["VALUE"]]["DETAIL_PAGE_URL"]?>?arrFilter_286_<?=abs(crc32($arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE_ENUM_ID"]));?>=Y&set_filter=Показать">
-					Все товары коллекции  <?=$arResult["DISPLAY_PROPERTIES"]["KOLLEKTSIYA"]["DISPLAY_VALUE"]?>
+				<a target="_blank" href="<?=$arResult["ALL_COLLECTIONS_URL"]?>">
+					<?=Loc::getMessage("ALL_PRODUCTS_OF_COLLECTION")?>  <?
+					if ($arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE"]):
+					?><?=$arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE"]?>
+					<?else:
+					?><?=$arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE_ENUM"]?>
+					<?endif;?>
 				</a>
 			</div>
 		</div>

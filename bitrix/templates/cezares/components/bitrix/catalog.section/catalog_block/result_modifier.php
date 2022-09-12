@@ -783,7 +783,6 @@ if (!empty($arResult['ITEMS']))
 				$price_discount = 0;
 				foreach ($arItem['SET']['SET'] as $item)
 				{
-
 					$db_res = CPrice::GetList(
 						array(),
 						array(
@@ -794,13 +793,10 @@ if (!empty($arResult['ITEMS']))
 					if ($ar_res13 = $db_res->Fetch())
 					{
 						$item['PRICE_DISCOUNT'] = $ar_res13["PRICE"];
-						//var_dump($ar_res["PRICE"]);
-
 					}
 					else
 					{
 						$item['PRICE_DISCOUNT'] = $item['PRICE'];
-
 					}
 					$db_res = CPrice::GetList(
 						array(),
@@ -816,7 +812,6 @@ if (!empty($arResult['ITEMS']))
 					else
 					{
 						$item['PRICE'] = $item['PRICE'];
-
 					}
 
 					$price += floatval($item['PRICE']) * intval($item['AMOUNT']);
@@ -827,9 +822,9 @@ if (!empty($arResult['ITEMS']))
 					$ar_res13 = 0;
 					$ar_res14 = 0;
 				}
+
 				foreach ($arItem['SET']['OPTIONAL'] as $item)
 				{
-
 					$db_res = CPrice::GetList(
 						array(),
 						array(
@@ -837,6 +832,7 @@ if (!empty($arResult['ITEMS']))
 							"CATALOG_GROUP_ID" => 13
 						)
 					);
+
 					if ($ar_res13 = $db_res->Fetch())
 					{
 						$item['PRICE_DISCOUNT'] = $ar_res13["PRICE"];
@@ -846,6 +842,7 @@ if (!empty($arResult['ITEMS']))
 						$item['PRICE_DISCOUNT'] = $item['PRICE'];
 
 					}
+
 					$db_res = CPrice::GetList(
 						array(),
 						array(
@@ -853,6 +850,7 @@ if (!empty($arResult['ITEMS']))
 							"CATALOG_GROUP_ID" => 14
 						)
 					);
+
 					if ($ar_res14 = $db_res->Fetch())
 					{
 						$item['PRICE'] = $ar_res14["PRICE"];

@@ -249,8 +249,8 @@ $ar_SELECT = array("ID" => $arSectionsID, "IBLOCK_ID" => $catalogIBlockID, "!ID"
 		
 		<?
 		if(!$_GET['section_id'] AND (!$_GET['set_filter'])){
-			//echo "$arItems";?>
-			<?if(count($arAllSections) > 1){?>
+
+			if(count($arAllSections) > 1){?>
 				<style>
 				.cat-item{
 					width: 200px;
@@ -295,15 +295,13 @@ $ar_SELECT = array("ID" => $arSectionsID, "IBLOCK_ID" => $catalogIBlockID, "!ID"
 						<div class="title"><a class="dark_link" title="<?=GetMessage("FILTER_ALL_SECTON");?>" href="<?=$APPLICATION->GetCurPageParam('', $arDeleteParams)?>"><?=GetMessage("FILTER_SECTON");?></a></div>
 						<div class="">
 							<?
-							//$cntToShow = ($cntToShow = intval($arParams['SECTIONS_DETAIL_COUNT'])) > 0 ? $cntToShow : count($arSections_1);
-							$cntToShow = 300;//($cntToShow = intval($arParams['SECTIONS_DETAIL_COUNT'])) > 0 ? $cntToShow : count($arSections_1);
+							$cntToShow = 300;
 							$cntShow = 0;
 							$bCurrentShowed = false;
 							$bNeedShowCurrent = in_array($setionIDRequest, $arSectionsID);
 							?>
 							<?foreach($arSections_1 as $sId => $arSection):?>
 								<?
-								//var_dump($arSection);
 								$bCurrent = $setionIDRequest && $sId == $setionIDRequest;
 								$bCurrentShowed |= $bCurrent;
 								$bLastToShow = $cntShow == ($cntToShow - 1);
@@ -327,8 +325,6 @@ $ar_SELECT = array("ID" => $arSectionsID, "IBLOCK_ID" => $catalogIBlockID, "!ID"
 						</div>
 					</div>
 				<?}
-			//$APPLICATION->ShowViewContent('section_view_new');
-			//die('dct');
 		}
 		else{
 		?>
