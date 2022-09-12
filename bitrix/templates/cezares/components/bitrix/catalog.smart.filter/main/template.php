@@ -2,7 +2,7 @@
 $this->setFrameMode(true);
 
 use \Bitrix\Main\Localization\Loc;
-echo $component->makeSmartUrl("/catalog/product/77207/", true);
+
 if ($arResult["ITEMS"])
 {
 	?>
