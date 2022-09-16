@@ -627,11 +627,6 @@ $arSectionsID = array_keys($arAllSections);
 			"MAIN_IBLOCK_ID" => $catalogIBlockID,
 		]; ?>
 
-		<?
-
-			var_dump($GLOBALS[$arParams["FILTER_NAME"]]);
-		?>
-
 		<div class="ajax_load <?= $display; ?> js_wrapper_items"
 			 data-params='<?= str_replace('\'', '"', CUtil::PhpToJSObject($arTransferParams, false)) ?>'>
 			<? if ($isAjax == "Y" && $isAjaxFilter != "Y"): ?>
