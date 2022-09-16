@@ -1,8 +1,19 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
-use Bitrix\Main\Localization\Loc;
+/**
+ * @global $templateFolder
+ * @global $USER
+ * @global $APPLICATION
+ * @global $arResult
+ * @global $arParams
+ */
 
+use Bitrix\Main\Localization\Loc;
+$asset = \Bitrix\Main\Page\Asset::getInstance();
+$asset->addCss($templateFolder . "/style.css");
+$asset->addJs($templateFolder . "/js/customOffers.js");
 ?>
+
 <div class="basket_props_block" id="bx_basket_div_<?=$arResult["ID"];?>" style="display: none;">
 	<?if (!empty($arResult['PRODUCT_PROPERTIES_FILL'])){
 		foreach ($arResult['PRODUCT_PROPERTIES_FILL'] as $propID => $propInfo){?>
@@ -88,8 +99,6 @@ $strMainID = $this->GetEditAreaId($arResult['ID']);
 
 $strObName = 'ob'.preg_replace("/[^a-zA-Z0-9_]/", "x", $strMainID);
 
-
-
 $arResult["strMainID"] = $this->GetEditAreaId($arResult['ID']);
 $arItemIDs=CNext::GetItemsIDs($arResult, "Y");
 $totalCount = CNext::GetTotalCount($arResult, $arParams);
@@ -118,14 +127,15 @@ if($arResult["OFFERS"]){
 		$arMeasure = CCatalogMeasure::getList(array(), array("ID"=>$arResult["CATALOG_MEASURE"]), false, false, array())->GetNext();
 		$strMeasure=$arMeasure["SYMBOL_RUS"];
 	}
-	$arAddToBasketData = CNext::GetAddToBasketArray($arResult, $totalCount, $arParams["DEFAULT_COUNT"], $arParams["BASKET_URL"], true, $arItemIDs["ALL_ITEM_IDS"], 'btn-lg w_icons', $arParams);
 }
+
+$arAddToBasketData = CNext::GetAddToBasketArray(array_diff($arResult, $arResult["OFFERS"]), $totalCount, $arParams["DEFAULT_COUNT"],
+$arParams["BASKET_URL"], true, $arItemIDs["ALL_ITEM_IDS"], 'btn-lg w_icons', $arParams);
 $arOfferProps = implode(';', $arParams['OFFERS_CART_PROPERTIES']);
 
 // save item viewed
 $arFirstPhoto = reset($arResult['MORE_PHOTO']);
 $arItemPrices = $arResult['MIN_PRICE'];
-
 
 if(isset($arResult['PRICE_MATRIX']) && $arResult['PRICE_MATRIX'])
 {
@@ -155,6 +165,7 @@ $arViewedData = array(
 	'IS_OFFER' => 'N',
 	'WITH_OFFERS' => $arResult['OFFERS'] ? 'Y' : 'N',
 );
+
 $actualItem = $arResult["OFFERS"] ? (isset($arResult['OFFERS'][$arResult['OFFERS_SELECTED']]) ? $arResult['OFFERS'][$arResult['OFFERS_SELECTED']] : reset($arResult['OFFERS'])) : $arResult;
 ?>
 <script type="text/javascript">
@@ -449,41 +460,21 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 					<div class="cost prices clearfix">
 						<?$arUserGroups = $USER->GetUserGroupArray();?>
 						<?$arCurPriceType = current($arResult['PRICE_MATRIX']['COLS']);
-						$arCurPrice = current($arResult['PRICE_MATRIX']['MATRIX'][$arCurPriceType['ID']]);
+						$item_id = $arResult["ID"];
 						$min_price_id = $arCurPriceType['ID'];?>
 						<?if( count( $arResult["OFFERS"] ) > 0 ){?>
-							<div class="with_matrix" style="display:none;">
-								<div class="price price_value_block"><span class="values_wrapper"></span></div>
-								<?if($arParams["SHOW_OLD_PRICE"]=="Y"):?>
-									<div class="price discount"></div>
-								<?endif;?>
-								<?if($arParams["SHOW_DISCOUNT_PERCENT"]=="Y"){?>
-									<div class="sale_block matrix" style="display:none;">
-										<div class="sale_wrapper">
-											<?if($arParams["SHOW_DISCOUNT_PERCENT_NUMBER"] != "Y"):?>
-												<span class="title"><?=GetMessage("CATALOG_ECONOMY");?></span>
-												<div class="text"><span class="values_wrapper"></span></div>
-											<?else:?>
-												<div class="text">
-													<span class="title"><?=GetMessage("CATALOG_ECONOMY");?></span>
-													<span class="values_wrapper"></span>
-												</div>
-											<?endif;?>
-											<div class="clearfix"></div>
-										</div>
-									</div>
-								<?}?>
-							</div>
-							<?\Aspro\Functions\CAsproSku::showItemPrices($arParams, $arResult, $item_id, $min_price_id, $arItemIDs, ($arParams["SHOW_DISCOUNT_PERCENT_NUMBER"] == "Y" ? "N" : "Y"));?>
+
 						<?}else{?>
 							<?
 							$item_id = $arResult["ID"];
+
 							if(isset($arResult['PRICE_MATRIX']) && $arResult['PRICE_MATRIX']) // USE_PRICE_COUNT
 							{
 								?>
 								<?if($arResult['ITEM_PRICE_MODE'] == 'Q' && count($arResult['PRICE_MATRIX']['ROWS']) > 1):?>
 									<?=CNext::showPriceRangeTop($arResult, $arParams, GetMessage("CATALOG_ECONOMY"));?>
 								<?endif;?>
+
 								<div class="price_group   eb812f89-14ce-11e5-a550-5404a68a235f"><div class="price_name"></div>
 									<div class="price_matrix_wrapper ">
 										<div class="price" data-currency="RUB" data-value="0"><div style="display: none;">50 rub.</div>
@@ -492,7 +483,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 													<span class="price_value">
 														<div style="display: none;">50 rub.</div>
 														<?
-														
+
 														$db_res = CPrice::GetList(
 																array(),
 																array(
@@ -505,17 +496,17 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 															$item['PRICE_DISCOUNT']= $ar_res["PRICE"];
 														}else{
 															$item['PRICE_DISCOUNT']= $item['PRICE'];
-															
+
 															}
 														$arResult['PRICE_MATRIX']["MATRIX"][13]["ZERO-INF"]["PRICE"] = $item['PRICE_DISCOUNT'];
-														
+
 														$vigoda=intval($arResult['PRICE_MATRIX']["MATRIX"][14]["ZERO-INF"]["PRICE"])-intval($arResult['PRICE_MATRIX']["MATRIX"][13]["ZERO-INF"]["PRICE"]);
 														if($vigoda AND (intval($arResult['PRICE_MATRIX']["MATRIX"][14]["ZERO-INF"]["PRINT_PRICE"]))){
 														?>
 														<table cellpadding="4">
 															<tr>
 																<td rowspan="2"><span style="font-size: 33px;"><?=number_format($arResult['PRICE_MATRIX']["MATRIX"][13]["ZERO-INF"]["PRICE"], 0, ',', ' ');?> руб.</span></td>
-														
+
 																<td><span style=" padding-left: 8px;   color: #ff9900;    font-size: 18px;">-<?=$vigoda?> руб.</span></td>
 															</tr>
 															<tr>
@@ -581,7 +572,6 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 						<?else:?>
 							<?if($arResult['JS_OFFERS'])
 							{
-
 								foreach($arResult['JS_OFFERS'] as $keyOffer => $arTmpOffer2)
 								{
 									$active_to = '';
@@ -653,20 +643,28 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 							</script>
 						</div>
 					<?}?>
-					<?if(!$arResult["OFFERS"]):?>
 						<script>
 							$(document).ready(function() {
 								$('.catalog_detail input[data-sid="PRODUCT_NAME"]').attr('value', $('h1').text());
 							});
 						</script>
 						<div class="counter_wrapp">
-							<?if(($arAddToBasketData["OPTIONS"]["USE_PRODUCT_QUANTITY_DETAIL"] && $arAddToBasketData["ACTION"] == "ADD") && $arAddToBasketData["CAN_BUY"]):?>
-								<div class="counter_block big_basket" data-offers="<?=($arResult["OFFERS"] ? "Y" : "N");?>" data-item="<?=$arResult["ID"];?>" <?=(($arResult["OFFERS"] && $arParams["TYPE_SKU"]=="N") ? "style='display: none;'" : "");?>>
-									<span class="minus" id="<? echo $arItemIDs["ALL_ITEM_IDS"]['QUANTITY_DOWN']; ?>">-</span>
-									<input type="text" class="text" id="<? echo $arItemIDs["ALL_ITEM_IDS"]['QUANTITY']; ?>" name="<? echo $arParams["PRODUCT_QUANTITY_VARIABLE"]; ?>" value="<?=$arAddToBasketData["MIN_QUANTITY_BUY"]?>" />
-									<span class="plus" id="<? echo $arItemIDs["ALL_ITEM_IDS"]['QUANTITY_UP']; ?>" <?=($arAddToBasketData["MAX_QUANTITY_BUY"] ? "data-max='".$arAddToBasketData["MAX_QUANTITY_BUY"]."'" : "")?>>+</span>
-								</div>
-							<?endif;?>
+							<? if (!$arResult["OFFERS"]): ?>
+								<? if (($arAddToBasketData["OPTIONS"]["USE_PRODUCT_QUANTITY_DETAIL"] && $arAddToBasketData["ACTION"] == "ADD") && $arAddToBasketData["CAN_BUY"]): ?>
+									<div class="counter_block big_basket"
+										 data-offers="<?= ($arResult["OFFERS"] ? "Y" : "N"); ?>"
+										 data-item="<?= $arResult["ID"]; ?>" <?= (($arResult["OFFERS"] && $arParams["TYPE_SKU"] == "N") ? "style='display: none;'" : ""); ?>>
+										<span class="minus"
+											  id="<? echo $arItemIDs["ALL_ITEM_IDS"]['QUANTITY_DOWN']; ?>">-</span>
+										<input type="text" class="text"
+											   id="<? echo $arItemIDs["ALL_ITEM_IDS"]['QUANTITY']; ?>"
+											   name="<? echo $arParams["PRODUCT_QUANTITY_VARIABLE"]; ?>"
+											   value="<?= $arAddToBasketData["MIN_QUANTITY_BUY"] ?>"/>
+										<span class="plus"
+											  id="<? echo $arItemIDs["ALL_ITEM_IDS"]['QUANTITY_UP']; ?>" <?= ($arAddToBasketData["MAX_QUANTITY_BUY"] ? "data-max='" . $arAddToBasketData["MAX_QUANTITY_BUY"] . "'" : "") ?>>+</span>
+									</div>
+								<? endif; ?>
+							<? endif; ?>
 							<div id="<? echo $arItemIDs["ALL_ITEM_IDS"]['BASKET_ACTIONS']; ?>" class="button_block <?=(($arAddToBasketData["ACTION"] == "ORDER") || !$arAddToBasketData["CAN_BUY"] || !$arAddToBasketData["OPTIONS"]["USE_PRODUCT_QUANTITY_DETAIL"] || ($arAddToBasketData["ACTION"] == "SUBSCRIBE" && $arResult["CATALOG_SUBSCRIBE"] == "Y")  ? "wide" : "");?>">
 								<!--noindex-->
 									<?=$arAddToBasketData["HTML"]?>
@@ -698,13 +696,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 								</div>
 							<?endif;?>
 						<?endif;?>
-					<?elseif($arResult["OFFERS"] && $arParams['TYPE_SKU'] == 'TYPE_1'):?>
-						<div class="offer_buy_block buys_wrapp" style="display:none;">
-							<div class="counter_wrapp"></div>
-						</div>
-					<?elseif($arResult["OFFERS"] && $arParams['TYPE_SKU'] != 'TYPE_1'):?>
-						<span class="btn btn-default btn-lg slide_offer transition_bg type_block"><i></i><span><?=\Bitrix\Main\Config\Option::get("aspro.next", "EXPRESSION_READ_MORE_OFFERS_DEFAULT", GetMessage("MORE_TEXT_BOTTOM"));?></span></span>
-					<?endif;?>
+
 				</div>
 
 				<?//delivery calculate?>
@@ -760,42 +752,47 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 		</div>
 	</div>
 	<?$bPriceCount = ($arParams['USE_PRICE_COUNT'] == 'Y');?>
+	<? //Вывводим фильтр по торговым предложениям ?>
 	<?if($arResult['OFFERS']):?>
-		<span itemprop="offers" itemscope itemtype="http://schema.org/AggregateOffer" style="display:none;">
-			<meta itemprop="offerCount" content="<?=count($arResult['OFFERS'])?>" />
-			<meta itemprop="lowPrice" content="<?=($arResult['MIN_PRICE']['DISCOUNT_VALUE'] ? $arResult['MIN_PRICE']['DISCOUNT_VALUE'] : $arResult['MIN_PRICE']['VALUE'] )?>" />
-			<meta itemprop="highPrice" content="<?=($arResult['MAX_PRICE']['DISCOUNT_VALUE'] ? $arResult['MAX_PRICE']['DISCOUNT_VALUE'] : $arResult['MAX_PRICE']['VALUE'] )?>" />
-			<meta itemprop="priceCurrency" content="<?=$arResult['MIN_PRICE']['CURRENCY']?>" />
-			<?foreach($arResult['OFFERS'] as $arOffer):?>
-				<?$currentOffersList = array();?>
-				<?foreach($arOffer['TREE'] as $propName => $skuId):?>
-					<?$propId = (int)substr($propName, 5);?>
-					<?foreach($arResult['SKU_PROPS'] as $prop):?>
-						<?if($prop['ID'] == $propId):?>
-							<?foreach($prop['VALUES'] as $propId => $propValue):?>
-								<?if($propId == $skuId):?>
-									<?$currentOffersList[] = $propValue['NAME'];?>
-									<?break;?>
-								<?endif;?>
-							<?endforeach;?>
-						<?endif;?>
-					<?endforeach;?>
-				<?endforeach;?>
-				<span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-					<meta itemprop="sku" content="<?=implode('/', $currentOffersList)?>" />
-					<a href="<?=$arOffer['DETAIL_PAGE_URL']?>" itemprop="url"></a>
-					<meta itemprop="price" content="<?=($arOffer['MIN_PRICE']['DISCOUNT_VALUE']) ? $arOffer['MIN_PRICE']['DISCOUNT_VALUE'] : $arOffer['MIN_PRICE']['VALUE']?>" />
-					<meta itemprop="priceCurrency" content="<?=$arOffer['MIN_PRICE']['CURRENCY']?>" />
-					<link itemprop="availability" href="http://schema.org/<?=($arOffer['CAN_BUY'] ? 'InStock' : 'OutOfStock')?>" />
+
+		<div class="offers-filter">
+			<?foreach($arResult["OFFERS_MAP_FILTER"] as $prop => $arValueOffers):?>
+
+				<h4 class="offers-filter-column"><?=$arResult["PROPERTIES"][$prop]["NAME"]?>: </h4>
+				<span class="prop-current-value"><?=$arResult["CURRENT_OFFER"]["PROPERTIES"][$prop]["VALUE"]?></span>
+				<div class="flex filter-item-container" data-column="<?=$prop?>">
 					<?
-					if($arDiscount["ACTIVE_TO"]){?>
-						<meta itemprop="priceValidUntil" content="<?=date("Y-m-d", MakeTimeStamp($arDiscount["ACTIVE_TO"]))?>" />
-					<?}?>
-					<meta itemprop="url" content="<?=$arResult["DETAIL_PAGE_URL"]?>" />
-				</span>
+					$values = array_keys($arValueOffers);
+					sort($values);
+
+					?>
+				<? foreach ($values as $value): ?>
+				<? $isCurrentOfferValue = $arResult["CURRENT_OFFER"]["PROPERTIES"][$prop]["VALUE"] == $value;
+					$arOffers = $arValueOffers[$value];
+
+					$isAvailableValue = false;
+
+					foreach(array_column($arOffers, "ACTIVE_OFFER") as $isActive){
+						if ($isActive){
+							$isAvailableValue = true;
+							break;
+						}
+					}
+				?>
+				<a>
+					<div class="offers-filter-item <?if ($isCurrentOfferValue):?>active-offers-filter-item<?endif;?>
+					<?if (!$isAvailableValue):?>inactive-offer<?endif;?>"
+					data-column="<?=$prop?>"
+					data-<?=$prop?>='<?=$value?>'>
+						<span><?=$value?></span>
+					</div>
+				</a>
+				<? endforeach; ?>
+				</div>
+
 			<?endforeach;?>
-		</span>
-		<?unset($arOffer, $currentOffersList);?>
+		</div>
+
 	<?else:?>
 		<?if(!$bPriceCount):?>
 			<span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
@@ -2084,6 +2081,21 @@ if ($arResult['CATALOG'] && $arParams['USE_GIFTS_MAIN_PR_SECTION_LIST'] == 'Y' &
 		</div>
 	</div>
 <?endif;?>
+
+<script>
+	$(document).ready(function (){
+		window.OffersFilterComponent.init({
+			result: <?=CUtil::PhpToJSObject($arResult)?>,
+			params: <?=CUtil::PhpToJSObject($arParams)?>,
+			classActiveOfferItem: "active-offers-filter-item",
+			classOfferItem: "offers-filter-item",
+			classInactive: "inactive-offer",
+			classInaccessible: "inaccessible"
+		});
+	});
+
+</script>
+
 <script type="text/javascript">
 	BX.message({
 		QUANTITY_AVAILIABLE: '<? echo COption::GetOptionString("aspro.next", "EXPRESSION_FOR_EXISTS", GetMessage("EXPRESSION_FOR_EXISTS_DEFAULT"), SITE_ID); ?>',
