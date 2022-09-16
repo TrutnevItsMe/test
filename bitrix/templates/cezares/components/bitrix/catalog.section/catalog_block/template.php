@@ -174,7 +174,6 @@
 						$strMeasure = $arCurrentSKU["MEASURE"];
 					}
 				}
-
 				?>
 				<div class="catalog_item main_item_wrapper item_wrap <?= (($_GET['q'])) ? 's' : '' ?>"
 					 id="<?= $arItemIDs["strMainID"]; ?>">
