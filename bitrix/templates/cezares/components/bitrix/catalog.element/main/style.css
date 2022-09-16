@@ -1,0 +1,33 @@
+.offers-filter{
+	float: left;
+}
+
+.offers-filter-item{
+	border-style: solid;
+	border-radius: 10px;
+	border-width: 2px;
+	padding: 10px;
+	margin-right: 5px;
+}
+
+.flex{
+	display: flex;
+}
+
+.offers-filter-column{
+	margin: 15px 5px 7px 5px;
+	display: inline-block;
+}
+
+.active-offers-filter-item{
+	border-color: #ff9a56;
+}
+
+.inactive-offer{
+	border-color: #bbb;
+	color: #bbb;
+}
+
+.inaccessible{
+	opacity: 0.5;
+}

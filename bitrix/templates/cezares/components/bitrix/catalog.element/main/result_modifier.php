@@ -14,26 +14,26 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 /** @var array $arParams */
 /** @var array $arResult */
 
-$displayPreviewTextMode = array(
+$displayPreviewTextMode = [
 	'H' => true,
 	'E' => true,
 	'S' => true
-);
-$detailPictMode = array(
+];
+$detailPictMode = [
 	'IMG' => true,
 	'POPUP' => true,
 	'MAGNIFIER' => true,
 	'GALLERY' => true
-);
+];
 
-$arDefaultParams = array(
+$arDefaultParams = [
 	'TYPE_SKU' => 'Y',
 	'ADD_PICT_PROP' => '-',
 	'OFFER_ADD_PICT_PROP' => '-',
-	'OFFER_TREE_PROPS' => array('-'),
+	'OFFER_TREE_PROPS' => ['-'],
 	'ADD_TO_BASKET_ACTION' => 'ADD',
 	'DEFAULT_COUNT' => '1',
-);
+];
 $arParams = array_merge($arDefaultParams, $arParams);
 if ('TYPE_1' != $arParams['TYPE_SKU'])
 	$arParams['TYPE_SKU'] = 'N';
@@ -48,7 +48,7 @@ $arParams['OFFER_ADD_PICT_PROP'] = trim($arParams['OFFER_ADD_PICT_PROP']);
 if ('-' == $arParams['OFFER_ADD_PICT_PROP'])
 	$arParams['OFFER_ADD_PICT_PROP'] = '';
 if (!is_array($arParams['OFFER_TREE_PROPS']))
-	$arParams['OFFER_TREE_PROPS'] = array($arParams['OFFER_TREE_PROPS']);
+	$arParams['OFFER_TREE_PROPS'] = [$arParams['OFFER_TREE_PROPS']];
 foreach ($arParams['OFFER_TREE_PROPS'] as $key => $value)
 {
 	$value = (string)$value;
@@ -91,10 +91,10 @@ if ('Y' != $arParams['SHOW_MAX_QUANTITY'])
 if ($arParams['SHOW_BASIS_PRICE'] != 'Y')
 	$arParams['SHOW_BASIS_PRICE'] = 'N';
 if (!is_array($arParams['ADD_TO_BASKET_ACTION']))
-	$arParams['ADD_TO_BASKET_ACTION'] = array($arParams['ADD_TO_BASKET_ACTION']);
+	$arParams['ADD_TO_BASKET_ACTION'] = [$arParams['ADD_TO_BASKET_ACTION']];
 $arParams['ADD_TO_BASKET_ACTION'] = array_filter($arParams['ADD_TO_BASKET_ACTION'], 'CIBlockParameters::checkParamValues');
 if (empty($arParams['ADD_TO_BASKET_ACTION']) || (!in_array('ADD', $arParams['ADD_TO_BASKET_ACTION']) && !in_array('BUY', $arParams['ADD_TO_BASKET_ACTION'])))
-	$arParams['ADD_TO_BASKET_ACTION'] = array('BUY');
+	$arParams['ADD_TO_BASKET_ACTION'] = ['BUY'];
 if ($arParams['SHOW_CLOSE_POPUP'] != 'Y')
 	$arParams['SHOW_CLOSE_POPUP'] = 'N';
 
@@ -128,19 +128,19 @@ if (file_exists($_SERVER['DOCUMENT_ROOT'] . $strEmptyPreview))
 	$arSizes = getimagesize($_SERVER['DOCUMENT_ROOT'] . $strEmptyPreview);
 	if (!empty($arSizes))
 	{
-		$arEmptyPreview = array(
+		$arEmptyPreview = [
 			'SRC' => $strEmptyPreview,
 			'WIDTH' => (int)$arSizes[0],
 			'HEIGHT' => (int)$arSizes[1]
-		);
+		];
 	}
 	unset($arSizes);
 }
 unset($strEmptyPreview);
 
-$arSKUPropList = array();
-$arSKUPropIDs = array();
-$arSKUPropKeys = array();
+$arSKUPropList = [];
+$arSKUPropIDs = [];
+$arSKUPropKeys = [];
 $boolSKU = false;
 $strBaseCurrency = '';
 $boolConvert = isset($arResult['CONVERT_CURRENCY']['CURRENCY_ID']);
@@ -158,17 +158,16 @@ if ($arResult['MODULES']['catalog'])
 		$arSKUPropList = CIBlockPriceTools::getTreeProperties(
 			$arSKU,
 			$arParams['OFFER_TREE_PROPS'],
-			array(
-				//'PICT' => $arEmptyPreview,
+			[
 				'NAME' => '-'
-			)
+			]
 		);
 		$arResult["SKU_IBLOCK_ID"] = $arSKU["IBLOCK_ID"];
 		$arSKUPropIDs = array_keys($arSKUPropList);
 
 	}
 }
-$arConvertParams = array();
+$arConvertParams = [];
 if ('Y' == $arParams['CONVERT_CURRENCY'])
 {
 	if (!CModule::IncludeModule('currency'))
@@ -214,15 +213,15 @@ if (empty($productSlider))
 {
 	if ($arResult['PREVIEW_PICTURE'] && 'Y' == $arParams['ADD_DETAIL_TO_SLIDER'])
 	{
-		$productSlider = array(
+		$productSlider = [
 			0 => $arResult['PREVIEW_PICTURE'],
-		);
+		];
 	}
 	else
 	{
-		$productSlider = array(
+		$productSlider = [
 			0 => $arEmptyPreview
-		);
+		];
 	}
 }
 
@@ -232,11 +231,13 @@ if ($productSlider)
 	foreach ($productSlider as $i => $arImage)
 	{
 		$productSlider[$i] = array_merge(
-			$arImage, array(
-				"BIG" => array('src' => CFile::GetPath($arImage["ID"])),
-				"SMALL" => CFile::ResizeImageGet($arImage["ID"], array("width" => 400, "height" => 400), BX_RESIZE_IMAGE_PROPORTIONAL, true, array()),
-				"THUMB" => CFile::ResizeImageGet($arImage["ID"], array("width" => 50, "height" => 50), BX_RESIZE_IMAGE_PROPORTIONAL, true, array()),
-			)
+			$arImage, [
+				"BIG" => ['src' => CFile::GetPath($arImage["ID"])],
+				"SMALL" => CFile::ResizeImageGet($arImage["ID"], ["width" => 400, "height" => 400],
+			BX_RESIZE_IMAGE_PROPORTIONAL, true, []),
+				"THUMB" => CFile::ResizeImageGet($arImage["ID"], ["width" => 50, "height" => 50],
+			BX_RESIZE_IMAGE_PROPORTIONAL, true, []),
+			]
 		);
 	}
 }
@@ -260,7 +261,7 @@ if ($arResult['MODULES']['catalog'])
 	switch ($arResult['CATALOG_TYPE'])
 	{
 		case CCatalogProduct::TYPE_SET:
-			$arResult['OFFERS'] = array();
+			$arResult['OFFERS'] = [];
 			$arResult['CHECK_QUANTITY'] = ('Y' == $arResult['CATALOG_QUANTITY_TRACE'] && 'N' == $arResult['CATALOG_CAN_BUY_ZERO']);
 			break;
 		case CCatalogProduct::TYPE_SKU:
@@ -274,13 +275,13 @@ if ($arResult['MODULES']['catalog'])
 else
 {
 	$arResult['CATALOG_TYPE'] = 0;
-	$arResult['OFFERS'] = array();
+	$arResult['OFFERS'] = [];
 }
 
 /* ADDITIONAL GALLERY */
 if ($arParams['USE_ADDITIONAL_GALLERY'] === 'Y')
 {
-	$arResult['ADDITIONAL_GALLERY'] = $arElementAdditionalGallery = $arOffersAdditionalGallery = array();
+	$arResult['ADDITIONAL_GALLERY'] = $arElementAdditionalGallery = $arOffersAdditionalGallery = [];
 
 	if ($arResult['OFFERS'] && $arParams['ADDITIONAL_GALLERY_OFFERS_PROPERTY_CODE'])
 	{
@@ -288,7 +289,7 @@ if ($arParams['USE_ADDITIONAL_GALLERY'] === 'Y')
 		{
 			if ('TYPE_1' === $arParams['TYPE_SKU'])
 			{
-				$arOffersAdditionalGallery[$arOffer['ID']] = array();
+				$arOffersAdditionalGallery[$arOffer['ID']] = [];
 			}
 			if ($arOffer['PROPERTIES'] && isset($arOffer['PROPERTIES'][$arParams['ADDITIONAL_GALLERY_OFFERS_PROPERTY_CODE']]) && $arOffer['PROPERTIES'][$arParams['ADDITIONAL_GALLERY_OFFERS_PROPERTY_CODE']]['VALUE'])
 			{
@@ -301,13 +302,15 @@ if ($arParams['USE_ADDITIONAL_GALLERY'] === 'Y')
 						$alt = (strlen($arResult['DETAIL_PICTURE']['ALT']) ? $arResult['DETAIL_PICTURE']['ALT'] : (strlen($arPhoto['ALT']) ? $arPhoto['ALT'] : $arResult['NAME']));
 						$title = (strlen($arResult['DETAIL_PICTURE']['TITLE']) ? $arResult['DETAIL_PICTURE']['TITLE'] : (strlen($arPhoto['TITLE']) ? $arPhoto['TITLE'] : $arResult['NAME']));
 					}
-					$arPhoto = array(
+					$arPhoto = [
 						'DETAIL' => ($arPhoto = CFile::GetFileArray($img)),
-						'PREVIEW' => CFile::ResizeImageGet($img, array('width' => 1500, 'height' => 1500), BX_RESIZE_PROPORTIONAL_ALT, true),
-						'THUMB' => CFile::ResizeImageGet($img, array('width' => 60, 'height' => 60), BX_RESIZE_IMAGE_EXACT, true),
+						'PREVIEW' => CFile::ResizeImageGet($img, ['width' => 1500, 'height' => 1500],
+							BX_RESIZE_PROPORTIONAL_ALT, true),
+						'THUMB' => CFile::ResizeImageGet($img, ['width' => 60, 'height' => 60],
+							BX_RESIZE_IMAGE_EXACT, true),
 						'TITLE' => $title,
 						'ALT' => $alt,
-					);
+					];
 					if ('TYPE_1' === $arParams['TYPE_SKU'])
 					{
 						$arOffersAdditionalGallery[$arOffer['ID']][] = $arPhoto;
@@ -333,13 +336,15 @@ if ($arParams['USE_ADDITIONAL_GALLERY'] === 'Y')
 				$alt = (strlen($arResult['DETAIL_PICTURE']['ALT']) ? $arResult['DETAIL_PICTURE']['ALT'] : (strlen($arPhoto['ALT']) ? $arPhoto['ALT'] : $arResult['NAME']));
 				$title = (strlen($arResult['DETAIL_PICTURE']['TITLE']) ? $arResult['DETAIL_PICTURE']['TITLE'] : (strlen($arPhoto['TITLE']) ? $arPhoto['TITLE'] : $arResult['NAME']));
 			}
-			$arElementAdditionalGallery[] = array(
+			$arElementAdditionalGallery[] = [
 				'DETAIL' => ($arPhoto = CFile::GetFileArray($img)),
-				'PREVIEW' => CFile::ResizeImageGet($img, array('width' => 1500, 'height' => 1500), BX_RESIZE_PROPORTIONAL_ALT, true),
-				'THUMB' => CFile::ResizeImageGet($img, array('width' => 60, 'height' => 60), BX_RESIZE_IMAGE_EXACT, true),
+				'PREVIEW' => CFile::ResizeImageGet($img, ['width' => 1500, 'height' => 1500],
+			BX_RESIZE_PROPORTIONAL_ALT, true),
+				'THUMB' => CFile::ResizeImageGet($img, ['width' => 60, 'height' => 60], BX_RESIZE_IMAGE_EXACT,
+			true),
 				'TITLE' => $title,
 				'ALT' => $alt,
-			);
+			];
 		}
 	}
 	if ($arResult['OFFERS'])
@@ -363,14 +368,14 @@ if ($arParams['USE_ADDITIONAL_GALLERY'] === 'Y')
 
 	unset($arElementAdditionalGallery, $arOffersAdditionalGallery);
 }
-$arResult["TMP_OFFERS_PROP"] = array();
+$arResult["TMP_OFFERS_PROP"] = [];
 if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFERS']))
 {
 	$boolSKUDisplayProps = false;
 
-	$arResultSKUPropIDs = array();
-	$arFilterProp = array();
-	$arNeedValues = array();
+	$arResultSKUPropIDs = [];
+	$arFilterProp = [];
+	$arNeedValues = [];
 	if ('TYPE_1' == $arParams['TYPE_SKU'] && $arResult['OFFERS'])
 	{
 		foreach ($arResult['OFFERS'] as &$arOffer)
@@ -381,7 +386,7 @@ if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFE
 				{
 					$arResultSKUPropIDs[$strOneCode] = true;
 					if (!isset($arNeedValues[$arSKUPropList[$strOneCode]['ID']]))
-						$arNeedValues[$arSKUPropList[$strOneCode]['ID']] = array();
+						$arNeedValues[$arSKUPropList[$strOneCode]['ID']] = [];
 					$valueId = (
 					$arSKUPropList[$strOneCode]['PROPERTY_TYPE'] == Iblock\PropertyTable::TYPE_LIST
 						? $arOffer['DISPLAY_PROPERTIES'][$strOneCode]['VALUE_ENUM_ID']
@@ -406,16 +411,16 @@ if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFE
 
 
 	$arMatrixFields = $arSKUPropKeys;
-	$arMatrix = array();
+	$arMatrix = [];
 
-	$arNewOffers = array();
+	$arNewOffers = [];
 
-	$arIDS = array($arResult['ID']);
-	$offerSet = array();
+	$arIDS = [$arResult['ID']];
+	$offerSet = [];
 	$arResult['OFFER_GROUP'] = false;
 	$arResult['OFFERS_PROP'] = false;
 
-	$arDouble = array();
+	$arDouble = [];
 
 	foreach ($arResult['OFFERS'] as $keyOffer => $arOffer)
 	{
@@ -425,14 +430,14 @@ if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFE
 		$arIDS[] = $arOffer['ID'];
 		$boolSKUDisplayProperties = false;
 		$arOffer['OFFER_GROUP'] = false;
-		$arRow = array();
+		$arRow = [];
 		foreach ($arSKUPropIDs as $propkey => $strOneCode)
 		{
-			$arCell = array(
+			$arCell = [
 				'VALUE' => 0,
 				'SORT' => PHP_INT_MAX,
 				'NA' => true
-			);
+			];
 			if (isset($arOffer['DISPLAY_PROPERTIES'][$strOneCode]))
 			{
 				$arMatrixFields[$strOneCode] = true;
@@ -458,7 +463,7 @@ if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFE
 
 		CIBlockPriceTools::setRatioMinPrice($arOffer, false);
 
-		$arOffer['MORE_PHOTO'] = array();
+		$arOffer['MORE_PHOTO'] = [];
 		$arOffer['MORE_PHOTO_COUNT'] = 0;
 		$arOffer['ALT_TITLE_GET'] = $arParams['ALT_TITLE_GET'];
 		$offerSlider = CNext::getSliderForItemExt($arOffer, $arParams['OFFER_ADD_PICT_PROP'], true); // $arParams['ADD_DETAIL_TO_SLIDER'] == 'Y'
@@ -472,8 +477,9 @@ if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFE
 				if ($arImage["ID"])
 				{
 					$arOffer['MORE_PHOTO'][$i]["BIG"]['src'] = CFile::GetPath($arImage["ID"]);
-					$arOffer['MORE_PHOTO'][$i]["SMALL"] = CFile::ResizeImageGet($arImage["ID"], array("width" => 400, "height" => 400), BX_RESIZE_IMAGE_PROPORTIONAL, true, array());
-					$arOffer['MORE_PHOTO'][$i]["THUMB"] = CFile::ResizeImageGet($arImage["ID"], array("width" => 52, "height" => 52), BX_RESIZE_IMAGE_PROPORTIONAL, true, array());
+					$arOffer['MORE_PHOTO'][$i]["SMALL"] = CFile::ResizeImageGet($arImage["ID"], ["width" => 400,
+						"height" => 400], BX_RESIZE_IMAGE_PROPORTIONAL, true, []);
+					$arOffer['MORE_PHOTO'][$i]["THUMB"] = CFile::ResizeImageGet($arImage["ID"], ["width" => 52, "height" => 52], BX_RESIZE_IMAGE_PROPORTIONAL, true, []);
 				}
 			}
 		}
@@ -507,7 +513,7 @@ if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFE
 	$arResult['OFFERS'] = $arNewOffers;
 	$arResult['SHOW_OFFERS_PROPS'] = $boolSKUDisplayProps;
 
-	$arUsedFields = $arSortFields = $arPropSKU = array();
+	$arUsedFields = $arSortFields = $arPropSKU = [];
 
 	foreach ($arSKUPropIDs as $propkey => $strOneCode)
 	{
@@ -517,7 +523,7 @@ if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFE
 			if ($boolExist)
 			{
 				if (!isset($arResult['OFFERS'][$keyOffer]['TREE']))
-					$arResult['OFFERS'][$keyOffer]['TREE'] = array();
+					$arResult['OFFERS'][$keyOffer]['TREE'] = [];
 				$arResult['OFFERS'][$keyOffer]['TREE']['PROP_' . $arSKUPropList[$strOneCode]['ID']] = $arMatrix[$keyOffer][$strOneCode]['VALUE'];
 				$arResult['OFFERS'][$keyOffer]['SKU_SORT_' . $strOneCode] = $arMatrix[$keyOffer][$strOneCode]['SORT'];
 				$arUsedFields[$strOneCode] = true;
@@ -534,7 +540,8 @@ if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFE
 		if ($arPropSKU[$strOneCode])
 		{
 			// sort sku prop values
-			Collection::sortByColumn($arPropSKU[$strOneCode], array("SORT" => array(SORT_NUMERIC, SORT_ASC), "NAME" => array(SORT_STRING, SORT_ASC)));
+			Collection::sortByColumn($arPropSKU[$strOneCode], ["SORT" => [SORT_NUMERIC, SORT_ASC], "NAME"
+			=> [SORT_STRING, SORT_ASC]]);
 			$arSKUPropList[$strOneCode]["VALUES"] = $arPropSKU[$strOneCode];
 		}
 	}
@@ -548,20 +555,20 @@ if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFE
 	Collection::sortByColumn($arResult['OFFERS'], $arSortFields);
 
 	/*offers & nabor*/
-	$offerSet = array();
+	$offerSet = [];
 	if (!empty($arIDS) && CBXFeatures::IsFeatureEnabled('CatCompleteSet'))
 	{
 		$offerSet = array_fill_keys($arIDS, false);
 		$rsSets = CCatalogProductSet::getList(
-			array(),
-			array(
+			[],
+			[
 				'@OWNER_ID' => $arIDS,
 				'=SET_ID' => 0,
 				'=TYPE' => CCatalogProductSet::TYPE_GROUP
-			),
+			],
 			false,
 			false,
-			array('ID', 'OWNER_ID')
+			['ID', 'OWNER_ID']
 		);
 		while ($arSet = $rsSets->Fetch())
 		{
@@ -588,11 +595,11 @@ if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFE
 		}
 	}
 
-	$arMatrix = array();
+	$arMatrix = [];
 	$intSelected = -1;
 	$arResult['MIN_PRICE'] = false;
 	$arResult['MIN_BASIS_PRICE'] = false;
-	$arPropsSKU = array();
+	$arPropsSKU = [];
 	$arOfferProps = implode(';', $arParams['OFFERS_CART_PROPERTIES']);
 
 	$postfix = '';
@@ -618,19 +625,19 @@ if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFE
 			if (!empty($arOffer['DISPLAY_PROPERTIES']))
 			{
 				$boolSKUDisplayProps = true;
-				$arSKUProps = array();
+				$arSKUProps = [];
 				foreach ($arOffer['DISPLAY_PROPERTIES'] as &$arOneProp)
 				{
 					if ('F' == $arOneProp['PROPERTY_TYPE'] || ($arParams['OFFER_TREE_PROPS'] && in_array($arOneProp['CODE'], $arParams['OFFER_TREE_PROPS'])))
 						continue;
 					$arOneProp['SHOW_HINTS'] = $arParams['SHOW_HINTS'];
-					$arSKUProps[] = array(
+					$arSKUProps[] = [
 						'NAME' => $arOneProp['NAME'],
 						'VALUE' => $arOneProp['DISPLAY_VALUE'],
 						'CODE' => $arOneProp['CODE'],
 						'SHOW_HINTS' => $arParams['SHOW_HINTS'],
 						'HINT' => $arOneProp['HINT'],
-					);
+					];
 					$arPropsSKU[] = $arOneProp;
 				}
 				unset($arOneProp);
@@ -646,7 +653,7 @@ if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFE
 			$totalCount = CNext::GetTotalCount($arOffer, $arParams);
 			$arOffer['IS_OFFER'] = 'Y';
 			$arOffer['IBLOCK_ID'] = $arResult['IBLOCK_ID'];
-			$arPriceTypeID = array();
+			$arPriceTypeID = [];
 			if ($arOffer['PRICES'])
 			{
 				foreach ($arOffer['PRICES'] as $priceKey => $arOfferPrice)
@@ -679,7 +686,7 @@ if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFE
 			$arAddToBasketData["HTML"] = str_replace('data-item', 'data-props="' . $arOfferProps . '" data-item', $arAddToBasketData["HTML"]);
 
 			$firstPhoto = current($arOffer['MORE_PHOTO']);
-			$arOneRow = array(
+			$arOneRow = [
 				'ID' => $arOffer['ID'],
 				'NAME' => $arOffer['~NAME'],
 				'IBLOCK_ID' => $arOffer['IBLOCK_ID'],
@@ -706,7 +713,7 @@ if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFE
 				'CATALOG_SUBSCRIBE' => $arOffer['CATALOG_SUBSCRIBE'],
 				'SLIDER' => $arOffer['MORE_PHOTO'],
 				'SLIDER_COUNT' => $arOffer['MORE_PHOTO_COUNT'],
-				'AVAILIABLE' => CNext::GetQuantityArray($totalCount, array(), "Y"),
+				'AVAILIABLE' => CNext::GetQuantityArray($totalCount, [], "Y"),
 				'URL' => $arOffer['DETAIL_PAGE_URL'],
 				'CONFIG' => $arAddToBasketData,
 				'HTML' => $arAddToBasketData["HTML"],
@@ -731,7 +738,7 @@ if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFE
 				'ITEM_MEASURE_RATIOS' => $arOffer['ITEM_MEASURE_RATIOS'],
 				'ITEM_MEASURE_RATIO_SELECTED' => $arOffer['ITEM_MEASURE_RATIO_SELECTED'],
 				'ADDITIONAL_GALLERY' => $arResult['ADDITIONAL_GALLERY'][$arOffer['ID']],
-			);
+			];
 			if ($arOneRow["PRICE"]["DISCOUNT_DIFF"])
 			{
 				$percent = round(($arOneRow["PRICE"]["DISCOUNT_DIFF"] / $arOneRow["PRICE"]["VALUE"]) * 100, 2);
@@ -748,7 +755,7 @@ if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFE
 			$arResult['OFFERS'],
 			$boolConvert ? $arResult['CONVERT_CURRENCY']['CURRENCY_ID'] : $strBaseCurrency
 		);
-		$arTmpProps = array();
+		$arTmpProps = [];
 
 		$minItemPriceID = 0;
 		$minItemPrice = 0;
@@ -797,14 +804,14 @@ if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFE
 				{
 					if (!isset($arTmpProps[$code]))
 					{
-						$arTmpProps[$code] = array(
+						$arTmpProps[$code] = [
 							"NAME" => $arOffer["PROPERTIES"][$code]["NAME"],
 							"CODE" => $code,
 							"HINT" => $arOffer["PROPERTIES"][$code]["HINT"],
 							"ID" => $arOffer["PROPERTIES"][$code]["ID"],
 							"PROPERTY_TYPE" => $arOffer["PROPERTIES"][$code]["PROPERTY_TYPE"],
 							"IS_EMPTY" => true
-						);
+						];
 					}
 
 					if (!$arOffer["PROPERTIES"][$code]["VALUE"])
@@ -835,7 +842,7 @@ if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFE
 			//format offer prices when USE_PRICE_COUNT
 			if ($arParams['USE_PRICE_COUNT'] == 'Y')
 			{
-				$arPriceTypeID = array();
+				$arPriceTypeID = [];
 				if ($arOffer['PRICES'])
 				{
 					foreach ($arOffer['PRICES'] as $priceKey => $arOfferPrice)
@@ -901,15 +908,15 @@ if ($arResult['MODULES']['catalog'] && $arResult['CATALOG'])
 	if (CBXFeatures::IsFeatureEnabled('CatCompleteSet') && $arResult['CATALOG_TYPE'] == CCatalogProduct::TYPE_PRODUCT)
 	{
 		$rsSets = CCatalogProductSet::getList(
-			array(),
-			array(
+			[],
+			[
 				'@OWNER_ID' => $arResult['ID'],
 				'=SET_ID' => 0,
 				'=TYPE' => CCatalogProductSet::TYPE_GROUP
-			),
+			],
 			false,
 			false,
-			array('ID', 'OWNER_ID')
+			['ID', 'OWNER_ID']
 		);
 		if ($arSet = $rsSets->Fetch())
 		{
@@ -936,7 +943,7 @@ if ($arResult['MODULES']['catalog'] && $arResult['CATALOG'])
 				}
 				if (function_exists('CatalogGetPriceTableEx') && (isset($arOffer['PRICE_MATRIX'])) && !$arOffer['PRICE_MATRIX'])
 				{
-					$arPriceTypeID = array();
+					$arPriceTypeID = [];
 					if ($arOffer['PRICES'])
 					{
 						foreach ($arOffer['PRICES'] as $priceKey => $arOfferPrice)
@@ -980,7 +987,7 @@ if ($arResult['MODULES']['catalog'] && $arResult['CATALOG'])
 /*complect*/
 if (true || $arParams["SHOW_KIT_PARTS"] == "Y")
 {
-	$arSetItems = $arSetItemsOtherID = array();
+	$arSetItems = $arSetItemsOtherID = [];
 
 	$arSets = CCatalogProductSet::getAllSetsByProduct($arResult["ID"], 1);
 
@@ -988,7 +995,7 @@ if (true || $arParams["SHOW_KIT_PARTS"] == "Y")
 	{
 		foreach ($arSets as $key => $set)
 		{
-			\Bitrix\Main\Type\Collection::sortByColumn($set["ITEMS"], array('SORT' => SORT_ASC));
+			\Bitrix\Main\Type\Collection::sortByColumn($set["ITEMS"], ['SORT' => SORT_ASC]);
 			foreach ($set["ITEMS"] as $i => $val)
 			{
 				$arSetItems[] = $val["ITEM_ID"];
@@ -999,8 +1006,8 @@ if (true || $arParams["SHOW_KIT_PARTS"] == "Y")
 	}
 	$arResultPrices = CIBlockPriceTools::GetCatalogPrices($arParams["IBLOCK_ID"], $arParams["PRICE_CODE"]);
 
-	$arSelect = array("ID", "IBLOCK_ID", "NAME", "DETAIL_PAGE_URL", "PREVIEW_PICTURE", "DETAIL_PICTURE");
-	$arPriceTypeID = array();
+	$arSelect = ["ID", "IBLOCK_ID", "NAME", "DETAIL_PAGE_URL", "PREVIEW_PICTURE", "DETAIL_PICTURE"];
+	$arPriceTypeID = [];
 	foreach ($arResultPrices as &$value)
 	{
 		if ($value['CAN_VIEW'] && $value['CAN_BUY'])
@@ -1011,7 +1018,7 @@ if (true || $arParams["SHOW_KIT_PARTS"] == "Y")
 	}
 	if (!empty($arSetItems))
 	{
-		$db_res = CIBlockElement::GetList(array("SORT" => "ASC"), array("ID" => $arSetItems), false, false, $arSelect);
+		$db_res = CIBlockElement::GetList(["SORT" => "ASC"], ["ID" => $arSetItems], false, false, $arSelect);
 		$bShowQuantity = false;
 		while ($res = $db_res->GetNext())
 		{
@@ -1023,7 +1030,7 @@ if (true || $arParams["SHOW_KIT_PARTS"] == "Y")
 		}
 		$arResult["SET_ITEMS_QUANTITY"] = $bShowQuantity;
 		$arResult["SET_ITEMS"] = array_values($arResult["SET_ITEMS"]);
-		\Bitrix\Main\Type\Collection::sortByColumn($arResult["SET_ITEMS"], array('SORT' => SORT_ASC));
+		\Bitrix\Main\Type\Collection::sortByColumn($arResult["SET_ITEMS"], ['SORT' => SORT_ASC]);
 	}
 
 	$bCatalog = CModule::IncludeModule('catalog');
@@ -1089,47 +1096,47 @@ if ($arSKUPropList)
 $arResult['SKU_PROPS'] = $arSKUPropList;
 $arResult['DEFAULT_PICTURE'] = $arEmptyPreview;
 
-$arResult['CURRENCIES'] = array();
+$arResult['CURRENCIES'] = [];
 if ($arResult['MODULES']['currency'])
 {
 	if ($boolConvert)
 	{
 		$currencyFormat = CCurrencyLang::GetFormatDescription($arResult['CONVERT_CURRENCY']['CURRENCY_ID']);
-		$arResult['CURRENCIES'] = array(
-			array(
+		$arResult['CURRENCIES'] = [
+			[
 				'CURRENCY' => $arResult['CONVERT_CURRENCY']['CURRENCY_ID'],
-				'FORMAT' => array(
+				'FORMAT' => [
 					'FORMAT_STRING' => $currencyFormat['FORMAT_STRING'],
 					'DEC_POINT' => $currencyFormat['DEC_POINT'],
 					'THOUSANDS_SEP' => $currencyFormat['THOUSANDS_SEP'],
 					'DECIMALS' => $currencyFormat['DECIMALS'],
 					'THOUSANDS_VARIANT' => $currencyFormat['THOUSANDS_VARIANT'],
 					'HIDE_ZERO' => $currencyFormat['HIDE_ZERO']
-				)
-			)
-		);
+				]
+			]
+		];
 		unset($currencyFormat);
 	}
 	else
 	{
-		$currencyIterator = CurrencyTable::getList(array(
-			'select' => array('CURRENCY'),
-			'filter' => array('BASE' => 'Y')
-		));
+		$currencyIterator = CurrencyTable::getList([
+			'select' => ['CURRENCY'],
+			'filter' => ['BASE' => 'Y']
+		]);
 		while ($currency = $currencyIterator->fetch())
 		{
 			$currencyFormat = CCurrencyLang::GetFormatDescription($currency['CURRENCY']);
-			$arResult['CURRENCIES'][] = array(
+			$arResult['CURRENCIES'][] = [
 				'CURRENCY' => $currency['CURRENCY'],
-				'FORMAT' => array(
+				'FORMAT' => [
 					'FORMAT_STRING' => $currencyFormat['FORMAT_STRING'],
 					'DEC_POINT' => $currencyFormat['DEC_POINT'],
 					'THOUSANDS_SEP' => $currencyFormat['THOUSANDS_SEP'],
 					'DECIMALS' => $currencyFormat['DECIMALS'],
 					'THOUSANDS_VARIANT' => $currencyFormat['THOUSANDS_VARIANT'],
 					'HIDE_ZERO' => $currencyFormat['HIDE_ZERO']
-				)
-			);
+				]
+			];
 		}
 		unset($currencyFormat, $currency, $currencyIterator);
 	}
@@ -1137,7 +1144,7 @@ if ($arResult['MODULES']['currency'])
 
 
 /*akc*/
-$arSelect = array(
+$arSelect = [
 	"ID",
 	"IBLOCK_ID",
 	"IBLOCK_SECTION_ID",
@@ -1145,27 +1152,27 @@ $arSelect = array(
 	"PREVIEW_PICTURE",
 	"PREVIEW_TEXT",
 	"DETAIL_PAGE_URL",
-);
+];
 
 if (intVal($arParams["IBLOCK_STOCK_ID"]))
 {
-	$arFilterSale = array(
+	$arFilterSale = [
 		"IBLOCK_ID" => $arParams["IBLOCK_STOCK_ID"],
 		"ACTIVE" => "Y",
 		"ACTIVE_DATE" => "Y",
 		"PROPERTY_LINK_GOODS" => $arResult["ID"],
-	);
+	];
 	if (intval($arParams['USE_REGION']) > 0)
 	{
-		$arFilterSale[] = array('PROPERTY_LINK_REGION' => $arParams['USE_REGION']);
+		$arFilterSale[] = ['PROPERTY_LINK_REGION' => $arParams['USE_REGION']];
 	}
 	$arResult["STOCK"] = CNextCache::CIBLockElement_GetList(
-		array(
-			'CACHE' => array(
+		[
+			'CACHE' => [
 				"TAG" => CNextCache::GetIBlockCacheTag($arParams["IBLOCK_STOCK_ID"]),
 				"GROUP" => "ID"
-			)
-		),
+			]
+		],
 		$arFilterSale,
 		false,
 		false,
@@ -1178,23 +1185,23 @@ if (
 	$arResult["PROPERTIES"]["LINK_SALE"]["LINK_IBLOCK_ID"]
 )
 {
-	$arFilterSale = array(
+	$arFilterSale = [
 		"IBLOCK_ID" => $arResult["PROPERTIES"]["LINK_SALE"]["LINK_IBLOCK_ID"],
 		"ACTIVE" => "Y",
 		"ACTIVE_DATE" => "Y",
 		"ID" => $arResult["PROPERTIES"]["LINK_SALE"]["VALUE"],
-	);
+	];
 	if (intval($arParams['USE_REGION']) > 0)
 	{
-		$arFilterSale[] = array('PROPERTY_LINK_REGION' => $arParams['USE_REGION']);
+		$arFilterSale[] = ['PROPERTY_LINK_REGION' => $arParams['USE_REGION']];
 	}
 	$arResult["LINK_SALE"] = CNextCache::CIBLockElement_GetList(
-		array(
-			'CACHE' => array(
+		[
+			'CACHE' => [
 				"TAG" => CNextCache::GetIBlockCacheTag($arResult["PROPERTIES"]["LINK_SALE"]["LINK_IBLOCK_ID"]),
 				"GROUP" => "ID"
-			)
-		),
+			]
+		],
 		$arFilterSale,
 		false,
 		false,
@@ -1214,7 +1221,7 @@ if (
 			$arResult["PROPERTIES"]["LINK_SALE"]["VALUE"] = array_unique($arResult["PROPERTIES"]["LINK_SALE"]["VALUE"]);
 
 			$arTmpStock = $arResult["STOCK"];
-			$arResult["STOCK"] = array();
+			$arResult["STOCK"] = [];
 			foreach (array_merge($arTmpStock, $arResult["LINK_SALE"]) as $arTmpItems2)
 			{
 				$arResult["STOCK"][$arTmpItems2["ID"]] = $arTmpItems2;
@@ -1233,29 +1240,29 @@ elseif ($arResult["STOCK"])
 
 if (intVal($arParams["IBLOCK_STOCK_ID"]))
 {
-	$arFilterSale = array(
+	$arFilterSale = [
 		"IBLOCK_ID" => $arParams["IBLOCK_STOCK_ID"],
 		"ACTIVE" => "Y",
 		"ACTIVE_DATE" => "Y",
 		'!PROPERTY_LINK_GOODS_FILTER_VALUE' => false,
-	);
+	];
 	if (intval($arParams['USE_REGION']) > 0)
 	{
-		$arFilterSale[] = array('PROPERTY_LINK_REGION' => $arParams['USE_REGION']);
+		$arFilterSale[] = ['PROPERTY_LINK_REGION' => $arParams['USE_REGION']];
 	}
 	$arSales = CNextCache::CIBLockElement_GetList(
-		array(
-			'CACHE' => array(
+		[
+			'CACHE' => [
 				"TAG" => CNextCache::GetIBlockCacheTag($arParams["IBLOCK_STOCK_ID"]),
 				"GROUP" => "ID"
-			)
-		),
+			]
+		],
 		$arFilterSale,
 		false,
 		false,
 		array_merge(
 			$arSelect,
-			array("PROPERTY_LINK_GOODS_FILTER", "PROPERTY_LINK_GOODS")
+			["PROPERTY_LINK_GOODS_FILTER", "PROPERTY_LINK_GOODS"]
 		)
 	);
 	if ($arSales)
@@ -1272,7 +1279,7 @@ if (intVal($arParams["IBLOCK_STOCK_ID"]))
 				}
 				catch (\Exception $e)
 				{
-					$arGoodsFilter = array();
+					$arGoodsFilter = [];
 				}
 				unset($cond);
 
@@ -1291,22 +1298,22 @@ if (intVal($arParams["IBLOCK_STOCK_ID"]))
 						}
 					}
 
-					$arFilterSale = array(
+					$arFilterSale = [
 						"LOGIC" => "AND",
-						array(
+						[
 							"IBLOCK_ID" => $arParams["IBLOCK_ID"],
 							"ACTIVE" => "Y",
 							'ID' => $arResult['ID'],
-						),
-						array($arGoodsFilter),
-					);
+						],
+						[$arGoodsFilter],
+					];
 
 					$cnt = CNextCache::CIBLockElement_GetList(
-						array(
-							'CACHE' => array("TAG" => CNextCache::GetIBlockCacheTag($arParams["IBLOCK_ID"]))
-						),
+						[
+							'CACHE' => ["TAG" => CNextCache::GetIBlockCacheTag($arParams["IBLOCK_ID"])]
+						],
 						$arFilterSale,
-						array()
+						[]
 					);
 					if ($cnt)
 					{
@@ -1320,32 +1327,32 @@ if (intVal($arParams["IBLOCK_STOCK_ID"]))
 }
 
 /*services*/
-$arSelect = array(
+$arSelect = [
 	"ID", "IBLOCK_ID",
 	"IBLOCK_SECTION_ID",
 	"NAME",
 	"PREVIEW_PICTURE",
 	"PREVIEW_TEXT",
 	"DETAIL_PAGE_URL",
-);
+];
 
-$arFilterService = array(
+$arFilterService = [
 	"IBLOCK_ID" => CNextCache::$arIBlocks[SITE_ID]["aspro_next_content"]["aspro_next_services"][0],
 	"ACTIVE" => "Y",
 	"ACTIVE_DATE" => "Y",
 	"PROPERTY_LINK_GOODS" => $arResult["ID"],
-);
+];
 if (intval($arParams['USE_REGION']) > 0)
 {
-	$arFilterService[] = array('PROPERTY_LINK_REGION' => $arParams['USE_REGION']);
+	$arFilterService[] = ['PROPERTY_LINK_REGION' => $arParams['USE_REGION']];
 }
 $arResult["SERVICES"] = CNextCache::CIBLockElement_GetList(
-	array(
-		'CACHE' => array(
+	[
+		'CACHE' => [
 			"TAG" => CNextCache::GetIBlockCacheTag(CNextCache::$arIBlocks[SITE_ID]["aspro_next_content"]["aspro_next_services"][0]),
 			"GROUP" => "ID"
-		)
-	),
+		]
+	],
 	$arFilterService,
 	false,
 	false,
@@ -1357,23 +1364,23 @@ if (
 	$arResult["PROPERTIES"]["SERVICES"]["LINK_IBLOCK_ID"]
 )
 {
-	$arFilterService = array(
+	$arFilterService = [
 		"IBLOCK_ID" => $arResult["PROPERTIES"]["SERVICES"]["LINK_IBLOCK_ID"],
 		"ACTIVE" => "Y",
 		"ACTIVE_DATE" => "Y",
 		"ID" => $arResult["PROPERTIES"]["SERVICES"]["VALUE"],
-	);
+	];
 	if (intval($arParams['USE_REGION']) > 0)
 	{
-		$arFilterService[] = array('PROPERTY_LINK_REGION' => $arParams['USE_REGION']);
+		$arFilterService[] = ['PROPERTY_LINK_REGION' => $arParams['USE_REGION']];
 	}
 	$arResult["LINK_SERVICES"] = CNextCache::CIBLockElement_GetList(
-		array(
-			'CACHE' => array(
+		[
+			'CACHE' => [
 				"TAG" => CNextCache::GetIBlockCacheTag($arResult["PROPERTIES"]["SERVICES"]["LINK_IBLOCK_ID"]),
 				"GROUP" => "ID"
-			)
-		),
+			]
+		],
 		$arFilterService,
 		false,
 		false,
@@ -1393,7 +1400,7 @@ if (
 			$arResult["PROPERTIES"]["SERVICES"]["VALUE"] = array_unique($arResult["PROPERTIES"]["SERVICES"]["VALUE"]);
 
 			$arTmpStock = $arResult["SERVICES"];
-			$arResult["SERVICES"] = array();
+			$arResult["SERVICES"] = [];
 			foreach (array_merge($arTmpStock, $arResult["LINK_SERVICES"]) as $arTmpItems2)
 			{
 				$arResult["SERVICES"][$arTmpItems2["ID"]] = $arTmpItems2;
@@ -1411,29 +1418,29 @@ elseif ($arResult["SERVICES"])
 }
 
 
-$arFilterService = array(
+$arFilterService = [
 	"IBLOCK_ID" => CNextCache::$arIBlocks[SITE_ID]["aspro_next_content"]["aspro_next_services"][0],
 	"ACTIVE" => "Y",
 	"ACTIVE_DATE" => "Y",
 	'!PROPERTY_LINK_GOODS_FILTER_VALUE' => false,
-);
+];
 if (intval($arParams['USE_REGION']) > 0)
 {
-	$arFilterService[] = array('PROPERTY_LINK_REGION' => $arParams['USE_REGION']);
+	$arFilterService[] = ['PROPERTY_LINK_REGION' => $arParams['USE_REGION']];
 }
 $arServices = CNextCache::CIBLockElement_GetList(
-	array(
-		'CACHE' => array(
+	[
+		'CACHE' => [
 			"TAG" => CNextCache::GetIBlockCacheTag(CNextCache::$arIBlocks[SITE_ID]["aspro_next_content"]["aspro_next_services"][0]),
 			"GROUP" => "ID"
-		)
-	),
+		]
+	],
 	$arFilterService,
 	false,
 	false,
 	array_merge(
 		$arSelect,
-		array("PROPERTY_LINK_GOODS_FILTER", "PROPERTY_LINK_GOODS")
+		["PROPERTY_LINK_GOODS_FILTER", "PROPERTY_LINK_GOODS"]
 	)
 );
 if ($arServices)
@@ -1450,7 +1457,7 @@ if ($arServices)
 			}
 			catch (\Exception $e)
 			{
-				$arGoodsFilter = array();
+				$arGoodsFilter = [];
 			}
 			unset($cond);
 
@@ -1469,22 +1476,22 @@ if ($arServices)
 					}
 				}
 
-				$arFilterService = array(
+				$arFilterService = [
 					"LOGIC" => "AND",
-					array(
+					[
 						"IBLOCK_ID" => $arParams["IBLOCK_ID"],
 						"ACTIVE" => "Y",
 						'ID' => $arResult['ID'],
-					),
-					array($arGoodsFilter),
-				);
+					],
+					[$arGoodsFilter],
+				];
 
 				$cnt = CNextCache::CIBLockElement_GetList(
-					array(
-						'CACHE' => array("TAG" => CNextCache::GetIBlockCacheTag($arParams["IBLOCK_ID"]))
-					),
+					[
+						'CACHE' => ["TAG" => CNextCache::GetIBlockCacheTag($arParams["IBLOCK_ID"])]
+					],
 					$arFilterService,
-					array()
+					[]
 				);
 				if ($cnt)
 				{
@@ -1497,16 +1504,19 @@ if ($arServices)
 }
 
 /*brand item*/
-$arBrand = array();
+$arBrand = [];
 if (strlen($arResult["DISPLAY_PROPERTIES"]["BRAND"]["VALUE"]) && $arResult["PROPERTIES"]["BRAND"]["LINK_IBLOCK_ID"])
 {
-	$arBrand = CNextCache::CIBLockElement_GetList(array('CACHE' => array("MULTI" => "N", "TAG" => CNextCache::GetIBlockCacheTag($arResult["PROPERTIES"]["BRAND"]["LINK_IBLOCK_ID"]))), array("IBLOCK_ID" => $arResult["PROPERTIES"]["BRAND"]["LINK_IBLOCK_ID"], "ACTIVE" => "Y", "ID" => $arResult["DISPLAY_PROPERTIES"]["BRAND"]["VALUE"]));
+	$arBrand = CNextCache::CIBLockElement_GetList(['CACHE' => ["MULTI" => "N", "TAG" =>
+		CNextCache::GetIBlockCacheTag($arResult["PROPERTIES"]["BRAND"]["LINK_IBLOCK_ID"])]], ["IBLOCK_ID" =>
+	$arResult["PROPERTIES"]["BRAND"]["LINK_IBLOCK_ID"], "ACTIVE" => "Y", "ID" => $arResult["DISPLAY_PROPERTIES"]["BRAND"]["VALUE"]]);
 	if ($arBrand)
 	{
 		if ($arParams["SHOW_BRAND_PICTURE"] == "Y" && ($arBrand["PREVIEW_PICTURE"] || $arBrand["DETAIL_PICTURE"]))
 		{
 			$picture = ($arBrand["PREVIEW_PICTURE"] ? $arBrand["PREVIEW_PICTURE"] : $arBrand["DETAIL_PICTURE"]);
-			$arBrand["IMAGE"] = CFile::ResizeImageGet($picture, array("width" => 120, "height" => 40), BX_RESIZE_IMAGE_PROPORTIONAL_ALT, true);
+			$arBrand["IMAGE"] = CFile::ResizeImageGet($picture, ["width" => 120, "height" => 40],
+			BX_RESIZE_IMAGE_PROPORTIONAL_ALT, true);
 			$arBrand["IMAGE"]["ALT"] = $arBrand["IMAGE"]["TITLE"] = $arBrand["NAME"];
 			if ($arBrand["DETAIL_PICTURE"])
 			{
@@ -1529,15 +1539,15 @@ if (strlen($arResult["DISPLAY_PROPERTIES"]["BRAND"]["VALUE"]) && $arResult["PROP
 $arResult["BRAND_ITEM"] = $arBrand;
 
 /*stores product*/
-$arStores = CNextCache::CCatalogStore_GetList(array(), array("ACTIVE" => "Y"), false, false, array());
+$arStores = CNextCache::CCatalogStore_GetList([], ["ACTIVE" => "Y"], false, false, []);
 $arResult["STORES_COUNT"] = count($arStores);
 
-$arGroupsProp = array();
+$arGroupsProp = [];
 if ($arResult["DISPLAY_PROPERTIES"])
 {
 	foreach ($arResult["DISPLAY_PROPERTIES"] as $propCode => $arProp)
 	{
-		if (!in_array($arProp["CODE"], array("SERVICES", "BRAND", "HIT", "RECOMMEND", "NEW", "STOCK", "VIDEO", "VIDEO_YOUTUBE", "CML2_ARTICLE")))
+		if (!in_array($arProp["CODE"], ["SERVICES", "BRAND", "HIT", "RECOMMEND", "NEW", "STOCK", "VIDEO", "VIDEO_YOUTUBE", "CML2_ARTICLE"]))
 			$arGroupsProp[$propCode] = $arProp;
 	}
 }
@@ -1546,8 +1556,8 @@ $arResult["GROUPS_PROPS"] = $arGroupsProp;
 /*get tizers section*/
 if (is_array($arParams["SECTION_TIZER"]) && $arParams["SECTION_TIZER"])
 {
-	$arTizersData = array();
-	$tizerCacheID = array('IBLOCK_ID' => $arParams['IBLOCK_ID'], 'IDS' => $arParams["SECTION_TIZER"]);
+	$arTizersData = [];
+	$tizerCacheID = ['IBLOCK_ID' => $arParams['IBLOCK_ID'], 'IDS' => $arParams["SECTION_TIZER"]];
 	$obCache = new CPHPCache();
 	if ($obCache->InitCache(3600000, serialize($tizerCacheID), "/hlblock/tizers"))
 	{
@@ -1555,8 +1565,8 @@ if (is_array($arParams["SECTION_TIZER"]) && $arParams["SECTION_TIZER"])
 	}
 	elseif ($obCache->StartDataCache())
 	{
-		$arItems = array();
-		$rsData = \Bitrix\Highloadblock\HighloadBlockTable::getList(array('filter' => array('=TABLE_NAME' => 'next_tizers_reference')));
+		$arItems = [];
+		$rsData = \Bitrix\Highloadblock\HighloadBlockTable::getList(['filter' => ['=TABLE_NAME' => 'next_tizers_reference']]);
 		if ($arData = $rsData->fetch())
 		{
 			$entity = \Bitrix\Highloadblock\HighloadBlockTable::compileEntity($arData);
@@ -1565,18 +1575,18 @@ if (is_array($arParams["SECTION_TIZER"]) && $arParams["SECTION_TIZER"])
 			if (count($fieldsList) === 1 && isset($fieldsList['ID']))
 				$fieldsList = $entityDataClass::getEntity()->getFields();
 
-			$directoryOrder = array();
+			$directoryOrder = [];
 			if (isset($fieldsList['UF_SORT']))
 				$directoryOrder['UF_SORT'] = 'ASC';
 			$directoryOrder['ID'] = 'ASC';
 
-			$arFilter = array(
+			$arFilter = [
 				'order' => $directoryOrder,
 				'limit' => 4,
-				'filter' => array(
+				'filter' => [
 					'=ID' => $arParams["SECTION_TIZER"]
-				)
-			);
+				]
+			];
 
 			$rsPropEnums = $entityDataClass::getList($arFilter);
 			while ($arEnum = $rsPropEnums->fetch())
@@ -1585,7 +1595,7 @@ if (is_array($arParams["SECTION_TIZER"]) && $arParams["SECTION_TIZER"])
 				{
 					$arEnum['PREVIEW_PICTURE'] = CFile::ResizeImageGet(
 						$arEnum['UF_FILE'],
-						array("width" => 50, "height" => 50),
+						["width" => 50, "height" => 50],
 						BX_RESIZE_IMAGE_PROPORTIONAL_ALT,
 						true
 					);
@@ -1642,11 +1652,11 @@ if ($property = $rsProperty->Fetch())
 		{
 
 			$db_res = CPrice::GetList(
-				array(),
-				array(
+				[],
+				[
 					"PRODUCT_ID" => $item['ID'],
 					"CATALOG_GROUP_ID" => 13
-				)
+				]
 			);
 			if ($ar_res = $db_res->Fetch())
 			{
@@ -1658,11 +1668,11 @@ if ($property = $rsProperty->Fetch())
 
 			}
 			$db_res = CPrice::GetList(
-				array(),
-				array(
+				[],
+				[
 					"PRODUCT_ID" => $item['ID'],
 					"CATALOG_GROUP_ID" => 14
-				)
+				]
 			);
 			if ($ar_res = $db_res->Fetch())
 			{
@@ -1683,11 +1693,11 @@ if ($property = $rsProperty->Fetch())
 		{
 
 			$db_res = CPrice::GetList(
-				array(),
-				array(
+				[],
+				[
 					"PRODUCT_ID" => $item['ID'],
 					"CATALOG_GROUP_ID" => 13
-				)
+				]
 			);
 			if ($ar_res = $db_res->Fetch())
 			{
@@ -1816,11 +1826,51 @@ $arTmpItem["VALUES"][] = [
 	"URL_ID" => $arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE_XML_ID"],
 	"CHECKED" => 1
 ];
-$ob->arResult = array('ITEMS' => array($arTmpItem)); // закидываем в массив элементов фильтра
+$ob->arResult = ['ITEMS' => [$arTmpItem]]; // закидываем в массив элементов фильтра
 $url = $arParams["SEF_URL_TEMPLATES"]["smart_filter"];
 $url = str_replace("#SECTION_CODE_PATH#", $arResult["SECTION"]["SECTION_PAGE_URL"], $url);
 $url = $ob->makeSmartUrl($url, true); // формируем url
 $url = str_replace("//", "/", $url);
 $arResult["ALL_COLLECTIONS_URL"] = $url;
+
+// Заменяем индексы у предложений на ID преложения
+for ($i = 0; $i < count($arResult["OFFERS"]); ++$i)
+{
+	$arResult["OFFERS"][$arResult["OFFERS"][$i]["ID"]] = $arResult["OFFERS"][$i];
+	$arResult["OFFERS"][$arResult["OFFERS"][$i]["ID"]]["ACTIVE_OFFER"] = $arResult["OFFERS"][$i]["CATALOG_QUANTITY"] > 0 && $arResult["OFFERS"][$i]["CATALOG_AVAILABLE"];
+	unset($arResult["OFFERS"][$i]);
+}
+
+// значения св-в предложений в фильтре
+$arResult["OFFERS_MAP_FILTER"] = [];
+// Добавляем св-ва, по которым нужно фильтровать торговые предложения
+foreach ($arParams["FILTER_OFFERS_PROPERTY_CODE"] as $filterProperty)
+{
+	if ($filterProperty)
+	{
+		$arResult["OFFERS_MAP_FILTER"][$filterProperty] = [];
+
+		foreach ($arResult["OFFERS"] as $arOffer)
+		{
+			if ($arOffer["PROPERTIES"][$filterProperty]["VALUE"])
+			{
+				$propValue = $arOffer["PROPERTIES"][$filterProperty]["VALUE"];
+				$arResult["OFFERS_MAP_FILTER"][$filterProperty][$propValue][] = $arOffer;
+			}
+		}
+	}
+}
+
+if ($arResult["OFFERS"])
+{
+	foreach ($arResult["OFFERS"] as $arOffer)
+	{
+		if ($arOffer["ACTIVE_OFFER"])
+		{
+			$arResult["PRICE_MATRIX"] = $arOffer["PRICE_MATRIX"];
+			$arResult["CURRENT_OFFER"] = $arOffer;
+		}
+	}
+}
 
 ?>
