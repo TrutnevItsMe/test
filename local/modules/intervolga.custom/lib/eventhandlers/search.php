@@ -1,9 +1,10 @@
-<?namespace Intervolga\Custom\EventHandlers;
+<?
+namespace Intervolga\Custom\EventHandlers;
 
 use Intervolga\Common\Tools\EventHandler;
 
-class Search extends EventHandler{
-
+class Search extends EventHandler
+{
 	const CATALOG_IBLOCK_ID = 17;
 
 	public static function BeforeIndex($arFields)
@@ -11,11 +12,13 @@ class Search extends EventHandler{
 		if ($arFields["MODULE_ID"] == "iblock"
 			&& $arFields["PARAM2"] == self::CATALOG_IBLOCK_ID)
 		{
-			$db_props = \CIBlockElement::GetProperty(                        // Запросим свойства индексируемого элемента
+			$db_props = \CIBlockElement::GetProperty
+			(                                 // Запросим свойства индексируемого элемента
 				$arFields["PARAM2"],         // BLOCK_ID индексируемого свойства
-				$arFields["ITEM_ID"],          // ID индексируемого свойства
-				array("sort" => "asc"),       // Сортировка (можно упустить)
-				Array("CODE"=>"CML2_ARTICLE")); // CODE свойства (в данном случае артикул)
+				$arFields["ITEM_ID"],       // ID индексируемого свойства
+				["sort" => "asc"],         // Сортировка (можно упустить)
+				["CODE"=>"CML2_ARTICLE"]  // CODE свойства (в данном случае артикул)
+			);
 
 			if($arProp = $db_props->Fetch())
 			{
@@ -30,6 +33,5 @@ class Search extends EventHandler{
 				}
 			}
 		}
-
 	}
 }
