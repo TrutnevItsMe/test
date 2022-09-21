@@ -121,6 +121,7 @@ else
 				$arSections[$arSection["ID"]]["SECTION_PAGE_URL"] = $cur_page . "?section_id=" . $section_id;
 				$arSections[$arSection["IBLOCK_SECTION_ID"]]["CHILD"][$arSection["ID"]] = &$arSections[$arSection["ID"]];
 			}
+
 			// Вложенная в секцию бренда
 			if ($isSectionIdInIdSection && $isIdInBrandId)
 			{
@@ -137,5 +138,23 @@ else
 		}
 	}
 }
+
+// Удаляем разделы, в которых нет элементов
+foreach ($arResult as &$arTopMenuItem)
+{
+	if ($arTopMenuItem["CHILD"])
+	{
+		foreach ($arTopMenuItem["CHILD"] as $secondDepthId => &$arSecondDepthMenuItem)
+		{
+			if (!in_array($secondDepthId, array_column($brandSections, "IBLOCK_SECTION_ID"))
+			&& !in_array($secondDepthId, $arBrandsIds))
+			{
+				unset($arTopMenuItem["CHILD"][$secondDepthId]);
+			}
+		}
+	}
+
+}
+
 
 ?>
