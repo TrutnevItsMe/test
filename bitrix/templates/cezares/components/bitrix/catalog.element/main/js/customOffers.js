@@ -104,8 +104,21 @@ window.OffersFilterComponent = {
 		if (Object.keys(accessibleItems).length == 0)
 		{
 			self.filterProps.forEach(function (prop){
-				$("." + self.classOfferValueItem + "[data-column='" + prop + "']").removeClass(self.classInaccessible);
-				self.setFilterValue(prop, "");
+
+				let items = $("." + self.classOfferValueItem + "[data-column='" + prop + "']");
+
+				items.each(function(index){
+
+					let item = $(items[index]);
+
+					if (!item.hasClass(self.classInactive))
+					{
+						item.removeClass(self.classInaccessible);
+						self.setFilterValue(prop, "");
+					}
+				});
+
+
 			});
 
 			return;
@@ -161,7 +174,7 @@ window.OffersFilterComponent = {
 							if (accessibleItems[prop].includes(propValue)
 							|| !accessibleItems)
 							{
-								// Совместимо лишь 1 св-во и мы кликунли на несовместимое значение
+								// Совместимо лишь 1 св-во и мы кликнули на несовместимое значение
 								if (accessibleItems[prop].length == 1 && self.clickedToInaccessibleItem)
 								{
 									$(this).addClass(self.classActiveOfferValueItem);
