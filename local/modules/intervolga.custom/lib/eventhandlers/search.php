@@ -32,6 +32,7 @@ class Search extends EventHandler
 					$arFields["TITLE"] .= " ".implode("-", $sliceArticle);
 				}
 			}
+			return $arFields;
 		}
 	}
 }
