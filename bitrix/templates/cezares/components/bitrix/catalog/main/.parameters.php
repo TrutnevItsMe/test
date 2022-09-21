@@ -253,19 +253,20 @@
 	// get offers iblock properties and group by types
 	if ($boolSKU)
 	{
-		$arAllOfferPropList = array();
-		$arFileOfferPropList = array(
+		$arAllProps = [];
+		$arFileOfferPropList = [
 			'-' => GetMessage('CP_BC_TPL_PROP_EMPTY')
-		);
-		$arTreeOfferPropList = $arShowPreviewPictuteTreeOfferPropList = array(
+		];
+		$arTreeOfferPropList = $arShowPreviewPictuteTreeOfferPropList = [
 			'-' => GetMessage('CP_BC_TPL_PROP_EMPTY')
-		);
+		];
 		$rsProps = CIBlockProperty::GetList(
-			array('SORT' => 'ASC', 'ID' => 'ASC'),
-			array('IBLOCK_ID' => $arSKU['IBLOCK_ID'], 'ACTIVE' => 'Y')
+			['SORT' => 'ASC', 'ID' => 'ASC'],
+			['IBLOCK_ID' => $arSKU['IBLOCK_ID'], 'ACTIVE' => 'Y']
 		);
 		while ($arProp = $rsProps->Fetch())
 		{
+			$arAllProps[$arProp["CODE"]] = "[".$arProp["CODE"]."]".$arProp["NAME"];
 			if ($arProp['ID'] == $arSKU['SKU_PROPERTY_ID'])
 				continue;
 			$arProp['USER_TYPE'] = (string)$arProp['USER_TYPE'];
@@ -937,6 +938,30 @@
 				'VALUES' => $arFileOfferPropList
 			)
 		);
+		$arTemplateParametersParts[] = [
+			"OFFERS_FILTER_PROPS" => [
+				'PARENT' => 'OFFERS_SETTINGS',
+				'NAME' => GetMessage('OFFERS_FILTER_PROPS'),
+				'TYPE' => 'LIST',
+				'MULTIPLE' => 'Y',
+				'ADDITIONAL_VALUES' => 'N',
+				'REFRESH' => 'N',
+				'DEFAULT' => '-',
+				'VALUES' => $arAllProps
+			]
+		];
+		$arTemplateParametersParts[] = [
+			"OFFER_FILTER_REPLACED_PICTURE" => [
+				'PARENT' => 'OFFERS_SETTINGS',
+				'NAME' => GetMessage('OFFER_FILTER_REPLACED_PICTURE'),
+				'TYPE' => 'LIST',
+				'MULTIPLE' => 'Y',
+				'ADDITIONAL_VALUES' => 'N',
+				'REFRESH' => 'N',
+				'DEFAULT' => '-',
+				'VALUES' => $arAllProps
+			]
+		];
 		$arTemplateParametersParts[]=array(
 			'OFFER_TREE_PROPS' => array(
 				'PARENT' => 'OFFERS_SETTINGS',

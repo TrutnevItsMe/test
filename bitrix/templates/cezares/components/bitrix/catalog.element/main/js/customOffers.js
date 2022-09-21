@@ -105,6 +105,7 @@ window.OffersFilterComponent = {
 		{
 			self.filterProps.forEach(function (prop){
 				$("." + self.classOfferValueItem + "[data-column='" + prop + "']").removeClass(self.classInaccessible);
+				self.setFilterValue(prop, "");
 			});
 
 			return;
@@ -130,7 +131,7 @@ window.OffersFilterComponent = {
 				Object.keys(accessibleItems).forEach(function (prop){
 
 					$("." + self.classOfferValueItem + "[data-column='" + prop + "']").addClass(self.classInaccessible);
-					let currentValueItem = $("." + self.classOfferValueItem + "[data-" + prop.toLowerCase() + "='" + accessibleItems[prop][0] + "']");
+					let currentValueItem = $("." + self.classOfferValueItem + "[data-value='" + accessibleItems[prop][0] + "']");
 					currentValueItem.removeClass(self.classInaccessible);
 					currentValueItem.addClass(self.classActiveOfferValueItem);
 					self.setFilterValue(prop, accessibleItems[prop][0]);
@@ -155,12 +156,11 @@ window.OffersFilterComponent = {
 						// []
 						if (typeof(accessibleItems[prop]) == "object")
 						{
-							let propValue = $(this).data(prop.toLowerCase()).toString();
+							let propValue = $(this).data("value").toString();
 							// Текущее св-во совместимо с выбранными
 							if (accessibleItems[prop].includes(propValue)
 							|| !accessibleItems)
 							{
-								// TODO: изменять заголовок выбранного значения при выборе "несвязанного" значения
 								// Совместимо лишь 1 св-во и мы кликунли на несовместимое значение
 								if (accessibleItems[prop].length == 1 && self.clickedToInaccessibleItem)
 								{
@@ -286,6 +286,34 @@ window.OffersFilterComponent = {
 	},
 
 	/**
+	 * Выводит в html верстку текущее выбранное значение для св-ва
+	 * @param {string} column
+	 * @param {string} value
+	 */
+	setColumnValueTitle: function(column, value)
+	{
+		let propContainer = $("." + this.classOfferValueContainer + "[data-column='" + column +"']");
+
+		if (propContainer.length > 0)
+		{
+			propContainer.prev(".prop-current-value").html(value);
+		}
+	},
+
+	/**
+	 * Выводит все текущие значения выбранных св-в в html верстку
+	 */
+	setCurrentValueTitles: function()
+	{
+		self = this;
+
+		Object.keys(this.currentFilterValues).forEach(function (prop){
+
+			self.setColumnValueTitle(prop, self.getFilterValue(prop));
+		});
+	},
+
+	/**
 	 * Биндит клик по элементу фильтра
 	 * @param {string | JQuery} selectorItem
 	 */
@@ -304,14 +332,13 @@ window.OffersFilterComponent = {
 			{
 				let containerItems = $(this).parents("." + self.classOfferValueContainer);
 				let currentProp = $(this).data("column");
-				let currentValue = $(this).data(currentProp.toLowerCase());
+				let currentValue = $(this).data("value");
 
 				// Кликнули на выбранное значение
 				if ($(this).hasClass(self.classActiveOfferValueItem))
 				{
 					$(this).removeClass(self.classActiveOfferValueItem);
 					self.setFilterValue(currentProp, "");
-					containerItems.prev(".prop-current-value").html("");
 				}
 				else
 				{
@@ -326,12 +353,11 @@ window.OffersFilterComponent = {
 
 					self.setFilterValue(currentProp, currentValue);
 					$(this).addClass(self.classActiveOfferValueItem);
-					// Выводим выбранное значение
-					containerItems.prev(".prop-current-value").html($(this).html());
 				}
 
 				containerItems.find("." + self.classOfferValueItem).not(this).removeClass(self.classActiveOfferValueItem);
 				self.setAccessibleFilterItems();
+				self.setCurrentValueTitles();
 			}
 		});
 	}

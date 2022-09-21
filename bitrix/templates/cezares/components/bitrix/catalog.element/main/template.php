@@ -757,14 +757,12 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 
 		<div class="offers-filter">
 			<?foreach($arResult["OFFERS_MAP_FILTER"] as $prop => $arValueOffers):?>
-
 				<h4 class="offers-filter-column"><?=$arResult["PROPERTIES"][$prop]["NAME"]?>: </h4>
 				<span class="prop-current-value"><?=$arResult["CURRENT_OFFER"]["PROPERTIES"][$prop]["VALUE"]?></span>
 				<div class="flex filter-item-container" data-column="<?=$prop?>">
 					<?
 					$values = array_keys($arValueOffers);
 					sort($values);
-
 					?>
 				<? foreach ($values as $value): ?>
 				<? $isCurrentOfferValue = $arResult["CURRENT_OFFER"]["PROPERTIES"][$prop]["VALUE"] == $value;
@@ -781,10 +779,25 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 				?>
 				<a>
 					<div class="offers-filter-item <?if ($isCurrentOfferValue):?>active-offers-filter-item<?endif;?>
-					<?if (!$isAvailableValue):?>inactive-offer<?endif;?>"
+					<?if (!$isAvailableValue):?>inaccessible inactive-offer<?endif;?>"
 					data-column="<?=$prop?>"
-					data-<?=$prop?>='<?=$value?>'>
+					data-value="<?=$value?>">
+						<?if (in_array($prop, $arParams["OFFER_FILTER_REPLACED_PICTURE"])):?>
+							<?
+								$file = \CFile::ResizeImageGet($arValueOffers[$value][0]["PREVIEW_PICTURE"],
+									[
+										'width' => 128,
+										'height' => 128
+									],
+									BX_RESIZE_IMAGE_EXACT,
+								true);
+							?>
+							<img src="<?=$file["src"]?>"
+								 height="<?=$file["height"]?>"
+								 width="<?=$file["width"]?>">
+						<?else:?>
 						<span><?=$value?></span>
+						<?endif;?>
 					</div>
 				</a>
 				<? endforeach; ?>

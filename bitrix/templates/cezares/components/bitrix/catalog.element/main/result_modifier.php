@@ -1833,7 +1833,7 @@ $url = $ob->makeSmartUrl($url, true); // формируем url
 $url = str_replace("//", "/", $url);
 $arResult["ALL_COLLECTIONS_URL"] = $url;
 
-// Заменяем индексы у предложений на ID преложения
+// Заменяем индексы у предложений на ID предложения
 for ($i = 0; $i < count($arResult["OFFERS"]); ++$i)
 {
 	$arResult["OFFERS"][$arResult["OFFERS"][$i]["ID"]] = $arResult["OFFERS"][$i];
