@@ -752,7 +752,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 		</div>
 	</div>
 	<?$bPriceCount = ($arParams['USE_PRICE_COUNT'] == 'Y');?>
-	<? //Вывводим фильтр по торговым предложениям ?>
+	<? //Выводим фильтр по торговым предложениям ?>
 	<?if($arResult['OFFERS']):?>
 
 		<div class="offers-filter">
@@ -777,11 +777,16 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 						}
 					}
 				?>
-				<a>
+				<a class="offers-filter-item-link"
+					<?if (in_array($prop, $arParams["OFFER_FILTER_REPLACED_PICTURE"])):?>
+				   data-hint="<?=$value?>"
+					<?endif;?>
+					>
 					<div class="offers-filter-item <?if ($isCurrentOfferValue):?>active-offers-filter-item<?endif;?>
 					<?if (!$isAvailableValue):?>inaccessible inactive-offer<?endif;?>"
 					data-column="<?=$prop?>"
-					data-value="<?=$value?>">
+					data-value="<?=$value?>"
+					>
 						<?if (in_array($prop, $arParams["OFFER_FILTER_REPLACED_PICTURE"])):?>
 							<?
 								$file = \CFile::ResizeImageGet($arValueOffers[$value][0]["PREVIEW_PICTURE"],
