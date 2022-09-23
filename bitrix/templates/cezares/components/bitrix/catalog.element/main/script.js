@@ -5014,6 +5014,7 @@ function calculatePrice()
 		result.price += parseFloat($(el).data('price')) * parseInt($(el).data('amount'));
 		result.old += parseFloat($(el).data('old-price')) * parseInt($(el).data('amount'));
 	});
+
 	result.base = {
 		price: result.price,
 		old: result.old,

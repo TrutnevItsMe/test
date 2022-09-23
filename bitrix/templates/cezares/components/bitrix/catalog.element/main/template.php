@@ -12,6 +12,10 @@ use Bitrix\Main\Localization\Loc;
 $asset = \Bitrix\Main\Page\Asset::getInstance();
 $asset->addCss($templateFolder . "/style.css");
 $asset->addJs($templateFolder . "/js/customOffers.js");
+$asset->addJs($templateFolder . "/js/mustache.js");
+
+include_once $_SERVER["DOCUMENT_ROOT"] . $templateFolder . "/template_js/sets.php";
+
 ?>
 
 <div class="basket_props_block" id="bx_basket_div_<?=$arResult["ID"];?>" style="display: none;">
@@ -286,7 +290,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 						<div class="thumbs bxSlider">
 							<div class="inner_slider">
 								<ul class="slides_block" id="thumbs">
-									<?foreach($arResult["MORE_PHOTO"]as $i => $arImage):?>
+									<?foreach($arResult["MORE_PHOTO"] as $i => $arImage):?>
 										<li <?=(!$i ? 'class="current"' : '')?> data-slide_key="<?=$i;?>" data-big_img="<?=$arImage["BIG"]["src"]?>" data-small_img="<?=$arImage["SMALL"]["src"]?>">
 											<span><img class="xzoom-gallery" data-xpreview="<?=$arImage["THUMB"]["src"];?>" src="<?=$arImage["THUMB"]["src"]?>" alt="<?=$arImage["ALT"];?>" title="<?=$arImage["TITLE"];?>" /></span>
 										</li>
@@ -320,7 +324,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 									slider_wrapper.find('.slides li:eq('+index+')').addClass('current').show();
 								}
 							});
-							$('.bxSlider.thumbs .slides_block').bxSlider({
+							window.slider = $('.bxSlider.thumbs .slides_block').bxSlider({
 								mode: 'vertical',
 								minSlides: 5,
 								maxSlides: 5,
@@ -754,7 +758,6 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 	<?$bPriceCount = ($arParams['USE_PRICE_COUNT'] == 'Y');?>
 	<? //Выводим фильтр по торговым предложениям ?>
 	<?if($arResult['OFFERS']):?>
-
 		<div class="offers-filter">
 			<?foreach($arResult["OFFERS_MAP_FILTER"] as $prop => $arValueOffers):?>
 				<h4 class="offers-filter-column"><?=$arResult["PROPERTIES"][$prop]["NAME"]?>: </h4>
