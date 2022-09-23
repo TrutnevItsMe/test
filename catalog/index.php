@@ -799,6 +799,5 @@ $APPLICATION->IncludeComponent(
 	false
 );
 
-
 ##SECTION_CODE_PATH#/#ELEMENT_ID#/
 ?><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
