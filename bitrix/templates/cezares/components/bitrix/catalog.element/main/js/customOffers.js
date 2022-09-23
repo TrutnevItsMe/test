@@ -1,51 +1,96 @@
 window.OffersFilterComponent = {
 
+	/**
+	 *
+	 * @param {Object} params
+	 */
 	init: function (params)
 	{
 		this.result = params.result;
 		this.params = params.params;
 
-		this.classActiveOfferItem = params.classActiveOfferItem || "active-offers-filter-item";
-		this.classOfferItem = params.classOfferItem || "offers-filter-item";
+		this.classActiveOfferValueItem = params.classActiveOfferValueItem || "active-offers-filter-item";
+		this.classOfferValueItem = params.classOfferValueItem || "offers-filter-item";
+		this.classOfferValueContainer = params.classOfferValueContainer || "offers-filter-item-container";
 		// Класс, указывающий, что данное предложение недоступно (нельзя выбрать значение в фильтре по предложениям)
 		this.classInactive = params.classInactive || "inactive";
 		// Класс, показывающий, что данное значение вместе с др. значениями фильтра не совместимо
 		this.classInaccessible = params.classInaccessible || "inaccessible";
 		this.currentFilterValues = {};
 
-		if (typeof(this.params["FILTER_OFFERS_PROPERTY_CODE"]) == "object")
+		// Флаг, что кликнули на несовместимое значение фильтра
+		this.clickedToInaccessibleItem = false;
+		// JQuery элемент, на который кликнули
+		this.clickedItem = null;
+
+		if (typeof (this.params["FILTER_OFFERS_PROPERTY_CODE"]) == "object")
 		{
-			// Значения св-в, учасвтующих в фильтрации
+			// Значения св-в, участвующих в фильтрации
 			this.filterProps = Object.values(this.params["FILTER_OFFERS_PROPERTY_CODE"]);
 		}
 
+		// ID предложений, помещенных в корзину
+		this.offersInBasket = [];
+
 		this.initFilterValues();
 		this.setAccessibleFilterItems();
-		this.setPrice(this.result);
+
+		let prices = {
+			price: 0,
+			old: 0
+		}
+
+		if (this.result["PRICE_MATRIX"])
+		{
+			let currentCurrencyIndex = Object.keys(this.result["PRICE_MATRIX"]["COLS"])[0];
+			prices.price = this.result["PRICE_MATRIX"]["MATRIX"][currentCurrencyIndex][0]["PRICE"];
+
+			if (this.result["CURRENT_OFFER"])
+			{
+				$('.button_block .btn.to-cart').attr("data-item", this.result["CURRENT_OFFER"]["ID"]);
+			}
+		}
+
+		let price = calculatePrice();
+
+		if (price.price > 0)
+		{
+			showPrice(price);
+		}
+		else
+		{
+			showPrice(prices);
+		}
+
+
 		this.bindEvents();
+
 	},
 
 	/**
-	 *
+	 * Устанавливает текущее значение фильтра для 1 св-ва
 	 * @param {string} prop
 	 * @param {string} value
 	 */
-	setFilterValue: function(prop, value)
+	setFilterValue: function (prop, value)
 	{
 		this.currentFilterValues[prop] = value;
 	},
 
 	/**
-	 *
+	 * Возвращает текущще значение фильтра для 1 св-ва
 	 * @param {string} prop
 	 * @return {string}
 	 */
-	getFilterValue: function(prop)
+	getFilterValue: function (prop)
 	{
 		return this.currentFilterValues[prop];
 	},
 
-	initFilterValues: function()
+	/**
+	 * Иницивализирует текущее значение фильтра
+	 */
+	initFilterValues: function ()
 	{
 		self = this;
 
@@ -54,60 +99,123 @@ window.OffersFilterComponent = {
 			this.currentFilterValues = {};
 		}
 
-		Object.keys(this.result["OFFERS_MAP_FILTER"]).forEach(function(prop)
+		Object.keys(this.result["OFFERS_MAP_FILTER"]).forEach(function (prop)
 		{
 			if (self.result["CURRENT_OFFER"])
 			{
-				self.currentFilterValues[prop] = self.result["CURRENT_OFFER"]["PROPERTIES"][prop]["VALUE"];
+				self.setFilterValue(prop, self.result["CURRENT_OFFER"]["PROPERTIES"][prop]["VALUE"]);
 			}
 			else
 			{
-				self.currentFilterValues[prop] = "";
+				self.setFilterValue(prop, "");
 			}
 		});
 	},
 
-	clearFilterValues: function()
+	/**
+	 * Очищает все текущие значения фильтра
+	 */
+	clearFilterValues: function ()
 	{
 		self = this;
 		Object.keys(this.result["OFFERS_MAP_FILTER"]).forEach(function (prop)
 		{
-			self.currentFilterValues[prop] = "";
+			self.setFilterValue(prop, "");
 		});
 	},
 
 	/**
 	 * Устанавливает для значений фильтра совместимые значения для выбранных значений
 	 */
-	setAccessibleFilterItems: function()
+	setAccessibleFilterItems: function ()
 	{
 		self = this;
 		let accessibleItems = this.getAccessibleFilterItems();
 
-		Object.keys(accessibleItems).forEach(function (prop){
+		// Не выбрали ни одного значения
+		if (Object.keys(accessibleItems).length == 0)
+		{
+			self.filterProps.forEach(function (prop)
+			{
 
-			let offers = $("." + self.classOfferItem + "[data-column='" + prop + "']");
+				let items = $("." + self.classOfferValueItem + "[data-column='" + prop + "']");
+
+				items.each(function (index)
+				{
+
+					let item = $(items[index]);
+
+					if (!item.hasClass(self.classInactive))
+					{
+						item.removeClass(self.classInaccessible);
+						self.setFilterValue(prop, "");
+					}
+				});
+
+			});
+
+			return;
+		}
+
+		// Если кликнули на невыбранный элемент, совместимый с остальными значениями
+		if (self.clickedItem
+			&& self.clickedItem.hasClass(self.classActiveOfferValueItem)
+			&& !self.clickedItem.hasClass(self.classInaccessible))
+		{
+			let isAllValuesSingle = true;
+
+			Object.keys(accessibleItems).forEach(function (prop)
+			{
+				if (prop && accessibleItems[prop].length > 1)
+				{
+					isAllValuesSingle = false;
+					return;
+				}
+			});
+
+			// Если все совместимые св-ва имеют по 1 значению
+			if (isAllValuesSingle)
+			{
+				Object.keys(accessibleItems).forEach(function (prop)
+				{
+
+					$("." + self.classOfferValueItem + "[data-column='" + prop + "']").addClass(self.classInaccessible);
+					let currentValueItem = $("." + self.classOfferValueItem + "[data-value='" + accessibleItems[prop][0] + "']");
+					currentValueItem.removeClass(self.classInaccessible);
+					currentValueItem.addClass(self.classActiveOfferValueItem);
+					self.setFilterValue(prop, accessibleItems[prop][0]);
+				});
+				return;
+			}
+		}
+
+		// Пробегаемся по св-ам совместимых значений
+		Object.keys(accessibleItems).forEach(function (prop)
+		{
+			// Выбираем все предложения с этим св-ом
+			let offers = $("." + self.classOfferValueItem + "[data-column='" + prop + "']");
 
 			if (offers.length > 0)
 			{
-				offers.each(function (){
-
+				offers.each(function ()
+				{
+					// Данное предложение можно выбрать
 					if (!$(this).hasClass(self.classInactive))
 					{
 						// []
-						if (typeof(accessibleItems[prop]) == "object")
+						if (typeof (accessibleItems[prop]) == "object")
 						{
-							if (accessibleItems[prop].includes($(this).data(prop.toLowerCase()).toString())
-							|| !accessibleItems)
+							let propValue = $(this).data("value").toString();
+							// Текущее св-во совместимо с выбранными
+							if (accessibleItems[prop].includes(propValue)
+								|| !accessibleItems)
 							{
-								// TODO: настроить автовыбор при 1 значении
-								// TODO: изменять заголовок выбранного значения при выборе "несвязанного" значения
-
-								// if (accessibleItems[prop].length == 1 && $(this).hasClass(self.classInaccessible))
-								// {
-								// 	$(this).addClass(self.classActiveOfferItem);
-								// 	self.setFilterValue(prop, $(this).data(prop.toLowerCase()).toString());
-								// }
+								// Совместимо лишь 1 св-во и мы кликнули на несовместимое значение
+								if (accessibleItems[prop].length == 1 && self.clickedToInaccessibleItem)
+								{
+									$(this).addClass(self.classActiveOfferValueItem);
+									self.setFilterValue(prop, propValue);
+								}
 
 								$(this).removeClass(self.classInaccessible);
 							}
@@ -120,6 +228,8 @@ window.OffersFilterComponent = {
 				});
 			}
 		});
+
+		self.clickedToInaccessibleItem = false;
 	},
 
 	/**
@@ -127,7 +237,7 @@ window.OffersFilterComponent = {
 	 * { св-во: [список значений] }
 	 * @return {Object}
 	 */
-	getAccessibleFilterItems: function()
+	getAccessibleFilterItems: function ()
 	{
 		self = this;
 		let accessibleItems = {};
@@ -152,7 +262,10 @@ window.OffersFilterComponent = {
 							accessibleItems[propCode] = [];
 						}
 
-						ar.push(offer["PROPERTIES"][propCode] ? offer["PROPERTIES"][propCode]["VALUE"] : "");
+						if (offer["ACTIVE_OFFER"])
+						{
+							ar.push(offer["PROPERTIES"][propCode] ? offer["PROPERTIES"][propCode]["VALUE"] : "");
+						}
 					});
 
 					accessibleItems[propCode].push(ar);
@@ -173,6 +286,7 @@ window.OffersFilterComponent = {
 				}
 
 				accessibleItems[prop] = _intersect;
+				accessibleItems[prop] = Array.from((new Set(accessibleItems[prop])));
 			}
 		});
 
@@ -180,83 +294,278 @@ window.OffersFilterComponent = {
 	},
 
 	/**
-	 *
+	 * Пересечение 2-х множеств
 	 * @param {Array} array1
 	 * @param {Array} array2
 	 * @return {Array} {*}
 	 */
-	intersection: function(array1, array2)
+	intersection: function (array1, array2)
 	{
 		return array1.filter(value => array2.includes(value));
 	},
 
-	setPrice: function(result)
+	bindEvents: function ()
 	{
-		let prices = {
-			price: 0,
-			old: 0
-		}
+		this.bindChangeOfferFilter("." + this.classOfferValueItem);
+		this.bindAddToBasket();
+	},
 
-		if (result["PRICE_MATRIX"])
+	/**
+	 * Выводит в html верстку текущее выбранное значение для св-ва
+	 * @param {string} column
+	 * @param {string} value
+	 */
+	setColumnValueTitle: function (column, value)
+	{
+		let propContainer = $("." + this.classOfferValueContainer + "[data-column='" + column + "']");
+
+		if (propContainer.length > 0)
 		{
-			let currentCurrencyIndex = Object.keys(result["PRICE_MATRIX"]["COLS"])[0];
-			prices.price = result["PRICE_MATRIX"]["MATRIX"][currentCurrencyIndex][0]["PRICE"];
-
-			if (result["CURRENT_OFFER"])
-			{
-				$('.button_block .btn.to-cart').attr("data-item", result["CURRENT_OFFER"]["ID"]);
-			}
+			propContainer.prev(".prop-current-value").html(value);
 		}
-
-		showPrice(prices);
 	},
 
-	bindEvents: function()
-	{
-		this.bindChangeOfferFilter("." + this.classOfferItem);
-	},
-
-	bindChangeOfferFilter: function(selectorItem)
+	/**
+	 * Выводит все текущие значения выбранных св-в в html верстку
+	 */
+	setCurrentValueTitles: function ()
 	{
 		self = this;
 
-		$(selectorItem).on("click", function(e){
+		Object.keys(this.currentFilterValues).forEach(function (prop)
+		{
+			self.setColumnValueTitle(prop, self.getFilterValue(prop));
+		});
+	},
 
+	/**
+	 * Возвращает true, если выбраны все поля значений из фильтра
+	 * @return {boolean}
+	 */
+	isAllValuesSelected: function ()
+	{
+		self = this;
+		let isAll = true;
+
+		Object.keys(this.currentFilterValues).forEach(function (prop)
+		{
+			if (self.currentFilterValues[prop] == "")
+			{
+				isAll = false;
+				return;
+			}
+		});
+
+		return isAll;
+	},
+
+	/**
+	 * Возвращает предложение, соответствующе всем выбранным значениям св-в,
+	 * если не все значения выбраны возвращает false
+	 * @return {null|boolean}
+	 */
+	getCurrentOffer: function ()
+	{
+		if (this.isAllValuesSelected())
+		{
+			self = this;
+			let returnsOffer = null;
+
+			Object.keys(self.currentFilterValues).forEach(function (prop)
+			{
+				if (self.result["OFFERS_MAP_FILTER"][prop][self.getFilterValue(prop)].length == 1)
+				{
+					returnsOffer = self.result["OFFERS_MAP_FILTER"][prop][self.getFilterValue(prop)][0];
+					return;
+				}
+			});
+
+			return returnsOffer;
+		}
+		else
+		{
+			return false;
+		}
+	},
+
+	/**
+	 * Устанавливает html верстку и атрибуты для выбранного предложения
+	 */
+	setCurrentOffer: function ()
+	{
+		if (this.isAllValuesSelected())
+		{
+			if (!this.templateSets)
+			{
+				this.templateSets = $("#sets-template").html();
+			}
+
+			let template = this.templateSets; // Mustache шаблон
+			let currentOffer = this.getCurrentOffer();
+
+			if (currentOffer !== false)
+			{
+				// У предложения есть набор
+				if (currentOffer["SET"] && currentOffer["SET"].length > 0)
+				{
+					Mustache.parse(template);
+					let newHtmlSets = Mustache.render(template, {"ITEMS": currentOffer["SET"]});
+					$(".set_new").html(newHtmlSets);
+				}
+
+				let price = calculatePrice();
+
+				// Устанавливаем цену из набора
+				if (price.price > 0)
+				{
+					showPrice(price);
+				}
+				// устанавливаем цену из предлоржения
+				else
+				{
+					showPrice({
+						price: currentOffer["CATALOG_PURCHASING_PRICE"],
+						old: currentOffer["CATALOG_PURCHASING_PRICE"]
+					});
+				}
+
+				// Меняем картинки в слайдере
+				let htmlSlider = "";
+				let i = 0;
+
+				for (let j = 0; j < currentOffer["MORE_PHOTO"].length; ++j)
+				{
+					let _class = !j ? "current" : "";
+
+					htmlSlider += "<li class='" + _class + "' " +
+						" data-slide_key='" + j + "'" +
+						" data-big_img='" + currentOffer["MORE_PHOTO"][i]["BIG"]["src"] + "'" +
+						" data-small_img='" + currentOffer["MORE_PHOTO"][i]["SMALL"]["src"] + "'>" +
+						"<span>" +
+						"<img class='xzoom-gallery'" +
+						" data-xpreview='" + currentOffer["MORE_PHOTO"][i]["THUMB"]["src"] + "'" +
+						" src='" + currentOffer["MORE_PHOTO"][i]["THUMB"]["src"] + "'" +
+						" alt='" + currentOffer["MORE_PHOTO"][i]["ALT"] + "'" +
+						" title='" + currentOffer["MORE_PHOTO"][i]["TITLE"] + "'>" +
+						"</span>" +
+						"</li>";
+
+					++i;
+				}
+
+				if (currentOffer["PREVIEW_PICTURE"])
+				{
+					htmlSlider += "<li class='' " +
+						" data-slide_key='" + i + "'" +
+						" data-big_img='" + currentOffer["PREVIEW_PICTURE"]["SRC"] + "'" +
+						" data-small_img='" + currentOffer["PREVIEW_PICTURE"]["SRC"] + "'>" +
+						"<span>" +
+						"<img class='xzoom-gallery'" +
+						" data-xpreview='" + currentOffer["PREVIEW_PICTURE"]["SRC"] + "'" +
+						" src='" + currentOffer["PREVIEW_PICTURE"]["SRC"] + "'" +
+						" alt='" + currentOffer["PREVIEW_PICTURE"]["NAME"] + "'" +
+						" title='" + currentOffer["PREVIEW_PICTURE"]["NAME"] + "'>" +
+						"</span>" +
+						"</li>";
+
+					++i;
+				}
+
+				if (currentOffer["DETAIL_PICTURE"])
+				{
+					htmlSlider += "<li class='' " +
+						" data-slide_key='" + i + "'" +
+						" data-big_img='" + currentOffer["DETAIL_PICTURE"]["SRC"] + "'" +
+						" data-small_img='" + currentOffer["DETAIL_PICTURE"]["SRC"] + "'>" +
+						"<span>" +
+						"<img class='xzoom-gallery'" +
+						" data-xpreview='" + currentOffer["DETAIL_PICTURE"]["SRC"] + "'" +
+						" src='" + currentOffer["DETAIL_PICTURE"]["SRC"] + "'" +
+						" alt='" + currentOffer["DETAIL_PICTURE"]["NAME"] + "'" +
+						" title='" + currentOffer["DETAIL_PICTURE"]["NAME"] + "'>" +
+						"</span>" +
+						"</li>";
+
+					++i;
+				}
+
+				$("#thumbs").html(htmlSlider);
+				window.slider.reloadSlider();
+				$('.button_block .btn.to-cart').attr("data-item", currentOffer["ID"]);
+
+				// Показываем, что товар уже в корзине
+				if (self.offersInBasket.includes(currentOffer["ID"]))
+				{
+					$('.button_block .btn.to-cart').hide();
+					$(".btn.in-cart").show();
+				}
+				else
+				{
+					$('.button_block .btn.to-cart').show();
+					$(".btn.in-cart").hide();
+				}
+			}
+		}
+	},
+
+	/**
+	 * Биндит клик по элементу фильтра
+	 * @param {string | JQuery} selectorItem
+	 */
+	bindChangeOfferFilter: function (selectorItem)
+	{
+		self = this;
+
+		$(selectorItem).on("click", function (e)
+		{
 			e.preventDefault();
 
+			self.clickedItem = $(this);
+
+			// Данное св-во есть хотя бы у 1 предложения
 			if (!$(this).hasClass(self.classInactive))
 			{
-				let containerItems = $(this).parents(".filter-item-container");
+				let containerItems = $(this).parents("." + self.classOfferValueContainer);
 				let currentProp = $(this).data("column");
-				let currentValue = $(this).data(currentProp.toLowerCase());
+				let currentValue = $(this).data("value");
 
-				if ($(this).hasClass(self.classActiveOfferItem))
+				// Кликнули на выбранное значение
+				if ($(this).hasClass(self.classActiveOfferValueItem))
 				{
-					$(this).removeClass(self.classActiveOfferItem);
+					$(this).removeClass(self.classActiveOfferValueItem);
 					self.setFilterValue(currentProp, "");
-					containerItems.prev(".prop-current-value").html("");
 				}
 				else
 				{
 					// Кликнули на значение, не совместимое с остальными
 					if ($(this).hasClass(self.classInaccessible))
 					{
+						// Очищаем все текущие значения фильтра
 						self.clearFilterValues();
-						$("." + self.classOfferItem).removeClass(self.classActiveOfferItem);
+						$("." + self.classOfferValueItem).removeClass(self.classActiveOfferValueItem);
+						self.clickedToInaccessibleItem = true; // флаг, что кликнули на несовместимое значение
 					}
 
 					self.setFilterValue(currentProp, currentValue);
-					$(this).addClass(self.classActiveOfferItem);
-					// Выводим выбранное значение
-					containerItems.prev(".prop-current-value").html($(this).html());
+					$(this).addClass(self.classActiveOfferValueItem);
 				}
 
-				console.log(self.currentFilterValues);
-
-				containerItems.find("." + self.classOfferItem).not(this).removeClass(self.classActiveOfferItem);
+				containerItems.find("." + self.classOfferValueItem).not(this).removeClass(self.classActiveOfferValueItem);
 				self.setAccessibleFilterItems();
+				self.setCurrentValueTitles();
+				self.setCurrentOffer();
 			}
+		});
+	},
 
+	bindAddToBasket: function()
+	{
+		self = this;
+
+		$('.button_block .btn.to-cart').on("click", function(){
+
+			self.offersInBasket.push($(this).attr("data-item"));
+			$(".btn.in-cart").show();
 		});
 	}
 };

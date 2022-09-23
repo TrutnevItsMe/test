@@ -51,8 +51,6 @@ $APPLICATION->IncludeComponent(
 			2 => "TSVET",
 			3 => "SHIRINA_IZDELIYA_SM",
 			4 => "",
-			5 => "",
-			6 => "",
 		),
 		"USE_REVIEW" => "N",
 		"MESSAGES_PER_PAGE" => "10",
@@ -776,6 +774,15 @@ $APPLICATION->IncludeComponent(
 		"OFFER_SHOW_PREVIEW_PICTURE_PROPS" => array(
 		),
 		"FILE_404" => "",
+		"OFFERS_FILTER_PROPS" => array(
+			0 => "TSVET",
+			1 => "SHIRINA_IZDELIYA_SM",
+			2 => "MONTAZH",
+			3 => "GLUBINA_IZDELIYA_SM",
+		),
+		"OFFER_FILTER_REPLACED_PICTURE" => array(
+			0 => "TSVET",
+		),
 		"SEF_URL_TEMPLATES" => array(
 			"sections" => "",
 			"section" => "#SECTION_CODE_PATH#/",

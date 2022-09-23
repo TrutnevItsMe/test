@@ -5,14 +5,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 }
 
 ?>
-
-	<!--<sctipt src="/bitrix/templates/cezares/js/fancybox/dist/jquery.fancybox.js"></sctipt>
-	<style src="/bitrix/templates/cezares/js/fancybox/dist/jquery.fancybox.css"></style>-->
-
 	<script type="text/javascript">
 		$(document).ready(function ()
 		{
-			//alert('Ок');
 			$('.set-composition_checkbox input.add_input_class').prop("checked", false);
 			$('.set-composition_checkbox input.add_input_class.default').prop("checked", true);
 		});
@@ -22,9 +17,6 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 
 
 			$(".component_type,.set_group_items_link,.icon-popup,.include").fancybox({
-				//'modal' : true
-				//'height'			: '75%',
-				//'autoScale'     	: false,
 				'titlePosition': 'inside',
 				'transitionIn': 'none',
 				'transitionOut': 'none'
@@ -47,7 +39,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 					backgroundColor: "#107bb1",
 					"border-color": "#107bb1"
 				});
-				//$(this).click(function(){$.fancybox.close();});
+
 				if ($('#add_input_' + id).is(':checked') == true)
 				{
 					$(this).children().text('Добавлено');
@@ -55,12 +47,11 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 						backgroundColor: "#fc3",
 						"border-color": "#fc3"
 					});
-					//$(this).click(function(){$.fancybox.close();});
+
 					finish_toggle = 1;
 				}
 				else
 				{
-					//alert(finish_toggle);
 					if (finish_toggle == 0)
 					{
 						$(this).text('Добавить');
@@ -78,14 +69,11 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 			if (price.price > 0)
 			{
 				showPrice(price);
-
 			}
 
 
 		});
 	</script>
-	<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
-	 <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>-->
 
 	<style>
 		@media (min-width: 1200px)
@@ -202,11 +190,6 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 		{
 			color: #5555556e;
 			font-size: 12px;
-
-		}
-
-		.sub_items
-		{
 		}
 
 		.plus1
@@ -214,14 +197,10 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 			cursor: pointer;
 			position: absolute;
 			z-index: 99;
-			/*top: -2px;
-			left: -2px;*/
 			width: 30px;
 			height: 30px;
 			border-radius: 50%;
 			border: 2px solid #fff;
-			/*background: #fc3 url(/images/icon-plus.svg) no-repeat 50%/16px;*/
-
 		}
 
 		.product-preview-status-btn
@@ -436,7 +415,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 									{
 										echo '<div><div class="sticker_50">50%</div></div>';
 									}
-									if ($hit_val == '580%')
+									if ($hit_val == '58%')
 									{
 										echo '<div><div class="sticker_58">58%</div></div>';
 									}
@@ -682,7 +661,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 										{
 											echo '<div><div class="sticker_50">50%</div></div>';
 										}
-										if ($hit_val == '580%')
+										if ($hit_val == '58%')
 										{
 											echo '<div><div class="sticker_58">58%</div></div>';
 										}
