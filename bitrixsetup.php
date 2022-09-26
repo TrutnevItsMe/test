@@ -379,7 +379,6 @@ if (!$strAction)
 	// Check for updates
 	if ((!file_exists(UPDATE_FLAG) || time() - filemtime(UPDATE_FLAG) > 3600) && !$debug && !$proxyAddr)
 	{
-		file_put_contents(UPDATE_FLAG, time());
 		$res = @fsockopen('ssl://'.$bx_host, 443, $errno, $errstr, 3);
 
 		if($res)
