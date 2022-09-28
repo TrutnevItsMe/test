@@ -26,6 +26,7 @@
 
 .info-row__item_image {
 	flex-basis: 140px;
+	flex-shrink: 0;
 }
 
 .info-row__item_image image {
