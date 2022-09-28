@@ -1,4 +1,3 @@
-<<<<<<< refs/remotes/origin/develop
 <? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
 <? $this->setFrameMode(true); ?>
 
@@ -752,7 +751,7 @@
 		ADD_ERROR_COMPARE: '<? echo GetMessage("ADD_ERROR_COMPARE"); ?>',
 	})
 	sliceItemBlock();
-=======
+
 <? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
 <? $this->setFrameMode(true); ?>
 

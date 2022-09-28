@@ -1,4 +1,3 @@
-<<<<<<< refs/remotes/origin/develop
 <? $APPLICATION->SetPageProperty("HIDE_LEFT_BLOCK", "Y") ?><? $APPLICATION->SetPageProperty("HIDE_LEFT_BLOCK", "Y") ?>
 
 <? $isAjax = "N"; ?>
@@ -715,7 +714,6 @@
 		),
 		false
 	); ?>
-=======
 <? $APPLICATION->SetPageProperty("HIDE_LEFT_BLOCK", "Y") ?><? $APPLICATION->SetPageProperty("HIDE_LEFT_BLOCK", "Y") ?>
 
 <? $isAjax = "N"; ?>
