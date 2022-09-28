@@ -2104,18 +2104,15 @@ if ($arResult['CATALOG'] && $arParams['USE_GIFTS_MAIN_PR_SECTION_LIST'] == 'Y' &
 <?endif;?>
 
 <script>
-	$(document).ready(function (){
-		window.OffersFilterComponent.init({
-			result: <?=CUtil::PhpToJSObject($arResult)?>,
-			params: <?=CUtil::PhpToJSObject($arParams)?>,
-			classActiveOfferValueItem: "active-offers-filter-item",
-			classOfferValueItem: "offers-filter-item",
-			classOfferValueContainer: "filter-item-container",
-			classInactive: "inactive-offer",
-			classInaccessible: "inaccessible"
-		});
+	window.OffersFilterComponent.init({
+		result: <?=CUtil::PhpToJSObject($arResult)?>,
+		params: <?=CUtil::PhpToJSObject($arParams)?>,
+		classActiveOfferValueItem: "active-offers-filter-item",
+		classOfferValueItem: "offers-filter-item",
+		classOfferValueContainer: "filter-item-container",
+		classInactive: "inactive-offer",
+		classInaccessible: "inaccessible"
 	});
-
 </script>
 
 <script type="text/javascript">

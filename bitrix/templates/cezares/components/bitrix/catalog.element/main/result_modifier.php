@@ -1841,13 +1841,35 @@ if ($arResult["OFFERS"])
 {
 	$arOffersId = [];
 
+	$siteId = 's1';
+	$fUserId = \Bitrix\Sale\FUser::getId();
+	$basket = \Bitrix\Sale\Basket::loadItemsForFUser($fUserId, $siteId);
+	$basketItems = $basket->getBasketItems();
+	$basketItemsIds = [];
+
+	if($basketItems) {
+		foreach($basketItems as $basketItem) {
+			$basketItemsIds[] = $basketItem->getField('PRODUCT_ID');
+		}
+	}
+
 	// Заменяем индексы у предложений на ID предложения
 	for ($i = 0; $i < count($arResult["OFFERS"]); ++$i)
 	{
-		$arOffersId[] = $arResult["OFFERS"][$i]["ID"];
+		$offerId = $arResult["OFFERS"][$i]["ID"];
+		$arOffersId[] = $offerId;
 
-		$arResult["OFFERS"][$arResult["OFFERS"][$i]["ID"]] = $arResult["OFFERS"][$i];
-		$arResult["OFFERS"][$arResult["OFFERS"][$i]["ID"]]["ACTIVE_OFFER"] = $arResult["OFFERS"][$i]["CATALOG_QUANTITY"] > 0 && $arResult["OFFERS"][$i]["CATALOG_AVAILABLE"];
+		if (in_array($offerId, $basketItemsIds))
+		{
+			$arResult["OFFERS"][$i]["IN_BASKET"] = "Y";
+		}
+		else
+		{
+			$arResult["OFFERS"][$i]["IN_BASKET"] = "N";
+		}
+
+		$arResult["OFFERS"][$offerId] = $arResult["OFFERS"][$i];
+		$arResult["OFFERS"][$offerId]["ACTIVE_OFFER"] = $arResult["OFFERS"][$i]["CATALOG_QUANTITY"] > 0 && $arResult["OFFERS"][$i]["CATALOG_AVAILABLE"];
 		unset($arResult["OFFERS"][$i]);
 	}
 
@@ -1876,7 +1898,7 @@ if ($arResult["OFFERS"])
 
 	$rsSets = CCatalogProductSet::GetList(
 		array(),
-		array("OWNER_ID" => $ownersId
+		array("OWNER_ID" => count($ownersId)?$ownersId:0
 		),
 		false,
 		false,
@@ -1903,7 +1925,7 @@ if ($arResult["OFFERS"])
 	$rsProducts = CIBlockElement::GetList(
 		[],
 		[
-			"ID" => array_keys($mapItemOwner)
+			"ID" => count(array_keys($mapItemOwner))?array_keys($mapItemOwner):0
 		],
 		false,
 		false,
@@ -1941,6 +1963,7 @@ if ($arResult["OFFERS"])
 			[
 				"CODE" => "HIT"
 			]);
+
 		while ($ar_props = $db_props->Fetch())
 		{
 			switch ($ar_props["VALUE_ENUM"])
@@ -2038,23 +2061,6 @@ if ($arResult["OFFERS"])
 		$arResult["OFFERS"][$ownerId]["SET"][] = $arProduct;
 	}
 
-	$dbPrice = CPrice::GetList(
-		[],
-		[
-			"PRODUCT_ID" => $arProduct["ID"],
-			"CATALOG_GROUP_ID" => PRICE_TYPE_ID
-		]
-	);
-
-	if ($arPrice = $dbPrice->Fetch())
-	{
-		$arProduct["PRICE"] = $arPrice["PRICE"];
-	}
-	else
-	{
-		$arProduct["PRICE"] = 0;
-	}
-
 	// значения св-в предложений в фильтре
 	$arResult["OFFERS_MAP_FILTER"] = [];
 	// Добавляем св-ва, по которым нужно фильтровать торговые предложения
@@ -2078,7 +2084,18 @@ if ($arResult["OFFERS"])
 	// Установим первое предложение, как выбранный товар
 	foreach ($arResult["OFFERS"] as $arOffer)
 	{
-		if ($arOffer["ACTIVE_OFFER"])
+		if ($arOffer["SET"])
+		{
+			$setIds = array_column($arOffer["SET"], "ID");
+
+			// весь набор предложения помещен в корзину
+			if (count($setIds) == count(array_intersect($setIds, $basketItemsIds)))
+			{
+				$arOffer["IN_BASKET"] = "Y";
+			}
+		}
+
+		if (!$arResult["CURRENT_OFFER"] && $arOffer["ACTIVE_OFFER"])
 		{
 			$arResult["PRICE_MATRIX"] = $arOffer["PRICE_MATRIX"];
 			$arResult["CURRENT_OFFER"] = $arOffer;
@@ -2126,10 +2143,10 @@ if ($arResult["OFFERS"])
 			{
 				$arResult["SET"]["SET"] = $arOffer["SET"];
 			}
-			break;
 		}
 	}
 
 }
+
 
 ?>

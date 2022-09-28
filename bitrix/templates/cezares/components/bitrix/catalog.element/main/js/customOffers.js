@@ -6,6 +6,7 @@ window.OffersFilterComponent = {
 	 */
 	init: function (params)
 	{
+		self = this;
 		this.result = params.result;
 		this.params = params.params;
 
@@ -31,6 +32,32 @@ window.OffersFilterComponent = {
 
 		// ID предложений, помещенных в корзину
 		this.offersInBasket = [];
+
+		console.log(this.result["OFFERS"]);
+
+		if (this.result["OFFERS"])
+		{
+			Object.values(this.result["OFFERS"]).forEach(function (offer)
+			{
+				if (offer["IN_BASKET"] == "Y")
+				{
+					self.offersInBasket.push(offer["ID"]);
+				}
+			});
+		}
+
+		if (this.result["CURRENT_OFFER"] && this.offersInBasket.includes(this.result["CURRENT_OFFER"]["ID"]))
+		{
+			document.querySelector(".btn.in-cart").style.display = "block";
+			document.querySelector(".btn.to-cart").style.display = "none";
+		}
+		else
+		{
+			document.querySelector(".btn.in-cart").style.display = "none";
+			document.querySelector(".btn.to-cart").style.display = "block";
+		}
+
+		console.log(this.offersInBasket);
 
 		this.initFilterValues();
 		this.setAccessibleFilterItems();
@@ -61,7 +88,6 @@ window.OffersFilterComponent = {
 		{
 			showPrice(prices);
 		}
-
 
 		this.bindEvents();
 
