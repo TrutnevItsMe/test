@@ -14,6 +14,8 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 /** @var array $arParams */
 /** @var array $arResult */
 
+const PRICE_TYPE_ID = 13;
+
 $displayPreviewTextMode = [
 	'H' => true,
 	'E' => true,
@@ -234,9 +236,9 @@ if ($productSlider)
 			$arImage, [
 				"BIG" => ['src' => CFile::GetPath($arImage["ID"])],
 				"SMALL" => CFile::ResizeImageGet($arImage["ID"], ["width" => 400, "height" => 400],
-			BX_RESIZE_IMAGE_PROPORTIONAL, true, []),
+					BX_RESIZE_IMAGE_PROPORTIONAL, true, []),
 				"THUMB" => CFile::ResizeImageGet($arImage["ID"], ["width" => 50, "height" => 50],
-			BX_RESIZE_IMAGE_PROPORTIONAL, true, []),
+					BX_RESIZE_IMAGE_PROPORTIONAL, true, []),
 			]
 		);
 	}
@@ -339,9 +341,9 @@ if ($arParams['USE_ADDITIONAL_GALLERY'] === 'Y')
 			$arElementAdditionalGallery[] = [
 				'DETAIL' => ($arPhoto = CFile::GetFileArray($img)),
 				'PREVIEW' => CFile::ResizeImageGet($img, ['width' => 1500, 'height' => 1500],
-			BX_RESIZE_PROPORTIONAL_ALT, true),
+					BX_RESIZE_PROPORTIONAL_ALT, true),
 				'THUMB' => CFile::ResizeImageGet($img, ['width' => 60, 'height' => 60], BX_RESIZE_IMAGE_EXACT,
-			true),
+					true),
 				'TITLE' => $title,
 				'ALT' => $alt,
 			];
@@ -1509,14 +1511,14 @@ if (strlen($arResult["DISPLAY_PROPERTIES"]["BRAND"]["VALUE"]) && $arResult["PROP
 {
 	$arBrand = CNextCache::CIBLockElement_GetList(['CACHE' => ["MULTI" => "N", "TAG" =>
 		CNextCache::GetIBlockCacheTag($arResult["PROPERTIES"]["BRAND"]["LINK_IBLOCK_ID"])]], ["IBLOCK_ID" =>
-	$arResult["PROPERTIES"]["BRAND"]["LINK_IBLOCK_ID"], "ACTIVE" => "Y", "ID" => $arResult["DISPLAY_PROPERTIES"]["BRAND"]["VALUE"]]);
+		$arResult["PROPERTIES"]["BRAND"]["LINK_IBLOCK_ID"], "ACTIVE" => "Y", "ID" => $arResult["DISPLAY_PROPERTIES"]["BRAND"]["VALUE"]]);
 	if ($arBrand)
 	{
 		if ($arParams["SHOW_BRAND_PICTURE"] == "Y" && ($arBrand["PREVIEW_PICTURE"] || $arBrand["DETAIL_PICTURE"]))
 		{
 			$picture = ($arBrand["PREVIEW_PICTURE"] ? $arBrand["PREVIEW_PICTURE"] : $arBrand["DETAIL_PICTURE"]);
 			$arBrand["IMAGE"] = CFile::ResizeImageGet($picture, ["width" => 120, "height" => 40],
-			BX_RESIZE_IMAGE_PROPORTIONAL_ALT, true);
+				BX_RESIZE_IMAGE_PROPORTIONAL_ALT, true);
 			$arBrand["IMAGE"]["ALT"] = $arBrand["IMAGE"]["TITLE"] = $arBrand["NAME"];
 			if ($arBrand["DETAIL_PICTURE"])
 			{
@@ -1650,7 +1652,6 @@ if ($property = $rsProperty->Fetch())
 
 		foreach ($arResult['SET']['SET'] as $item)
 		{
-
 			$db_res = CPrice::GetList(
 				[],
 				[
@@ -1658,6 +1659,7 @@ if ($property = $rsProperty->Fetch())
 					"CATALOG_GROUP_ID" => 13
 				]
 			);
+
 			if ($ar_res = $db_res->Fetch())
 			{
 				$item['PRICE_DISCOUNT'] = $ar_res["PRICE"];
@@ -1667,6 +1669,7 @@ if ($property = $rsProperty->Fetch())
 				$item['PRICE_DISCOUNT'] = $item['PRICE'];
 
 			}
+
 			$db_res = CPrice::GetList(
 				[],
 				[
@@ -1674,6 +1677,7 @@ if ($property = $rsProperty->Fetch())
 					"CATALOG_GROUP_ID" => 14
 				]
 			);
+
 			if ($ar_res = $db_res->Fetch())
 			{
 				$item['PRICE'] = $ar_res["PRICE"];
@@ -1823,7 +1827,7 @@ $ob = new CBitrixCatalogSmartFilter(); // создаем новый объект
 $arTmpItem = ["CODE" => $arResult["PROPERTIES"]["KOLLEKTSIYA"]["CODE"]]; // свойство фильтра
 // отмечаем текущее значение
 $arTmpItem["VALUES"][] = [
-	"URL_ID" => $arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE_XML_ID"],
+	"URL_ID" => $arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE_ENUM_ID"],
 	"CHECKED" => 1
 ];
 $ob->arResult = ['ITEMS' => [$arTmpItem]]; // закидываем в массив элементов фильтра
@@ -1833,44 +1837,299 @@ $url = $ob->makeSmartUrl($url, true); // формируем url
 $url = str_replace("//", "/", $url);
 $arResult["ALL_COLLECTIONS_URL"] = $url;
 
-// Заменяем индексы у предложений на ID преложения
-for ($i = 0; $i < count($arResult["OFFERS"]); ++$i)
+if ($arResult["OFFERS"])
 {
-	$arResult["OFFERS"][$arResult["OFFERS"][$i]["ID"]] = $arResult["OFFERS"][$i];
-	$arResult["OFFERS"][$arResult["OFFERS"][$i]["ID"]]["ACTIVE_OFFER"] = $arResult["OFFERS"][$i]["CATALOG_QUANTITY"] > 0 && $arResult["OFFERS"][$i]["CATALOG_AVAILABLE"];
-	unset($arResult["OFFERS"][$i]);
-}
+	$arOffersId = [];
 
-// значения св-в предложений в фильтре
-$arResult["OFFERS_MAP_FILTER"] = [];
-// Добавляем св-ва, по которым нужно фильтровать торговые предложения
-foreach ($arParams["FILTER_OFFERS_PROPERTY_CODE"] as $filterProperty)
-{
-	if ($filterProperty)
+	// Заменяем индексы у предложений на ID предложения
+	for ($i = 0; $i < count($arResult["OFFERS"]); ++$i)
 	{
-		$arResult["OFFERS_MAP_FILTER"][$filterProperty] = [];
+		$arOffersId[] = $arResult["OFFERS"][$i]["ID"];
 
-		foreach ($arResult["OFFERS"] as $arOffer)
+		$arResult["OFFERS"][$arResult["OFFERS"][$i]["ID"]] = $arResult["OFFERS"][$i];
+		$arResult["OFFERS"][$arResult["OFFERS"][$i]["ID"]]["ACTIVE_OFFER"] = $arResult["OFFERS"][$i]["CATALOG_QUANTITY"] > 0 && $arResult["OFFERS"][$i]["CATALOG_AVAILABLE"];
+		unset($arResult["OFFERS"][$i]);
+	}
+
+	// Выбираем наборы в предложениях
+	$rsElem = CCatalogProductSet::GetList(
+		array(),
+		array(
+			array(
+				'LOGIC' => 'OR',
+				'TYPE' => CCatalogProductSet::TYPE_GROUP,
+				'TYPE' => CCatalogProductSet::TYPE_SET
+			),
+			'ITEM_ID' => $arOffersId
+		),
+		false,
+		false,
+		array('*')
+	);
+
+	$ownersId = [];
+
+	while ($set = $rsElem->Fetch())
+	{
+		$ownersId[] = $set["OWNER_ID"];
+	}
+
+	$rsSets = CCatalogProductSet::GetList(
+		array(),
+		array("OWNER_ID" => $ownersId
+		),
+		false,
+		false,
+		array('*')
+	);
+
+	/** [ITEM_ID => [
+	 *        OWNER_ID => value,
+	 *        AMOUNT => value
+	 *        ]
+	 *    ]
+	 */
+	$mapItemOwner = [];
+
+	while ($set = $rsSets->Fetch())
+	{
+		if ($set["OWNER_ID"] != $set["ITEM_ID"])
 		{
-			if ($arOffer["PROPERTIES"][$filterProperty]["VALUE"])
+			$mapItemOwner[$set["ITEM_ID"]]["OWNER_ID"] = $set["OWNER_ID"];
+			$mapItemOwner[$set["ITEM_ID"]]["AMOUNT"] = $set["QUANTITY"];
+		}
+	}
+
+	$rsProducts = CIBlockElement::GetList(
+		[],
+		[
+			"ID" => array_keys($mapItemOwner)
+		],
+		false,
+		false,
+		[
+			"*",
+			"PROPERTY_CML2_ARTICLE"
+		]
+	);
+
+	// Выбираем товары из набора
+	while ($arProduct = $rsProducts->GetNext())
+	{
+		$ownerId = $mapItemOwner[$arProduct["ID"]]["OWNER_ID"];
+
+		if (!$arResult["OFFERS"][$ownerId]["SET"])
+		{
+			$arResult["OFFERS"][$ownerId]["SET"] = [];
+		}
+
+		if ($arProduct["PREVIEW_PICTURE"])
+		{
+			$arProduct["PREVIEW_PICTURE"] = CFile::GetFileArray($arProduct["PREVIEW_PICTURE"])["SRC"];
+		}
+
+		if ($arProduct["DETAIL_PICTURE"])
+		{
+			$arProduct["DETAIL_PICTURE"] = CFile::GetFileArray($arProduct["DETAIL_PICTURE"])["SRC"];
+		}
+
+		$db_props = CIBlockElement::GetProperty(
+			$arProduct["IBLOCK_ID"],
+			$arProduct["ID"],
+			"sort",
+			"asc",
+			[
+				"CODE" => "HIT"
+			]);
+		while ($ar_props = $db_props->Fetch())
+		{
+			switch ($ar_props["VALUE_ENUM"])
 			{
-				$propValue = $arOffer["PROPERTIES"][$filterProperty]["VALUE"];
-				$arResult["OFFERS_MAP_FILTER"][$filterProperty][$propValue][] = $arOffer;
+				case "Хит":
+					$arProduct["HIT"] = $ar_props["VALUE_ENUM"];
+					$arProduct["SPECIAL_OFFER"] = true;
+					break;
+				case "Акция":
+					$arProduct["STOCK"] = $ar_props["VALUE_ENUM"];
+					$arProduct["SPECIAL_OFFER"] = true;
+					break;
+				case "Распродажа":
+					$arProduct["SALE"] = $ar_props["VALUE_ENUM"];
+					$arProduct["SPECIAL_OFFER"] = true;
+					break;
+				case "Новинка":
+					$arProduct["NEW"] = $ar_props["VALUE_ENUM"];
+					$arProduct["SPECIAL_OFFER"] = true;
+					break;
+				case "5%":
+					$arProduct["PERCENT_5"] = $ar_props["VALUE_ENUM"];
+					$arProduct["SPECIAL_OFFER"] = true;
+					break;
+				case "6%":
+					$arProduct["PERCENT_6"] = $ar_props["VALUE_ENUM"];
+					$arProduct["SPECIAL_OFFER"] = true;
+					break;
+				case "7%":
+					$arProduct["PERCENT_7"] = $ar_props["VALUE_ENUM"];
+					$arProduct["SPECIAL_OFFER"] = true;
+					break;
+				case "9%":
+					$arProduct["PERCENT_9"] = $ar_props["VALUE_ENUM"];
+					$arProduct["SPECIAL_OFFER"] = true;
+					break;
+				case "10%":
+					$arProduct["PERCENT_10"] = $ar_props["VALUE_ENUM"];
+					$arProduct["SPECIAL_OFFER"] = true;
+					break;
+				case "15%":
+					$arProduct["PERCENT_15"] = $ar_props["VALUE_ENUM"];
+					$arProduct["SPECIAL_OFFER"] = true;
+					break;
+				case "20%":
+					$arProduct["PERCENT_20"] = $ar_props["VALUE_ENUM"];
+					$arProduct["SPECIAL_OFFER"] = true;
+					break;
+				case "25%":
+					$arProduct["PERCENT_25"] = $ar_props["VALUE_ENUM"];
+					$arProduct["SPECIAL_OFFER"] = true;
+					break;
+				case "30%":
+					$arProduct["PERCENT_30"] = $ar_props["VALUE_ENUM"];
+					$arProduct["SPECIAL_OFFER"] = true;
+					break;
+				case "40%":
+					$arProduct["PERCENT_40"] = $ar_props["VALUE_ENUM"];
+					$arProduct["SPECIAL_OFFER"] = true;
+					break;
+				case "50%":
+					$arProduct["PERCENT_50"] = $ar_props["VALUE_ENUM"];
+					$arProduct["SPECIAL_OFFER"] = true;
+					break;
+				case "58%":
+					$arProduct["PERCENT_58"] = $ar_props["VALUE_ENUM"];
+					$arProduct["SPECIAL_OFFER"] = true;
+					break;
+				case "70%":
+					$arProduct["PERCENT_70"] = $ar_props["VALUE_ENUM"];
+					$arProduct["SPECIAL_OFFER"] = true;
+					break;
+			}
+		}
+
+		$dbPrice = CPrice::GetList(
+			[],
+			[
+				"PRODUCT_ID" => $arProduct["ID"],
+				"CATALOG_GROUP_ID" => PRICE_TYPE_ID
+			]
+		);
+
+		if ($arPrice = $dbPrice->Fetch())
+		{
+			$arProduct["PRICE"] = $arPrice["PRICE"];
+		}
+		else
+		{
+			$arProduct["PRICE"] = 0;
+		}
+
+		$arProduct["ARTICLE"] = $arProduct["PROPERTY_CML2_ARTICLE_VALUE"];
+		$arProduct["AMOUNT"] = $mapItemOwner[$arProduct["ID"]]["AMOUNT"];
+		$arResult["OFFERS"][$ownerId]["SET"][] = $arProduct;
+	}
+
+	$dbPrice = CPrice::GetList(
+		[],
+		[
+			"PRODUCT_ID" => $arProduct["ID"],
+			"CATALOG_GROUP_ID" => PRICE_TYPE_ID
+		]
+	);
+
+	if ($arPrice = $dbPrice->Fetch())
+	{
+		$arProduct["PRICE"] = $arPrice["PRICE"];
+	}
+	else
+	{
+		$arProduct["PRICE"] = 0;
+	}
+
+	// значения св-в предложений в фильтре
+	$arResult["OFFERS_MAP_FILTER"] = [];
+	// Добавляем св-ва, по которым нужно фильтровать торговые предложения
+	foreach ($arParams["FILTER_OFFERS_PROPERTY_CODE"] as $filterProperty)
+	{
+		if ($filterProperty)
+		{
+			$arResult["OFFERS_MAP_FILTER"][$filterProperty] = [];
+
+			foreach ($arResult["OFFERS"] as $arOffer)
+			{
+				if ($arOffer["PROPERTIES"][$filterProperty]["VALUE"])
+				{
+					$propValue = $arOffer["PROPERTIES"][$filterProperty]["VALUE"];
+					$arResult["OFFERS_MAP_FILTER"][$filterProperty][$propValue][] = $arOffer;
+				}
 			}
 		}
 	}
-}
 
-if ($arResult["OFFERS"])
-{
+	// Установим первое предложение, как выбранный товар
 	foreach ($arResult["OFFERS"] as $arOffer)
 	{
 		if ($arOffer["ACTIVE_OFFER"])
 		{
 			$arResult["PRICE_MATRIX"] = $arOffer["PRICE_MATRIX"];
 			$arResult["CURRENT_OFFER"] = $arOffer;
+
+			if ($arOffer["MORE_PHOTO"])
+			{
+				$arResult["MORE_PHOTO"] = $arOffer["MORE_PHOTO"];
+			}
+
+			if ($arOffer["PREVIEW_PICTURE"])
+			{
+				$arResult["MORE_PHOTO"][] = [
+					"BIG" => [
+						"src" => $arOffer["PREVIEW_PICTURE"]["SRC"]
+					],
+					"SMALL" => [
+						"src" => $arOffer["PREVIEW_PICTURE"]["SRC"]
+					],
+					"THUMB" => [
+						"src" => $arOffer["PREVIEW_PICTURE"]["SRC"]
+					],
+					"ALT" => $arOffer["NAME"],
+					"TITLE" => $arOffer["NAME"]
+				];
+			}
+
+			if ($arOffer["DETAIL_PICTURE"])
+			{
+				$arResult["MORE_PHOTO"][] = [
+					"BIG" => [
+						"src" => $arOffer["DETAIL_PICTURE"]["SRC"]
+					],
+					"SMALL" => [
+						"src" => $arOffer["DETAIL_PICTURE"]["SRC"]
+					],
+					"THUMB" => [
+						"src" => $arOffer["DETAIL_PICTURE"]["SRC"]
+					],
+					"ALT" => $arOffer["NAME"],
+					"TITLE" => $arOffer["NAME"]
+				];
+			}
+
+			if ($arOffer["SET"])
+			{
+				$arResult["SET"]["SET"] = $arOffer["SET"];
+			}
+			break;
 		}
 	}
+
 }
 
 ?>

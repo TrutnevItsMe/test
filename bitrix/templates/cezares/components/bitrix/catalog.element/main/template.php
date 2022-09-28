@@ -12,6 +12,10 @@ use Bitrix\Main\Localization\Loc;
 $asset = \Bitrix\Main\Page\Asset::getInstance();
 $asset->addCss($templateFolder . "/style.css");
 $asset->addJs($templateFolder . "/js/customOffers.js");
+$asset->addJs($templateFolder . "/js/mustache.js");
+
+include_once $_SERVER["DOCUMENT_ROOT"] . $templateFolder . "/template_js/sets.php";
+
 ?>
 
 <div class="basket_props_block" id="bx_basket_div_<?=$arResult["ID"];?>" style="display: none;">
@@ -286,7 +290,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 						<div class="thumbs bxSlider">
 							<div class="inner_slider">
 								<ul class="slides_block" id="thumbs">
-									<?foreach($arResult["MORE_PHOTO"]as $i => $arImage):?>
+									<?foreach($arResult["MORE_PHOTO"] as $i => $arImage):?>
 										<li <?=(!$i ? 'class="current"' : '')?> data-slide_key="<?=$i;?>" data-big_img="<?=$arImage["BIG"]["src"]?>" data-small_img="<?=$arImage["SMALL"]["src"]?>">
 											<span><img class="xzoom-gallery" data-xpreview="<?=$arImage["THUMB"]["src"];?>" src="<?=$arImage["THUMB"]["src"]?>" alt="<?=$arImage["ALT"];?>" title="<?=$arImage["TITLE"];?>" /></span>
 										</li>
@@ -320,7 +324,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 									slider_wrapper.find('.slides li:eq('+index+')').addClass('current').show();
 								}
 							});
-							$('.bxSlider.thumbs .slides_block').bxSlider({
+							window.slider = $('.bxSlider.thumbs .slides_block').bxSlider({
 								mode: 'vertical',
 								minSlides: 5,
 								maxSlides: 5,
@@ -752,19 +756,16 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 		</div>
 	</div>
 	<?$bPriceCount = ($arParams['USE_PRICE_COUNT'] == 'Y');?>
-	<? //Вывводим фильтр по торговым предложениям ?>
+	<? //Выводим фильтр по торговым предложениям ?>
 	<?if($arResult['OFFERS']):?>
-
 		<div class="offers-filter">
 			<?foreach($arResult["OFFERS_MAP_FILTER"] as $prop => $arValueOffers):?>
-
 				<h4 class="offers-filter-column"><?=$arResult["PROPERTIES"][$prop]["NAME"]?>: </h4>
 				<span class="prop-current-value"><?=$arResult["CURRENT_OFFER"]["PROPERTIES"][$prop]["VALUE"]?></span>
 				<div class="flex filter-item-container" data-column="<?=$prop?>">
 					<?
 					$values = array_keys($arValueOffers);
 					sort($values);
-
 					?>
 				<? foreach ($values as $value): ?>
 				<? $isCurrentOfferValue = $arResult["CURRENT_OFFER"]["PROPERTIES"][$prop]["VALUE"] == $value;
@@ -779,12 +780,32 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 						}
 					}
 				?>
-				<a>
+				<a class="offers-filter-item-link"
+					<?if (in_array($prop, $arParams["OFFER_FILTER_REPLACED_PICTURE"])):?>
+				   data-hint="<?=$value?>"
+					<?endif;?>
+					>
 					<div class="offers-filter-item <?if ($isCurrentOfferValue):?>active-offers-filter-item<?endif;?>
-					<?if (!$isAvailableValue):?>inactive-offer<?endif;?>"
+					<?if (!$isAvailableValue):?>inaccessible inactive-offer<?endif;?>"
 					data-column="<?=$prop?>"
-					data-<?=$prop?>='<?=$value?>'>
+					data-value="<?=$value?>"
+					>
+						<?if (in_array($prop, $arParams["OFFER_FILTER_REPLACED_PICTURE"])):?>
+							<?
+								$file = \CFile::ResizeImageGet($arValueOffers[$value][0]["PREVIEW_PICTURE"],
+									[
+										'width' => 128,
+										'height' => 128
+									],
+									BX_RESIZE_IMAGE_EXACT,
+								true);
+							?>
+							<img src="<?=$file["src"]?>"
+								 height="<?=$file["height"]?>"
+								 width="<?=$file["width"]?>">
+						<?else:?>
 						<span><?=$value?></span>
+						<?endif;?>
 					</div>
 				</a>
 				<? endforeach; ?>
@@ -2087,8 +2108,9 @@ if ($arResult['CATALOG'] && $arParams['USE_GIFTS_MAIN_PR_SECTION_LIST'] == 'Y' &
 		window.OffersFilterComponent.init({
 			result: <?=CUtil::PhpToJSObject($arResult)?>,
 			params: <?=CUtil::PhpToJSObject($arParams)?>,
-			classActiveOfferItem: "active-offers-filter-item",
-			classOfferItem: "offers-filter-item",
+			classActiveOfferValueItem: "active-offers-filter-item",
+			classOfferValueItem: "offers-filter-item",
+			classOfferValueContainer: "filter-item-container",
 			classInactive: "inactive-offer",
 			classInaccessible: "inaccessible"
 		});

@@ -105,6 +105,7 @@
 	$MESS["SHOW_COUNTER_LIST_TIP"] = "Опция действует при типе SKU 1";
 
 	$MESS["SHOW_SECTION_PICTURES"] = "Показывать картинки разделов";
+	$MESS["OFFER_FILTER_REPLACED_PICTURE"] = "Свойство, которое будет выводиться картинкой";
 	$MESS["SHOW_SECTION_DESC"] = "Показывать описание раздела";
 	$MESS["SHOW_ROOT_SECTION_PICTURE"] = "Показывать картинки разделов в корне каталога";
 	$MESS["SHOW_SECTION_SIBLINGS"] = "Показывать список разделов";
@@ -116,6 +117,7 @@
 	$MESS["IBLOCK_BANNERS_TYPE_ID"] ="ID инфоблока с типами баннеров";
 	$MESS["IBLOCK_SMALL_BANNERS_TYPE_ID"] = "Тип банеров для показа в каталоге";
 
+	$MESS["OFFERS_FILTER_PROPS"] = "Свойства предложений для фильтрации в детальной";
 	$MESS["OFFERS_SETTINGS"] = "Свойства для отбора предложений";
 	$MESS["OFFER_SHOW_PREVIEW_PICTURE_PROPS_TITLE"] = "Выводить анонсную картинку предложения в свойствах для отбора";
 	$MESS["CP_BC_TPL_ADD_PICT_PROP"] = "Дополнительная картинка основного товара";

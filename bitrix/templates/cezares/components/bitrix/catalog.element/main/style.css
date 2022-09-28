@@ -31,3 +31,25 @@
 .inaccessible{
 	opacity: 0.5;
 }
+
+.offers-filter-item-link{
+	position: relative;
+}
+
+.offers-filter-item-link:after{
+	content: attr(data-hint);
+	position: absolute;
+	margin-left: 13px;
+	background-color: #129ce2;
+	color: #FFF;
+	border-radius: 5px;
+	margin-top: 5px;
+	opacity: 0;
+	transition: 0.5s;
+	top: 80%;
+}
+
+.offers-filter-item-link:hover:after{
+	opacity: 1;
+	top: 100%;
+}

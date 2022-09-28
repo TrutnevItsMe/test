@@ -4,7 +4,7 @@ $APPLICATION->SetTitle("Документация");
 ?><?$APPLICATION->IncludeComponent("bitrix:news", "files", Array(
 	"COMPONENT_TEMPLATE" => "partners",
 		"IBLOCK_TYPE" => "aspro_next_content",	// Тип инфоблока
-		"IBLOCK_ID" => "27",	// Инфоблок
+		"IBLOCK_ID" => "26",	// Инфоблок
 		"NEWS_COUNT" => "20",	// Количество новостей на странице
 		"USE_SEARCH" => "N",	// Разрешить поиск
 		"USE_RSS" => "N",	// Разрешить RSS

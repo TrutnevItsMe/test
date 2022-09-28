@@ -37,14 +37,14 @@ $aMenuLinks = Array(
 	),
 	Array(
 		"Партнерам", 
-		"/info/docs/", 
+		"/info/", 
 		Array(), 
 		Array(), 
 		"" 
 	),
 	Array(
 		"Где купить", 
-		"/contacts/", 
+		"/contacts/stores/", 
 		Array(), 
 		Array(), 
 		"" 
