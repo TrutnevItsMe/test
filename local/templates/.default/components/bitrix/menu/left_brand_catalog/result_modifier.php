@@ -1,4 +1,4 @@
-<?
+<?php
 global $arTheme, $arRegion;
 $catalog_id = \Bitrix\Main\Config\Option::get(
 	"aspro.next",
@@ -155,6 +155,3 @@ foreach ($arResult as &$arTopMenuItem)
 	}
 
 }
-
-
-?>
