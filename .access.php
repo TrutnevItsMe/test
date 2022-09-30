@@ -1,4 +1,12 @@
 <?
+$PERM["catalog"]["G2"]="R";
+$PERM["catalog"]["G6"]="R";
+$PERM["catalog"]["G9"]="R";
+$PERM["catalog"]["G3"]="D";
+$PERM["catalog"]["G4"]="D";
+$PERM["catalog"]["G5"]="D";
+$PERM["catalog"]["G8"]="W";
+$PERM["catalog"]["*"]="D";
 $PERM["brands"]["G2"]="R";
 $PERM["brands"]["G6"]="D";
 $PERM["brands"]["G3"]="D";
@@ -29,14 +37,6 @@ $PERM["rasprodazha"]["G5"]="D";
 $PERM["rasprodazha"]["G8"]="D";
 $PERM["rasprodazha"]["*"]="D";
 $PERM["rasprodazha"]["G9"]="R";
-$PERM["catalog"]["2"]="R";
-$PERM["catalog"]["6"]="R";
-$PERM["catalog"]["9"]="R";
-$PERM["catalog"]["3"]="D";
-$PERM["catalog"]["4"]="D";
-$PERM["catalog"]["5"]="D";
-$PERM["catalog"]["8"]="W";
-$PERM["catalog"]["*"]="D";
 $PERM["landings"]["*"]="D";
 $PERM["include"]["*"]="D";
 $PERM["video"]["*"]="R";
