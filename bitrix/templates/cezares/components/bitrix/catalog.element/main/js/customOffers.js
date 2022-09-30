@@ -33,8 +33,6 @@ window.OffersFilterComponent = {
 		// ID предложений, помещенных в корзину
 		this.offersInBasket = [];
 
-		console.log(this.result["OFFERS"]);
-
 		if (this.result["OFFERS"])
 		{
 			Object.values(this.result["OFFERS"]).forEach(function (offer)
@@ -56,8 +54,6 @@ window.OffersFilterComponent = {
 			document.querySelector(".btn.in-cart").style.display = "none";
 			document.querySelector(".btn.to-cart").style.display = "block";
 		}
-
-		console.log(this.offersInBasket);
 
 		this.initFilterValues();
 		this.setAccessibleFilterItems();
