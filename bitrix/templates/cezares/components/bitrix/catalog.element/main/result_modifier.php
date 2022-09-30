@@ -2082,7 +2082,7 @@ if ($arResult["OFFERS"])
 	}
 
 	// Установим первое предложение, как выбранный товар
-	foreach ($arResult["OFFERS"] as $arOffer)
+	foreach ($arResult["OFFERS"] as &$arOffer)
 	{
 		if ($arOffer["SET"])
 		{
@@ -2147,6 +2147,5 @@ if ($arResult["OFFERS"])
 	}
 
 }
-
 
 ?>
