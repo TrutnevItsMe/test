@@ -11,7 +11,7 @@ $this->setFrameMode(true);
 	<? if ($arParams['SHOW_TITLE'] == 'Y'): ?>
 		<div class="title-tab-heading visible-xs"><?= $arParams["T_TITLE"]; ?></div>
 	<? endif; ?>
-	<div class="item-views <?= $arParams['VIEW_TYPE'] ?> <?= $arParams['VIEW_TYPE'] ?>-type-block <?= ($arParams['SHOW_TABS'] == 'Y' ? 'with_tabs' : '') ?> <?= ($arParams['IMAGE_POSITION'] ? 'image_' . $arParams['IMAGE_POSITION'] : '') ?> <?= ($templateName = $component->{'__parent'}->{'__template'}->{'__name'}) ?>">
+	<div class="info-row-wrapper item-views <?= $arParams['VIEW_TYPE'] ?> <?= $arParams['VIEW_TYPE'] ?>-type-block <?= ($arParams['SHOW_TABS'] == 'Y' ? 'with_tabs' : '') ?> <?= ($arParams['IMAGE_POSITION'] ? 'image_' . $arParams['IMAGE_POSITION'] : '') ?> <?= ($templateName = $component->{'__parent'}->{'__template'}->{'__name'}) ?>">
 		<? // top pagination?>
 		<? if ($arParams['DISPLAY_TOP_PAGER']): ?>
 			<?= $arResult['NAV_STRING'] ?>
@@ -87,33 +87,35 @@ $this->setFrameMode(true);
 											true);
 										?>
 
-									<div class="d-flex justify-content-space-around align-items-baseline align-content-center">
-										<div>
-											<a href="<?= $arItem["DETAIL_PAGE_URL"] ?>">
-												<? if ($img): ?>
-													<img src="<?= $img["src"] ?>"
-														 width="<?= $img["width"] ?>"
-														 height="<?= $img["height"] ?>"/>
-												<? else: ?>
-													<img src="<?= SITE_TEMPLATE_PATH ?>/images/no_photo_small.png"
-														 width="100"
-														 height="100">
-												<? endif ?>
-											</a>
-										</div>
-										<div>
-											<a href="<?= $arItem["DETAIL_PAGE_URL"] ?>"><p><?= $file["ORIGINAL_NAME"] ?></p></a>
-										</div>
-										<? if ($file["TIMESTAMP_X"]): ?>
-											<div>
-												<p><?= $file["TIMESTAMP_X"]->format("d.m.Y") ?></p>
-											</div>
-										<? endif; ?>
-										<div>
-											<a href="<?=$file["SRC"] ?>" download="<?= $file["ORIGINAL_NAME"] ?>">
-												<p class="btn btn-info"><?=\Bitrix\Main\Localization\Loc::getMessage("DOWNLOAD")?></p>
-											</a>
-										</div>
+									<div class="info-row">
+                    <div class="info-row__inner">
+                      <div class="info-row__item info-row__item_image">
+                        <a href="<?= $arItem["DETAIL_PAGE_URL"] ?>">
+                            <? if ($img): ?>
+                              <img src="<?= $img["src"] ?>"
+                                   width="<?= $img["width"] ?>"
+                                   height="<?= $img["height"] ?>"/>
+                            <? else: ?>
+                              <img src="<?= SITE_TEMPLATE_PATH ?>/images/no_photo_small.png"
+                                   width="100"
+                                   height="100">
+                            <? endif ?>
+                        </a>
+                      </div>
+                      <div class="info-row__item info-row__item_name">
+                        <a href="<?= $arItem["DETAIL_PAGE_URL"] ?>"><p><?= $file["ORIGINAL_NAME"] ?></p></a>
+                      </div>
+                        <? if ($file["TIMESTAMP_X"]): ?>
+                          <div class="info-row__item">
+                            <p><?= $file["TIMESTAMP_X"]->format("d.m.Y") ?></p>
+                          </div>
+                        <? endif; ?>
+                      <div class="info-row__item">
+                        <a href="<?=$file["SRC"] ?>" download="<?= $file["ORIGINAL_NAME"] ?>">
+                          <p class="btn btn-info"><?=\Bitrix\Main\Localization\Loc::getMessage("DOWNLOAD")?></p>
+                        </a>
+                      </div>
+                    </div>
 									</div>
 
 							<? endif; ?>
