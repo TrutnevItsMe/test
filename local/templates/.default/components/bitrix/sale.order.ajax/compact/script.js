@@ -136,7 +136,6 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
 										ctx.properties[locPropId].control.setValueByLocationIds(locationsData);
 									}, function(){
 										try{
-											// ctx.properties[locPropId].control.clearSelected();
 										}catch(e){}
 									});
 								}
@@ -245,12 +244,6 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
 
 	checkMode: function(propId, mode){
 
-		//if(typeof this.modes[propId] == 'undefined')
-		//	this.modes[propId] = {};
-
-		//if(typeof this.modes[propId] != 'undefined' && this.modes[propId][mode])
-		//	return true;
-
 		if(mode == 'altLocationChoosen'){
 
 			if(this.checkAbility(propId, 'canHaveAltLocation')){
@@ -260,7 +253,6 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
 
 				if(input !== false && input.value.length > 0 && !input.disabled && this.properties[altPropId].valueSource != 'default'){
 
-					//this.modes[propId][mode] = true;
 					return true;
 				}
 			}
@@ -424,7 +416,6 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
 			emulateOnload: true,
 			start: true,
 			data: {'ACT': 'GET_LOCS_BY_ZIP', 'ZIP': value},
-			//cache: true,
 			onsuccess: function(result){
 				if(result.result)
 				{

@@ -174,6 +174,34 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 		 */
 		sendRequest: function (action, actionData)
 		{
+			// bitrix/templates/cezares/js/main.js
+			// Если не нажат checkbox
+			if (BX.Sale.OrderAjaxComponent.state_licence !== "checked")
+			{
+				let uncheckedBlock = document.querySelector(".uncheckedBlock");
+
+				// Добавляем вывод ошибки
+				if (!uncheckedBlock)
+				{
+					let accessibleFormBlock = document.querySelector(".form");
+					let errorBlock = document.createElement("div");
+					errorBlock.className = "uncheckedBlock";
+					errorBlock.innerHTML = "<p>" + BX.message("PERSONAL_DATA_ERROR") + "</p>";
+					accessibleFormBlock.prepend(errorBlock)
+				}
+
+				return;
+			}
+			else
+			{
+				let uncheckedBlock = document.querySelector(".uncheckedBlock");
+
+				if (uncheckedBlock)
+				{
+					uncheckedBlock.remove();
+				}
+			}
+
 			var form;
 
 			if (!this.startLoader())
@@ -1911,12 +1939,6 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 			}
 
 			this.checkNotifications();
-
-			// if (this.activeSectionId !== this.regionBlockNode.id)
-			//     this.editFadeRegionContent(this.regionBlockNode.querySelector('.bx-soa-section-content'));
-			//
-			// if (this.activeSectionId != this.propsBlockNode.id)
-			//     this.editFadePropsContent(this.propsBlockNode.querySelector('.bx-soa-section-content'));
 		},
 
 		fixLocationsStyle: function (section, hiddenSection)
@@ -5721,16 +5743,15 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 				]
 			});
 
-			if (paySystem.DESCRIPTION && paySystem.DESCRIPTION.length)
-			{
-				title = BX.create('DIV', {
-					props: {className: 'bx-soa-pp-company-block'},
-					children: [BX.create('DIV', {
-						props: {className: 'bx-soa-pp-company-desc'},
-						html: paySystem.DESCRIPTION
-					})]
-				});
-			}
+            if (paySystem.DESCRIPTION && paySystem.DESCRIPTION.length) {
+                title = BX.create('DIV', {
+                    props: {className: 'bx-soa-pp-company-block'},
+                    children: [BX.create('DIV', {
+                        props: {className: 'bx-soa-pp-company-desc'},
+                        html: paySystem.DESCRIPTION
+                    })]
+                });
+            }
 
 			hiddenInput = BX.create('INPUT', {
 				props: {
@@ -8957,19 +8978,19 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 			this.totalInfoBlockNode.appendChild(this.createTotalUnit(BX.message('SOA_SUM_SUMMARY'), priceHtml, params));
 
 			// Показываем общее кол-во товаров
-			if (this.params["COLUMNS_COMMON_INFO"].includes("COUNT"))
+			if (this.params["COLUMNS_COMMON_INFO"] && this.params["COLUMNS_COMMON_INFO"].includes("COUNT"))
 			{
 				this.totalInfoBlockNode.appendChild(this.createTotalUnit(BX.message('COUNT_PRODUCTS'), total.COUNT_PRODUCTS));
 			}
 
 			// Показываем общий вес
-			if (this.options.showOrderWeight && this.params["COLUMNS_COMMON_INFO"].includes("WEIGHT"))
+			if (this.params["COLUMNS_COMMON_INFO"] && this.options.showOrderWeight && this.params["COLUMNS_COMMON_INFO"].includes("WEIGHT"))
 			{
 				this.totalInfoBlockNode.appendChild(this.createTotalUnit(BX.message('SOA_SUM_WEIGHT_SUM'), total.ORDER_WEIGHT_FORMATED));
 			}
 
 			// Показываем общий объем (св-во "Объем инд. упаковки")
-			if (this.params["COLUMNS_COMMON_INFO"].includes("VOLUME"))
+			if (this.params["COLUMNS_COMMON_INFO"] && this.params["COLUMNS_COMMON_INFO"].includes("VOLUME"))
 			{
 				this.totalInfoBlockNode.appendChild(this.createTotalUnit(BX.message('VOLUME'), total.VOLUME_FORMATED));
 			}
