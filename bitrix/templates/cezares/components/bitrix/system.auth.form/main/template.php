@@ -213,23 +213,6 @@ if($arResult['PHONE_AUTH_PARAMS']['USE']){
 					</div>
 				<?endif;?>
 			</div>
-			<?if($arResult["AUTH_SERVICES"]):?>
-				<div class="reg-new">
-					<div class="soc-avt">
-						<div class="title"><?=GetMessage("SOCSERV_AS_USER_FORM");?></div>
-						<?$APPLICATION->IncludeComponent("bitrix:socserv.auth.form", "icons",
-							array(
-								"AUTH_SERVICES" => $arResult["AUTH_SERVICES"],
-								"AUTH_URL" => SITE_DIR."auth/?login=yes",
-								"POST" => $arResult["POST"],
-								"SUFFIX" => "form",
-							),
-							$component, array("HIDE_ICONS"=>"Y")
-						);
-						?>
-					</div>
-				</div>
-			<?endif;?>
 			<div class="form-footer socserv1">
 				<div class="inner-table-block">
 				<!--noindex--><a href="<?=$arResult["AUTH_REGISTER_URL"];?>" rel="nofollow" class="btn transparent bold register" tabindex="6"><?=GetMessage("AUTH_REGISTER_NEW")?></a><!--/noindex-->
