@@ -15,13 +15,6 @@ $aMenuLinks = Array(
 		"" 
 	),
 	Array(
-		"Личный счет", 
-		"/personal/account/", 
-		Array(), 
-		Array(), 
-		"CBXFeatures::IsFeatureEnabled('SaleAccounts')" 
-	),
-	Array(
 		"Личные данные", 
 		"/personal/private/", 
 		Array(), 
@@ -52,13 +45,6 @@ $aMenuLinks = Array(
 	Array(
 		"Подписки", 
 		"/personal/subscribe/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
-		"Контакты", 
-		"/contacts/", 
 		Array(), 
 		Array(), 
 		"" 
