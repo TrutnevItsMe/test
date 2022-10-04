@@ -327,6 +327,14 @@
 											: <?= $arItem['ARTICLE']['VALUE']; ?></div>
 									<? } ?>
 									<table>
+										<?foreach ($arParams["PROPERTY_CODE"] as $prop):?>
+											<?if ($arItem["PROPERTIES"][$prop]["VALUE"]):?>
+											<tr>
+												<td><?=$arItem["PROPERTIES"][$prop]["NAME"]?>:
+													<?=$arItem["PROPERTIES"][$prop]["VALUE"]?></td>
+											</tr>
+											<?endif?>
+										<?endforeach;?>
 										<tr>
 											<td>Код: <?= $arItem["ID"] ?></td>
 										</tr>
