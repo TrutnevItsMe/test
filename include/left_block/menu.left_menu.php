@@ -3,7 +3,7 @@
 <?if(!CNext::IsMainPage()):?>
 	<?if(CNext::IsCatalogPage()):?>
 		<?if(!$bHideCatalogMenu):?>
-			<?$APPLICATION->IncludeComponent("bitrix:menu", "left_front_catalog1", array(
+			<?$APPLICATION->IncludeComponent("bitrix:menu", "left_front_catalog", array(
 				"ROOT_MENU_TYPE" => "left",
 				"MENU_CACHE_TYPE" => "A",
 				"MENU_CACHE_TIME" => "3600000",
