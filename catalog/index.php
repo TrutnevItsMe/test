@@ -294,6 +294,7 @@ $APPLICATION->IncludeComponent(
 		),
 		"COMPARE_OFFERS_PROPERTY_CODE" => array(
 			0 => "",
+<<<<<<< HEAD
 			1 => "ARTICLE",
 			2 => "VOLUME",
 			3 => "SIZES",
@@ -302,6 +303,16 @@ $APPLICATION->IncludeComponent(
 			6 => "COLOR",
 			7 => "DEPTH_CM",
 			8 => "WIDTH_CM",
+=======
+			1 => "MOUNTING",
+			2 => "COLOR",
+			3 => "DEPTH_CM",
+			4 => "WIDTH_CM",
+			5 => "ARTICLE",
+			6 => "VOLUME",
+			7 => "SIZES",
+			8 => "COLOR_REF",
+>>>>>>> e6d048cda66d7afb014a3bfef1c3f77893a72b42
 			9 => "",
 		),
 		"COMPARE_ELEMENT_SORT_FIELD" => "shows",
@@ -369,6 +380,7 @@ $APPLICATION->IncludeComponent(
 		"LIST_OFFERS_PROPERTY_CODE" => array(
 			0 => "MORE_PHOTO",
 			1 => "SHIRINA_IZDELIYA_SM",
+<<<<<<< HEAD
 			2 => "ARTICLE",
 			3 => "VOLUME",
 			4 => "SIZES",
@@ -377,6 +389,16 @@ $APPLICATION->IncludeComponent(
 			7 => "COLOR",
 			8 => "DEPTH_CM",
 			9 => "WIDTH_CM",
+=======
+			2 => "MOUNTING",
+			3 => "COLOR",
+			4 => "DEPTH_CM",
+			5 => "WIDTH_CM",
+			6 => "ARTICLE",
+			7 => "VOLUME",
+			8 => "SIZES",
+			9 => "COLOR_REF",
+>>>>>>> e6d048cda66d7afb014a3bfef1c3f77893a72b42
 			10 => "",
 		),
 		"LIST_OFFERS_LIMIT" => "10",
@@ -451,6 +473,7 @@ $APPLICATION->IncludeComponent(
 		),
 		"DETAIL_OFFERS_PROPERTY_CODE" => array(
 			0 => "MORE_PHOTO",
+<<<<<<< HEAD
 			1 => "ARTICLE",
 			2 => "VOLUME",
 			3 => "SIZES",
@@ -459,6 +482,16 @@ $APPLICATION->IncludeComponent(
 			6 => "COLOR",
 			7 => "DEPTH_CM",
 			8 => "WIDTH_CM",
+=======
+			1 => "MOUNTING",
+			2 => "COLOR",
+			3 => "DEPTH_CM",
+			4 => "WIDTH_CM",
+			5 => "ARTICLE",
+			6 => "VOLUME",
+			7 => "SIZES",
+			8 => "COLOR_REF",
+>>>>>>> e6d048cda66d7afb014a3bfef1c3f77893a72b42
 			9 => "FRAROMA",
 			10 => "SPORT",
 			11 => "VLAGOOTVOD",
