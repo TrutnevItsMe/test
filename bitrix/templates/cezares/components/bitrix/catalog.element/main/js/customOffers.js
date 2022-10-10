@@ -152,106 +152,40 @@ window.OffersFilterComponent = {
 	setAccessibleFilterItems: function ()
 	{
 		self = this;
-		let accessibleItems = this.getAccessibleFilterItems();
 
-		// Не выбрали ни одного значения
-		if (Object.keys(accessibleItems).length == 0)
+
+		while (true)
 		{
-			self.filterProps.forEach(function (prop)
+			let accessibleItems = this.getAccessibleFilterItems();
+			let isAllSelected = true;
+
+			Object.keys(accessibleItems).forEach(function(prop)
 			{
-
-				let items = $("." + self.classOfferValueItem + "[data-column='" + prop + "']");
-
-				items.each(function (index)
+				if (accessibleItems[prop].length > 1)
 				{
-
-					let item = $(items[index]);
-
-					if (!item.hasClass(self.classInactive))
-					{
-						item.removeClass(self.classInaccessible);
-						self.setFilterValue(prop, "");
-					}
-				});
-
-			});
-
-			return;
-		}
-
-		// Если кликнули на невыбранный элемент, совместимый с остальными значениями
-		if (self.clickedItem
-			&& self.clickedItem.hasClass(self.classActiveOfferValueItem)
-			&& !self.clickedItem.hasClass(self.classInaccessible))
-		{
-			let isAllValuesSingle = true;
-
-			Object.keys(accessibleItems).forEach(function (prop)
-			{
-				if (prop && accessibleItems[prop].length > 1)
-				{
-					isAllValuesSingle = false;
-					return;
-				}
-			});
-
-			// Если все совместимые св-ва имеют по 1 значению
-			if (isAllValuesSingle)
-			{
-				Object.keys(accessibleItems).forEach(function (prop)
-				{
-
-					$("." + self.classOfferValueItem + "[data-column='" + prop + "']").addClass(self.classInaccessible);
-					let currentValueItem = $("." + self.classOfferValueItem + "[data-value='" + accessibleItems[prop][0] + "']");
-					currentValueItem.removeClass(self.classInaccessible);
-					currentValueItem.addClass(self.classActiveOfferValueItem);
 					self.setFilterValue(prop, accessibleItems[prop][0]);
-				});
-				return;
+					isAllSelected = false;
+				}
+				else if (accessibleItems[prop].length == 1)
+				{
+					self.setFilterValue(prop, accessibleItems[prop]);
+				}
+
+			});
+
+			if (isAllSelected)
+			{
+				break;
 			}
 		}
 
-		// Пробегаемся по св-ам совместимых значений
-		Object.keys(accessibleItems).forEach(function (prop)
+		this.params["FILTER_OFFERS_PROPERTY_CODE"].forEach(function(prop)
 		{
-			// Выбираем все предложения с этим св-ом
-			let offers = $("." + self.classOfferValueItem + "[data-column='" + prop + "']");
-
-			if (offers.length > 0)
-			{
-				offers.each(function ()
-				{
-					// Данное предложение можно выбрать
-					if (!$(this).hasClass(self.classInactive))
-					{
-						// []
-						if (typeof (accessibleItems[prop]) == "object")
-						{
-							let propValue = $(this).data("value").toString();
-							// Текущее св-во совместимо с выбранными
-							if (accessibleItems[prop].includes(propValue)
-								|| !accessibleItems)
-							{
-								// Совместимо лишь 1 св-во и мы кликнули на несовместимое значение
-								if (accessibleItems[prop].length == 1 && self.clickedToInaccessibleItem)
-								{
-									$(this).addClass(self.classActiveOfferValueItem);
-									self.setFilterValue(prop, propValue);
-								}
-
-								$(this).removeClass(self.classInaccessible);
-							}
-							else
-							{
-								$(this).addClass(self.classInaccessible);
-							}
-						}
-					}
-				});
-			}
+			let elem = document.querySelector("[data-column='" + prop + "'][data-value='" + self.getFilterValue(prop) + "']");
+			BX.addClass(elem, self.classActiveOfferValueItem);
 		});
 
-		self.clickedToInaccessibleItem = false;
+
 	},
 
 	/**
@@ -527,6 +461,8 @@ window.OffersFilterComponent = {
 					$(".btn.in-cart").hide();
 				}
 			}
+
+			self.setCharacters();
 		}
 	},
 
@@ -545,34 +481,17 @@ window.OffersFilterComponent = {
 			self.clickedItem = $(this);
 
 			// Данное св-во есть хотя бы у 1 предложения
-			if (!$(this).hasClass(self.classInactive))
+			if (!$(this).hasClass(self.classInactive) && !$(this).hasClass(self.classActiveOfferValueItem))
 			{
 				let containerItems = $(this).parents("." + self.classOfferValueContainer);
 				let currentProp = $(this).data("column");
 				let currentValue = $(this).data("value");
 
-				// Кликнули на выбранное значение
-				if ($(this).hasClass(self.classActiveOfferValueItem))
-				{
-					$(this).removeClass(self.classActiveOfferValueItem);
-					self.setFilterValue(currentProp, "");
-				}
-				else
-				{
-					// Кликнули на значение, не совместимое с остальными
-					if ($(this).hasClass(self.classInaccessible))
-					{
-						// Очищаем все текущие значения фильтра
-						self.clearFilterValues();
-						$("." + self.classOfferValueItem).removeClass(self.classActiveOfferValueItem);
-						self.clickedToInaccessibleItem = true; // флаг, что кликнули на несовместимое значение
-					}
+				self.clearFilterValues();
+				self.setFilterValue(currentProp, currentValue);
+				$("." + self.classOfferValueItem).removeClass(self.classActiveOfferValueItem);
+				$(this).addClass(self.classActiveOfferValueItem);
 
-					self.setFilterValue(currentProp, currentValue);
-					$(this).addClass(self.classActiveOfferValueItem);
-				}
-
-				containerItems.find("." + self.classOfferValueItem).not(this).removeClass(self.classActiveOfferValueItem);
 				self.setAccessibleFilterItems();
 				self.setCurrentValueTitles();
 				self.setCurrentOffer();
@@ -580,14 +499,37 @@ window.OffersFilterComponent = {
 		});
 	},
 
-	bindAddToBasket: function()
+	bindAddToBasket: function ()
 	{
 		self = this;
 
-		$('.button_block .btn.to-cart').on("click", function(){
+		$('.button_block .btn.to-cart').on("click", function ()
+		{
 
 			self.offersInBasket.push($(this).attr("data-item"));
 			$(".btn.in-cart").show();
 		});
+	},
+
+	/**
+	 * Устанавливает характеристики выбранного предложения в tab с характеристиками
+	 */
+	setCharacters: function ()
+	{
+		self = this;
+		let charactersNode = document.querySelector(".props_list");
+
+		if (charactersNode)
+		{
+			Object.keys(this.result["OFFERS_MAP_FILTER"]).forEach(function (prop)
+			{
+				let charPropNode = charactersNode.querySelector("[data-prop='" + prop + "']");
+
+				if (charPropNode)
+				{
+					charPropNode.querySelector(".char_value").innerHTML = "<span>" + self.getFilterValue(prop) + "</span>";
+				}
+			});
+		}
 	}
 };
