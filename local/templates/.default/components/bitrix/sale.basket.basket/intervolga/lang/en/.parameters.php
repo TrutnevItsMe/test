@@ -41,4 +41,9 @@ $MESS["NEAR_ITEM"] = "Next to the product";
 $MESS["DISPLAY_RESTS"] = "Display rests";
 $MESS["SHOW_STORE_NAME"] = "Display store";
 $MESS["SHOW_ARTICLE_BEFORE_NAME"] = "Show article before product`s name";
+
+$MESS["COLUMNS_COMMON_INFO"] = "Columns shows common information";
+$MESS["COMMON_WEIGHT"] = "Common weight";
+$MESS["COMMON_COUNT"] = "Count of products";
+$MESS["COMMON_VOLUME"] = "Volume of products (volume of individual packaging)";
 ?>

@@ -47,4 +47,7 @@ $MESS["AMOUNT"] = "Кол-во";
 $MESS["STORE"] = "Склад";
 $MESS["ARTICLE"] = "Артикул";
 $MESS["IMAGE"] = "Изображение";
+$MESS["IN_BASKET"] = "В корзине ";
+$MESS["PRODUCTS"] = " товаров";
+$MESS["COMMON_VOLUME"] = "Объем инд. упаковок: ";
 ?>
