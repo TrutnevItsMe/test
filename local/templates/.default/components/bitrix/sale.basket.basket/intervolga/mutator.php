@@ -406,12 +406,33 @@ foreach ($this->basketItems as $row)
 	$result['BASKET_ITEM_RENDER_DATA'][] = $rowData;
 }
 
+$ids = array_column($this->basketItems, "PRODUCT_ID");
+
+$res = CIBlockElement::GetList([],
+[
+	"IBLOCK_ID" => COption::GetOptionString("aspro.next", "CATALOG_IBLOCK_ID"),
+	"ID" => $ids
+],
+false,
+false,
+["PROPERTY_OBYEM_INDIVIDUALNOY_UPAKOVKI_SM3"]);
+
+$commonVolume = 0;
+
+while ($elem = $res->GetNext())
+{
+	$commonVolume += $elem["PROPERTY_OBYEM_INDIVIDUALNOY_UPAKOVKI_SM3_VALUE"];
+}
+
 $totalData = array(
 	'DISABLE_CHECKOUT' => (int)$result['ORDERABLE_BASKET_ITEMS_COUNT'] === 0,
 	'PRICE' => $result['allSum'],
 	'PRICE_FORMATED' => $result['allSum_FORMATED'],
 	'PRICE_WITHOUT_DISCOUNT_FORMATED' => $result['PRICE_WITHOUT_DISCOUNT'],
-	'CURRENCY' => $result['CURRENCY']
+	'CURRENCY' => $result['CURRENCY'],
+	'COMMON_VOLUME' => $commonVolume,
+	'COMMON_VOLUME_FORMATED' => number_format($commonVolume, 0, '.', ' ') . " см3",
+	'PRODUCT_COUNT' => $result['BASKET_ITEMS_COUNT']
 );
 
 if ($result['DISCOUNT_PRICE_ALL'] > 0)

@@ -139,4 +139,7 @@ $MESS["USE_COUPON_DEFAULT"] = "Apply coupon";
 $MESS["ORDER_ITEMS"] = "Products in order";
 $MESS["EDIT_ORDER"] = "Edit order";
 $MESS["RESTS"] = "Rests";
+
+$MESS["COUNT_PRODUCTS"] = "product`s count: ";
+$MESS["VOLUME"] = "Volume: ";
 ?>
