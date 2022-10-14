@@ -68,3 +68,9 @@
 	display: flex;
 	flex-flow: row wrap;
 }
+
+.passw.passw {
+	padding: 0px;
+	margin-top: 20px;
+	border: 0px;
+}
