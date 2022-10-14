@@ -1827,7 +1827,7 @@ $ob = new CBitrixCatalogSmartFilter(); // создаем новый объект
 $arTmpItem = ["CODE" => $arResult["PROPERTIES"]["KOLLEKTSIYA"]["CODE"]]; // свойство фильтра
 // отмечаем текущее значение
 $arTmpItem["VALUES"][] = [
-	"URL_ID" => $arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE_ENUM_ID"],
+	"URL_ID" => $arResult["PROPERTIES"]["BRAND"]["VALUE_ENUM_ID"],
 	"CHECKED" => 1
 ];
 $ob->arResult = ['ITEMS' => [$arTmpItem]]; // закидываем в массив элементов фильтра
@@ -2082,7 +2082,7 @@ if ($arResult["OFFERS"])
 	}
 
 	// Установим первое предложение, как выбранный товар
-	foreach ($arResult["OFFERS"] as $arOffer)
+	foreach ($arResult["OFFERS"] as &$arOffer)
 	{
 		if ($arOffer["SET"])
 		{
@@ -2147,6 +2147,34 @@ if ($arResult["OFFERS"])
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+$a = [];
+
+foreach ($arResult["OFFERS_MAP_FILTER"] as $prop => $arOffers)
+{
+	foreach ($arOffers as $arOffer)
+	{
+		foreach ($arParams["FILTER_OFFERS_PROPERTY_CODE"] as $filterProperty)
+		{
+			$a[$prop][$filterProperty][] = $arOffer["PROPERTIES"][$filterProperty]["VALUE"];
+		}
+	}
+
+
+
+}
+
+\Bitrix\Main\Diag\Debug::writeToFile(__FILE__ . ':' . __LINE__ . "\n(" . date('Y-m-d H:i:s').")\n" . print_r($a, TRUE) . "\n\n", '', 'log/__debug_trutnev.log');
 
 
 ?>

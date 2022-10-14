@@ -6,8 +6,11 @@
 	}
 }?>
 <?$APPLICATION->ShowViewContent('left_menu');?>
-<?$APPLICATION->IncludeComponent("bitrix:main.include", ".default", array(
-	"COMPONENT_TEMPLATE" => ".default",
+<?$APPLICATION->IncludeComponent(
+	"bitrix:main.include", 
+	".default", 
+	array(
+		"COMPONENT_TEMPLATE" => ".default",
 		"PATH" => SITE_DIR."include/left_block/menu.left_menu.php",
 		"AREA_FILE_SHOW" => "file",
 		"AREA_FILE_SUFFIX" => "",
@@ -16,7 +19,7 @@
 	),
 	false,
 	array(
-	"ACTIVE_COMPONENT" => "Y"
+		"ACTIVE_COMPONENT" => "Y"
 	)
 );?>
 

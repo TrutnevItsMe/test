@@ -49,22 +49,27 @@
 		);?>
 	<?endif;?>
 <?elseif(!$bHideCatalogMenu):?>
-	<?$APPLICATION->IncludeComponent("bitrix:menu", "left_front_catalog1", Array(
-	"ROOT_MENU_TYPE" => "left",	// Тип меню для первого уровня
-		"MENU_CACHE_TYPE" => "A",	// Тип кеширования
-		"MENU_CACHE_TIME" => "3600000",	// Время кеширования (сек.)
-		"MENU_CACHE_USE_GROUPS" => "N",	// Учитывать права доступа
+	<?$APPLICATION->IncludeComponent(
+	"bitrix:menu", 
+	"left_front_catalog", 
+	array(
+		"ROOT_MENU_TYPE" => "left",
+		"MENU_CACHE_TYPE" => "A",
+		"MENU_CACHE_TIME" => "3600000",
+		"MENU_CACHE_USE_GROUPS" => "N",
 		"CACHE_SELECTED_ITEMS" => "N",
-		"MENU_CACHE_GET_VARS" => "",	// Значимые переменные запроса
-		"MAX_LEVEL" => $arTheme["MAX_DEPTH_MENU"]["VALUE"],	// Уровень вложенности меню
-		"CHILD_MENU_TYPE" => "left",	// Тип меню для остальных уровней
-		"USE_EXT" => "Y",	// Подключать файлы с именами вида .тип_меню.menu_ext.php
-		"DELAY" => "N",	// Откладывать выполнение шаблона меню
-		"ALLOW_MULTI_SELECT" => "N",	// Разрешить несколько активных пунктов одновременно
+		"MENU_CACHE_GET_VARS" => array(
+		),
+		"MAX_LEVEL" => "1",
+		"CHILD_MENU_TYPE" => "left",
+		"USE_EXT" => "Y",
+		"DELAY" => "N",
+		"ALLOW_MULTI_SELECT" => "N",
+		"COMPONENT_TEMPLATE" => "left_front_catalog"
 	),
 	false,
 	array(
-	"ACTIVE_COMPONENT" => "Y"
+		"ACTIVE_COMPONENT" => "Y"
 	)
 );?>
 <?endif;?>
