@@ -230,6 +230,8 @@ $arParams["AJAX_FILTER_CATALOG"] = "N";
 						"AVAILABLE_SORT" => $arAvailableSort,
 						"SORT" => $sort,
 						"SORT_ORDER" => $sort_order,
+						"LINKED_BRAND_PROPERTY" => $arParams["LINKED_PRODUCTS_PROPERTY"],
+						"LINKED_BRAND_VALUE" => $arElement["ID"],
 					],
 					$component);
 				?>
@@ -456,22 +458,40 @@ $arParams["AJAX_FILTER_CATALOG"] = "N";
 			}
 
 			// Выводим вложенные разделы
-			$res = CIBlockSection::GetList(
+			$rsSubsections = CIBlockSection::GetList(
 				[],
 				array_merge(
 					$arFilterSection,
 					[
 						"IBLOCK_ID" => $catalogIBlockID,
-						"ACTIVE" => "Y"
+						"ACTIVE" => "Y",
 					]
 				)
 			);
 			$subsections = [];
 
-			while ($sec = $res->GetNext())
+			while ($sec = $rsSubsections->GetNext())
 			{
-				$subsections[] = $sec;
+				$rsElement = CIBlockElement::GetList(
+					[],
+					[
+						"IBLOCK_ID" => $catalogIBlockID,
+						"SECTION_ID" => $sec["ID"],
+						"ACTIVE" => "Y",
+						"PROPERTY_".$arParams["LINKED_PRODUCTS_PROPERTY"] => $arElement["ID"]
+					],
+					false,
+					false,
+					["NAME"]
+				);
+
+				// Выводим только секции с товарами
+				if ($elem = $rsElement->Fetch())
+				{
+					$subsections[] = $sec;
+				}
 			}
+
 			?>
 
 			<div class="">
