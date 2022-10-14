@@ -2,8 +2,8 @@
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Корзина");
 ?><?$APPLICATION->IncludeComponent(
-	"bitrix:sale.basket.basket",
-	"intervolga",
+	"bitrix:sale.basket.basket", 
+	"intervolga", 
 	array(
 		"ACTION_VARIABLE" => "action",
 		"ADDITIONAL_PICT_PROP_17" => "-",
@@ -99,7 +99,12 @@ $APPLICATION->SetTitle("Корзина");
 		"USE_PREPAYMENT" => "N",
 		"USE_PRICE_ANIMATION" => "Y",
 		"COMPONENT_TEMPLATE" => "intervolga",
-		"ADDITIONAL_PICT_PROP_27" => "-"
+		"ADDITIONAL_PICT_PROP_27" => "-",
+		"COLUMNS_COMMON_INFO" => array(
+			0 => "WEIGHT",
+			1 => "COUNT",
+			2 => "VOLUME",
+		)
 	),
 	false
 );
