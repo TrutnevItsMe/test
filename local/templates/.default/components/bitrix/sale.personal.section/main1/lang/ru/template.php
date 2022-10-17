@@ -1,7 +1,7 @@
 <?php
 $MESS["SPS_ACCOUNT_PAGE_NAME"] = "Личный счет";
 $MESS["SPS_PERSONAL_PAGE_NAME"] = "Личные данные";
-$MESS["SPS_PROFILE_PAGE_NAME"] = "Профили заказов";
+$MESS["SPS_PROFILE_PAGE_NAME"] = "Контрагенты и договора";
 $MESS["SPS_ORDER_PAGE_NAME"] = "Предварительные заказы";
 $MESS["SPS_ORDER_PAGE_HISTORY"] = "История заказов";
 $MESS["SPS_SUBSCRIBE_PAGE_NAME"] = "Подписки";
