@@ -2,7 +2,7 @@
 $APPLICATION->SetPageProperty("HIDETITLE", "Y");
 $APPLICATION->IncludeComponent(
 	"bitrix:sale.order.ajax", 
-	"compact",
+	"compact", 
 	array(
 		"PAY_FROM_ACCOUNT" => "N",
 		"ONLY_FULL_PAY_FROM_ACCOUNT" => "N",
@@ -64,11 +64,12 @@ $APPLICATION->IncludeComponent(
 		),
 		"PROPS_FADE_LIST_2" => "",
 		"PRODUCT_COLUMNS_VISIBLE" => array(
-			0 => "PROPS",
-			1 => "NOTES",
-			2 => "DISCOUNT_PRICE_PERCENT_FORMATED",
-			3 => "PRICE_FORMATED",
-			4 => "PROPERTY_CML2_ARTICLE",
+			0 => "PREVIEW_PICTURE",
+			1 => "PROPS",
+			2 => "NOTES",
+			3 => "DISCOUNT_PRICE_PERCENT_FORMATED",
+			4 => "PRICE_FORMATED",
+			5 => "PROPERTY_CML2_ARTICLE",
 		),
 		"ADDITIONAL_PICT_PROP_13" => "-",
 		"ADDITIONAL_PICT_PROP_14" => "-",
@@ -91,7 +92,7 @@ $APPLICATION->IncludeComponent(
 		"SHOW_PICKUP_MAP" => "Y",
 		"PICKUP_MAP_TYPE" => "yandex",
 		"SHOW_COUPONS" => "N",
-		"USER_CONSENT" => "N",
+		"USER_CONSENT" => "Y",
 		"USER_CONSENT_ID" => "0",
 		"USER_CONSENT_IS_CHECKED" => "Y",
 		"USER_CONSENT_IS_LOADED" => "N",
@@ -103,8 +104,8 @@ $APPLICATION->IncludeComponent(
 		"HIDE_ORDER_DESCRIPTION" => "Y",
 		"USE_ENHANCED_ECOMMERCE" => "N",
 		"ADDITIONAL_PICT_PROP_26" => "-",
-		"ACTIVE_SAVE_DRAFT_ORDER" => "Y",
-		"INDEX_PICTURE" => "0",
+		"ACTIVE_SAVE_DRAFT_ORDER" => "N",
+		"INDEX_PICTURE" => "10",
 		"SHOW_STORE" => "Y",
 		"SHOW_RESTS" => "Y",
 		"ADDITIONAL_PICT_PROP_27" => "-"
