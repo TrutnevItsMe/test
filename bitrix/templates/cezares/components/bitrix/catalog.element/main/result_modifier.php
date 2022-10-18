@@ -1827,7 +1827,7 @@ $ob = new CBitrixCatalogSmartFilter(); // создаем новый объект
 $arTmpItem = ["CODE" => $arResult["PROPERTIES"]["KOLLEKTSIYA"]["CODE"]]; // свойство фильтра
 // отмечаем текущее значение
 $arTmpItem["VALUES"][] = [
-	"URL_ID" => $arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE_ENUM_ID"],
+	"URL_ID" => $arResult["PROPERTIES"]["BRAND"]["VALUE_ENUM_ID"],
 	"CHECKED" => 1
 ];
 $ob->arResult = ['ITEMS' => [$arTmpItem]]; // закидываем в массив элементов фильтра
@@ -1904,6 +1904,7 @@ if ($arResult["OFFERS"])
 		false,
 		array('*')
 	);
+
 
 	/** [ITEM_ID => [
 	 *        OWNER_ID => value,
