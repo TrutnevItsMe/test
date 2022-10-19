@@ -26,6 +26,22 @@ $postDiscounts = [];
 $postQuantities = [];
 $postXmlIds = [];
 
+// Выбиравем предыдущего контрагента после получения инд. цен
+if ($request->isPost() && $request->get("USER_PROFILE"))
+{
+	foreach ($arResult['JS_DATA']["USER_PROFILES"] as $xmlId => &$userProfile)
+	{
+		if ($xmlId == $request->get("USER_PROFILE"))
+		{
+			$userProfile["CHECKED"] = "Y";
+		}
+		else
+		{
+			$userProfile["CHECKED"] = "N";
+		}
+	}
+}
+
 session_start();
 
 if ($request->isPost() &&
@@ -172,20 +188,10 @@ if (is_array($arResult["GRID"]["ROWS"])) {
 		CNextCache::$arIBlocks[SITE_ID]['aspro_next_catalog']['aspro_next_catalog'][0]
 	);
 
-	$arResult['JS_DATA']["TOTAL"]["COUNT_PRODUCTS"] = 0;
-	$productsId = [];
-
 	foreach ($arResult['JS_DATA']["GRID"]["ROWS"] as $key => $arItem)
 	{
-		++$arResult['JS_DATA']["TOTAL"]["COUNT_PRODUCTS"];
-
 		$arResult['JS_DATA']["TOTAL"]["PRICE_WITHOUT_DISCOUNT"] +=
 			$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["SUM_NUM"];
-
-		if (in_array("VOLUME", $arParams["COLUMNS_COMMON_INFO"]))
-		{
-			$productsId[] = $arItem["data"]["PRODUCT_ID"];
-		}
 
 		if (in_array($arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["PRODUCT_XML_ID"], $postXmlIds)){
 
@@ -262,50 +268,18 @@ if (is_array($arResult["GRID"]["ROWS"])) {
 	}
 }
 
-if (in_array("VOLUME", $arParams["COLUMNS_COMMON_INFO"]))
-{
-	$res = CIBlockElement::GetList(
-		[],
-		[
-			"IBLOCK_ID" => COption::GetOptionString("aspro.next", "CATALOG_IBLOCK_ID"),
-			"ID" => $productsId
-		],
-		false,
-		false,
-		["PROPERTY_OBYEM_INDIVIDUALNOY_UPAKOVKI_SM3"]
-	);
 
-	$volume = 0;
-
-	while ($prop = $res->GetNext())
-	{
-		$volume += $prop["PROPERTY_OBYEM_INDIVIDUALNOY_UPAKOVKI_SM3_VALUE"];
-	}
-
-	$arResult['JS_DATA']["TOTAL"]["VOLUME"] = $volume;
-	$arResult['JS_DATA']["TOTAL"]["VOLUME_FORMATED"] = number_format($volume, 0, ".", " ") . " см3";
-}
-
-$arResult['JS_DATA']["TOTAL"]["PRICE_WITHOUT_DISCOUNT_FORMATED"] = number_format(
-	$arResult['JS_DATA']["TOTAL"]["PRICE_WITHOUT_DISCOUNT"],
-		0,
-	".",
-	" ") . " Р";
+$arResult['JS_DATA']["TOTAL"]["PRICE_WITHOUT_DISCOUNT_FORMATED"] = number_format($arResult['JS_DATA']["TOTAL"]["PRICE_WITHOUT_DISCOUNT"],
+		0, ".", " ") . " Р";
 $arResult['JS_DATA']["TOTAL"]["PRICE_WITHOUT_DISCOUNT_VALUE"] = $arResult['JS_DATA']["TOTAL"]["PRICE_WITHOUT_DISCOUNT"];
 
-$arResult['JS_DATA']["TOTAL"]["ORDER_PRICE_FORMATED"] = number_format(
-	$arResult['JS_DATA']["TOTAL"]["ORDER_PRICE"],
-		0,
-	".",
-	" ") . " Р";
+$arResult['JS_DATA']["TOTAL"]["ORDER_PRICE_FORMATED"] = number_format($arResult['JS_DATA']["TOTAL"]["ORDER_PRICE"],
+		0, ".", " ") . " Р";
 
 $arResult['JS_DATA']["TOTAL"]["DISCOUNT_PRICE"] = $arResult['JS_DATA']["TOTAL"]["PRICE_WITHOUT_DISCOUNT"] -
 	$arResult['JS_DATA']["TOTAL"]["ORDER_PRICE"];
-$arResult['JS_DATA']["TOTAL"]["DISCOUNT_PRICE_FORMATED"] = number_format(
-	$arResult['JS_DATA']["TOTAL"]["DISCOUNT_PRICE"],
-		0,
-",",
-" ") . " Р";
+$arResult['JS_DATA']["TOTAL"]["DISCOUNT_PRICE_FORMATED"] = number_format($arResult['JS_DATA']["TOTAL"]["DISCOUNT_PRICE"],
+		0, ",", " ") . " Р";
 
 $arResult['JS_DATA']["TOTAL"]["ORDER_TOTAL_PRICE"] = $arResult['JS_DATA']["TOTAL"]["ORDER_PRICE"];
 $arResult['JS_DATA']["TOTAL"]["ORDER_TOTAL_PRICE_FORMATED"] = $arResult['JS_DATA']["TOTAL"]["ORDER_PRICE_FORMATED"];
@@ -345,6 +319,16 @@ $soglashenia = [];
 while ($soglashenie = $dbSoglashenia->fetch())
 {
 	$key = $soglashenie['UF_KONTRAGENT'];
+
+	if ($request->isPost() && $request->get("AGREEMENT_XML_ID"))
+	{
+		if ($soglashenie["UF_XML_ID"] == $request->get("AGREEMENT_XML_ID"))
+		{
+			$soglashenie["CHECKED"] = "Y";
+		}
+
+	}
+
 	$soglashenia[$key][] = $soglashenie;
 }
 $agreementField = false;

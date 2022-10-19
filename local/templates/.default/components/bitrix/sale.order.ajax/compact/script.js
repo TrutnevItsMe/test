@@ -136,7 +136,6 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
 										ctx.properties[locPropId].control.setValueByLocationIds(locationsData);
 									}, function(){
 										try{
-											// ctx.properties[locPropId].control.clearSelected();
 										}catch(e){}
 									});
 								}
@@ -245,12 +244,6 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
 
 	checkMode: function(propId, mode){
 
-		//if(typeof this.modes[propId] == 'undefined')
-		//	this.modes[propId] = {};
-
-		//if(typeof this.modes[propId] != 'undefined' && this.modes[propId][mode])
-		//	return true;
-
 		if(mode == 'altLocationChoosen'){
 
 			if(this.checkAbility(propId, 'canHaveAltLocation')){
@@ -260,7 +253,6 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
 
 				if(input !== false && input.value.length > 0 && !input.disabled && this.properties[altPropId].valueSource != 'default'){
 
-					//this.modes[propId][mode] = true;
 					return true;
 				}
 			}
@@ -424,7 +416,6 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
 			emulateOnload: true,
 			start: true,
 			data: {'ACT': 'GET_LOCS_BY_ZIP', 'ZIP': value},
-			//cache: true,
 			onsuccess: function(result){
 				if(result.result)
 				{
@@ -465,7 +456,8 @@ function activateAgreementsField(data) {
 						+ '<select id="soa-property-' + data.agreementFieldId + '" name="ORDER_PROP_'
 						+ data.agreementFieldId + '" class="form-control">';
 					profileValues.forEach(function (value) {
-						html += '<option value="' + value.UF_XML_ID + '">' + value.UF_NAME + '</option>';
+						selected = (value.CHECKED == "Y")?"selected='selected'":"";
+						html += '<option value="' + value.UF_XML_ID + '" ' + selected + '>' + value.UF_NAME + '</option>';
 					});
 					html += '</select></div></div>';
 					$('#bx-soa-region .bx-soa-location-input-container').after(html);
@@ -527,6 +519,8 @@ function addGetCustomPricesButton(data) {
 						form.innerHTML += "<input type='text' name='price[]' value='" + product["price"] + "'>";
 						form.innerHTML += "<input type='text' name='discount[]' value='" + product["discount"] + "'>";
 					});
+						form.innerHTML += "<input type='text' name='USER_PROFILE' value='" + profileId + "'>";
+						form.innerHTML += "<input type='text' name='AGREEMENT_XML_ID' value='" + agreementXmlId + "'>";
 
 					document.querySelector("body").append(form);
 					form.submit();
