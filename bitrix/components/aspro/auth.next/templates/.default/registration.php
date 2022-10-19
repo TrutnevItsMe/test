@@ -1,6 +1,6 @@
 <?if( !defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true ) die();?>
-<?$APPLICATION->AddChainItem("Регистрация");?>
-<?$APPLICATION->SetTitle("Регистрация");?>
+<?$APPLICATION->AddChainItem("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");?>
+<?$APPLICATION->SetTitle("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");?>
 <?global $USER, $APPLICATION;
 if( !$USER->IsAuthorized() ){?>
 	<?$APPLICATION->IncludeComponent(
