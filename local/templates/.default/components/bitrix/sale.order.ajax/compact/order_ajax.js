@@ -9406,6 +9406,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 			BX.ready(BX.delegate(function ()
 			{
 				var control = BX.UserConsent && BX.UserConsent.load(this.orderBlockNode);
+
 				if (control)
 				{
 					BX.addCustomEvent(control, BX.UserConsent.events.save, BX.proxy(this.doSaveAction, this));
