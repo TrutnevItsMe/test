@@ -23,6 +23,11 @@
 	border-color: #ff9a56;
 }
 
+.selected-offers-filter-item{
+	border-color: #ff9a56;
+	opacity: 0.8;
+}
+
 .inactive-offer{
 	border-color: #bbb;
 	color: #bbb;
