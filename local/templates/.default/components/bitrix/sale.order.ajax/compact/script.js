@@ -456,7 +456,8 @@ function activateAgreementsField(data) {
 						+ '<select id="soa-property-' + data.agreementFieldId + '" name="ORDER_PROP_'
 						+ data.agreementFieldId + '" class="form-control">';
 					profileValues.forEach(function (value) {
-						html += '<option value="' + value.UF_XML_ID + '">' + value.UF_NAME + '</option>';
+						selected = (value.CHECKED == "Y")?"selected='selected'":"";
+						html += '<option value="' + value.UF_XML_ID + '" ' + selected + '>' + value.UF_NAME + '</option>';
 					});
 					html += '</select></div></div>';
 					$('#bx-soa-region .bx-soa-location-input-container').after(html);
@@ -518,6 +519,8 @@ function addGetCustomPricesButton(data) {
 						form.innerHTML += "<input type='text' name='price[]' value='" + product["price"] + "'>";
 						form.innerHTML += "<input type='text' name='discount[]' value='" + product["discount"] + "'>";
 					});
+						form.innerHTML += "<input type='text' name='USER_PROFILE' value='" + profileId + "'>";
+						form.innerHTML += "<input type='text' name='AGREEMENT_XML_ID' value='" + agreementXmlId + "'>";
 
 					document.querySelector("body").append(form);
 					form.submit();

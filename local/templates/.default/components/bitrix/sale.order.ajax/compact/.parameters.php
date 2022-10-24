@@ -807,18 +807,3 @@ if ($arCurrentValues['USE_CUSTOM_ERROR_MESSAGES'] == 'Y')
 		"PARENT" => "ERROR_MESSAGE_SETTINGS"
 	);
 }
-
-// Общая информация о всех товарах
-$arTemplateParameters['COLUMNS_COMMON_INFO'] = [
-	'PARENT' => 'VISUAL',
-	'NAME' => GetMessage('COLUMNS_COMMON_INFO'),
-	'TYPE' => 'LIST',
-	'VALUES' => [
-		'WEIGHT' => GetMessage('COMMON_WEIGHT'),
-		'COUNT' => GetMessage('COMMON_COUNT'),
-		'VOLUME' => GetMessage('COMMON_VOLUME')
-	],
-	'COLS' => 25,
-	'SIZE' => 7,
-	'MULTIPLE' => 'Y',
-];
