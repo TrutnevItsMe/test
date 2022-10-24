@@ -401,7 +401,7 @@ window.OffersFilterComponent = {
 		let template = this.templateSets; // Mustache шаблон
 		let currentOffer = this.getCurrentOffer();
 
-			if (currentOffer !== false)
+			if (currentOffer)
 			{
 				// У предложения есть набор
 				if (currentOffer["SET"] && currentOffer["SET"].length > 0)
