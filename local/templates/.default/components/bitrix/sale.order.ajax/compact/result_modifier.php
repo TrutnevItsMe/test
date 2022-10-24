@@ -14,6 +14,8 @@ use \Bitrix\Main\Localization\Loc;
  * @var SaleOrderAjax $component
  */
 
+//
+
 $component = $this->__component;
 $component::scaleImages($arResult['JS_DATA'], $arParams['SERVICES_IMAGES_SCALING']);
 
@@ -29,6 +31,30 @@ $postXmlIds = [];
 // Выбиравем предыдущего контрагента после получения инд. цен
 if ($request->isPost() && $request->get("USER_PROFILE"))
 {
+	if (\Bitrix\Main\Loader::includeModule("sale"))
+	{
+		$mapCodesUserPropIndex = [];
+
+		foreach ($arResult['JS_DATA']["ORDER_PROP"]["properties"] as $index => $arUserProp)
+		{
+			$mapCodesUserPropIndex[$arUserProp["CODE"]] = $index;
+		}
+
+		$dbProfileProps = CSaleOrderUserPropsValue::GetList(
+			["ID" => "ASC"],
+			[
+				"USER_PROPS_ID" => $request->get("USER_PROFILE"),
+				"PROP_CODE" => array_keys($mapCodesUserPropIndex)
+			]
+		);
+
+		while ($profileProp = $dbProfileProps->Fetch())
+		{
+			$index = $mapCodesUserPropIndex[$profileProp["PROP_CODE"]];
+			$arResult['JS_DATA']["ORDER_PROP"]["properties"][$index]["VALUE"] = [$profileProp["VALUE"]];
+		}
+	}
+
 	foreach ($arResult['JS_DATA']["USER_PROFILES"] as $xmlId => &$userProfile)
 	{
 		if ($xmlId == $request->get("USER_PROFILE"))
@@ -117,7 +143,6 @@ if (is_array($arResult["GRID"]["ROWS"]))
 }
 
 
-
 $headerCodes = array_column($arResult['JS_DATA']["GRID"]["HEADERS"], "id");
 
 // Выводим склад
@@ -150,7 +175,8 @@ $headerCodes = array_column($arResult['JS_DATA']["GRID"]["HEADERS"], "id");
 $storeIndex = array_search(STORE_CODE, $headerCodes);
 $qntyIndex = array_search("QUANTITY", $headerCodes);
 
-if ($storeIndex != count($arResult['JS_DATA']["GRID"]["HEADERS"]) - 1){
+if ($storeIndex != count($arResult['JS_DATA']["GRID"]["HEADERS"]) - 1)
+{
 
 	$tmp = $arResult['JS_DATA']["GRID"]["HEADERS"][$storeIndex + 1];
 	$arResult['JS_DATA']["GRID"]["HEADERS"][$storeIndex + 1] = $arResult['JS_DATA']["GRID"]["HEADERS"][$qntyIndex];
@@ -158,7 +184,8 @@ if ($storeIndex != count($arResult['JS_DATA']["GRID"]["HEADERS"]) - 1){
 }
 
 // Вывод остатков
-if ($arParams["SHOW_RESTS"]){
+if ($arParams["SHOW_RESTS"])
+{
 	$qntyIndex = array_search("QUANTITY", $headerCodes);
 	$sliceBeforeQnty = array_slice($arResult['JS_DATA']["GRID"]["HEADERS"], 0, $qntyIndex + 1);
 	$sliceAfterQnty = array_slice($arResult['JS_DATA']["GRID"]["HEADERS"], $qntyIndex + 1,
@@ -173,7 +200,8 @@ $headerCodes = array_column($arResult['JS_DATA']["GRID"]["HEADERS"], "id");
 $priceIndex = array_search("PRICE_FORMATED", $headerCodes);
 $sumIndex = array_search("SUM", $headerCodes);
 
-if ($sumIndex != 0){
+if ($sumIndex != 0)
+{
 
 	$tmp = $arResult['JS_DATA']["GRID"]["HEADERS"][$priceIndex];
 	$arResult['JS_DATA']["GRID"]["HEADERS"][$priceIndex] = $arResult['JS_DATA']["GRID"]["HEADERS"][$sumIndex - 1];
@@ -181,7 +209,8 @@ if ($sumIndex != 0){
 }
 
 // https://youtrack.ivsupport.ru/issue/iberisweb-8
-if (is_array($arResult["GRID"]["ROWS"])) {
+if (is_array($arResult["GRID"]["ROWS"]))
+{
 	$catalogIblockID = Option::get(
 		'aspro.next',
 		'CATALOG_IBLOCK_ID',
@@ -193,7 +222,8 @@ if (is_array($arResult["GRID"]["ROWS"])) {
 		$arResult['JS_DATA']["TOTAL"]["PRICE_WITHOUT_DISCOUNT"] +=
 			$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["SUM_NUM"];
 
-		if (in_array($arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["PRODUCT_XML_ID"], $postXmlIds)){
+		if (in_array($arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["PRODUCT_XML_ID"], $postXmlIds))
+		{
 
 			$index = array_search($arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["PRODUCT_XML_ID"], $postXmlIds);
 
@@ -207,7 +237,8 @@ if (is_array($arResult["GRID"]["ROWS"])) {
 				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["SUM"] = number_format($sum) . " Р";
 				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["CUSTOM_PRICE"] = "Y";
 
-				if (array_search("NOTES", $headerCodes) !== false){
+				if (array_search("NOTES", $headerCodes) !== false)
+				{
 					$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["NOTES"] = "Ваша цена";
 				}
 			}
@@ -232,10 +263,11 @@ if (is_array($arResult["GRID"]["ROWS"])) {
 			["CODE" => "COMPOSITION"]
 		);
 
-		if ($arParams["SHOW_STORE"]){
+		if ($arParams["SHOW_STORE"])
+		{
 			$res = CCatalogStoreProduct::GetList([],
 				["=PRODUCT_ID" => $arItem["data"]["PRODUCT_ID"],
-					'=STORE.ACTIVE'=>'Y',
+					'=STORE.ACTIVE' => 'Y',
 					"!=AMOUNT" => 0]);
 
 			if ($arStore = $res->GetNext())
@@ -244,10 +276,11 @@ if (is_array($arResult["GRID"]["ROWS"])) {
 			}
 		}
 
-		if ($arParams["SHOW_RESTS"]){
+		if ($arParams["SHOW_RESTS"])
+		{
 			$res = CCatalogStoreProduct::GetList([],
 				["=PRODUCT_ID" => $arItem["data"]["PRODUCT_ID"],
-					'=STORE.ACTIVE'=>'Y',
+					'=STORE.ACTIVE' => 'Y',
 					"!=AMOUNT" => 0]);
 
 			if ($arStoreProduct = $res->GetNext())
@@ -256,11 +289,14 @@ if (is_array($arResult["GRID"]["ROWS"])) {
 			}
 		}
 
-		if ($property = $rsProperty->Fetch()) {
-			if (is_array($value = $property['VALUE'])) {
+		if ($property = $rsProperty->Fetch())
+		{
+			if (is_array($value = $property['VALUE']))
+			{
 				$set = Sets::getSet($value['TEXT']);
-				$set = array_column ($set['SET'], 'NAME');
-				if (count ($set) > 0) {
+				$set = array_column($set['SET'], 'NAME');
+				if (count($set) > 0)
+				{
 					$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]['SET'] = $set;
 				}
 			}
@@ -340,13 +376,16 @@ foreach ($arResult['ORDER_PROP']['USER_PROPS_N'] as $prop)
 	}
 }
 
-foreach ($arResult['ORDER_PROP']['USER_PROPS_Y'] as $prop) {
-	if($prop['IS_PROFILE_NAME'] == 'Y') {
+foreach ($arResult['ORDER_PROP']['USER_PROPS_Y'] as $prop)
+{
+	if ($prop['IS_PROFILE_NAME'] == 'Y')
+	{
 		$arResult['PROFILE_FIELD'] = $prop;
 	}
 }
 $basketItems = [];
-foreach ($arResult['BASKET_ITEMS'] as $row => $item) {
+foreach ($arResult['BASKET_ITEMS'] as $row => $item)
+{
 	$xmlId = $item['PRODUCT_XML_ID'];
 	$basketItems[$xmlId] = [
 		'row' => $row,
@@ -372,9 +411,11 @@ $arResult["UPDATE_BASKET_DATA"] = [
 	"prices" => [],
 	"basket" => $basketItems];
 
-if ($postPrices){
+if ($postPrices)
+{
 
-	for ($i = 0; $i < count($postPrices); ++$i){
+	for ($i = 0; $i < count($postPrices); ++$i)
+	{
 		$product = [];
 		$product["price"] = $postPrices[$i];
 		$product["discount"] = $postDiscounts[$i];

@@ -174,34 +174,6 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 		 */
 		sendRequest: function (action, actionData)
 		{
-			// bitrix/templates/cezares/js/main.js
-			// Если не нажат checkbox
-			if (BX.Sale.OrderAjaxComponent.state_licence !== "checked")
-			{
-				let uncheckedBlock = document.querySelector(".uncheckedBlock");
-
-				// Добавляем вывод ошибки
-				if (!uncheckedBlock)
-				{
-					let accessibleFormBlock = document.querySelector(".form");
-					let errorBlock = document.createElement("div");
-					errorBlock.className = "uncheckedBlock";
-					errorBlock.innerHTML = "<p>" + BX.message("PERSONAL_DATA_ERROR") + "</p>";
-					accessibleFormBlock.prepend(errorBlock)
-				}
-
-				return;
-			}
-			else
-			{
-				let uncheckedBlock = document.querySelector(".uncheckedBlock");
-
-				if (uncheckedBlock)
-				{
-					uncheckedBlock.remove();
-				}
-			}
-
 			var form;
 
 			if (!this.startLoader())
@@ -215,6 +187,36 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 
 			if (action === 'saveOrderAjax')
 			{
+				// bitrix/templates/cezares/js/main.js
+				// Если не нажат checkbox
+				if (BX.Sale.OrderAjaxComponent.state_licence !== "checked")
+				{
+					let uncheckedBlock = document.querySelector(".uncheckedBlock");
+
+					// Добавляем вывод ошибки
+					if (!uncheckedBlock)
+					{
+						let accessibleFormBlock = document.querySelector(".form");
+						let errorBlock = document.createElement("div");
+						errorBlock.className = "uncheckedBlock";
+						errorBlock.innerHTML = "<p>" + BX.message("PERSONAL_DATA_ERROR") + "</p>";
+						accessibleFormBlock.prepend(errorBlock)
+					}
+
+					this.endLoader();
+
+					return;
+				}
+				else
+				{
+					let uncheckedBlock = document.querySelector(".uncheckedBlock");
+
+					if (uncheckedBlock)
+					{
+						uncheckedBlock.remove();
+					}
+				}
+
 				form = BX('bx-soa-order-form');
 				if (form)
 				{

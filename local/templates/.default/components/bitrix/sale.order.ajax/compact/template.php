@@ -532,7 +532,6 @@ else
 	$messages = Loc::loadLanguageFile(__FILE__);
 	?>
 
-
 	<script>
 		BX.message(<?=CUtil::PhpToJSObject($messages)?>);
 		BX.Sale.OrderAjaxComponent.init({
