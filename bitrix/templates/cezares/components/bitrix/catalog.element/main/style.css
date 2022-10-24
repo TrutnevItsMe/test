@@ -24,8 +24,11 @@
 }
 
 .selected-offers-filter-item{
-	border-color: #ff9a56;
-	opacity: 0.8;
+
+}
+
+.inaccessible-offer-filter-value{
+	border-style: dashed;
 }
 
 .inactive-offer{

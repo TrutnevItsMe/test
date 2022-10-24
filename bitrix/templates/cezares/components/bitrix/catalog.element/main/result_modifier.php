@@ -1905,7 +1905,6 @@ if ($arResult["OFFERS"])
 		array('*')
 	);
 
-
 	/** [ITEM_ID => [
 	 *        OWNER_ID => value,
 	 *        AMOUNT => value

@@ -2114,7 +2114,9 @@ if ($arResult['CATALOG'] && $arParams['USE_GIFTS_MAIN_PR_SECTION_LIST'] == 'Y' &
 		classClickedOfferValueItem: "selected-offers-filter-item",
 		classOfferValueItem: "offers-filter-item",
 		classOfferValueContainer: "filter-item-container",
-		classInactive: "inactive-offer"
+		classInactive: "inactive-offer",
+		classAccessibleOfferValue: "accessible-offer-filter-value",
+		classInaccessibleOfferValue: "inaccessible-offer-filter-value",
 	});
 </script>
 

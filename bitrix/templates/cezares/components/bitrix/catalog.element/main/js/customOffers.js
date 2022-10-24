@@ -3,6 +3,13 @@ window.OffersFilterComponent = {
 	/**
 	 *
 	 * @param {Object} params
+	 * @param {Object} params.result -- $arResult
+	 * @param {Object} params.params -- $arParams
+	 * @param {Object} params.classActiveOfferValueItem -- css класс выбранного значения фильтра
+	 * @param {Object} params.classOfferValueItem -- css класс выбранного значения фильтра
+	 * @param {Object} params.classOfferValueItem -- css класс html блока значения фильтра
+	 * @param {Object} params.classOfferValueContainer -- css класс html блока для групппы значений св--ва
+	 * @param {Object} params.classInactive -- css класс недоступного для выбора значения
 	 */
 	init: function (params)
 	{
@@ -13,14 +20,12 @@ window.OffersFilterComponent = {
 		this.classActiveOfferValueItem = params.classActiveOfferValueItem || "active-offers-filter-item";
 		this.classOfferValueItem = params.classOfferValueItem || "offers-filter-item";
 		this.classOfferValueContainer = params.classOfferValueContainer || "offers-filter-item-container";
+		this.classAccessibleOfferValue = params.classAccessibleOfferValue || "accessible-offer-filter-value";
+		this.classInaccessibleOfferValue = params.classInaccessibleOfferValue || "inaccessible-offer-filter-value";
 		// Класс, указывающий, что данное предложение недоступно (нельзя выбрать значение в фильтре по предложениям)
 		this.classInactive = params.classInactive || "inactive";
-		// Класс, показывающий, что данное значение вместе с др. значениями фильтра не совместимо
-		this.classInaccessible = params.classInaccessible || "inaccessible";
 		this.currentFilterValues = {};
 
-		// Флаг, что кликнули на несовместимое значение фильтра
-		this.clickedToInaccessibleItem = false;
 		// JQuery элемент, на который кликнули
 		this.clickedItem = null;
 
@@ -56,6 +61,7 @@ window.OffersFilterComponent = {
 		}
 
 		this.initFilterValues();
+		this.setCharacters();
 		this.setAccessibleFilterItems();
 
 		let prices = {
@@ -94,7 +100,7 @@ window.OffersFilterComponent = {
 	 * @param {string} prop
 	 * @param {string} value
 	 */
-	setFilterValue: function (prop, value)
+	setCurrentFilterValue: function (prop, value)
 	{
 		this.currentFilterValues[prop] = value;
 	},
@@ -104,13 +110,23 @@ window.OffersFilterComponent = {
 	 * @param {string} prop
 	 * @return {string}
 	 */
-	getFilterValue: function (prop)
+	getCurrentFilterValue: function (prop)
 	{
 		return this.currentFilterValues[prop];
 	},
 
+	clearCurrentFilterValues: function ()
+	{
+		self = this;
+
+		this.filterProps.forEach(function (prop)
+		{
+			self.setCurrentFilterValue(prop, "");
+		});
+	},
+
 	/**
-	 * Иницивализирует текущее значение фильтра
+	 * Инициализирует текущее значение фильтра
 	 */
 	initFilterValues: function ()
 	{
@@ -121,29 +137,36 @@ window.OffersFilterComponent = {
 			this.currentFilterValues = {};
 		}
 
-		Object.keys(this.result["OFFERS_MAP_FILTER"]).forEach(function (prop)
+		if (self.result["CURRENT_OFFER"])
 		{
-			if (self.result["CURRENT_OFFER"])
+			this.filterProps.forEach(function (prop)
 			{
-				self.setFilterValue(prop, self.result["CURRENT_OFFER"]["PROPERTIES"][prop]["VALUE"]);
-			}
-			else
+				self.setCurrentFilterValue(prop, self.result["CURRENT_OFFER"]["PROPERTIES"][prop]["VALUE"]);
+			});
+		}
+		else
+		{
+			this.filterProps.forEach(function (prop)
 			{
-				self.setFilterValue(prop, "");
-			}
-		});
+				self.setCurrentFilterValue(prop, "");
+			});
+		}
 	},
 
 	/**
-	 * Очищает все текущие значения фильтра
+	 * Очищает все совместимые элементы (имеющие соответствующий класс)
 	 */
-	clearFilterValues: function ()
+	clearAccessibleItems: function ()
 	{
-		self = this;
-		Object.keys(this.result["OFFERS_MAP_FILTER"]).forEach(function (prop)
-		{
-			self.setFilterValue(prop, "");
-		});
+		$("." + this.classAccessibleOfferValue).removeClass(this.classAccessibleOfferValue);
+	},
+
+	/**
+	 * Очищает все несовместимые элементы (имеющие соответствующий класс)
+	 */
+	clearInaccessibleItems: function ()
+	{
+		$("." + this.classInaccessibleOfferValue).removeClass(this.classInaccessibleOfferValue);
 	},
 
 	/**
@@ -152,40 +175,45 @@ window.OffersFilterComponent = {
 	setAccessibleFilterItems: function ()
 	{
 		self = this;
+		this.clearAccessibleItems();
+		this.clearInaccessibleItems();
 
+		let curProp = "";
+		let curValue = "";
 
-		while (true)
+		this.filterProps.forEach(function (prop)
 		{
-			let accessibleItems = this.getAccessibleFilterItems();
-			let isAllSelected = true;
 
-			Object.keys(accessibleItems).forEach(function(prop)
+			if (curProp)
 			{
-				if (accessibleItems[prop].length > 1)
-				{
-					self.setFilterValue(prop, accessibleItems[prop][0]);
-					isAllSelected = false;
-				}
-				else if (accessibleItems[prop].length == 1)
-				{
-					self.setFilterValue(prop, accessibleItems[prop]);
-				}
+				self.setCurrentFilterValue(curProp, curValue);
+			}
 
+			curProp = prop;
+			curValue = self.getCurrentFilterValue(prop);
+
+			self.setCurrentFilterValue(curProp, "");
+			let accessibleItems = self.getAccessibleFilterItems();
+
+			self.filterProps.forEach(function (accessibleProp)
+			{
+				accessibleItems[accessibleProp].forEach(function (accessibleValue)
+				{
+					let elem = $("." + self.classOfferValueItem + "[data-column='" + accessibleProp + "'][data-value='" + accessibleValue + "']");
+
+					if (elem.length > 0)
+					{
+						elem.addClass(self.classAccessibleOfferValue);
+					}
+				});
 			});
 
-			if (isAllSelected)
-			{
-				break;
-			}
-		}
 
-		this.params["FILTER_OFFERS_PROPERTY_CODE"].forEach(function(prop)
-		{
-			let elem = document.querySelector("[data-column='" + prop + "'][data-value='" + self.getFilterValue(prop) + "']");
-			BX.addClass(elem, self.classActiveOfferValueItem);
 		});
 
+		self.setInaccessibleItems();
 
+		self.setCurrentFilterValue(curProp, curValue);
 	},
 
 	/**
@@ -199,10 +227,10 @@ window.OffersFilterComponent = {
 		let accessibleItems = {};
 
 		// Пробегаем все св-ва, участвующие в фильтрации
-		Object.keys(this.currentFilterValues).forEach(function (prop)
+		this.filterProps.forEach(function (prop)
 		{
 			// Выбранное значение в фильтре для св-ва
-			let value = self.currentFilterValues[prop];
+			let value = self.getCurrentFilterValue(prop);
 
 			self.filterProps.forEach(function (propCode)
 			{
@@ -230,7 +258,7 @@ window.OffersFilterComponent = {
 		});
 
 		// Выбираем пересечения из всех возможных св-в => получаем доступные поля при выбранных значениях
-		Object.keys(this.currentFilterValues).forEach(function (prop)
+		this.filterProps.forEach(function (prop)
 		{
 			if (accessibleItems[prop])
 			{
@@ -290,7 +318,7 @@ window.OffersFilterComponent = {
 
 		Object.keys(this.currentFilterValues).forEach(function (prop)
 		{
-			self.setColumnValueTitle(prop, self.getFilterValue(prop));
+			self.setColumnValueTitle(prop, self.getCurrentFilterValue(prop));
 		});
 	},
 
@@ -305,7 +333,7 @@ window.OffersFilterComponent = {
 
 		Object.keys(this.currentFilterValues).forEach(function (prop)
 		{
-			if (self.currentFilterValues[prop] == "")
+			if (self.getCurrentFilterValue(prop) == "")
 			{
 				isAll = false;
 				return;
@@ -316,32 +344,48 @@ window.OffersFilterComponent = {
 	},
 
 	/**
-	 * Возвращает предложение, соответствующе всем выбранным значениям св-в,
-	 * если не все значения выбраны возвращает false
+	 * Возвращает предложение, соответствующе всем выбранным значениям св-в
 	 * @return {null|boolean}
 	 */
 	getCurrentOffer: function ()
 	{
-		if (this.isAllValuesSelected())
-		{
-			self = this;
-			let returnsOffer = null;
+		self = this;
+		let returnsOffer = null;
 
-			Object.keys(self.currentFilterValues).forEach(function (prop)
+		Object.keys(self.currentFilterValues).forEach(function (prop)
+		{
+			if (self.result["OFFERS_MAP_FILTER"][prop][self.getCurrentFilterValue(prop)].length == 1)
 			{
-				if (self.result["OFFERS_MAP_FILTER"][prop][self.getFilterValue(prop)].length == 1)
+				returnsOffer = self.result["OFFERS_MAP_FILTER"][prop][self.getCurrentFilterValue(prop)][0];
+				return;
+			}
+		});
+
+		// все предложения встречаются по несколько раз
+		if (!returnsOffer)
+		{
+			Object.values(this.result['OFFERS']).forEach(function (offer)
+			{
+				let isCurrentOffer = true;
+
+				Object.keys(self.currentFilterValues).forEach(function (prop)
 				{
-					returnsOffer = self.result["OFFERS_MAP_FILTER"][prop][self.getFilterValue(prop)][0];
+					if (offer["PROPERTIES"][prop]["VALUE"] != self.getCurrentFilterValue(prop))
+					{
+						isCurrentOffer = false;
+						return;
+					}
+				});
+
+				if (isCurrentOffer)
+				{
+					returnsOffer = offer;
 					return;
 				}
 			});
+		}
 
-			return returnsOffer;
-		}
-		else
-		{
-			return false;
-		}
+		return returnsOffer;
 	},
 
 	/**
@@ -349,121 +393,118 @@ window.OffersFilterComponent = {
 	 */
 	setCurrentOffer: function ()
 	{
-		if (this.isAllValuesSelected())
+		if (!this.templateSets)
 		{
-			if (!this.templateSets)
-			{
-				this.templateSets = $("#sets-template").html();
-			}
-
-			let template = this.templateSets; // Mustache шаблон
-			let currentOffer = this.getCurrentOffer();
-
-			if (currentOffer !== false)
-			{
-				// У предложения есть набор
-				if (currentOffer["SET"] && currentOffer["SET"].length > 0)
-				{
-					Mustache.parse(template);
-					let newHtmlSets = Mustache.render(template, {"ITEMS": currentOffer["SET"]});
-					$(".set_new").html(newHtmlSets);
-				}
-
-				let price = calculatePrice();
-
-				// Устанавливаем цену из набора
-				if (price.price > 0)
-				{
-					showPrice(price);
-				}
-				// устанавливаем цену из предлоржения
-				else
-				{
-					showPrice({
-						price: currentOffer["CATALOG_PURCHASING_PRICE"],
-						old: currentOffer["CATALOG_PURCHASING_PRICE"]
-					});
-				}
-
-				// Меняем картинки в слайдере
-				let htmlSlider = "";
-				let i = 0;
-
-				for (let j = 0; j < currentOffer["MORE_PHOTO"].length; ++j)
-				{
-					let _class = !j ? "current" : "";
-
-					htmlSlider += "<li class='" + _class + "' " +
-						" data-slide_key='" + j + "'" +
-						" data-big_img='" + currentOffer["MORE_PHOTO"][i]["BIG"]["src"] + "'" +
-						" data-small_img='" + currentOffer["MORE_PHOTO"][i]["SMALL"]["src"] + "'>" +
-						"<span>" +
-						"<img class='xzoom-gallery'" +
-						" data-xpreview='" + currentOffer["MORE_PHOTO"][i]["THUMB"]["src"] + "'" +
-						" src='" + currentOffer["MORE_PHOTO"][i]["THUMB"]["src"] + "'" +
-						" alt='" + currentOffer["MORE_PHOTO"][i]["ALT"] + "'" +
-						" title='" + currentOffer["MORE_PHOTO"][i]["TITLE"] + "'>" +
-						"</span>" +
-						"</li>";
-
-					++i;
-				}
-
-				if (currentOffer["PREVIEW_PICTURE"])
-				{
-					htmlSlider += "<li class='' " +
-						" data-slide_key='" + i + "'" +
-						" data-big_img='" + currentOffer["PREVIEW_PICTURE"]["SRC"] + "'" +
-						" data-small_img='" + currentOffer["PREVIEW_PICTURE"]["SRC"] + "'>" +
-						"<span>" +
-						"<img class='xzoom-gallery'" +
-						" data-xpreview='" + currentOffer["PREVIEW_PICTURE"]["SRC"] + "'" +
-						" src='" + currentOffer["PREVIEW_PICTURE"]["SRC"] + "'" +
-						" alt='" + currentOffer["PREVIEW_PICTURE"]["NAME"] + "'" +
-						" title='" + currentOffer["PREVIEW_PICTURE"]["NAME"] + "'>" +
-						"</span>" +
-						"</li>";
-
-					++i;
-				}
-
-				if (currentOffer["DETAIL_PICTURE"])
-				{
-					htmlSlider += "<li class='' " +
-						" data-slide_key='" + i + "'" +
-						" data-big_img='" + currentOffer["DETAIL_PICTURE"]["SRC"] + "'" +
-						" data-small_img='" + currentOffer["DETAIL_PICTURE"]["SRC"] + "'>" +
-						"<span>" +
-						"<img class='xzoom-gallery'" +
-						" data-xpreview='" + currentOffer["DETAIL_PICTURE"]["SRC"] + "'" +
-						" src='" + currentOffer["DETAIL_PICTURE"]["SRC"] + "'" +
-						" alt='" + currentOffer["DETAIL_PICTURE"]["NAME"] + "'" +
-						" title='" + currentOffer["DETAIL_PICTURE"]["NAME"] + "'>" +
-						"</span>" +
-						"</li>";
-
-					++i;
-				}
-
-				$("#thumbs").html(htmlSlider);
-				window.slider.reloadSlider();
-				$('.button_block .btn.to-cart').attr("data-item", currentOffer["ID"]);
-
-				// Показываем, что товар уже в корзине
-				if (self.offersInBasket.includes(currentOffer["ID"]))
-				{
-					$('.button_block .btn.to-cart').hide();
-					$(".btn.in-cart").show();
-				}
-				else
-				{
-					$('.button_block .btn.to-cart').show();
-					$(".btn.in-cart").hide();
-				}
-			}
-
-			self.setCharacters();
+			this.templateSets = $("#sets-template").html();
 		}
+
+		let template = this.templateSets; // Mustache шаблон
+		let currentOffer = this.getCurrentOffer();
+
+		if (currentOffer)
+		{
+			// У предложения есть набор
+			if (currentOffer && currentOffer["SET"] && currentOffer["SET"].length > 0)
+			{
+				Mustache.parse(template);
+				let newHtmlSets = Mustache.render(template, {"ITEMS": currentOffer["SET"]});
+				$(".set_new").html(newHtmlSets);
+			}
+
+			let price = calculatePrice();
+
+			// Устанавливаем цену из набора
+			if (price.price > 0)
+			{
+				showPrice(price);
+			}
+			// устанавливаем цену из предлоржения
+			else
+			{
+				showPrice({
+					price: currentOffer["CATALOG_PURCHASING_PRICE"],
+					old: currentOffer["CATALOG_PURCHASING_PRICE"]
+				});
+			}
+
+			// Меняем картинки в слайдере
+			let htmlSlider = "";
+			let i = 0;
+
+			for (let j = 0; j < currentOffer["MORE_PHOTO"].length; ++j)
+			{
+				let _class = !j ? "current" : "";
+
+				htmlSlider += "<li class='" + _class + "' " +
+					" data-slide_key='" + j + "'" +
+					" data-big_img='" + currentOffer["MORE_PHOTO"][i]["BIG"]["src"] + "'" +
+					" data-small_img='" + currentOffer["MORE_PHOTO"][i]["SMALL"]["src"] + "'>" +
+					"<span>" +
+					"<img class='xzoom-gallery'" +
+					" data-xpreview='" + currentOffer["MORE_PHOTO"][i]["THUMB"]["src"] + "'" +
+					" src='" + currentOffer["MORE_PHOTO"][i]["THUMB"]["src"] + "'" +
+					" alt='" + currentOffer["MORE_PHOTO"][i]["ALT"] + "'" +
+					" title='" + currentOffer["MORE_PHOTO"][i]["TITLE"] + "'>" +
+					"</span>" +
+					"</li>";
+
+				++i;
+			}
+
+			if (currentOffer["PREVIEW_PICTURE"])
+			{
+				htmlSlider += "<li class='' " +
+					" data-slide_key='" + i + "'" +
+					" data-big_img='" + currentOffer["PREVIEW_PICTURE"]["SRC"] + "'" +
+					" data-small_img='" + currentOffer["PREVIEW_PICTURE"]["SRC"] + "'>" +
+					"<span>" +
+					"<img class='xzoom-gallery'" +
+					" data-xpreview='" + currentOffer["PREVIEW_PICTURE"]["SRC"] + "'" +
+					" src='" + currentOffer["PREVIEW_PICTURE"]["SRC"] + "'" +
+					" alt='" + currentOffer["PREVIEW_PICTURE"]["NAME"] + "'" +
+					" title='" + currentOffer["PREVIEW_PICTURE"]["NAME"] + "'>" +
+					"</span>" +
+					"</li>";
+
+				++i;
+			}
+
+			if (currentOffer["DETAIL_PICTURE"])
+			{
+				htmlSlider += "<li class='' " +
+					" data-slide_key='" + i + "'" +
+					" data-big_img='" + currentOffer["DETAIL_PICTURE"]["SRC"] + "'" +
+					" data-small_img='" + currentOffer["DETAIL_PICTURE"]["SRC"] + "'>" +
+					"<span>" +
+					"<img class='xzoom-gallery'" +
+					" data-xpreview='" + currentOffer["DETAIL_PICTURE"]["SRC"] + "'" +
+					" src='" + currentOffer["DETAIL_PICTURE"]["SRC"] + "'" +
+					" alt='" + currentOffer["DETAIL_PICTURE"]["NAME"] + "'" +
+					" title='" + currentOffer["DETAIL_PICTURE"]["NAME"] + "'>" +
+					"</span>" +
+					"</li>";
+
+				++i;
+			}
+
+			$("#thumbs").html(htmlSlider);
+			window.slider.reloadSlider();
+			$('.button_block .btn.to-cart').attr("data-item", currentOffer["ID"]);
+
+			// Показываем, что товар уже в корзине
+			if (this.offersInBasket.includes(currentOffer["ID"]))
+			{
+				$('.button_block .btn.to-cart').hide();
+				$(".btn.in-cart").show();
+			}
+			else
+			{
+				$('.button_block .btn.to-cart').show();
+				$(".btn.in-cart").hide();
+			}
+		}
+
+		this.setCharacters();
 	},
 
 	/**
@@ -483,18 +524,36 @@ window.OffersFilterComponent = {
 			// Данное св-во есть хотя бы у 1 предложения
 			if (!$(this).hasClass(self.classInactive) && !$(this).hasClass(self.classActiveOfferValueItem))
 			{
-				let containerItems = $(this).parents("." + self.classOfferValueContainer);
-				let currentProp = $(this).data("column");
-				let currentValue = $(this).data("value");
+				if ($(this).hasClass(self.classInaccessibleOfferValue))
+				{
+					$("." + self.classActiveOfferValueItem).removeClass(self.classActiveOfferValueItem);
+					self.clearCurrentFilterValues();
+					self.setCurrentFilterValue($(this).data("column"), $(this).data("value"));
+					self.setCurrentFilterByFirstValues();
 
-				self.clearFilterValues();
-				self.setFilterValue(currentProp, currentValue);
-				$("." + self.classOfferValueItem).removeClass(self.classActiveOfferValueItem);
-				$(this).addClass(self.classActiveOfferValueItem);
+					self.filterProps.forEach(function(prop)
+					{
+						let value = self.getCurrentFilterValue(prop);
+						let elem = $("." + self.classOfferValueItem + "[data-column='" + prop +"'][data-value='" + value + "']");
+						$(elem).addClass(self.classActiveOfferValueItem);
+					});
+
+				}
+				else
+				{
+					let notCurrentItemsProps = $("." + self.classOfferValueItem + "[data-column='" + $(this).data("column") + "']").not($(this));
+					notCurrentItemsProps.removeClass(self.classActiveOfferValueItem);
+					$(this).addClass(self.classActiveOfferValueItem);
+					self.setCurrentFilterValue($(this).data("column"), $(this).data("value"));
+				}
 
 				self.setAccessibleFilterItems();
-				self.setCurrentValueTitles();
-				self.setCurrentOffer();
+
+				if (self.isAllValuesSelected())
+				{
+					self.setCurrentValueTitles();
+					self.setCurrentOffer();
+				}
 			}
 		});
 	},
@@ -505,7 +564,6 @@ window.OffersFilterComponent = {
 
 		$('.button_block .btn.to-cart').on("click", function ()
 		{
-
 			self.offersInBasket.push($(this).attr("data-item"));
 			$(".btn.in-cart").show();
 		});
@@ -521,15 +579,51 @@ window.OffersFilterComponent = {
 
 		if (charactersNode)
 		{
-			Object.keys(this.result["OFFERS_MAP_FILTER"]).forEach(function (prop)
+			this.filterProps.forEach(function (prop)
 			{
 				let charPropNode = charactersNode.querySelector("[data-prop='" + prop + "']");
 
 				if (charPropNode)
 				{
-					charPropNode.querySelector(".char_value").innerHTML = "<span>" + self.getFilterValue(prop) + "</span>";
+					charPropNode.querySelector(".char_value").innerHTML = "<span>" + self.getCurrentFilterValue(prop) + "</span>";
 				}
 			});
+		}
+	},
+
+	setInaccessibleItems: function ()
+	{
+		let notAccessibles = $("." + this.classOfferValueItem).not("." + this.classAccessibleOfferValue);
+		notAccessibles.not("." + this.classInactive).addClass(this.classInaccessibleOfferValue);
+	},
+
+	/**
+	 * Заполняет фильтр первыми совпадающими значениями
+	 */
+	setCurrentFilterByFirstValues: function ()
+	{
+		self = this;
+
+		while (true)
+		{
+			let isAllSelected = true;
+			let accessibleItems = self.getAccessibleFilterItems();
+
+			this.filterProps.forEach(function(prop)
+			{
+				self.setCurrentFilterValue(prop, accessibleItems[prop][0]);
+
+				if (accessibleItems[prop].length > 1)
+				{
+					isAllSelected = false;
+					return;
+				}
+			});
+
+			if (isAllSelected)
+			{
+				break;
+			}
 		}
 	}
 };
