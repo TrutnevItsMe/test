@@ -21,11 +21,10 @@ window.OffersFilterComponent = {
 		this.classOfferValueItem = params.classOfferValueItem || "offers-filter-item";
 		this.classOfferValueContainer = params.classOfferValueContainer || "offers-filter-item-container";
 		this.classAccessibleOfferValue = params.classAccessibleOfferValue || "accessible-offer-filter-value";
-		this.classSelectedOfferValue = params.classSelectedOfferValue || "accessible-offer-filter-value";
+		this.classInaccessibleOfferValue = params.classInaccessibleOfferValue || "inaccessible-offer-filter-value";
 		// Класс, указывающий, что данное предложение недоступно (нельзя выбрать значение в фильтре по предложениям)
 		this.classInactive = params.classInactive || "inactive";
 		this.currentFilterValues = {};
-		this.selectedFilterValues = {};
 
 		// JQuery элемент, на который кликнули
 		this.clickedItem = null;
@@ -63,6 +62,7 @@ window.OffersFilterComponent = {
 
 		this.initFilterValues();
 		this.setCharacters();
+		this.setAccessibleFilterItems();
 
 		let prices = {
 			price: 0,
@@ -100,26 +100,6 @@ window.OffersFilterComponent = {
 	 * @param {string} prop
 	 * @param {string} value
 	 */
-	setSelectedFilterValue: function (prop, value)
-	{
-		this.selectedFilterValues[prop] = value;
-	},
-
-	/**
-	 * Возвращает текущще значение фильтра для 1 св-ва
-	 * @param {string} prop
-	 * @return {string}
-	 */
-	getSelectedFilterValue: function (prop)
-	{
-		return this.selectedFilterValues[prop];
-	},
-
-	/**
-	 * Устанавливает текущее значение фильтра для 1 св-ва
-	 * @param {string} prop
-	 * @param {string} value
-	 */
 	setCurrentFilterValue: function (prop, value)
 	{
 		this.currentFilterValues[prop] = value;
@@ -133,6 +113,16 @@ window.OffersFilterComponent = {
 	getCurrentFilterValue: function (prop)
 	{
 		return this.currentFilterValues[prop];
+	},
+
+	clearCurrentFilterValues: function ()
+	{
+		self = this;
+
+		this.filterProps.forEach(function (prop)
+		{
+			self.setCurrentFilterValue(prop, "");
+		});
 	},
 
 	/**
@@ -161,45 +151,22 @@ window.OffersFilterComponent = {
 				self.setCurrentFilterValue(prop, "");
 			});
 		}
-
-		this.filterProps.forEach(function (prop)
-		{
-			self.setSelectedFilterValue(prop, "");
-		});
-	},
-
-	/**
-	 * Очищает все текущие значения фильтра
-	 */
-	clearSelectedFilterValues: function ()
-	{
-		self = this;
-		this.filterProps.forEach(function (prop)
-		{
-			self.setSelectedFilterValue(prop, "");
-		});
 	},
 
 	/**
 	 * Очищает все совместимые элементы (имеющие соответствующий класс)
 	 */
-	clearAccessibleItems: function()
+	clearAccessibleItems: function ()
 	{
-		self = this;
-
-		$("." + this.classAccessibleOfferValue + ".grow-up").each(function()
-		{
-			self.unscale($(this));
-			$(this).removeClass(self.classAccessibleOfferValue);
-		});
+		$("." + this.classAccessibleOfferValue).removeClass(this.classAccessibleOfferValue);
 	},
 
 	/**
-	 * Очищает все выбранные элеметы (имеющие соответствующий класс)
+	 * Очищает все несовместимые элементы (имеющие соответствующий класс)
 	 */
-	clearSelectedItems: function()
+	clearInaccessibleItems: function ()
 	{
-		$("." + this.classSelectedOfferValue).removeClass(self.classSelectedOfferValue);
+		$("." + this.classInaccessibleOfferValue).removeClass(this.classInaccessibleOfferValue);
 	},
 
 	/**
@@ -208,57 +175,45 @@ window.OffersFilterComponent = {
 	setAccessibleFilterItems: function ()
 	{
 		self = this;
-		let accessibleItems = self.getAccessibleFilterItems();
-		self.clearAccessibleItems();
+		this.clearAccessibleItems();
+		this.clearInaccessibleItems();
 
-		if (Object.keys(accessibleItems).length == 0)
+		let curProp = "";
+		let curValue = "";
+
+		this.filterProps.forEach(function (prop)
 		{
-			self.clearSelectedItems();
-			return;
-		}
 
-		let isAllAccessible = true;
-
-		this.filterProps.forEach(function(prop)
-		{
-			if (accessibleItems[prop].length == 0)
+			if (curProp)
 			{
-				self.clearSelectedItems();
-				self.clearSelectedFilterValues();
-
-				if (self.clickedItem)
-				{
-					self.setSelectedFilterValue(self.clickedItem.data("column"), self.clickedItem.data("value"));
-					self.clickedItem.addClass(self.classSelectedOfferValue);
-				}
-
-				self.setAccessibleFilterItems();
-				isAllAccessible = false;
-				return;
+				self.setCurrentFilterValue(curProp, curValue);
 			}
-		});
 
-		if (!isAllAccessible)
-		{
-			return;
-		}
+			curProp = prop;
+			curValue = self.getCurrentFilterValue(prop);
 
-		this.filterProps.forEach(function(prop)
-		{
-			accessibleItems[prop].forEach(function(value)
+			self.setCurrentFilterValue(curProp, "");
+			let accessibleItems = self.getAccessibleFilterItems();
+
+			self.filterProps.forEach(function (accessibleProp)
 			{
-				let elem = $("." + self.classOfferValueItem + "[data-column='" + prop + "'][data-value='" + value + "']");
-
-				if (elem.length > 0)
+				accessibleItems[accessibleProp].forEach(function (accessibleValue)
 				{
-					elem.addClass(self.classAccessibleOfferValue);
-					self.scale(elem);
-				}
+					let elem = $("." + self.classOfferValueItem + "[data-column='" + accessibleProp + "'][data-value='" + accessibleValue + "']");
+
+					if (elem.length > 0)
+					{
+						elem.addClass(self.classAccessibleOfferValue);
+					}
+				});
 			});
+
+
 		});
 
+		self.setInaccessibleItems();
 
-		console.log(accessibleItems);
+		self.setCurrentFilterValue(curProp, curValue);
 	},
 
 	/**
@@ -275,7 +230,7 @@ window.OffersFilterComponent = {
 		this.filterProps.forEach(function (prop)
 		{
 			// Выбранное значение в фильтре для св-ва
-			let value = self.getSelectedFilterValue(prop);
+			let value = self.getCurrentFilterValue(prop);
 
 			self.filterProps.forEach(function (propCode)
 			{
@@ -303,7 +258,7 @@ window.OffersFilterComponent = {
 		});
 
 		// Выбираем пересечения из всех возможных св-в => получаем доступные поля при выбранных значениях
-		Object.keys(this.selectedFilterValues).forEach(function (prop)
+		this.filterProps.forEach(function (prop)
 		{
 			if (accessibleItems[prop])
 			{
@@ -376,9 +331,9 @@ window.OffersFilterComponent = {
 		self = this;
 		let isAll = true;
 
-		Object.keys(this.selectedFilterValues).forEach(function (prop)
+		Object.keys(this.currentFilterValues).forEach(function (prop)
 		{
-			if (self.getSelectedFilterValue(prop) == "")
+			if (self.getCurrentFilterValue(prop) == "")
 			{
 				isAll = false;
 				return;
@@ -446,15 +401,15 @@ window.OffersFilterComponent = {
 		let template = this.templateSets; // Mustache шаблон
 		let currentOffer = this.getCurrentOffer();
 
-		if (currentOffer)
-		{
-			// У предложения есть набор
-			if (currentOffer && currentOffer["SET"] && currentOffer["SET"].length > 0)
+			if (currentOffer !== false)
 			{
-				Mustache.parse(template);
-				let newHtmlSets = Mustache.render(template, {"ITEMS": currentOffer["SET"]});
-				$(".set_new").html(newHtmlSets);
-			}
+				// У предложения есть набор
+				if (currentOffer["SET"] && currentOffer["SET"].length > 0)
+				{
+					Mustache.parse(template);
+					let newHtmlSets = Mustache.render(template, {"ITEMS": currentOffer["SET"]});
+					$(".set_new").html(newHtmlSets);
+				}
 
 			let price = calculatePrice();
 
@@ -567,97 +522,40 @@ window.OffersFilterComponent = {
 			self.clickedItem = $(this);
 
 			// Данное св-во есть хотя бы у 1 предложения
-			if (!$(this).hasClass(self.classInactive))
+			if (!$(this).hasClass(self.classInactive) && !$(this).hasClass(self.classActiveOfferValueItem))
 			{
-				if (!$(this).hasClass(self.classSelectedOfferValue))
+				if ($(this).hasClass(self.classInaccessibleOfferValue))
 				{
-					$(this).addClass(self.classSelectedOfferValue);
-					let notCurensElems = $("." + self.classOfferValueItem + "[data-column='" + $(this).data("column") + "']").not(this);
+					$("." + self.classActiveOfferValueItem).removeClass(self.classActiveOfferValueItem);
+					self.clearCurrentFilterValues();
+					self.setCurrentFilterValue($(this).data("column"), $(this).data("value"));
+					self.setCurrentFilterByFirstValues();
 
-					if (notCurensElems.length > 0)
+					self.filterProps.forEach(function(prop)
 					{
-						notCurensElems.removeClass(self.classSelectedOfferValue);
-					}
+						let value = self.getCurrentFilterValue(prop);
+						let elem = $("." + self.classOfferValueItem + "[data-column='" + prop +"'][data-value='" + value + "']");
+						$(elem).addClass(self.classActiveOfferValueItem);
+					});
 
-					self.scale(this);
-
-					self.setSelectedFilterValue(self.clickedItem.data("column"), self.clickedItem.data("value"));
 				}
 				else
 				{
-					$(this).removeClass(self.classSelectedOfferValue);
-					self.unscale(this);
-
-					self.setSelectedFilterValue(self.clickedItem.data("column"), "");
+					let notCurrentItemsProps = $("." + self.classOfferValueItem + "[data-column='" + $(this).data("column") + "']").not($(this));
+					notCurrentItemsProps.removeClass(self.classActiveOfferValueItem);
+					$(this).addClass(self.classActiveOfferValueItem);
+					self.setCurrentFilterValue($(this).data("column"), $(this).data("value"));
 				}
 
 				self.setAccessibleFilterItems();
 
 				if (self.isAllValuesSelected())
 				{
-					self.swapFilterValues();
-					self.clearSelectedFilterValues();
-					self.setActiveItems();
 					self.setCurrentValueTitles();
 					self.setCurrentOffer();
 				}
 			}
 		});
-	},
-
-	/**
-	 * Перемещает значения выбранных св-в фильтра в текущий фильтр ( selected -> current )
-	 */
-	swapFilterValues: function()
-	{
-		self = this;
-
-		this.filterProps.forEach(function (prop)
-		{
-			let value = self.getSelectedFilterValue(prop);
-			self.setCurrentFilterValue(prop, value);
-		});
-	},
-
-	setActiveItems: function ()
-	{
-		self = this;
-
-		$("." + this.classActiveOfferValueItem).removeClass(this.classActiveOfferValueItem);
-
-		this.filterProps.forEach(function (prop)
-		{
-			let value = self.getCurrentFilterValue(prop);
-			let elem = $("." + self.classOfferValueItem + "[data-column='" + prop + "'][data-value='" + value +"']");
-
-			if (elem.length > 0)
-			{
-				elem.addClass(self.classActiveOfferValueItem);
-			}
-		});
-
-		this.clearAccessibleItems();
-		this.clearSelectedItems();
-	},
-
-	/**
-	 *
-	 * @param {Element | JQuery | String} elem
-	 */
-	scale: function(elem)
-	{
-		$(elem).removeClass("grow-down");
-		$(elem).addClass("grow-up");
-	},
-
-	/**
-	 *
-	 * @param {Element | JQuery | String} elem
-	 */
-	unscale: function(elem)
-	{
-		$(elem).removeClass("grow-up");
-		$(elem).addClass("grow-down");
 	},
 
 	bindAddToBasket: function ()
@@ -690,6 +588,42 @@ window.OffersFilterComponent = {
 					charPropNode.querySelector(".char_value").innerHTML = "<span>" + self.getCurrentFilterValue(prop) + "</span>";
 				}
 			});
+		}
+	},
+
+	setInaccessibleItems: function ()
+	{
+		let notAccessibles = $("." + this.classOfferValueItem).not("." + this.classAccessibleOfferValue);
+		notAccessibles.not("." + this.classInactive).addClass(this.classInaccessibleOfferValue);
+	},
+
+	/**
+	 * Заполняет фильтр первыми совпадающими значениями
+	 */
+	setCurrentFilterByFirstValues: function ()
+	{
+		self = this;
+
+		while (true)
+		{
+			let isAllSelected = true;
+			let accessibleItems = self.getAccessibleFilterItems();
+
+			this.filterProps.forEach(function(prop)
+			{
+				self.setCurrentFilterValue(prop, accessibleItems[prop][0]);
+
+				if (accessibleItems[prop].length > 1)
+				{
+					isAllSelected = false;
+					return;
+				}
+			});
+
+			if (isAllSelected)
+			{
+				break;
+			}
 		}
 	}
 };

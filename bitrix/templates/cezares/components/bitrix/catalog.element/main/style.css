@@ -23,10 +23,6 @@
 	border-color: #ff9a56;
 }
 
-.selected-offers-filter-item{
-	border-color: #00ff11;
-}
-
 .inactive-offer{
 	border-color: #bbb;
 	color: #bbb;
@@ -56,46 +52,4 @@
 .offers-filter-item-link:hover:after{
 	opacity: 1;
 	top: 100%;
-}
-
-@keyframes scale
-{
-	100%{
-		margin-top: 5px;
-		margin-left: 7px;
-		margin-right: 15px;
-		transform: scale(1.2);
-	}
-}
-
-@keyframes unscale
-{
-	0%{
-		margin-top: 5px;
-		margin-left: 7px;
-		margin-right: 15px;
-		transform: scale(1.2);
-	}
-	100%{
-		margin-top: 0px;
-		margin-left: 0px;
-		margin-right: 7px;
-		transform: scale(1);
-	}
-}
-
-.grow-up
-{
-	animation-duration: 500ms;
-	animation-iteration-count: 1;
-	animation-fill-mode: forwards;
-	animation-name: scale;
-}
-
-.grow-down
-{
-	animation-duration: 500ms;
-	animation-iteration-count: 1;
-	animation-fill-mode: forwards;
-	animation-name: unscale;
 }
