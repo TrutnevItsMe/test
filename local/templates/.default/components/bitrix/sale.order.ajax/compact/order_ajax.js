@@ -1941,12 +1941,6 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 			}
 
 			this.checkNotifications();
-
-			// if (this.activeSectionId !== this.regionBlockNode.id)
-			//     this.editFadeRegionContent(this.regionBlockNode.querySelector('.bx-soa-section-content'));
-			//
-			// if (this.activeSectionId != this.propsBlockNode.id)
-			//     this.editFadePropsContent(this.propsBlockNode.querySelector('.bx-soa-section-content'));
 		},
 
 		fixLocationsStyle: function (section, hiddenSection)
