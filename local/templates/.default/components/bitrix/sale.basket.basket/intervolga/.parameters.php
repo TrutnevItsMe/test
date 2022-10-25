@@ -8,43 +8,28 @@ use Bitrix\Main\Web\Json;
 
 CBitrixComponent::includeComponentClass($componentName);
 
-$arTemplateParameters['COLUMNS_LIST_MOBILE'] = [
+$arTemplateParameters['COLUMNS_LIST_MOBILE'] = array(
 	'PARENT' => 'VISUAL',
 	'NAME' => GetMessage('CP_SBB_TPL_COLUMNS_LIST_MOBILE'),
 	'TYPE' => 'LIST',
 	'COLS' => 25,
 	'SIZE' => 7,
 	'MULTIPLE' => 'Y',
-];
+);
 
-// Общая информация о всех товарах
-$arTemplateParameters['COLUMNS_COMMON_INFO'] = [
-	'PARENT' => 'VISUAL',
-	'NAME' => GetMessage('COLUMNS_COMMON_INFO'),
-	'TYPE' => 'LIST',
-	'VALUES' => [
-		'WEIGHT' => GetMessage('COMMON_WEIGHT'),
-		'COUNT' => GetMessage('COMMON_COUNT'),
-		'VOLUME' => GetMessage('COMMON_VOLUME')
-	],
-	'COLS' => 25,
-	'SIZE' => 7,
-	'MULTIPLE' => 'Y',
-];
-
-$themes = [];
+$themes = array();
 
 if ($eshop = \Bitrix\Main\ModuleManager::isModuleInstalled('bitrix.eshop'))
 {
 	$themes['site'] = GetMessage('CP_SBB_TPL_THEME_SITE');
 }
 
-$themeList = [
+$themeList = array(
 	'blue' => GetMessage('CP_SBB_TPL_THEME_BLUE'),
 	'green' => GetMessage('CP_SBB_TPL_THEME_GREEN'),
 	'red' => GetMessage('CP_SBB_TPL_THEME_RED'),
 	'yellow' => GetMessage('CP_SBB_TPL_THEME_YELLOW')
-];
+);
 
 $dir = $_SERVER["DOCUMENT_ROOT"]."/bitrix/css/main/themes/";
 if (is_dir($dir))
@@ -58,149 +43,149 @@ if (is_dir($dir))
 	}
 }
 
-$arTemplateParameters['DEFERRED_REFRESH'] = [
+$arTemplateParameters['DEFERRED_REFRESH'] = array(
 	'PARENT' => 'BASE',
 	'NAME' => GetMessage('CP_SBB_TPL_DEFERRED_REFRESH'),
 	'TYPE' => 'CHECKBOX',
 	'DEFAULT' => 'N'
-];
-$arTemplateParameters['USE_DYNAMIC_SCROLL'] = [
+);
+$arTemplateParameters['USE_DYNAMIC_SCROLL'] = array(
 	'PARENT' => 'BASE',
 	'NAME' => GetMessage('CP_SBB_TPL_USE_DYNAMIC_SCROLL'),
 	'TYPE' => 'CHECKBOX',
 	'DEFAULT' => 'Y'
-];
-$arTemplateParameters['SHOW_FILTER'] = [
+);
+$arTemplateParameters['SHOW_FILTER'] = array(
 	'PARENT' => 'BASE',
 	'NAME' => GetMessage('CP_SBB_TPL_SHOW_FILTER'),
 	'TYPE' => 'CHECKBOX',
 	'DEFAULT' => 'Y'
-];
-$arTemplateParameters['SHOW_RESTORE'] = [
+);
+$arTemplateParameters['SHOW_RESTORE'] = array(
 	'PARENT' => 'BASE',
 	'NAME' => GetMessage('CP_SBB_TPL_SHOW_RESTORE'),
 	'TYPE' => 'CHECKBOX',
 	'DEFAULT' => 'Y'
-];
+);
 $arTemplateParameters['EMPTY_BASKET_HINT_PATH'] = [
 	'PARENT' => 'ADDITIONAL_SETTINGS',
 	"NAME" => GetMessage('CP_SBB_EMPTY_BASKET_HINT_PATH'),
 	"TYPE" => "STRING",
 	"DEFAULT" => "/"
 ];
-$arTemplateParameters['TEMPLATE_THEME'] = [
+$arTemplateParameters['TEMPLATE_THEME'] = array(
 	'PARENT' => 'VISUAL',
 	'NAME' => GetMessage('CP_SBB_TPL_TEMPLATE_THEME'),
 	'TYPE' => 'LIST',
 	'VALUES' => $themes,
 	'DEFAULT' => 'blue',
 	'ADDITIONAL_VALUES' => 'Y'
-];
-$arTemplateParameters['TOTAL_BLOCK_DISPLAY'] = [
+);
+$arTemplateParameters['TOTAL_BLOCK_DISPLAY'] = array(
 	'PARENT' => 'VISUAL',
 	'NAME' => GetMessage('CP_SBB_TPL_TOTAL_BLOCK_DISPLAY'),
 	'TYPE' => 'LIST',
-	'VALUES' => [
+	'VALUES' => array(
 		'top' => GetMessage('CP_SBB_TPL_TOTAL_BLOCK_DISPLAY_TOP'),
 		'bottom' => GetMessage('CP_SBB_TPL_TOTAL_BLOCK_DISPLAY_BOTTOM')
-	],
-	'DEFAULT' => ['top'],
+	),
+	'DEFAULT' => array('top'),
 	'MULTIPLE' => 'Y'
-];
-$arTemplateParameters["DISPLAY_MODE_ITEMS"] = [
+);
+$arTemplateParameters["DISPLAY_MODE_ITEMS"] = array(
 	"PARENT" => "VISUAL",
 	"NAME" => GetMessage("PROPERTIES_LOCATION"),
 	"TYPE" => "LIST",
-	"VALUES" => [
+	"VALUES" => array(
 		"basket-item-table-props-template" => GetMessage("TABLE_PROPERTIES"),
 		"basket-item-template" => GetMessage("NEAR_ITEM")
-	],
+	),
 	"DEFAUIL" => "basket-item-template"
-];
-$arTemplateParameters['DISPLAY_MODE'] = [
+);
+$arTemplateParameters['DISPLAY_MODE'] = array(
 	'PARENT' => 'VISUAL',
 	'NAME' => GetMessage('CP_SBB_TPL_DISPLAY_MODE'),
 	'TYPE' => 'LIST',
-	'VALUES' => [
+	'VALUES' => array(
 		'extended' => GetMessage('CP_SBB_TPL_DISPLAY_MODE_EXTENDED'),
 		'compact' => GetMessage('CP_SBB_TPL_DISPLAY_MODE_COMPACT')
-	],
+	),
 	'DEFAULT' => 'extended'
-];
-$arTemplateParameters['SHOW_STORE_NAME'] = [
+);
+$arTemplateParameters['SHOW_STORE_NAME'] = array(
 	'PARENT' => 'VISUAL',
 	'NAME' => GetMessage('SHOW_STORE_NAME'),
 	'TYPE' => 'CHECKBOX',
 	'DEFAULT' => 'Y'
-];
-$arTemplateParameters['SHOW_ARTICLE_BEFORE_NAME'] = [
+);
+$arTemplateParameters['SHOW_ARTICLE_BEFORE_NAME'] = array(
 	'PARENT' => 'VISUAL',
 	'NAME' => GetMessage('SHOW_ARTICLE_BEFORE_NAME'),
 	'TYPE' => 'CHECKBOX',
 	'DEFAULT' => 'N'
-];
-$arTemplateParameters['PRICE_DISPLAY_MODE'] = [
+);
+$arTemplateParameters['PRICE_DISPLAY_MODE'] = array(
 	'PARENT' => 'VISUAL',
 	'NAME' => GetMessage('CP_SBB_TPL_PRICE_DISPLAY_MODE'),
 	'TYPE' => 'CHECKBOX',
 	'DEFAULT' => 'Y'
-];
-$arTemplateParameters["DISPLAY_RESTS"] = [
+);
+$arTemplateParameters["DISPLAY_RESTS"] = array(
 	"PARENT" => "VISUAL",
 	"NAME" => GetMessage("DISPLAY_RESTS"),
 	"TYPE" => "CHECKBOX",
 	"DEFAULT" => "Y"
-];
-$arTemplateParameters['SHOW_DISCOUNT_PERCENT'] = [
+);
+$arTemplateParameters['SHOW_DISCOUNT_PERCENT'] = array(
 	'PARENT' => 'VISUAL',
 	'NAME' => GetMessage('CP_SBB_TPL_SHOW_DISCOUNT_PERCENT'),
 	'TYPE' => 'CHECKBOX',
 	'REFRESH' => 'Y',
 	'DEFAULT' => 'Y'
-];
+);
 
 if (!isset($arCurrentValues['SHOW_DISCOUNT_PERCENT']) || $arCurrentValues['SHOW_DISCOUNT_PERCENT'] === 'Y')
 {
-	$arTemplateParameters['DISCOUNT_PERCENT_POSITION'] = [
+	$arTemplateParameters['DISCOUNT_PERCENT_POSITION'] = array(
 		'PARENT' => 'VISUAL',
 		'NAME' => GetMessage('CP_SBB_TPL_DISCOUNT_PERCENT_POSITION'),
 		'TYPE' => 'CUSTOM',
 		'JS_FILE' => CBitrixBasketComponent::getSettingsScript($componentPath, 'position'),
 		'JS_EVENT' => 'initPositionControl',
 		'JS_DATA' => Json::encode(
-			[
-				'positions' => [
+			array(
+				'positions' => array(
 					'top-left', 'top-center', 'top-right',
 					'middle-left', 'middle-center', 'middle-right',
 					'bottom-left', 'bottom-center', 'bottom-right'
-				],
+				),
 				'className' => 'bx-pos-parameter-block-circle'
-			]
+			)
 		),
 		'DEFAULT' => 'bottom-right'
-	];
+	);
 }
 
-$arTemplateParameters['PRODUCT_BLOCKS_ORDER'] = [
+$arTemplateParameters['PRODUCT_BLOCKS_ORDER'] = array(
 	'PARENT' => 'VISUAL',
 	'NAME' => GetMessage('CP_SBB_TPL_PRODUCT_BLOCKS_ORDER'),
 	'TYPE' => 'CUSTOM',
 	'JS_FILE' => CBitrixBasketComponent::getSettingsScript($componentPath, 'dragdrop_order'),
 	'JS_EVENT' => 'initDraggableOrderControl',
-	'JS_DATA' => Json::encode([
+	'JS_DATA' => Json::encode(array(
 		'props' => GetMessage('CP_SBB_TPL_PRODUCT_BLOCK_PROPERTIES'),
 		'sku' => GetMessage('CP_SBB_TPL_PRODUCT_BLOCK_SKU'),
 		'columns' => GetMessage('CP_SBB_TPL_PRODUCT_BLOCK_COLUMNS')
-	]),
+	)),
 	'DEFAULT' => 'props,sku,columns'
-];
-$arTemplateParameters['USE_PRICE_ANIMATION'] = [
+);
+$arTemplateParameters['USE_PRICE_ANIMATION'] = array(
 	'PARENT' => 'VISUAL',
 	'NAME' => GetMessage('CP_SBB_TPL_USE_PRICE_ANIMATION'),
 	'TYPE' => 'CHECKBOX',
 	'DEFAULT' => 'Y'
-];
-$arTemplateParameters['LABEL_PROP'] = [
+);
+$arTemplateParameters['LABEL_PROP'] = array(
 	'PARENT' => 'VISUAL',
 	'NAME' => GetMessage('CP_SBB_TPL_LABEL_PROP'),
 	'TYPE' => 'LIST',
@@ -209,11 +194,11 @@ $arTemplateParameters['LABEL_PROP'] = [
 	'COLS' => 25,
 	'SIZE' => 7,
 	'REFRESH' => 'Y'
-];
+);
 
 if (!empty($arCurrentValues['LABEL_PROP']))
 {
-	$arTemplateParameters['LABEL_PROP_MOBILE'] = [
+	$arTemplateParameters['LABEL_PROP_MOBILE'] = array(
 		'PARENT' => 'VISUAL',
 		'NAME' => GetMessage('CP_SBB_TPL_LABEL_PROP_MOBILE'),
 		'TYPE' => 'LIST',
@@ -222,41 +207,41 @@ if (!empty($arCurrentValues['LABEL_PROP']))
 		'COLS' => 25,
 		'SIZE' => 7,
 		'REFRESH' => 'N',
-	];
+	);
 
-	$arTemplateParameters['LABEL_PROP_POSITION'] = [
+	$arTemplateParameters['LABEL_PROP_POSITION'] = array(
 		'PARENT' => 'VISUAL',
 		'NAME' => GetMessage('CP_SBB_TPL_LABEL_PROP_POSITION'),
 		'TYPE' => 'CUSTOM',
 		'JS_FILE' => CBitrixBasketComponent::getSettingsScript($componentPath, 'position'),
 		'JS_EVENT' => 'initPositionControl',
 		'JS_DATA' => Json::encode(
-			[
-				'positions' => [
+			array(
+				'positions' => array(
 					'top-left', 'top-center', 'top-right',
 					'middle-left', 'middle-center', 'middle-right',
 					'bottom-left', 'bottom-center', 'bottom-right'
-				],
+				),
 				'className' => ''
-			]
+			)
 		),
 		'DEFAULT' => 'top-left'
-	];
+	);
 }
 
 if (Loader::includeModule('catalog') && !Iblock\Model\PropertyFeature::isEnabledFeatures())
 {
 	$arSKU = false;
 	$boolSKU = false;
-	$arOfferProps = [];
-	$arSkuData = [];
+	$arOfferProps = array();
+	$arSkuData = array();
 
 	// get iblock props from all catalog iblocks including sku iblocks
-	$arSkuIblockIDs = [];
-	$iterator = \Bitrix\Catalog\CatalogIblockTable::getList([
-		'select' => ['IBLOCK_ID', 'PRODUCT_IBLOCK_ID', 'SKU_PROPERTY_ID'],
-		'filter' => ['!=PRODUCT_IBLOCK_ID' => 0]
-	]);
+	$arSkuIblockIDs = array();
+	$iterator = \Bitrix\Catalog\CatalogIblockTable::getList(array(
+		'select' => array('IBLOCK_ID', 'PRODUCT_IBLOCK_ID', 'SKU_PROPERTY_ID'),
+		'filter' => array('!=PRODUCT_IBLOCK_ID' => 0)
+	));
 	while ($row = $iterator->fetch())
 	{
 		$boolSKU = true;
@@ -266,19 +251,19 @@ if (Loader::includeModule('catalog') && !Iblock\Model\PropertyFeature::isEnabled
 	unset($row, $iterator);
 
 	// iblock props
-	$arProps = [];
+	$arProps = array();
 	foreach ($arSkuIblockIDs as $iblockID)
 	{
 		$dbProps = CIBlockProperty::GetList(
-			[
+			array(
 				"SORT"=>"ASC",
 				"NAME"=>"ASC"
-			],
-			[
+			),
+			array(
 				"IBLOCK_ID" => $iblockID,
 				"ACTIVE" => "Y",
 				"CHECK_PERMISSIONS" => "N",
-			]
+			)
 		);
 
 		while ($arProp = $dbProps->GetNext())
@@ -299,7 +284,7 @@ if (Loader::includeModule('catalog') && !Iblock\Model\PropertyFeature::isEnabled
 
 		if (!empty($arOfferProps) && is_array($arOfferProps))
 		{
-			$arTemplateParameters['OFFERS_PROPS'] = [
+			$arTemplateParameters['OFFERS_PROPS'] = array(
 				'PARENT' => 'OFFERS_PROPS',
 				'NAME' => GetMessage('CP_SBB_TPL_PROPERTIES_RECALCULATE_BASKET'),
 				'TYPE' => 'LIST',
@@ -309,29 +294,29 @@ if (Loader::includeModule('catalog') && !Iblock\Model\PropertyFeature::isEnabled
 				'REFRESH' => 'N',
 				'DEFAULT' => '-',
 				'VALUES' => $arOfferProps
-			];
+			);
 		}
 	}
 }
 
-$arTemplateParameters['USE_ENHANCED_ECOMMERCE'] = [
+$arTemplateParameters['USE_ENHANCED_ECOMMERCE'] = array(
 	'PARENT' => 'ANALYTICS_SETTINGS',
 	'NAME' => GetMessage('CP_SBB_TPL_USE_ENHANCED_ECOMMERCE'),
 	'TYPE' => 'CHECKBOX',
 	'REFRESH' => 'Y',
 	'DEFAULT' => 'N'
-];
+);
 
 if (isset($arCurrentValues['USE_ENHANCED_ECOMMERCE']) && $arCurrentValues['USE_ENHANCED_ECOMMERCE'] === 'Y')
 {
 	if (Loader::includeModule('catalog'))
 	{
-		$arIblockIDs = [];
-		$arIblockNames = [];
-		$catalogIterator = Catalog\CatalogIblockTable::getList([
-			'select' => ['IBLOCK_ID', 'NAME' => 'IBLOCK.NAME'],
-			'order' => ['IBLOCK_ID' => 'ASC']
-		]);
+		$arIblockIDs = array();
+		$arIblockNames = array();
+		$catalogIterator = Catalog\CatalogIblockTable::getList(array(
+			'select' => array('IBLOCK_ID', 'NAME' => 'IBLOCK.NAME'),
+			'order' => array('IBLOCK_ID' => 'ASC')
+		));
 		while ($catalog = $catalogIterator->fetch())
 		{
 			$catalog['IBLOCK_ID'] = (int)$catalog['IBLOCK_ID'];
@@ -342,16 +327,12 @@ if (isset($arCurrentValues['USE_ENHANCED_ECOMMERCE']) && $arCurrentValues['USE_E
 
 		if (!empty($arIblockIDs))
 		{
-			$arProps = [];
-			$propertyIterator = Iblock\PropertyTable::getList([
-				'select' => ['ID', 'CODE', 'NAME', 'IBLOCK_ID'],
-				'filter' => [
-					'@IBLOCK_ID' => $arIblockIDs,
-					'=ACTIVE' => 'Y',
-					'!=XML_ID' => CIBlockPropertyTools::XML_SKU_LINK
-				],
-				'order' => ['IBLOCK_ID' => 'ASC', 'SORT' => 'ASC', 'ID' => 'ASC']
-			]);
+			$arProps = array();
+			$propertyIterator = Iblock\PropertyTable::getList(array(
+				'select' => array('ID', 'CODE', 'NAME', 'IBLOCK_ID'),
+				'filter' => array('@IBLOCK_ID' => $arIblockIDs, '=ACTIVE' => 'Y', '!=XML_ID' => CIBlockPropertyTools::XML_SKU_LINK),
+				'order' => array('IBLOCK_ID' => 'ASC', 'SORT' => 'ASC', 'ID' => 'ASC')
+			));
 			while ($property = $propertyIterator->fetch())
 			{
 				$property['ID'] = (int)$property['ID'];
@@ -365,14 +346,14 @@ if (isset($arCurrentValues['USE_ENHANCED_ECOMMERCE']) && $arCurrentValues['USE_E
 
 				if (!isset($arProps[$property['CODE']]))
 				{
-					$arProps[$property['CODE']] = [
+					$arProps[$property['CODE']] = array(
 						'CODE' => $property['CODE'],
 						'TITLE' => $property['NAME'].' ['.$property['CODE'].']',
-						'ID' => [$property['ID']],
-						'IBLOCK_ID' => [$property['IBLOCK_ID'] => $property['IBLOCK_ID']],
-						'IBLOCK_TITLE' => [$property['IBLOCK_ID'] => $arIblockNames[$property['IBLOCK_ID']]],
+						'ID' => array($property['ID']),
+						'IBLOCK_ID' => array($property['IBLOCK_ID'] => $property['IBLOCK_ID']),
+						'IBLOCK_TITLE' => array($property['IBLOCK_ID'] => $arIblockNames[$property['IBLOCK_ID']]),
 						'COUNT' => 1
-					];
+					);
 				}
 				else
 				{
@@ -389,7 +370,7 @@ if (isset($arCurrentValues['USE_ENHANCED_ECOMMERCE']) && $arCurrentValues['USE_E
 			}
 			unset($property, $propertyIterator, $arIblockNames, $arIblockIDs);
 
-			$propList = [];
+			$propList = array();
 			foreach ($arProps as $property)
 			{
 				$iblockList = '';
@@ -405,22 +386,22 @@ if (isset($arCurrentValues['USE_ENHANCED_ECOMMERCE']) && $arCurrentValues['USE_E
 		}
 	}
 
-	$arTemplateParameters['DATA_LAYER_NAME'] = [
+	$arTemplateParameters['DATA_LAYER_NAME'] = array(
 		'PARENT' => 'ANALYTICS_SETTINGS',
 		'NAME' => GetMessage('CP_SBB_TPL_DATA_LAYER_NAME'),
 		'TYPE' => 'STRING',
 		'DEFAULT' => 'dataLayer'
-	];
+	);
 
 	if (!empty($propList))
 	{
-		$arTemplateParameters['BRAND_PROPERTY'] = [
+		$arTemplateParameters['BRAND_PROPERTY'] = array(
 			'PARENT' => 'ANALYTICS_SETTINGS',
 			'NAME' => GetMessage('CP_SBB_TPL_BRAND_PROPERTY'),
 			'TYPE' => 'LIST',
 			'MULTIPLE' => 'N',
 			'DEFAULT' => '',
-			'VALUES' => ['' => ''] + $propList
-		];
+			'VALUES' => array('' => '') + $propList
+		);
 	}
 }
