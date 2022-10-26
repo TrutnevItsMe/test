@@ -96,6 +96,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 			this.defaultPaySystemLogo = this.templateFolder + "/images/pay_system_logo.png";
 
 			this.ajaxUpdateBasketUrl = parameters.ajaxUpdateBasketUrl || "ajax/updateBasket.php";
+			this.ajaxSaveOrderUrl = parameters.ajaxSaveOrderUrl || "ajax.php";
 			this.updateBasketData = parameters.updateBasketData;
 
 			this.orderBlockNode = BX(parameters.orderBlockId);
@@ -235,7 +236,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 						BX.ajax.submitAjax(
 							BX('bx-soa-order-form'),
 							{
-								url: BX.Sale.OrderAjaxComponent.ajaxUrl,
+								url: BX.Sale.OrderAjaxComponent.ajaxSaveOrderUrl,
 								method: 'POST',
 								dataType: 'json',
 								data: {
