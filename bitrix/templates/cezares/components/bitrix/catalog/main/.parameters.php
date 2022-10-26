@@ -504,13 +504,6 @@
 			'TYPE' => 'LIST',
 			'DEFAULT' => 'NORMAL',
 		),
-		/*"DETAIL_PICTURE_MODE" => array(
-			'PARENT' => 'VISUAL',
-			'NAME' => GetMessage('CP_BCE_TPL_DETAIL_PICTURE_MODE'),
-			'TYPE' => 'LIST',
-			'DEFAULT' => 'POPUP',
-			'VALUES' => $detailPictMode
-		),*/
 		"SHOW_DISCOUNT_TIME" => Array(
 			'PARENT' => 'VISUAL',
 			"NAME" => GetMessage("SHOW_DISCOUNT_TIME"),
@@ -1028,10 +1021,20 @@
 			);
 			unset($rcmTypeList);
 		}
+		$arTemplateParametersParts[]=array(
+			'ADDING_STORE_BASKET' => array(
+				'PARENT' => 'BASKET',
+				'NAME' => GetMessage("ADDING_STORE_BASKET"),
+				'TYPE' => 'LIST',
+				'VALUES' => $arStore,
+				'MULTIPLE' => 'Y'
+			)
+		);
 	}
-
 
 	//merge parameters to one array
 	$arTemplateParameters = array();
 	foreach($arTemplateParametersParts as $i => $part) { $arTemplateParameters = array_merge($arTemplateParameters, $part); }
 ?>
+
+

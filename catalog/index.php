@@ -543,7 +543,7 @@ $APPLICATION->IncludeComponent(
 			0 => "",
 			1 => "",
 		),
-		"SHOW_EMPTY_STORE" => "Y",
+		"SHOW_EMPTY_STORE" => "N",
 		"SHOW_GENERAL_STORE_INFORMATION" => "N",
 		"TOP_ELEMENT_COUNT" => "8",
 		"TOP_LINE_ELEMENT_COUNT" => "4",
