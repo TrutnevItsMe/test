@@ -91,7 +91,7 @@ $APPLICATION->IncludeComponent(
 		"SHOW_PICKUP_MAP" => "Y",
 		"PICKUP_MAP_TYPE" => "yandex",
 		"SHOW_COUPONS" => "N",
-		"USER_CONSENT" => "N",
+		"USER_CONSENT" => "Y",
 		"USER_CONSENT_ID" => "0",
 		"USER_CONSENT_IS_CHECKED" => "Y",
 		"USER_CONSENT_IS_LOADED" => "N",
@@ -104,7 +104,7 @@ $APPLICATION->IncludeComponent(
 		"USE_ENHANCED_ECOMMERCE" => "N",
 		"ADDITIONAL_PICT_PROP_26" => "-",
 		"ACTIVE_SAVE_DRAFT_ORDER" => "Y",
-		"INDEX_PICTURE" => "0",
+		"INDEX_PICTURE" => "10",
 		"SHOW_STORE" => "Y",
 		"SHOW_RESTS" => "Y",
 		"ADDITIONAL_PICT_PROP_27" => "-"

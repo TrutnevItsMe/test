@@ -1337,6 +1337,8 @@ h2.basket-item-info-name {
 	vertical-align: top;
 	-webkit-box-ordinal-group: 5;
 	order: 4;
+	display: flex;
+	align-items: start;
 }
 
 .basket-items-list-item-price-for-one {

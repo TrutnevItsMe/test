@@ -205,7 +205,7 @@
     vertical-align: middle;
 }
 .bx-soa-item-properties .bx-soa-item-td-title,
-.bx-soa-item-properties .bx-soa-item-td-text{ text-align:center;}
+.bx-soa-item-properties .bx-soa-item-td-text{ text-align:left;}
 .bx-soa-item-properties.bx-text-right .bx-soa-item-td-title,
 .bx-soa-item-properties.bx-text-right .bx-soa-item-td-text{ text-align:right;}
 .bx-soa-item-td-text input[type="number"] {
