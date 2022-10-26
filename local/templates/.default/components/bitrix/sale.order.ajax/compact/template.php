@@ -541,6 +541,7 @@ else
 			signedParamsString: '<?=CUtil::JSEscape($signedParams)?>',
 			siteID: '<?=CUtil::JSEscape($component->getSiteId())?>',
 			ajaxUrl: '<?=CUtil::JSEscape($templateFolder.'/ajax.php')?>',
+			ajaxSaveOrderUrl: '<?=CUtil::JSEscape($component->GetPath().'/ajax.php')?>',
 			templateFolder: '<?=CUtil::JSEscape($templateFolder)?>',
 			propertyValidation: true,
 			showWarnings: true,

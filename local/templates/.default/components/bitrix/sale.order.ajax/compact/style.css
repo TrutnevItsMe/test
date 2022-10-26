@@ -1625,3 +1625,8 @@ textarea{
 [data-type="informer"]{
 	margin: 0;
 }
+
+.uncheckedBlock p{
+	margin: 0;
+	color: #d73434;
+}
