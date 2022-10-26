@@ -9,12 +9,7 @@
  */
 
 use Bitrix\Main\Localization\Loc;
-$asset = \Bitrix\Main\Page\Asset::getInstance();
-$asset->addCss($templateFolder . "/style.css");
-$asset->addJs($templateFolder . "/js/customOffers.js");
-$asset->addJs($templateFolder . "/js/mustache.js");
 
-include_once $_SERVER["DOCUMENT_ROOT"] . $templateFolder . "/template_js/sets.php";
 
 ?>
 
