@@ -9,7 +9,7 @@ $aMenuLinks = Array(
 	),
 	Array(
 		"О компании", 
-		"/company/", 
+		"/company/index.php", 
 		Array(), 
 		Array(), 
 		"" 
