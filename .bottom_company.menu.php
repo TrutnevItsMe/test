@@ -4,12 +4,12 @@ $aMenuLinks = Array(
 		"Компания", 
 		"/company/index.php", 
 		Array(), 
-		Array(), 
+		Array("TITLE"=>"Y"), 
 		"" 
 	),
 	Array(
 		"О компании", 
-		"/company/", 
+		"/company/index.php", 
 		Array(), 
 		Array(), 
 		"" 
