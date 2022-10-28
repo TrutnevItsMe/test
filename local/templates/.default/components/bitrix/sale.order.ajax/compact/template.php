@@ -540,7 +540,7 @@ else
 			params: <?=CUtil::PhpToJSObject($arParams)?>,
 			signedParamsString: '<?=CUtil::JSEscape($signedParams)?>',
 			siteID: '<?=CUtil::JSEscape($component->getSiteId())?>',
-			ajaxUrl: '<?=CUtil::JSEscape($templateFolder.'/ajax.php')?>',
+			ajaxUrl: '<?=CUtil::JSEscape($templateFolder.'/ajax/ajax.php')?>',
 			ajaxSaveOrderUrl: '<?=CUtil::JSEscape($component->GetPath().'/ajax.php')?>',
 			templateFolder: '<?=CUtil::JSEscape($templateFolder)?>',
 			propertyValidation: true,
