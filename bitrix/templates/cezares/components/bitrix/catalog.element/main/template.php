@@ -9,12 +9,6 @@
  */
 
 use Bitrix\Main\Localization\Loc;
-$asset = \Bitrix\Main\Page\Asset::getInstance();
-$asset->addCss($templateFolder . "/style.css");
-$asset->addJs($templateFolder . "/js/customOffers.js");
-$asset->addJs($templateFolder . "/js/mustache.js");
-
-include_once $_SERVER["DOCUMENT_ROOT"] . $templateFolder . "/template_js/sets.php";
 
 ?>
 
@@ -744,14 +738,15 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 				</div>
 			</div>
 			<div class="text">
-				<a target="_blank" href="<?=$arResult["ALL_COLLECTIONS_URL"]?>">
-					<?=Loc::getMessage("ALL_PRODUCTS_OF_COLLECTION")?>  <?
-					if ($arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE"]):
-					?><?=$arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE"]?>
-					<?else:
-					?><?=$arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE_ENUM"]?>
-					<?endif;?>
-				</a>
+                <a target="_blank"
+                   href="<?= $arResult["DISPLAY_PROPERTIES"]["BRAND"]["LINK_ELEMENT_VALUE"][$arResult["DISPLAY_PROPERTIES"]["BRAND"]["VALUE"]]["DETAIL_PAGE_URL"] ?>?arrFilter_286_<?= abs(crc32($arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE_ENUM_ID"])) ?>=Y&set_filter=y">
+                    <?= Loc::getMessage("ALL_PRODUCTS_OF_COLLECTION") ?>
+                    <?php if ($arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE"]): ?>
+                        <?= $arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE"] ?>
+                    <?php else: ?>
+                        <?= $arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE_ENUM"] ?>
+                    <?php endif; ?>
+                </a>
 			</div>
 		</div>
 	</div>
@@ -1584,7 +1579,9 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 												<?foreach($arResult["DISPLAY_PROPERTIES"] as $arProp):?>
 													<?if(!in_array($arProp["CODE"], array("SERVICES", "BRAND", "HIT", "RECOMMEND", "NEW", "STOCK", "VIDEO", "VIDEO_YOUTUBE", "CML2_ARTICLE"))):?>
 														<?if((!is_array($arProp["DISPLAY_VALUE"]) && strlen($arProp["DISPLAY_VALUE"])) || (is_array($arProp["DISPLAY_VALUE"]) && implode('', $arProp["DISPLAY_VALUE"]))):?>
-															<tr itemprop="additionalProperty" itemscope itemtype="http://schema.org/PropertyValue">
+															<tr data-prop="<?=$arProp["CODE"]?>" itemprop="additionalProperty"
+																itemscope
+																 itemtype="http://schema.org/PropertyValue">
 																<td class="char_name">
 																	<?if($arProp["HINT"] && $arParams["SHOW_HINTS"]=="Y"):?><div class="hint"><span class="icon"><i>?</i></span><div class="tooltip"><?=$arProp["HINT"]?></div></div><?endif;?>
 																	<div class="props_item <?if($arProp["HINT"] && $arParams["SHOW_HINTS"] == "Y"){?>whint<?}?>">
@@ -2104,15 +2101,18 @@ if ($arResult['CATALOG'] && $arParams['USE_GIFTS_MAIN_PR_SECTION_LIST'] == 'Y' &
 <?endif;?>
 
 <script>
-	$(document).ready(function (){
+	BX.ready(function()
+	{
 		window.OffersFilterComponent.init({
 			result: <?=CUtil::PhpToJSObject($arResult)?>,
 			params: <?=CUtil::PhpToJSObject($arParams)?>,
 			classActiveOfferValueItem: "active-offers-filter-item",
+			classClickedOfferValueItem: "selected-offers-filter-item",
 			classOfferValueItem: "offers-filter-item",
 			classOfferValueContainer: "filter-item-container",
 			classInactive: "inactive-offer",
-			classInaccessible: "inaccessible"
+			classAccessibleOfferValue: "accessible-offer-filter-value",
+			classInaccessibleOfferValue: "inaccessible-offer-filter-value",
 		});
 	});
 

@@ -1,6 +1,11 @@
 <? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?><? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
 <? $this->setFrameMode(true); ?>
 
+<?php
+$asset = \Bitrix\Main\Page\Asset::getInstance();
+$asset->addJs($templateFolder."/script.js");
+?>
+
 <? if (count($arResult["ITEMS"]) >= 1) { ?>
 	<? if (($arParams["AJAX_REQUEST"] == "N") || !isset($arParams["AJAX_REQUEST"])) { ?>
 		<? if (isset($arParams["TITLE"]) && $arParams["TITLE"]): ?>
@@ -743,4 +748,24 @@
 		ADD_ERROR_COMPARE: '<? echo GetMessage("ADD_ERROR_COMPARE"); ?>',
 	})
 	sliceItemBlock();
+</script>
+
+<script>
+
+	let q = <? echo CUtil::PhpToJSObject($arResult, false, true); ?>;
+
+	$(document).ready(function()
+	{
+		console.log(q);
+
+		$(".to-cart").on("click", function(e)
+		{
+			e.stopPropagation();
+			e.preventDefault();
+
+		});
+	});
+
+
+
 </script>

@@ -10,7 +10,8 @@ if($arSections){
 
 	foreach($arSections as $ID => $arSection){
 
-		if ($arSection["CODE"] == "snyato_s_proizvodstva")
+		if ($arSection["CODE"] == "snyato_s_proizvodstva"
+			|| strpos($arSection["CODE"], "komplektuyushchie_dlya") !== false)
 		{
 			unset($arSections[$ID]);
 			continue;

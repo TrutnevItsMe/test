@@ -1,6 +1,7 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 $strReturn = '';
 if($arResult){
+
 	\Bitrix\Main\Loader::includeModule("iblock");
 	global $NextSectionID;
 	$cnt = count($arResult);
@@ -22,13 +23,24 @@ if($arResult){
 		if($index){
 			$strReturn .= '<span class="separator">-</span>';
 		}
+
 		if($arItem["LINK"] <> "" && $arItem['LINK'] != GetPagePath() && $arItem['LINK']."index.php" != GetPagePath() || $arSubSections){
 			$strReturn .= '<div class="bx-breadcrumb-item'.($arSubSections ? ' drop' : '').($bLast ? ' cat_last' : '').'" id="bx_breadcrumb_'.$index.'" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">';
 			if($arSubSections){
 				if($index == ($cnt-1)):
 					$strReturn .= '<link href="'.GetPagePath().'" itemprop="item" /><span class="number">';
 				else:
-					$strReturn .= '<a class="number" href="'.$arItem["LINK"].'" itemprop="item">';
+
+					if (strpos($arItem["LINK"], "komplektuyushchie_dlya") !== false
+						|| strpos($arItem["LINK"], "snyato_s_proizvodstva") !== false)
+					{
+						$strReturn .= '<span class="number" itemprop="item">';
+					}
+					else
+					{
+						$strReturn .= '<a class="number" href="'.$arItem["LINK"].'" itemprop="item">';
+					}
+
 				endif;
 				$strReturn .=($arSubSections ? '<span itemprop="name">'.$title.'</span><b class="space"></b><span class="separator'.($bLast ? ' cat_last' : '').'"></span>' : '<span>'.$title.'</span>');
 				$strReturn .= '<meta itemprop="position" content="'.($index + 1).'">';
@@ -39,12 +51,30 @@ if($arResult){
 				endif;
 				$strReturn .= '<div class="dropdown_wrapp"><div class="dropdown">';
 					foreach($arSubSections as $arSubSection){
-						$strReturn .= '<a class="dark_link" href="'.$arSubSection["LINK"].'">'.$arSubSection["NAME"].'</a>';
+
+						if (strpos($arSubSection["LINK"], "komplektuyushchie_dlya") !== false
+						|| strpos($arSubSection["LINK"], "snyato_s_proizvodstva") !== false)
+						{
+							$strReturn .= '<span class="dark_link">'.$arSubSection["NAME"].'</span>';
+						}
+						else
+						{
+							$strReturn .= '<a class="dark_link" href="'.$arSubSection["LINK"].'">'.$arSubSection["NAME"].'</a>';
+						}
 					}
 				$strReturn .= '</div></div>';
 			}
 			else{
-				$strReturn .= '<a href="'.$arItem["LINK"].'" title="'.$title.'" itemprop="item"><span itemprop="name">'.$title.'</span><meta itemprop="position" content="'.($index + 1).'"></a>';
+
+				if (strpos($arItem["LINK"], "komplektuyushchie_dlya") !== false
+					|| strpos($arItem["LINK"], "snyato_s_proizvodstva") !== false)
+				{
+					$strReturn .= '<span title="'.$title.'" itemprop="item"><span itemprop="name">'.$title.'</span><meta itemprop="position" content="'.($index + 1).'"></span>';
+				}
+				else
+				{
+					$strReturn .= '<a href="'.$arItem["LINK"].'" title="'.$title.'" itemprop="item"><span itemprop="name">'.$title.'</span><meta itemprop="position" content="'.($index + 1).'"></a>';
+				}
 			}
 			$strReturn .= '</div>';
 		}
