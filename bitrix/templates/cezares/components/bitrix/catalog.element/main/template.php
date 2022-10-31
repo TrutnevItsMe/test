@@ -10,7 +10,6 @@
 
 use Bitrix\Main\Localization\Loc;
 
-
 ?>
 
 <div class="basket_props_block" id="bx_basket_div_<?=$arResult["ID"];?>" style="display: none;">

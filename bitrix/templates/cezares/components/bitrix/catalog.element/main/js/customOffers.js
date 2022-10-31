@@ -72,7 +72,12 @@ window.OffersFilterComponent = {
 		if (this.result["PRICE_MATRIX"])
 		{
 			let currentCurrencyIndex = Object.keys(this.result["PRICE_MATRIX"]["COLS"])[0];
-			prices.price = this.result["PRICE_MATRIX"]["MATRIX"][currentCurrencyIndex][0]["PRICE"];
+
+			if (this.result["PRICE_MATRIX"]["MATRIX"][currentCurrencyIndex]
+			&& this.result["PRICE_MATRIX"]["MATRIX"][currentCurrencyIndex][0])
+			{
+				prices.price = this.result["PRICE_MATRIX"]["MATRIX"][currentCurrencyIndex][0]["PRICE"];
+			}
 
 			if (this.result["CURRENT_OFFER"])
 			{
@@ -197,15 +202,18 @@ window.OffersFilterComponent = {
 
 			self.filterProps.forEach(function (accessibleProp)
 			{
-				accessibleItems[accessibleProp].forEach(function (accessibleValue)
+				if (accessibleItems[accessibleProp])
 				{
-					let elem = $("." + self.classOfferValueItem + "[data-column='" + accessibleProp + "'][data-value='" + accessibleValue + "']");
-
-					if (elem.length > 0)
+					accessibleItems[accessibleProp].forEach(function (accessibleValue)
 					{
-						elem.addClass(self.classAccessibleOfferValue);
-					}
-				});
+						let elem = $("." + self.classOfferValueItem + "[data-column='" + accessibleProp + "'][data-value='" + accessibleValue + "']");
+
+						if (elem.length > 0)
+						{
+							elem.addClass(self.classAccessibleOfferValue);
+						}
+					});
+				}
 			});
 
 
@@ -234,7 +242,7 @@ window.OffersFilterComponent = {
 
 			self.filterProps.forEach(function (propCode)
 			{
-				if (self.result["OFFERS_MAP_FILTER"][prop] && self.result["OFFERS_MAP_FILTER"][prop][value])
+				if (self.result["OFFERS_MAP_FILTER"] && self.result["OFFERS_MAP_FILTER"][prop] && self.result["OFFERS_MAP_FILTER"][prop][value])
 				{
 					let ar = [];
 
@@ -401,15 +409,15 @@ window.OffersFilterComponent = {
 		let template = this.templateSets; // Mustache шаблон
 		let currentOffer = this.getCurrentOffer();
 
-			if (currentOffer)
+		if (currentOffer)
+		{
+			// У предложения есть набор
+			if (currentOffer && currentOffer["SET"] && currentOffer["SET"].length > 0)
 			{
-				// У предложения есть набор
-				if (currentOffer["SET"] && currentOffer["SET"].length > 0)
-				{
-					Mustache.parse(template);
-					let newHtmlSets = Mustache.render(template, {"ITEMS": currentOffer["SET"]});
-					$(".set_new").html(newHtmlSets);
-				}
+				Mustache.parse(template);
+				let newHtmlSets = Mustache.render(template, {"ITEMS": currentOffer["SET"]});
+				$(".set_new").html(newHtmlSets);
+			}
 
 			let price = calculatePrice();
 
