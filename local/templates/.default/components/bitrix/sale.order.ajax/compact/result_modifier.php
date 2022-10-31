@@ -14,8 +14,6 @@ use \Bitrix\Main\Localization\Loc;
  * @var SaleOrderAjax $component
  */
 
-//
-
 $component = $this->__component;
 $component::scaleImages($arResult['JS_DATA'], $arParams['SERVICES_IMAGES_SCALING']);
 
@@ -141,7 +139,6 @@ if (is_array($arResult["GRID"]["ROWS"]))
 		}
 	}
 }
-
 
 $headerCodes = array_column($arResult['JS_DATA']["GRID"]["HEADERS"], "id");
 

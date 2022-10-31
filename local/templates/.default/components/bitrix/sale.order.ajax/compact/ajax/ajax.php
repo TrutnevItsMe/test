@@ -44,5 +44,6 @@ global $APPLICATION;
 $APPLICATION->IncludeComponent(
 	'bitrix:sale.order.ajax',
 	'compact',
-	$params
+	$params,
+	false
 );
