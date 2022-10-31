@@ -3,9 +3,7 @@
 <?if($arResult["SECTIONS"]){?>
 <div class="catalog_section_list row items flexbox">
 	<?foreach( $arResult["SECTIONS"] as $arItems ){
-		#echo "<pre>";
-	#print_r($arItems[UF_DISABLE_MENU]);
-	
+
 		$this->AddEditAction($arItems['ID'], $arItems['EDIT_LINK'], CIBlock::GetArrayByID($arItems["IBLOCK_ID"], "SECTION_EDIT"));
 		$this->AddDeleteAction($arItems['ID'], $arItems['DELETE_LINK'], CIBlock::GetArrayByID($arItems["IBLOCK_ID"], "SECTION_DELETE"), array("CONFIRM" => GetMessage('CT_BNL_SECTION_DELETE_CONFIRM')));
 	?>

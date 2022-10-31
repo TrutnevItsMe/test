@@ -9,6 +9,13 @@ if($arSections){
 	$cur_page_no_index = $GLOBALS['APPLICATION']->GetCurPage(false);
 
 	foreach($arSections as $ID => $arSection){
+
+		if ($arSection["CODE"] == "snyato_s_proizvodstva")
+		{
+			unset($arSections[$ID]);
+			continue;
+		}
+
 		$arSections[$ID]['SELECTED'] = CMenu::IsItemSelected($arSection['SECTION_PAGE_URL'], $cur_page, $cur_page_no_index);
 		if($arSection['UF_CATALOG_ICON'])
 		{
