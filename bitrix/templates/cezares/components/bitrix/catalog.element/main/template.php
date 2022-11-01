@@ -744,14 +744,15 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 				</div>
 			</div>
 			<div class="text">
-				<a target="_blank" href="<?=$arResult["ALL_COLLECTIONS_URL"]?>">
-					<?=Loc::getMessage("ALL_PRODUCTS_OF_COLLECTION")?>  <?
-					if ($arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE"]):
-					?><?=$arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE"]?>
-					<?else:
-					?><?=$arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE_ENUM"]?>
-					<?endif;?>
-				</a>
+                <a target="_blank"
+                   href="<?= $arResult["DISPLAY_PROPERTIES"]["BRAND"]["LINK_ELEMENT_VALUE"][$arResult["DISPLAY_PROPERTIES"]["BRAND"]["VALUE"]]["DETAIL_PAGE_URL"] ?>?arrFilter_286_<?= abs(crc32($arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE_ENUM_ID"])) ?>=Y&set_filter=y">
+                    <?= Loc::getMessage("ALL_PRODUCTS_OF_COLLECTION") ?>
+                    <?php if ($arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE"]): ?>
+                        <?= $arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE"] ?>
+                    <?php else: ?>
+                        <?= $arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE_ENUM"] ?>
+                    <?php endif; ?>
+                </a>
 			</div>
 		</div>
 	</div>
