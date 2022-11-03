@@ -218,134 +218,135 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 					}
 				}
 
-			var form;
+				var form;
 
-			if (!this.startLoader())
-			{
-				return;
-			}
-
-			this.firstLoad = false;
-
-			action = BX.type.isNotEmptyString(action) ? action : 'refreshOrderAjax';
-
-			if (action === 'saveOrderAjax')
-			{
-				form = BX('bx-soa-order-form');
-				if (form)
+				if (!this.startLoader())
 				{
-					form.querySelector('input[type=hidden][name=sessid]').value = BX.bitrix_sessid();
+					return;
 				}
 
-				this.isDraft = Boolean(this.isDraft);
+				this.firstLoad = false;
 
-				BX.ajax({
-					url: this.ajaxUpdateBasketUrl,
-					data: this.updateBasketData,
-					dataType: "json",
-					method: "POST",
-					onsuccess: function (result)
+				action = BX.type.isNotEmptyString(action) ? action : 'refreshOrderAjax';
+
+				if (action === 'saveOrderAjax')
+				{
+					form = BX('bx-soa-order-form');
+					if (form)
 					{
-						BX.ajax.submitAjax(
-							BX('bx-soa-order-form'),
-							{
-								url: BX.Sale.OrderAjaxComponent.ajaxSaveOrderUrl,
-								method: 'POST',
-								dataType: 'json',
-								data: {
-									via_ajax: 'Y',
-									action: 'saveOrderAjax',
-									sessid: BX.bitrix_sessid(),
-									SITE_ID: BX.Sale.OrderAjaxComponent.siteId,
-									signedParamsString: BX.Sale.OrderAjaxComponent.signedParamsString,
-									isDraft: BX.Sale.OrderAjaxComponent.isDraft
-								},
-								onsuccess: BX.proxy(BX.Sale.OrderAjaxComponent.saveOrderWithJson, BX.Sale.OrderAjaxComponent),
-								onfailure: BX.proxy(BX.Sale.OrderAjaxComponent.handleNotRedirected, BX.Sale.OrderAjaxComponent)
-							}
-						);
-					},
-					onfailure: function ()
-					{
-						console.log("failure update prices");
+						form.querySelector('input[type=hidden][name=sessid]').value = BX.bitrix_sessid();
 					}
-				});
 
-			}
-			else
-			{
-				BX.ajax({
-					method: 'POST',
-					dataType: 'json',
-					url: this.ajaxUrl,
-					data: this.getData(action, actionData),
-					onsuccess: BX.delegate(function (result)
-					{
-						if (result.redirect && result.redirect.length)
+					this.isDraft = Boolean(this.isDraft);
+
+					BX.ajax({
+						url: this.ajaxUpdateBasketUrl,
+						data: this.updateBasketData,
+						dataType: "json",
+						method: "POST",
+						onsuccess: function (result)
 						{
-							document.location.href = result.redirect;
-						}
-
-						this.saveFiles();
-						switch (action)
+							BX.ajax.submitAjax(
+								BX('bx-soa-order-form'),
+								{
+									url: BX.Sale.OrderAjaxComponent.ajaxSaveOrderUrl,
+									method: 'POST',
+									dataType: 'json',
+									data: {
+										via_ajax: 'Y',
+										action: 'saveOrderAjax',
+										sessid: BX.bitrix_sessid(),
+										SITE_ID: BX.Sale.OrderAjaxComponent.siteId,
+										signedParamsString: BX.Sale.OrderAjaxComponent.signedParamsString,
+										isDraft: BX.Sale.OrderAjaxComponent.isDraft
+									},
+									onsuccess: BX.proxy(BX.Sale.OrderAjaxComponent.saveOrderWithJson, BX.Sale.OrderAjaxComponent),
+									onfailure: BX.proxy(BX.Sale.OrderAjaxComponent.handleNotRedirected, BX.Sale.OrderAjaxComponent)
+								}
+							);
+						},
+						onfailure: function ()
 						{
-							case 'refreshOrderAjax':
-								this.refreshOrder(result);
-								break;
-							case 'confirmSmsCode':
-							case 'showAuthForm':
-								this.firstLoad = true;
-								this.refreshOrder(result);
-								break;
-							case 'enterCoupon':
-								if (result && result.order)
-								{
-									this.deliveryCachedInfo = [];
-									this.refreshOrder(result);
-								}
-								else
-								{
-									this.addCoupon(result);
-								}
-
-								break;
-							case 'removeCoupon':
-								if (result && result.order)
-								{
-									this.deliveryCachedInfo = [];
-									this.refreshOrder(result);
-								}
-								else
-								{
-									this.removeCoupon(result);
-								}
-
-								break;
+							console.log("failure update prices");
 						}
+					});
 
-						BX.cleanNode(this.savedFilesBlockNode);
-						this.endLoader();
-						self = this;
-						this.interval = setInterval(function ()
+				}
+				else
+				{
+					BX.ajax({
+						method: 'POST',
+						dataType: 'json',
+						url: this.ajaxUrl,
+						data: this.getData(action, actionData),
+						onsuccess: BX.delegate(function (result)
+						{
+							if (result.redirect && result.redirect.length)
 							{
-								if (document.querySelector("div.change_basket"))
-								{
-									document.querySelectorAll("div.change_basket").forEach(function (div)
-									{
-										div.remove();
-									});
-									clearInterval(self.interval);
-								}
+								document.location.href = result.redirect;
 							}
-							, 100);
+
+							this.saveFiles();
+							switch (action)
+							{
+								case 'refreshOrderAjax':
+									this.refreshOrder(result);
+									break;
+								case 'confirmSmsCode':
+								case 'showAuthForm':
+									this.firstLoad = true;
+									this.refreshOrder(result);
+									break;
+								case 'enterCoupon':
+									if (result && result.order)
+									{
+										this.deliveryCachedInfo = [];
+										this.refreshOrder(result);
+									}
+									else
+									{
+										this.addCoupon(result);
+									}
+
+									break;
+								case 'removeCoupon':
+									if (result && result.order)
+									{
+										this.deliveryCachedInfo = [];
+										this.refreshOrder(result);
+									}
+									else
+									{
+										this.removeCoupon(result);
+									}
+
+									break;
+							}
+
+							BX.cleanNode(this.savedFilesBlockNode);
+							this.endLoader();
+							self = this;
+							this.interval = setInterval(function ()
+								{
+									if (document.querySelector("div.change_basket"))
+									{
+										document.querySelectorAll("div.change_basket").forEach(function (div)
+										{
+											div.remove();
+										});
+										clearInterval(self.interval);
+									}
+								}
+								, 100);
 
 
-					}, this),
-					onfailure: BX.delegate(function ()
-					{
-						this.endLoader();
-					}, this)
-				});
+						}, this),
+						onfailure: BX.delegate(function ()
+						{
+							this.endLoader();
+						}, this)
+					});
+				}
 			}
 		},
 
