@@ -150,4 +150,5 @@ $MESS["YM_GOALS_SAVE_ORDER"] = "Goal ID for order processing";
 $MESS["INDEX_PICTURE"] = "Picture place index";
 $MESS["SHOW_STORE"] = "Show store";
 $MESS["SHOW_RESTS"] = "Show rests";
+$MESS["DEF_STORE_ID"] = "Default store";
 ?>

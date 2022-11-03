@@ -108,11 +108,7 @@ $APPLICATION->IncludeComponent(
 		"SHOW_STORE" => "Y",
 		"SHOW_RESTS" => "Y",
 		"ADDITIONAL_PICT_PROP_27" => "-",
-		"COLUMNS_COMMON_INFO" => array(
-			0 => "WEIGHT",
-			1 => "COUNT",
-			2 => "VOLUME",
-		)
+		"DEF_STORE_ID" => "376"
 	),
 	false
 );
