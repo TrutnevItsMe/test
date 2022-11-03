@@ -218,6 +218,19 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 					}
 				}
 
+			var form;
+
+			if (!this.startLoader())
+			{
+				return;
+			}
+
+			this.firstLoad = false;
+
+			action = BX.type.isNotEmptyString(action) ? action : 'refreshOrderAjax';
+
+			if (action === 'saveOrderAjax')
+			{
 				form = BX('bx-soa-order-form');
 				if (form)
 				{
