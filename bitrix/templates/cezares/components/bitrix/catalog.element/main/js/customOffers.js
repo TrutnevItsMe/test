@@ -91,10 +91,6 @@ window.OffersFilterComponent = {
 		{
 			showPrice(price);
 		}
-		else
-		{
-			showPrice(prices);
-		}
 
 		this.bindEvents();
 

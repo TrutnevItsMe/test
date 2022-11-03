@@ -9,7 +9,6 @@
  */
 
 use Bitrix\Main\Localization\Loc;
-
 ?>
 
 <div class="basket_props_block" id="bx_basket_div_<?=$arResult["ID"];?>" style="display: none;">
@@ -2115,7 +2114,6 @@ if ($arResult['CATALOG'] && $arParams['USE_GIFTS_MAIN_PR_SECTION_LIST'] == 'Y' &
 			classInaccessibleOfferValue: "inaccessible-offer-filter-value",
 		});
 	});
-
 </script>
 
 <script type="text/javascript">
