@@ -613,7 +613,6 @@ window.OffersFilterComponent = {
 		{
 			let isAllSelected = true;
 			let accessibleItems = self.getAccessibleFilterItems();
-			debugger;
 
 			this.filterProps.forEach(function(prop)
 			{
