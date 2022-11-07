@@ -64,16 +64,8 @@ window.OffersFilterComponent = {
 		this.setCharacters();
 		this.setAccessibleFilterItems();
 
-		let prices = {
-			price: 0,
-			old: 0
-		}
-
 		if (this.result["PRICE_MATRIX"])
 		{
-			let currentCurrencyIndex = Object.keys(this.result["PRICE_MATRIX"]["COLS"])[0];
-			prices.price = this.result["PRICE_MATRIX"]["MATRIX"][currentCurrencyIndex][0]["PRICE"];
-
 			if (this.result["CURRENT_OFFER"])
 			{
 				$('.button_block .btn.to-cart').attr("data-item", this.result["CURRENT_OFFER"]["ID"]);
@@ -85,10 +77,6 @@ window.OffersFilterComponent = {
 		if (price.price > 0)
 		{
 			showPrice(price);
-		}
-		else
-		{
-			showPrice(prices);
 		}
 
 		this.bindEvents();
@@ -234,7 +222,9 @@ window.OffersFilterComponent = {
 
 			self.filterProps.forEach(function (propCode)
 			{
-				if (self.result["OFFERS_MAP_FILTER"][prop] && self.result["OFFERS_MAP_FILTER"][prop][value])
+				if (self.result["OFFERS_MAP_FILTER"]
+					&& self.result["OFFERS_MAP_FILTER"][prop]
+					&& self.result["OFFERS_MAP_FILTER"][prop][value])
 				{
 					let ar = [];
 
