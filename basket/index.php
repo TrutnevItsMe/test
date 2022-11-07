@@ -2,8 +2,8 @@
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Корзина");
 ?><?$APPLICATION->IncludeComponent(
-	"bitrix:sale.basket.basket",
-	"intervolga",
+	"bitrix:sale.basket.basket", 
+	"intervolga", 
 	array(
 		"ACTION_VARIABLE" => "action",
 		"ADDITIONAL_PICT_PROP_17" => "-",
@@ -24,13 +24,14 @@ $APPLICATION->SetTitle("Корзина");
 			8 => "SUM",
 		),
 		"COLUMNS_LIST_EXT" => array(
-			0 => "DELETE",
-			1 => "DELAY",
-			2 => "TYPE",
-			3 => "SUM",
-			4 => "PROPERTY_CML2_ARTICLE",
-			5 => "PROPERTY_SKIDKA",
-			6 => "PROPERTY_ARTICLE",
+			0 => "PREVIEW_PICTURE",
+			1 => "DELETE",
+			2 => "DELAY",
+			3 => "TYPE",
+			4 => "SUM",
+			5 => "PROPERTY_CML2_ARTICLE",
+			6 => "PROPERTY_SKIDKA",
+			7 => "PROPERTY_ARTICLE",
 		),
 		"COLUMNS_LIST_MOBILE" => array(
 			0 => "DELETE",

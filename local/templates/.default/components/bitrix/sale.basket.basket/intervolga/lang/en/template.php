@@ -47,7 +47,4 @@ $MESS["AMOUNT"] = "Amount";
 $MESS["STORE"] = "Store";
 $MESS["ARTICLE"] = "Article";
 $MESS["IMAGE"] = "Image";
-$MESS["IN_BASKET"] = "In basket ";
-$MESS["PRODUCTS"] = " products";
-$MESS["COMMON_VOLUME"] = "Volume of ind. packing: ";
 ?>
