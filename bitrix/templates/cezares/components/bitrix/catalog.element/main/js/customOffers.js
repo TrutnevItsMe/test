@@ -184,7 +184,6 @@ window.OffersFilterComponent = {
 
 		this.filterProps.forEach(function (prop)
 		{
-
 			if (curProp)
 			{
 				self.setCurrentFilterValue(curProp, curValue);
@@ -211,8 +210,6 @@ window.OffersFilterComponent = {
 					});
 				}
 			});
-
-
 		});
 
 		self.setInaccessibleItems();
@@ -275,6 +272,7 @@ window.OffersFilterComponent = {
 
 				accessibleItems[prop] = _intersect;
 				accessibleItems[prop] = Array.from((new Set(accessibleItems[prop])));
+				accessibleItems[prop] = self.diff(accessibleItems[prop], ['']);
 			}
 		});
 
@@ -290,6 +288,11 @@ window.OffersFilterComponent = {
 	intersection: function (array1, array2)
 	{
 		return array1.filter(value => array2.includes(value));
+	},
+
+	diff: function(array1, array2)
+	{
+		return array1.filter(x => !array2.includes(x));
 	},
 
 	bindEvents: function ()
@@ -541,7 +544,6 @@ window.OffersFilterComponent = {
 						let elem = $("." + self.classOfferValueItem + "[data-column='" + prop +"'][data-value='" + value + "']");
 						$(elem).addClass(self.classActiveOfferValueItem);
 					});
-
 				}
 				else
 				{
