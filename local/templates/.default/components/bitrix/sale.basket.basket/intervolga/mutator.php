@@ -28,6 +28,18 @@ foreach ($this->basketItems as $row)
         $row["STORES"][$arStoreProduct["STORE_ID"]] = $arStoreProduct;
     }
 
+	$stores = Coption::GetOptionString("aspro.next", "LIST_STORES");
+	$stores = explode(",", $stores);
+
+	$totalCount = 0;
+
+	foreach ($stores as $storeId)
+	{
+		$totalCount += $row["STORES"][$storeId]["AMOUNT"];
+	}
+
+	$arQuantityData = CNext::GetQuantityArray($totalCount);
+
     $rowData = array(
 		'ID' => $row['ID'],
 		'PRODUCT_ID' => $row['PRODUCT_ID'],
@@ -68,6 +80,7 @@ foreach ($this->basketItems as $row)
 		'LABEL_VALUES' => array(),
 		'ARTICLE' => $row["LABEL_ARRAY_VALUE"]["CML2_ARTICLE"],
 		'STORE' => $row["STORES"][$this->arParams["DEF_STORE_ID"]],
+		'DISPLAY_QUANTITY' => $arQuantityData["TEXT"],
 		'BRAND' => isset($row[$this->arParams['BRAND_PROPERTY'].'_VALUE'])
 			? $row[$this->arParams['BRAND_PROPERTY'].'_VALUE']
 			: '',
