@@ -360,7 +360,9 @@ window.OffersFilterComponent = {
 
 		Object.keys(self.currentFilterValues).forEach(function (prop)
 		{
-			if (self.result["OFFERS_MAP_FILTER"][prop][self.getCurrentFilterValue(prop)].length == 1)
+			if (self.result["OFFERS_MAP_FILTER"][prop]
+				&& self.result["OFFERS_MAP_FILTER"][prop][self.getCurrentFilterValue(prop)]
+				&& self.result["OFFERS_MAP_FILTER"][prop][self.getCurrentFilterValue(prop)].length == 1)
 			{
 				returnsOffer = self.result["OFFERS_MAP_FILTER"][prop][self.getCurrentFilterValue(prop)][0];
 				return;
