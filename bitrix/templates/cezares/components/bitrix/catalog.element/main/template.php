@@ -162,7 +162,7 @@ $arViewedData = array(
 	'IS_OFFER' => 'N',
 	'WITH_OFFERS' => $arResult['OFFERS'] ? 'Y' : 'N',
 );
-
+	
 $actualItem = $arResult["OFFERS"] ? (isset($arResult['OFFERS'][$arResult['OFFERS_SELECTED']]) ? $arResult['OFFERS'][$arResult['OFFERS_SELECTED']] : reset($arResult['OFFERS'])) : $arResult;
 ?>
 <script type="text/javascript">
