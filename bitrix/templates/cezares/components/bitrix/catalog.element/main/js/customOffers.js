@@ -64,21 +64,8 @@ window.OffersFilterComponent = {
 		this.setCharacters();
 		this.setAccessibleFilterItems();
 
-		let prices = {
-			price: 0,
-			old: 0
-		}
-
 		if (this.result["PRICE_MATRIX"])
 		{
-			let currentCurrencyIndex = Object.keys(this.result["PRICE_MATRIX"]["COLS"])[0];
-
-			if (this.result["PRICE_MATRIX"]["MATRIX"][currentCurrencyIndex]
-			&& this.result["PRICE_MATRIX"]["MATRIX"][currentCurrencyIndex][0])
-			{
-				prices.price = this.result["PRICE_MATRIX"]["MATRIX"][currentCurrencyIndex][0]["PRICE"];
-			}
-
 			if (this.result["CURRENT_OFFER"])
 			{
 				$('.button_block .btn.to-cart').attr("data-item", this.result["CURRENT_OFFER"]["ID"]);
@@ -90,10 +77,6 @@ window.OffersFilterComponent = {
 		if (price.price > 0)
 		{
 			showPrice(price);
-		}
-		else
-		{
-			showPrice(prices);
 		}
 
 		this.bindEvents();
@@ -188,7 +171,6 @@ window.OffersFilterComponent = {
 
 		this.filterProps.forEach(function (prop)
 		{
-
 			if (curProp)
 			{
 				self.setCurrentFilterValue(curProp, curValue);
@@ -215,8 +197,6 @@ window.OffersFilterComponent = {
 					});
 				}
 			});
-
-
 		});
 
 		self.setInaccessibleItems();
@@ -242,7 +222,9 @@ window.OffersFilterComponent = {
 
 			self.filterProps.forEach(function (propCode)
 			{
-				if (self.result["OFFERS_MAP_FILTER"] && self.result["OFFERS_MAP_FILTER"][prop] && self.result["OFFERS_MAP_FILTER"][prop][value])
+				if (self.result["OFFERS_MAP_FILTER"]
+					&& self.result["OFFERS_MAP_FILTER"][prop]
+					&& self.result["OFFERS_MAP_FILTER"][prop][value])
 				{
 					let ar = [];
 
@@ -279,6 +261,7 @@ window.OffersFilterComponent = {
 
 				accessibleItems[prop] = _intersect;
 				accessibleItems[prop] = Array.from((new Set(accessibleItems[prop])));
+				accessibleItems[prop] = self.diff(accessibleItems[prop], ['']);
 			}
 		});
 
@@ -294,6 +277,11 @@ window.OffersFilterComponent = {
 	intersection: function (array1, array2)
 	{
 		return array1.filter(value => array2.includes(value));
+	},
+
+	diff: function(array1, array2)
+	{
+		return array1.filter(x => !array2.includes(x));
 	},
 
 	bindEvents: function ()
@@ -362,7 +350,9 @@ window.OffersFilterComponent = {
 
 		Object.keys(self.currentFilterValues).forEach(function (prop)
 		{
-			if (self.result["OFFERS_MAP_FILTER"][prop][self.getCurrentFilterValue(prop)].length == 1)
+			if (self.result["OFFERS_MAP_FILTER"][prop]
+				&& self.result["OFFERS_MAP_FILTER"][prop][self.getCurrentFilterValue(prop)]
+				&& self.result["OFFERS_MAP_FILTER"][prop][self.getCurrentFilterValue(prop)].length == 1)
 			{
 				returnsOffer = self.result["OFFERS_MAP_FILTER"][prop][self.getCurrentFilterValue(prop)][0];
 				return;
@@ -545,7 +535,6 @@ window.OffersFilterComponent = {
 						let elem = $("." + self.classOfferValueItem + "[data-column='" + prop +"'][data-value='" + value + "']");
 						$(elem).addClass(self.classActiveOfferValueItem);
 					});
-
 				}
 				else
 				{
