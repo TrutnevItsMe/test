@@ -43,35 +43,46 @@ foreach ($arResult["ITEMS"] as $key => &$arItem)
 			$arResult["ITEMS"][$key]["VALUES"][0]["VALUE"] = $arItem["NAME"];
 	}
 
+	if ($arItem["CODE"] == "KATEGORIYA_DLYA_SAYTA")
+	{
+		foreach ($arItem["VALUES"] as $id => $arValue)
+		{
+			if (strpos($arValue["UPPER"], "КОМПЛЕКТУЮЩИЕ") !== false)
+			{
+				unset($arItem["VALUES"][$id]);
+			}
+		}
+	}
+
 	// Оставляем только те значения, для которых есть хотя бы 1 товар
-//	if ($arItem["PROPERTY_TYPE"] == "L")
-//	{
-//		foreach ($arItem["VALUES"] as $id => $arValue)
-//		{
-//			$filter = [
-//				"IBLOCK_ID" => $arParams["IBLOCK_ID"],
-//				"PROPERTY_".$arItem["CODE"]."_VALUE" => $arValue["VALUE"],
-//			];
-//
-//			if ($arParams["LINKED_BRAND_PROPERTY"])
-//			{
-//				$filter["PROPERTY_".$arParams["LINKED_BRAND_PROPERTY"]] = $arParams["LINKED_BRAND_VALUE"];
-//			}
-//
-//			$rsElem = CIBlockElement::GetList(
-//				[],
-//				$filter,
-//				false,
-//				false,
-//				["ID"]
-//			);
-//
-//			if (!$rsElem->GetNext())
-//			{
-//				unset($arItem["VALUES"][$id]);
-//			}
-//		}
-//	}
+	if ($arItem["PROPERTY_TYPE"] == "L")
+	{
+		foreach ($arItem["VALUES"] as $id => $arValue)
+		{
+			$filter = [
+				"IBLOCK_ID" => $arParams["IBLOCK_ID"],
+				"PROPERTY_".$arItem["CODE"]."_VALUE" => $arValue["VALUE"],
+			];
+
+			if ($arParams["LINKED_BRAND_PROPERTY"])
+			{
+				$filter["PROPERTY_".$arParams["LINKED_BRAND_PROPERTY"]] = $arParams["LINKED_BRAND_VALUE"];
+			}
+
+			$rsElem = CIBlockElement::GetList(
+				[],
+				$filter,
+				false,
+				false,
+				["ID"]
+			);
+
+			if (!$rsElem->GetNext())
+			{
+				unset($arItem["VALUES"][$id]);
+			}
+		}
+	}
 }
 
 \Bitrix\Main\Localization\Loc::loadLanguageFile(__FILE__);
