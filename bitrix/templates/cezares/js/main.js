@@ -5769,7 +5769,7 @@ $(document).ready(function ()
 		$('html, body').animate({scrollTop: content_offset.top - 43}, 400);
 	});
 
-	$(document).on("click", ".counter_block:not(.basket) .plus", function ()
+	$(document).on("click", ".counter_block:not(.disabled):not(.basket) .plus", function ()
 	{
 		if (!$(this).parents('.basket_wrapp').length)
 		{
@@ -5819,7 +5819,7 @@ $(document).ready(function ()
 		}
 	});
 
-	$(document).on("click", ".counter_block:not(.basket) .minus", function ()
+	$(document).on("click", ".counter_block:not(.disabled):not(.basket) .minus", function ()
 	{
 		if (!$(this).parents('.basket_wrapp').length)
 		{
