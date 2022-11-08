@@ -9,7 +9,12 @@
  */
 
 use Bitrix\Main\Localization\Loc;
+/*$asset = \Bitrix\Main\Page\Asset::getInstance();
+$asset->addCss($templateFolder . "/style.css");
+$asset->addJs($templateFolder . "/js/customOffers.js");
+$asset->addJs($templateFolder . "/js/mustache.js");
 
+include_once $_SERVER["DOCUMENT_ROOT"] . $templateFolder . "/template_js/sets.php";*/
 
 ?>
 
@@ -164,7 +169,7 @@ $arViewedData = array(
 	'IS_OFFER' => 'N',
 	'WITH_OFFERS' => $arResult['OFFERS'] ? 'Y' : 'N',
 );
-	
+
 $actualItem = $arResult["OFFERS"] ? (isset($arResult['OFFERS'][$arResult['OFFERS_SELECTED']]) ? $arResult['OFFERS'][$arResult['OFFERS_SELECTED']] : reset($arResult['OFFERS'])) : $arResult;
 ?>
 <script type="text/javascript">
@@ -648,6 +653,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 							});
 						</script>
 						<div class="counter_wrapp">
+							<? file_put_contents($_SERVER["DOCUMENT_ROOT"] . "/popov_simple_log.log", var_export($arResult["OFFERS"],true) . "\n-------------------\n", FILE_APPEND); //TODO: DELETE IV_LOGGING ?>
 							<? if (!$arResult["OFFERS"]): ?>
 								<? if (($arAddToBasketData["OPTIONS"]["USE_PRODUCT_QUANTITY_DETAIL"] && $arAddToBasketData["ACTION"] == "ADD") && $arAddToBasketData["CAN_BUY"]): ?>
 									<div class="counter_block big_basket"
@@ -859,6 +865,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 		</div>
 	<?}?>
 <? include "set_composition.php";?>
+	<?php file_put_contents($_SERVER["DOCUMENT_ROOT"] . "/popov_simple_log1.log", var_export($arResult["SET"],true) . "\n-------------------\n", FILE_APPEND); //TODO: DELETE IV_LOGGING ?>
 	<?if($arResult['OFFERS']):?>
 		<?if($arResult['OFFER_GROUP']):?>
 			<?foreach($arResult['OFFERS'] as $arOffer):?>
@@ -2116,7 +2123,6 @@ if ($arResult['CATALOG'] && $arParams['USE_GIFTS_MAIN_PR_SECTION_LIST'] == 'Y' &
 			classInaccessibleOfferValue: "inaccessible-offer-filter-value",
 		});
 	});
-
 </script>
 
 <script type="text/javascript">
