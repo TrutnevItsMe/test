@@ -2148,4 +2148,33 @@ if ($arResult["OFFERS"])
 
 }
 
+
+
+
+
+
+
+
+
+
+
+$a = [];
+
+foreach ($arResult["OFFERS_MAP_FILTER"] as $prop => $arOffers)
+{
+	foreach ($arOffers as $arOffer)
+	{
+		foreach ($arParams["FILTER_OFFERS_PROPERTY_CODE"] as $filterProperty)
+		{
+			$a[$prop][$filterProperty][] = $arOffer["PROPERTIES"][$filterProperty]["VALUE"];
+		}
+	}
+
+
+
+}
+
+\Bitrix\Main\Diag\Debug::writeToFile(__FILE__ . ':' . __LINE__ . "\n(" . date('Y-m-d H:i:s').")\n" . print_r($a, TRUE) . "\n\n", '', 'log/__debug_trutnev.log');
+
+
 ?>

@@ -4,13 +4,6 @@
 
 use Bitrix\Main\Loader;
 use Bitrix\Main\ModuleManager;
-
-$asset = \Bitrix\Main\Page\Asset::getInstance();
-$asset->addCss($templateFolder . "/style.css");
-$asset->addJs($templateFolder . "/js/customOffers.js");
-$asset->addJs($templateFolder . "/js/mustache.js");
-
-include_once $_SERVER["DOCUMENT_ROOT"] . $templateFolder . "/template_js/sets.php";
 ?>
 <?if($arResult["ID"]):?>
 	<?if($arParams["USE_REVIEW"] == "Y"):?>
