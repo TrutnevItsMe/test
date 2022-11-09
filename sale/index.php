@@ -32,7 +32,7 @@ $APPLICATION->SetTitle("Акции");
 	?>
 	<?$APPLICATION->IncludeComponent(
 	"bitrix:catalog.smart.filter", 
-	"main", 
+	"sale", 
 	array(
 		"IBLOCK_TYPE" => "aspro_next_catalog",
 		"IBLOCK_ID" => "17",
@@ -65,7 +65,7 @@ $APPLICATION->SetTitle("Акции");
 		"AVAILABLE_SORT" => $arAvailableSort,
 		"SORT" => $sort,
 		"SORT_ORDER" => $sort_order,
-		"COMPONENT_TEMPLATE" => "main",
+		"COMPONENT_TEMPLATE" => "sale",
 		"SECTION_CODE" => "",
 		"PREFILTER_NAME" => "smartPreFilter",
 		"PAGER_PARAMS_NAME" => "arrPager"

@@ -9,6 +9,13 @@
  */
 
 use Bitrix\Main\Localization\Loc;
+/*$asset = \Bitrix\Main\Page\Asset::getInstance();
+$asset->addCss($templateFolder . "/style.css");
+$asset->addJs($templateFolder . "/js/customOffers.js");
+$asset->addJs($templateFolder . "/js/mustache.js");
+
+include_once $_SERVER["DOCUMENT_ROOT"] . $templateFolder . "/template_js/sets.php";*/
+
 ?>
 
 <div class="basket_props_block" id="bx_basket_div_<?=$arResult["ID"];?>" style="display: none;">
@@ -126,9 +133,8 @@ if($arResult["OFFERS"]){
 	}
 }
 
-$arAddToBasketData = CNext::GetAddToBasketArray(array_diff($arResult, $arResult["OFFERS"]), $totalCount,
-    $arParams["DEFAULT_COUNT"], $arParams["BASKET_URL"], true, $arItemIDs["ALL_ITEM_IDS"],
-    'btn-lg w_icons' . ($totalCount ? '' : ' disabled'), $arParams);
+$arAddToBasketData = CNext::GetAddToBasketArray(array_diff($arResult, $arResult["OFFERS"]), $totalCount, $arParams["DEFAULT_COUNT"],
+$arParams["BASKET_URL"], true, $arItemIDs["ALL_ITEM_IDS"], 'btn-lg w_icons', $arParams);
 $arOfferProps = implode(';', $arParams['OFFERS_CART_PROPERTIES']);
 
 // save item viewed
@@ -647,18 +653,19 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 							});
 						</script>
 						<div class="counter_wrapp">
+							<? file_put_contents($_SERVER["DOCUMENT_ROOT"] . "/popov_simple_log.log", var_export($arResult["OFFERS"],true) . "\n-------------------\n", FILE_APPEND); //TODO: DELETE IV_LOGGING ?>
 							<? if (!$arResult["OFFERS"]): ?>
 								<? if (($arAddToBasketData["OPTIONS"]["USE_PRODUCT_QUANTITY_DETAIL"] && $arAddToBasketData["ACTION"] == "ADD") && $arAddToBasketData["CAN_BUY"]): ?>
-									<div class="counter_block big_basket <?=$totalCount ? '' : 'disabled'?>"
+									<div class="counter_block big_basket"
 										 data-offers="<?= ($arResult["OFFERS"] ? "Y" : "N"); ?>"
 										 data-item="<?= $arResult["ID"]; ?>" <?= (($arResult["OFFERS"] && $arParams["TYPE_SKU"] == "N") ? "style='display: none;'" : ""); ?>>
-										<span class="minus <?=$totalCount ? '' : 'disabled'?>"
+										<span class="minus"
 											  id="<? echo $arItemIDs["ALL_ITEM_IDS"]['QUANTITY_DOWN']; ?>">-</span>
 										<input type="text" class="text"
 											   id="<? echo $arItemIDs["ALL_ITEM_IDS"]['QUANTITY']; ?>"
 											   name="<? echo $arParams["PRODUCT_QUANTITY_VARIABLE"]; ?>"
 											   value="<?= $arAddToBasketData["MIN_QUANTITY_BUY"] ?>"/>
-										<span class="plus <?=$totalCount ? '' : 'disabled'?>"
+										<span class="plus"
 											  id="<? echo $arItemIDs["ALL_ITEM_IDS"]['QUANTITY_UP']; ?>" <?= ($arAddToBasketData["MAX_QUANTITY_BUY"] ? "data-max='" . $arAddToBasketData["MAX_QUANTITY_BUY"] . "'" : "") ?>>+</span>
 									</div>
 								<? endif; ?>
@@ -738,14 +745,15 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 				</div>
 			</div>
 			<div class="text">
-				<a target="_blank" href="<?=$arResult["ALL_COLLECTIONS_URL"]?>">
-					<?=Loc::getMessage("ALL_PRODUCTS_OF_COLLECTION")?>  <?
-					if ($arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE"]):
-					?><?=$arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE"]?>
-					<?else:
-					?><?=$arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE_ENUM"]?>
-					<?endif;?>
-				</a>
+                <a target="_blank"
+                   href="<?= $arResult["DISPLAY_PROPERTIES"]["BRAND"]["LINK_ELEMENT_VALUE"][$arResult["DISPLAY_PROPERTIES"]["BRAND"]["VALUE"]]["DETAIL_PAGE_URL"] ?>?arrFilter_286_<?= abs(crc32($arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE_ENUM_ID"])) ?>=Y&set_filter=y">
+                    <?= Loc::getMessage("ALL_PRODUCTS_OF_COLLECTION") ?>
+                    <?php if ($arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE"]): ?>
+                        <?= $arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE"] ?>
+                    <?php else: ?>
+                        <?= $arResult["PROPERTIES"]["KOLLEKTSIYA"]["VALUE_ENUM"] ?>
+                    <?php endif; ?>
+                </a>
 			</div>
 		</div>
 	</div>
@@ -857,6 +865,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 		</div>
 	<?}?>
 <? include "set_composition.php";?>
+	<?php file_put_contents($_SERVER["DOCUMENT_ROOT"] . "/popov_simple_log1.log", var_export($arResult["SET"],true) . "\n-------------------\n", FILE_APPEND); //TODO: DELETE IV_LOGGING ?>
 	<?if($arResult['OFFERS']):?>
 		<?if($arResult['OFFER_GROUP']):?>
 			<?foreach($arResult['OFFERS'] as $arOffer):?>
@@ -1578,7 +1587,9 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 												<?foreach($arResult["DISPLAY_PROPERTIES"] as $arProp):?>
 													<?if(!in_array($arProp["CODE"], array("SERVICES", "BRAND", "HIT", "RECOMMEND", "NEW", "STOCK", "VIDEO", "VIDEO_YOUTUBE", "CML2_ARTICLE"))):?>
 														<?if((!is_array($arProp["DISPLAY_VALUE"]) && strlen($arProp["DISPLAY_VALUE"])) || (is_array($arProp["DISPLAY_VALUE"]) && implode('', $arProp["DISPLAY_VALUE"]))):?>
-															<tr itemprop="additionalProperty" itemscope itemtype="http://schema.org/PropertyValue">
+															<tr data-prop="<?=$arProp["CODE"]?>" itemprop="additionalProperty"
+																itemscope
+																 itemtype="http://schema.org/PropertyValue">
 																<td class="char_name">
 																	<?if($arProp["HINT"] && $arParams["SHOW_HINTS"]=="Y"):?><div class="hint"><span class="icon"><i>?</i></span><div class="tooltip"><?=$arProp["HINT"]?></div></div><?endif;?>
 																	<div class="props_item <?if($arProp["HINT"] && $arParams["SHOW_HINTS"] == "Y"){?>whint<?}?>">
