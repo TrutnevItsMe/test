@@ -109,6 +109,7 @@ if(CNext::GetFrontParametrValue('CATALOG_COMPARE') == 'N')
 		"LANDING_TITLE" => $arParams["LANDING_SEARCH_TITLE"],
 		"LANDING_SECTION_COUNT" => $arParams["LANDING_SEARCH_COUNT"],
 		'OFFER_SHOW_PREVIEW_PICTURE_PROPS' => $arParams['OFFER_SHOW_PREVIEW_PICTURE_PROPS'],
+		"STORES" => $arParams["STORES"],
 	),
 	$component
 );

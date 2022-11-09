@@ -656,16 +656,16 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 						<div class="counter_wrapp">
 							<? if (!$arResult["OFFERS"]): ?>
 								<? if (($arAddToBasketData["OPTIONS"]["USE_PRODUCT_QUANTITY_DETAIL"] && $arAddToBasketData["ACTION"] == "ADD") && $arAddToBasketData["CAN_BUY"]): ?>
-									<div class="counter_block big_basket disabled"
+									<div class="counter_block big_basket <?=$totalCount ? '' : 'disabled'?>"
 										 data-offers="<?= ($arResult["OFFERS"] ? "Y" : "N"); ?>"
 										 data-item="<?= $arResult["ID"]; ?>" <?= (($arResult["OFFERS"] && $arParams["TYPE_SKU"] == "N") ? "style='display: none;'" : ""); ?>>
-										<span class="minus disabled"
+										<span class="minus <?=$totalCount ? '' : 'disabled'?>"
 											  id="<? echo $arItemIDs["ALL_ITEM_IDS"]['QUANTITY_DOWN']; ?>">-</span>
 										<input type="text" class="text"
 											   id="<? echo $arItemIDs["ALL_ITEM_IDS"]['QUANTITY']; ?>"
 											   name="<? echo $arParams["PRODUCT_QUANTITY_VARIABLE"]; ?>"
 											   value="<?= $arAddToBasketData["MIN_QUANTITY_BUY"] ?>"/>
-										<span class="plus"
+										<span class="plus <?=$totalCount ? '' : 'disabled'?>"
 											  id="<? echo $arItemIDs["ALL_ITEM_IDS"]['QUANTITY_UP']; ?>" <?= ($arAddToBasketData["MAX_QUANTITY_BUY"] ? "data-max='" . $arAddToBasketData["MAX_QUANTITY_BUY"] . "'" : "") ?>>+</span>
 									</div>
 								<? endif; ?>
