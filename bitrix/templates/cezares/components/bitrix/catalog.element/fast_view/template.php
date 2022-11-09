@@ -1,4 +1,13 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
+<?php /**
+* @global $templateFolder
+* @global $USER
+* @global $APPLICATION
+* @global $arResult
+* @global $arParams
+*/
+//include_once $_SERVER["DOCUMENT_ROOT"] . $templateFolder . "/template_js/sets.php";
+?>
 <div class="basket_props_block" id="bx_basket_div_<?=$arResult["ID"];?>" style="display: none;">
 	<?if (!empty($arResult['PRODUCT_PROPERTIES_FILL'])){
 		foreach ($arResult['PRODUCT_PROPERTIES_FILL'] as $propID => $propInfo){?>
@@ -474,7 +483,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 	<div class="right_info">
 		<div class="info_item scrollbar">
 			<div class="title hidden"><a href="<?=$arResult["DETAIL_PAGE_URL"];?>" class="dark_link"><?=$elementName;?></a></div>
-			<div class="top_info">
+			<div class="top_info" style="overflow: visible;">
 				<?if($arParams["SHOW_RATING"] == "Y"):?>
 					<?$frame = $this->createFrame('dv_'.$arResult["ID"])->begin('');?>
 						<div class="rating">
@@ -614,6 +623,33 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 						<table class="props_list" id="<? echo $arItemIDs["ALL_ITEM_IDS"]['DISPLAY_PROP_DIV']; ?>"></table>
 					<?endif;?>
 				</div>
+			<?php include "set_composition.php";
+			if($arResult['OFFERS']):?>
+				<?if($arResult['OFFER_GROUP']):?>
+					<?foreach($arResult['OFFERS'] as $arOffer):?>
+						<?if(!$arOffer['OFFER_GROUP']) continue;?>
+						<span id="<?=$arItemIDs['ALL_ITEM_IDS']['OFFER_GROUP'].$arOffer['ID']?>" style="display: none;">
+					<?$APPLICATION->IncludeComponent("bitrix:catalog.set.constructor", "",
+						array(
+							"IBLOCK_ID" => $arResult["OFFERS_IBLOCK"],
+							"ELEMENT_ID" => $arOffer['ID'],
+							"PRICE_CODE" => $arParams["PRICE_CODE"],
+							"BASKET_URL" => $arParams["BASKET_URL"],
+							"OFFERS_CART_PROPERTIES" => $arParams["OFFERS_CART_PROPERTIES"],
+							"CACHE_TYPE" => $arParams["CACHE_TYPE"],
+							"CACHE_TIME" => $arParams["CACHE_TIME"],
+							"CACHE_GROUPS" => $arParams["CACHE_GROUPS"],
+							"SHOW_OLD_PRICE" => $arParams["SHOW_OLD_PRICE"],
+							"SHOW_MEASURE" => $arParams["SHOW_MEASURE"],
+							"SHOW_DISCOUNT_PERCENT" => $arParams["SHOW_DISCOUNT_PERCENT"],
+							"CONVERT_CURRENCY" => $arParams['CONVERT_CURRENCY'],
+							"CURRENCY_ID" => $arParams["CURRENCY_ID"]
+						), $component, array("HIDE_ICONS" => "Y")
+					);?>
+				</span>
+					<?endforeach;?>
+				<?endif;?>
+			<?endif;?>
 			</div>
 		</div>
 	</div>
@@ -712,13 +748,14 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 				<?endforeach;?>
 			</ul>
 		</div>
-	<?endif;?>
-	<?if($arResult['OFFERS']):?>
-		<?if($arResult['OFFER_GROUP']):?>
-			<?foreach($arResult['OFFERS'] as $arOffer):?>
-				<?if(!$arOffer['OFFER_GROUP']) continue;?>
-				<span id="<?=$arItemIDs['ALL_ITEM_IDS']['OFFER_GROUP'].$arOffer['ID']?>" style="display: none;">
-					<?$APPLICATION->IncludeComponent("bitrix:catalog.set.constructor", "",
+	<?endif;?>*/
+	/*include "set_composition.php";
+	if($arResult['OFFERS']):*/?><!--
+		<?/*if($arResult['OFFER_GROUP']):*/?>
+			<?/*foreach($arResult['OFFERS'] as $arOffer):*/?>
+				<?/*if(!$arOffer['OFFER_GROUP']) continue;*/?>
+				<span id="<?/*=$arItemIDs['ALL_ITEM_IDS']['OFFER_GROUP'].$arOffer['ID']*/?>" style="display: none;">
+					<?/*$APPLICATION->IncludeComponent("bitrix:catalog.set.constructor", "",
 						array(
 							"IBLOCK_ID" => $arResult["OFFERS_IBLOCK"],
 							"ELEMENT_ID" => $arOffer['ID'],
@@ -734,11 +771,12 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 							"CONVERT_CURRENCY" => $arParams['CONVERT_CURRENCY'],
 							"CURRENCY_ID" => $arParams["CURRENCY_ID"]
 						), $component, array("HIDE_ICONS" => "Y")
-					);?>
+					);*/?>
 				</span>
-			<?endforeach;?>
-		<?endif;?>
-	<?else:?>
+			<?/*endforeach;*/?>
+		<?/*endif;*/?>
+	--><?/*endif;*/?>
+	<?/*else:?>
 		<?$APPLICATION->IncludeComponent("bitrix:catalog.set.constructor", "",
 			array(
 				"IBLOCK_ID" => $arParams["IBLOCK_ID"],

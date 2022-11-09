@@ -3912,3 +3912,16 @@ window.JCCatalogElementFast.prototype.allowViewedCount = function(update)
 	}
 };
 })(window);
+
+//Скрипт для добавления в корзину товаров из комплекта
+
+$(document).on('click', '.to-cart:not(.read_more)', function (e)
+{
+	e.preventDefault();
+	let th = $(this);
+	//console.log()
+	if(!th.hasClass('clicked')){
+		th.addClass('clicked');
+
+	}
+})

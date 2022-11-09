@@ -3,6 +3,11 @@ use Bitrix\Main\Type\Collection;
 use Bitrix\Currency\CurrencyTable;
 use Bitrix\Iblock;
 
+use Intervolga\Custom\Import\Sets;
+use Bitrix\Main\Config\Option;
+//use Bitrix\Main\CFile;
+
+
 if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED!==true) die();
 /** @var CBitrixComponentTemplate $this */
 /** @var array $arParams */
@@ -130,6 +135,30 @@ $arSKUPropKeys = array();
 $boolSKU = false;
 $strBaseCurrency = '';
 $boolConvert = isset($arResult['CONVERT_CURRENCY']['CURRENCY_ID']);
+
+
+//Место формирования списка компонентов комплекта
+$catalogIblockID = Option::get(
+	'aspro.next',
+	'CATALOG_IBLOCK_ID',
+	CNextCache::$arIBlocks[SITE_ID]['aspro_next_catalog']['aspro_next_catalog'][0]
+);
+$productId = $arResult['ID'];
+$rsProperty = CIBlockElement::GetProperty(
+	$catalogIblockID,
+	$productId,
+	[],
+	["CODE" => "COMPOSITION"]
+);
+
+if ($property = $rsProperty->Fetch())
+{
+	if (is_array($value = $property['VALUE']))
+	{
+		$arResult["SET"] = Sets::getSet($value['TEXT']);
+	}
+}
+
 
 if(is_array($arResult['PROPERTIES']['CML2_ARTICLE']['VALUE']))
 {

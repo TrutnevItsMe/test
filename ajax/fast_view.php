@@ -13,11 +13,10 @@
 		$arTheme = CNext::GetFrontParametrsValues(SITE_ID);
 		$url = htmlspecialcharsbx(urldecode($_GET['item_href']));
 
-
 		\Bitrix\Main\Loader::includeModule('sale');
 		\Bitrix\Main\Loader::includeModule('currency');
 		\Bitrix\Main\Loader::includeModule('catalog');?>
-
+		
 		<script>
 			var objUrl = parseUrlQuery(),
 				url = '<?=$url;?>',
