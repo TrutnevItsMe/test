@@ -891,8 +891,13 @@ $APPLICATION->IncludeComponent(
 		),
 		"FILE_404" => "",
 		"OFFERS_FILTER_PROPS" => array(
+			0 => "TSVET",
+			1 => "SHIRINA_IZDELIYA_SM",
+			2 => "MONTAZH",
+			3 => "GLUBINA_IZDELIYA_SM",
 		),
 		"OFFER_FILTER_REPLACED_PICTURE" => array(
+			0 => "TSVET",
 		),
 		"ADDING_STORE_BASKET" => array(
 		),
