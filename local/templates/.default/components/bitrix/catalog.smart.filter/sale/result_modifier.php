@@ -18,10 +18,16 @@ foreach ($arResult["ITEMS"] as $key => &$arItem)
 	{
 		foreach ($arItem["VALUES"] as &$arValue)
 		{
+			if ($arValue["VALUE"] == "Акция")
+			{
+				$arValue["CHECKED"] = true;
+				continue;
+			}
+
 			if ($arValue["VALUE"] == "Распродажа")
 			{
 				$arValue["DISABLED"] = true;
-				break;
+				continue;
 			}
 		}
 	}
