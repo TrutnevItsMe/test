@@ -571,6 +571,16 @@
 	order: 1;
 }
 
+.basket-item-block-store{
+	text-align: center;
+	width: 200px;
+}
+
+.basket-item-block-rests{
+	text-align: center;
+	width: 100px;
+}
+
 .basket-items-list-item-descriptions-inner {
 	position: relative;
 	display: -ms-flexbox;
@@ -583,12 +593,12 @@
 .basket-item-block-image {
 	position: relative;
 	-ms-flex-order: 1;
-	padding-right: 15px;
+	padding-right: 50px;
 	padding-bottom: 10px;
 	min-width: 48px;
 	max-width: 148px;
 	width: 100%;
-	text-align: center;
+	text-align: left;
 	-webkit-box-flex: 1;
 	-ms-flex: 1;
 	flex: 1;
@@ -832,8 +842,9 @@
 /*region Name*/
 .basket-item-info-name,
 .basket-item-info-name-link {
+	text-align: center;
 	margin: 0;
-	padding: 0 20px 0 0;
+	/*padding: 0 20px 0 0;*/
 	color: #2f3435;
 	text-decoration: none;
 	word-break: break-all;
@@ -841,6 +852,7 @@
 	font: 400 14px/24px "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	transition: 300ms all ease;
 	line-height: 15px;
+	max-width: 250px;
 }
 
 h2.basket-item-info-name {
@@ -1337,6 +1349,8 @@ h2.basket-item-info-name {
 	vertical-align: top;
 	-webkit-box-ordinal-group: 5;
 	order: 4;
+	display: flex;
+	align-items: start;
 }
 
 .basket-items-list-item-price-for-one {
@@ -2240,16 +2254,17 @@ body.bx-theme-yellow .catalog-block-header{border-color:#f4b236;}
 	padding-right: 0!important;
 }
 
-#basket-root .basket-item-block-amount {
+/*#basket-root .basket-item-block-amount {
 	margin: 0 15px!important;
-}
+}*/
 .basket-item-info-name-link {
 	display: block;
 	margin-top: -2px;
 }
 
 .article-before-name-section{
-	width: 300px;
+	width: 200px;
+	/*width: auto;*/
 	white-space: nowrap;
 	text-align: left;
 }
@@ -2258,7 +2273,6 @@ td{
 	padding: 2px;
 }
 
-.basket-items-list-item-price,
 .basket-items-list-item-amount{
 	vertical-align: middle;
 }
@@ -2273,16 +2287,52 @@ td{
 	margin-left: -50px;
 }
 
-.price-header, .td-header-amount{
-	padding-left: 1.5%;
+.preview-image-header{
+	width: 150px;
+}
+
+.product-header{
+	width: 250px;
+	text-align: center;
+}
+
+.store-header{
+	text-align: center;
+	width: 200px;
+}
+
+.amount-header{
+	width: 150px;
+	text-align: center;
+}
+
+.rests-header{
+	width: 100px;
+	text-align: center;
+}
+
+.property-TYPE{
+	width: 80px;
+}
+
+.price_header{
+	width: 110px;
 }
 
 .sum-header{
+	width: 90px;
+}
+
+.td-price-header{
+	padding-left: 1.5%;
+}
+
+.ts-sum-header{
 	padding-left: 1%;
 }
 
 .img-header{
-	padding-left: 3%;
+	padding-left: 1%;
 }
 
 .td-header-rests{

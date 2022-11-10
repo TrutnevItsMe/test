@@ -188,7 +188,9 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 			<? if ($arParams["SHOW_STORE_NAME"] === "Y"): ?>
 
 				<td>
-					{{STORE.STORE_TITLE}}
+					<div class="basket-item-block-store">
+						{{STORE.STORE_TITLE}}
+					</div>
 				</td>
 			<? endif; ?>
 
@@ -233,7 +235,11 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 			<? if ($arParams["DISPLAY_RESTS"] === "Y")
 			{
 				?>
-				<td class="rests">{{STORE.AMOUNT}}</td>
+				<td class="rests">
+					<div class="basket-item-block-rests">
+						{{DISPLAY_QUANTITY}}
+					</div>
+				</td>
 				<?
 			} ?>
 
@@ -520,19 +526,27 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 
 			<? if ($arParams["SHOW_STORE_NAME"] === "Y"): ?>
 				<td>
-					<?= Loc::getMessage("STORE") ?>
+					<div class="store_header">
+						<div class="store-header">
+							<?= Loc::getMessage("STORE") ?>
+						</div>
+					</div>
 				</td>
 			<? endif; ?>
 
 			<td class="td-header-amount">
-				<?= Loc::getMessage("AMOUNT") ?>
+				<div class="amount-header">
+					<?= Loc::getMessage("AMOUNT") ?>
+				</div>
 			</td>
 
 			<? if ($arParams["DISPLAY_RESTS"] === "Y")
 			{
 				?>
 				<td class="td-header-rests">
-					<?= Loc::getMessage("RESTS") ?>
+					<div class="rests-header">
+						<?= Loc::getMessage("RESTS") ?>
+					</div>
 				</td>
 				<?
 			} ?>
@@ -550,7 +564,9 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 								?>
 								{{#PROPS}}
 								<td class="td-basket-header-property-{{CODE}}">
-									{{{NAME}}}
+									<div class="property-{{CODE}}">
+										{{{NAME}}}
+									</div>
 								</td>
 								{{/PROPS}}
 								<?
@@ -561,7 +577,9 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 							?>
 							{{#SKU_BLOCK_LIST}}
 							<td class="td-basket-header-property-{{CODE}}">
-								{{NAME}}
+								<div class="property-{{CODE}}">
+									{{{NAME}}}
+								</div>
 							</td>
 							{{/SKU_BLOCK_LIST}}
 
@@ -571,7 +589,9 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 							?>
 							{{#COLUMN_LIST}}
 							<td class="td-basket-header-property-{{CODE}}">
-								{{NAME}}
+								<div class="property-{{CODE}}">
+									{{{NAME}}}
+								</div>
 							</td>
 							{{/COLUMN_LIST}}
 							<?
@@ -584,8 +604,10 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 			if ($usePriceInAdditionalColumn)
 			{
 				?>
-				<td class="price-header">
-					<?= Loc::getMessage("PRICE") ?>
+				<td class="td-price-header">
+					<div class="price_header">
+						<?= Loc::getMessage("PRICE") ?>
+					</div>
 				</td>
 				<?
 			} ?>
@@ -594,8 +616,10 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 			if ($useSumColumn)
 			{
 				?>
-				<td class="sum-header">
-					<?= Loc::getMessage("SUM") ?>
+				<td class="td-sum-header">
+					<div class="sum-header">
+						<?= Loc::getMessage("SUM") ?>
+					</div>
 				</td>
 				<?
 			} ?>
