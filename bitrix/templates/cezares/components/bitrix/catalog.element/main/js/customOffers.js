@@ -66,14 +66,6 @@ window.OffersFilterComponent = {
 
 		if (this.result["PRICE_MATRIX"])
 		{
-			let currentCurrencyIndex = Object.keys(this.result["PRICE_MATRIX"]["COLS"])[0];
-
-			if (this.result["PRICE_MATRIX"]["MATRIX"][currentCurrencyIndex]
-			&& this.result["PRICE_MATRIX"]["MATRIX"][currentCurrencyIndex][0])
-			{
-				prices.price = this.result["PRICE_MATRIX"]["MATRIX"][currentCurrencyIndex][0]["PRICE"];
-			}
-
 			if (this.result["CURRENT_OFFER"])
 			{
 				$('.button_block .btn.to-cart').attr("data-item", this.result["CURRENT_OFFER"]["ID"]);
@@ -179,7 +171,6 @@ window.OffersFilterComponent = {
 
 		this.filterProps.forEach(function (prop)
 		{
-
 			if (curProp)
 			{
 				self.setCurrentFilterValue(curProp, curValue);
@@ -206,8 +197,6 @@ window.OffersFilterComponent = {
 					});
 				}
 			});
-
-
 		});
 
 		self.setInaccessibleItems();
@@ -546,7 +535,6 @@ window.OffersFilterComponent = {
 						let elem = $("." + self.classOfferValueItem + "[data-column='" + prop +"'][data-value='" + value + "']");
 						$(elem).addClass(self.classActiveOfferValueItem);
 					});
-
 				}
 				else
 				{
