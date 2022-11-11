@@ -648,8 +648,9 @@ $APPLICATION->IncludeComponent(
 		"DETAIL_CHECK_SECTION_ID_VARIABLE" => "N",
 		"STORES" => array(
 			0 => "",
-			1 => \Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS,
-			2 => "",
+			1 => "376",
+			2 => \Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS,
+			3 => "",
 		),
 		"USER_FIELDS" => array(
 			0 => "",
@@ -891,13 +892,8 @@ $APPLICATION->IncludeComponent(
 		),
 		"FILE_404" => "",
 		"OFFERS_FILTER_PROPS" => array(
-			0 => "TSVET",
-			1 => "SHIRINA_IZDELIYA_SM",
-			2 => "MONTAZH",
-			3 => "GLUBINA_IZDELIYA_SM",
 		),
 		"OFFER_FILTER_REPLACED_PICTURE" => array(
-			0 => "TSVET",
 		),
 		"ADDING_STORE_BASKET" => array(
 		),
