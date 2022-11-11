@@ -2,8 +2,10 @@
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Магазины");
 ?>
-<?global $arTheme;?>
-<?if($arTheme["STORES_SOURCE"]["VALUE"] != 'IBLOCK'):?>
+<?global $arTheme;
+
+
+if($arTheme["STORES_SOURCE"]["VALUE"] != 'IBLOCK'):?>
 	<?$APPLICATION->IncludeComponent(
 		"bitrix:catalog.store", 
 		"main", 
