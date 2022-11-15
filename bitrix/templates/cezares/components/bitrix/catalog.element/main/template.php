@@ -9,12 +9,11 @@
  */
 
 use Bitrix\Main\Localization\Loc;
-/*$asset = \Bitrix\Main\Page\Asset::getInstance();
-$asset->addCss($templateFolder . "/style.css");
-$asset->addJs($templateFolder . "/js/customOffers.js");
-$asset->addJs($templateFolder . "/js/mustache.js");
 
-include_once $_SERVER["DOCUMENT_ROOT"] . $templateFolder . "/template_js/sets.php";*/
+if ($arResult["CURRENT_OFFER"])
+{
+	$APPLICATION->SetTitle($arResult["CURRENT_OFFER"]["NAME"]);
+}
 
 ?>
 
@@ -451,7 +450,13 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 						<?}?>
 					</div>
 					<?if(strlen($arResult["PREVIEW_TEXT"])):?>
-						<div class="preview_text dotdot"><?=$arResult["PREVIEW_TEXT"]?></div>
+						<div class="preview_text dotdot">
+					<?if($arResult["CURRENT_OFFER"]):?>
+						<?=$arResult["CURRENT_OFFER"]["PREVIEW_TEXT"]?>
+					<?else:?>
+						<?=$arResult["PREVIEW_TEXT"]?>
+					<?endif;?>
+					</div>
 						<?if(strlen($arResult["DETAIL_TEXT"])):?>
 							<div class="more_block icons_fa color_link"><span><?=\Bitrix\Main\Config\Option::get('aspro.next', "EXPRESSION_READ_MORE_OFFERS_DEFAULT", GetMessage("MORE_TEXT_BOTTOM"));?></span></div>
 						<?endif;?>
@@ -653,7 +658,6 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 							});
 						</script>
 						<div class="counter_wrapp">
-							<? file_put_contents($_SERVER["DOCUMENT_ROOT"] . "/popov_simple_log.log", var_export($arResult["OFFERS"],true) . "\n-------------------\n", FILE_APPEND); //TODO: DELETE IV_LOGGING ?>
 							<? if (!$arResult["OFFERS"]): ?>
 								<? if (($arAddToBasketData["OPTIONS"]["USE_PRODUCT_QUANTITY_DETAIL"] && $arAddToBasketData["ACTION"] == "ADD") && $arAddToBasketData["CAN_BUY"]): ?>
 									<div class="counter_block big_basket"
@@ -865,7 +869,6 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 		</div>
 	<?}?>
 <? include "set_composition.php";?>
-	<?php file_put_contents($_SERVER["DOCUMENT_ROOT"] . "/popov_simple_log1.log", var_export($arResult["SET"],true) . "\n-------------------\n", FILE_APPEND); //TODO: DELETE IV_LOGGING ?>
 	<?if($arResult['OFFERS']):?>
 		<?if($arResult['OFFER_GROUP']):?>
 			<?foreach($arResult['OFFERS'] as $arOffer):?>
@@ -1825,7 +1828,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 						</div>
 					</div>
 				</div>
-			<?endif;?>
+			<?endif; ?>
 			<?if($useStores && ($showCustomOffer || !$arResult["OFFERS"] )):?>
 				<div class="tab-pane stores_tab<?=(!($iTab++) ? ' active' : '')?>" id="stores">
 					<div class="title-tab-heading visible-xs"><?=($arParams["TAB_STOCK_NAME"] ? $arParams["TAB_STOCK_NAME"] : GetMessage("STORES_TAB"));?></div>

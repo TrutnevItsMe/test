@@ -15,6 +15,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 /** @var array $arResult */
 
 const PRICE_TYPE_ID = 13;
+const CATALOG_COMPLECT_ID = 2;
 
 $displayPreviewTextMode = [
 	'H' => true,
@@ -1803,17 +1804,61 @@ if ($property = $rsProperty->Fetch())
 				],
 			],
 		])->fetchAll();
-		foreach ($arResult['SET_STORES'] as $key => $value)
+
+		if ($arResult["CATALOG_TYPE"] == CATALOG_COMPLECT_ID)
 		{
-			$arResult['SET_STORES'][$key];
-			$totalCount = CNext::CheckTypeCount($value["AMOUNT"]);
-			$arQuantityData = CNext::GetQuantityArray($totalCount);
-			if (strlen($arQuantityData["TEXT"]))
+			$products = array_column($arResult["SET_ITEMS"], "ID");
+			$stores = array_column($arResult["SET_STORES"], "STORE_ID");
+
+			$res = CCatalogStoreProduct::GetList(
+				$arOrder = [],
+				$arFilter = [
+					"=PRODUCT_ID" => $products,
+					"STORE_ID" => $stores
+				],
+				$arGroupBy = false,
+				$arNavStartParams = false,
+				$arSelect = ["STORE_ID", "PRODUCT_ID", "AMOUNT"]
+			);
+
+			$mapStoreProduct = [];
+
+			while ($store = $res->Fetch())
 			{
-				$arResult['SET_STORES'][$key]['AMOUNT_HTML'] = $arQuantityData["HTML"];
+				if (!isset($mapStoreProduct[$store["STORE_ID"]]))
+				{
+					$mapStoreProduct[$store["STORE_ID"]] = $store["AMOUNT"];
+					continue;
+				}
+
+				$mapStoreProduct[$store["STORE_ID"]] += $store["AMOUNT"];
 			}
+
+			foreach ($arResult['SET_STORES'] as $key => $value)
+			{
+				$totalCount = CNext::CheckTypeCount($mapStoreProduct[$value["STORE_ID"]]);
+				$arQuantityData = CNext::GetQuantityArray($totalCount);
+				if (strlen($arQuantityData["TEXT"]))
+				{
+					$arResult['SET_STORES'][$key]['AMOUNT_HTML'] = $arQuantityData["HTML"];
+				}
+			}
+			$cp = $this->__component;
 		}
-		$cp = $this->__component;
+		else
+		{
+			foreach ($arResult['SET_STORES'] as $key => $value)
+			{
+				$totalCount = CNext::CheckTypeCount($value["AMOUNT"]);
+				$arQuantityData = CNext::GetQuantityArray($totalCount);
+				if (strlen($arQuantityData["TEXT"]))
+				{
+					$arResult['SET_STORES'][$key]['AMOUNT_HTML'] = $arQuantityData["HTML"];
+				}
+			}
+			$cp = $this->__component;
+		}
+
 		if (is_object($cp))
 		{
 			$cp->SetResultCacheKeys(['SET_STORES']);
@@ -1823,17 +1868,17 @@ if ($property = $rsProperty->Fetch())
 
 // Формируем ссылку на все товары коллекции, чтобы она вела на поиск в каталоге, а не в брендах
 CBitrixComponent::includeComponentClass("bitrix:catalog.smart.filter");
-$ob = new CBitrixCatalogSmartFilter(); // создаем новый объект фильтра
+$catalogSmartFilter = new CBitrixCatalogSmartFilter(); // создаем новый объект фильтра
 $arTmpItem = ["CODE" => $arResult["PROPERTIES"]["KOLLEKTSIYA"]["CODE"]]; // свойство фильтра
 // отмечаем текущее значение
 $arTmpItem["VALUES"][] = [
 	"URL_ID" => $arResult["PROPERTIES"]["BRAND"]["VALUE_ENUM_ID"],
 	"CHECKED" => 1
 ];
-$ob->arResult = ['ITEMS' => [$arTmpItem]]; // закидываем в массив элементов фильтра
+$catalogSmartFilter->arResult = ['ITEMS' => [$arTmpItem]]; // закидываем в массив элементов фильтра
 $url = $arParams["SEF_URL_TEMPLATES"]["smart_filter"];
 $url = str_replace("#SECTION_CODE_PATH#", $arResult["SECTION"]["SECTION_PAGE_URL"], $url);
-$url = $ob->makeSmartUrl($url, true); // формируем url
+$url = $catalogSmartFilter->makeSmartUrl($url, true); // формируем url
 $url = str_replace("//", "/", $url);
 $arResult["ALL_COLLECTIONS_URL"] = $url;
 
