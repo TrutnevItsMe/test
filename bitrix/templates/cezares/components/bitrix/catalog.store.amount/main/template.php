@@ -33,7 +33,10 @@ if(strlen($arResult["ERROR_MESSAGE"]) > 0){
 					<div class="main_info">
 						<?if (isset($arProperty["TITLE"])):?>
 							<span>
-								<a class="title_stores" href="<?=$arProperty["URL"]?>" data-storehref="<?=$arProperty["URL"]?>" data-iblockhref="<?=$arShops[$arProperty['ID']]['DETAIL_PAGE_URL']?>"> <?=$arProperty["TITLE"].(strlen($arProperty["ADDRESS"]) && strlen($arProperty["TITLE"]) ? ', ' : '').$arProperty["ADDRESS"]?></a>
+								<a class="title_stores" href="<?=$arProperty["URL"]?>" data-storehref="<?=$arProperty["URL"]?>"
+								   data-iblockhref="<?=$arShops[$arProperty['ID']]['DETAIL_PAGE_URL']?>">
+									<?=$arProperty["TITLE"].(strlen($arProperty["ADDRESS"]) &&
+									strlen($arProperty["TITLE"]) ? ', ' : ''). $arProperty["ADDRESS"]?></a>
 							</span>
 						<?endif;?>
 						<?if(isset($arProperty["PHONE"])):?><span class="store_phone p10"><?=GetMessage('S_PHONE')?> <?=$arProperty["PHONE"]?></span><?endif;?>

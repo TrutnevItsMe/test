@@ -1,6 +1,5 @@
 <?
-$arResult["TITLE"] = htmlspecialchars_decode($arResult["TITLE"]);
-$arResult["ADDRESS"] = htmlspecialchars_decode($arResult["ADDRESS"]);
-$arResult["ADDRESS"] = (strlen($arResult["TITLE"]) ? $arResult["TITLE"].', ' : '').$arResult["ADDRESS"];
+$arResult["TITLE"] = htmlspecialchars_decode(trim($arResult["TITLE"]));
+$arResult["ADDRESS"] = ((strlen($arResult["TITLE"]) && strlen(trim($arResult["ADDRESS"])) ? ", ". htmlspecialchars(trim($arResult["ADDRESS"])) : ""));
 $_SESSION['SHOP_TITLE'] = $arResult['ADDRESS'];
 ?>
