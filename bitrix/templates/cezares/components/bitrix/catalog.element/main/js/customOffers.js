@@ -96,7 +96,7 @@ window.OffersFilterComponent = {
 	 */
 	setCurrentFilterValue: function (prop, value)
 	{
-		this.currentFilterValues[prop] = value;
+		this.currentFilterValues[prop] = value ? value : "";
 	},
 
 	/**
@@ -285,7 +285,7 @@ window.OffersFilterComponent = {
 		return array1.filter(value => array2.includes(value));
 	},
 
-	diff: function(array1, array2)
+	diff: function (array1, array2)
 	{
 		return array1.filter(x => !array2.includes(x));
 	},
@@ -538,10 +538,10 @@ window.OffersFilterComponent = {
 					self.setCurrentFilterValue($(this).data("column"), $(this).data("value"));
 					self.setCurrentFilterByFirstValues();
 
-					self.filterProps.forEach(function(prop)
+					self.filterProps.forEach(function (prop)
 					{
 						let value = self.getCurrentFilterValue(prop);
-						let elem = $("." + self.classOfferValueItem + "[data-column='" + prop +"'][data-value='" + value + "']");
+						let elem = $("." + self.classOfferValueItem + "[data-column='" + prop + "'][data-value='" + value + "']");
 						$(elem).addClass(self.classActiveOfferValueItem);
 					});
 				}
@@ -554,12 +554,8 @@ window.OffersFilterComponent = {
 				}
 
 				self.setAccessibleFilterItems();
-
-				if (self.isAllValuesSelected())
-				{
-					self.setCurrentValueTitles();
-					self.setCurrentOffer();
-				}
+				self.setCurrentValueTitles();
+				self.setCurrentOffer();
 			}
 		});
 	},
@@ -615,9 +611,16 @@ window.OffersFilterComponent = {
 			let isAllSelected = true;
 			let accessibleItems = self.getAccessibleFilterItems();
 
-			this.filterProps.forEach(function(prop)
+			this.filterProps.forEach(function (prop)
 			{
-				self.setCurrentFilterValue(prop, accessibleItems[prop][0]);
+				if (accessibleItems[prop])
+				{
+					self.setCurrentFilterValue(prop, accessibleItems[prop][0]);
+				}
+				else
+				{
+					self.setCurrentFilterValue(prop, "");
+				}
 
 				if (accessibleItems[prop].length > 1)
 				{
@@ -634,7 +637,7 @@ window.OffersFilterComponent = {
 	},
 
 	/* Устанавливает назавание товара в верстке */
-	setProductName: function(name)
+	setProductName: function (name)
 	{
 		let nodeName = $("#pagetitle");
 
@@ -644,7 +647,7 @@ window.OffersFilterComponent = {
 		}
 	},
 
-	setPreviewText: function(text)
+	setPreviewText: function (text)
 	{
 		let node = $(".preview_text");
 
