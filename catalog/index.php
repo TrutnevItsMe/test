@@ -293,7 +293,7 @@ $APPLICATION->IncludeComponent(
 			2 => "",
 		),
 		"COMPARE_OFFERS_PROPERTY_CODE" => array(
-		 	0 => "",
+			0 => "",
 			1 => "MOUNTING",
 			2 => "COLOR",
 			3 => "DEPTH_CM",
@@ -528,10 +528,8 @@ $APPLICATION->IncludeComponent(
 		"PARTIAL_PRODUCT_PROPERTIES" => "Y",
 		"DETAIL_CHECK_SECTION_ID_VARIABLE" => "N",
 		"STORES" => array(
-			0 => "",
-			1 => "376",
-			2 => \Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS,
-			3 => "",
+			0 => "376",
+			1 => "",
 		),
 		"USER_FIELDS" => array(
 			0 => "",
@@ -541,7 +539,7 @@ $APPLICATION->IncludeComponent(
 			0 => "",
 			1 => "",
 		),
-		"SHOW_EMPTY_STORE" => "Y",
+		"SHOW_EMPTY_STORE" => "N",
 		"SHOW_GENERAL_STORE_INFORMATION" => "N",
 		"TOP_ELEMENT_COUNT" => "8",
 		"TOP_LINE_ELEMENT_COUNT" => "4",
@@ -773,10 +771,13 @@ $APPLICATION->IncludeComponent(
 		),
 		"FILE_404" => "",
 		"OFFERS_FILTER_PROPS" => array(
+			0 => "TSVET",
+			1 => "SHIRINA_IZDELIYA_SM",
+			2 => "MONTAZH",
+			3 => "GLUBINA_IZDELIYA_SM",
 		),
 		"OFFER_FILTER_REPLACED_PICTURE" => array(
-		),
-		"ADDING_STORE_BASKET" => array(
+			0 => "TSVET",
 		),
 		"ADDING_STORE_BASKET" => array(
 			0 => "374",
