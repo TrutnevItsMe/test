@@ -60,6 +60,13 @@ window.OffersFilterComponent = {
 			document.querySelector(".btn.to-cart").style.display = "block";
 		}
 
+		if (this.result["CURRENT_OFFER"])
+		{
+			this.setProductName(this.result["CURRENT_OFFER"]["NAME"]);
+			this.setPreviewText(this.result["CURRENT_OFFER"]["PREVIEW_TEXT"]);
+		}
+
+		this.setProductName();
 		this.initFilterValues();
 		this.setCharacters();
 		this.setAccessibleFilterItems();
@@ -80,7 +87,6 @@ window.OffersFilterComponent = {
 		}
 
 		this.bindEvents();
-
 	},
 
 	/**
@@ -500,6 +506,9 @@ window.OffersFilterComponent = {
 				$('.button_block .btn.to-cart').show();
 				$(".btn.in-cart").hide();
 			}
+
+			self.setProductName(currentOffer["NAME"]);
+			self.setPreviewText(currentOffer["PREVIEW_TEXT"]);
 		}
 
 		this.setCharacters();
@@ -621,6 +630,27 @@ window.OffersFilterComponent = {
 			{
 				break;
 			}
+		}
+	},
+
+	/* Устанавливает назавание товара в верстке */
+	setProductName: function(name)
+	{
+		let nodeName = $("#pagetitle");
+
+		if (nodeName.length)
+		{
+			nodeName.html(name);
+		}
+	},
+
+	setPreviewText: function(text)
+	{
+		let node = $(".preview_text");
+
+		if (node.length)
+		{
+			node.html(text);
 		}
 	}
 };

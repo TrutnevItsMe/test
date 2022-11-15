@@ -10,6 +10,11 @@
 
 use Bitrix\Main\Localization\Loc;
 
+if ($arResult["CURRENT_OFFER"])
+{
+	$APPLICATION->SetTitle($arResult["CURRENT_OFFER"]["NAME"]);
+}
+
 ?>
 
 <div class="basket_props_block" id="bx_basket_div_<?=$arResult["ID"];?>" style="display: none;">
@@ -446,7 +451,13 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 						<?}?>
 					</div>
 					<?if(strlen($arResult["PREVIEW_TEXT"])):?>
-						<div class="preview_text dotdot"><?=$arResult["PREVIEW_TEXT"]?></div>
+						<div class="preview_text dotdot">
+					<?if($arResult["CURRENT_OFFER"]):?>
+						<?=$arResult["CURRENT_OFFER"]["PREVIEW_TEXT"]?>
+					<?else:?>
+						<?=$arResult["PREVIEW_TEXT"]?>
+					<?endif;?>
+					</div>
 						<?if(strlen($arResult["DETAIL_TEXT"])):?>
 							<div class="more_block icons_fa color_link"><span><?=\Bitrix\Main\Config\Option::get('aspro.next', "EXPRESSION_READ_MORE_OFFERS_DEFAULT", GetMessage("MORE_TEXT_BOTTOM"));?></span></div>
 						<?endif;?>
@@ -653,7 +664,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 									<div class="counter_block big_basket <?=$totalCount ? '' : 'disabled'?>"
 										 data-offers="<?= ($arResult["OFFERS"] ? "Y" : "N"); ?>"
 										 data-item="<?= $arResult["ID"]; ?>" <?= (($arResult["OFFERS"] && $arParams["TYPE_SKU"] == "N") ? "style='display: none;'" : ""); ?>>
-										<span class="minus <?=$totalCount ? '' : 'disabled'?>"
+										<span class="minus"
 											  id="<? echo $arItemIDs["ALL_ITEM_IDS"]['QUANTITY_DOWN']; ?>">-</span>
 										<input type="text" class="text"
 											   id="<? echo $arItemIDs["ALL_ITEM_IDS"]['QUANTITY']; ?>"
@@ -1579,7 +1590,9 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 												<?foreach($arResult["DISPLAY_PROPERTIES"] as $arProp):?>
 													<?if(!in_array($arProp["CODE"], array("SERVICES", "BRAND", "HIT", "RECOMMEND", "NEW", "STOCK", "VIDEO", "VIDEO_YOUTUBE", "CML2_ARTICLE"))):?>
 														<?if((!is_array($arProp["DISPLAY_VALUE"]) && strlen($arProp["DISPLAY_VALUE"])) || (is_array($arProp["DISPLAY_VALUE"]) && implode('', $arProp["DISPLAY_VALUE"]))):?>
-															<tr itemprop="additionalProperty" itemscope itemtype="http://schema.org/PropertyValue">
+															<tr data-prop="<?=$arProp["CODE"]?>" itemprop="additionalProperty"
+																itemscope
+																 itemtype="http://schema.org/PropertyValue">
 																<td class="char_name">
 																	<?if($arProp["HINT"] && $arParams["SHOW_HINTS"]=="Y"):?><div class="hint"><span class="icon"><i>?</i></span><div class="tooltip"><?=$arProp["HINT"]?></div></div><?endif;?>
 																	<div class="props_item <?if($arProp["HINT"] && $arParams["SHOW_HINTS"] == "Y"){?>whint<?}?>">
