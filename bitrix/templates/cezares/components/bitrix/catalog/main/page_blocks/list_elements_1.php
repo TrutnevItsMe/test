@@ -327,7 +327,6 @@ if($isAjaxFilter == "Y")
 			}?>
 
 			<?$show = $arParams["PAGE_ELEMENT_COUNT"];?>
-
 			<?if($isAjax === 'N'){?>
 				<div class="ajax_load <?=$display;?>">
 			<?}?>

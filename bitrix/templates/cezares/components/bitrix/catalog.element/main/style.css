@@ -23,6 +23,10 @@
 	border-color: #ff9a56;
 }
 
+.inaccessible-offer-filter-value{
+	border-style: dashed;
+}
+
 .inactive-offer{
 	border-color: #bbb;
 	color: #bbb;
