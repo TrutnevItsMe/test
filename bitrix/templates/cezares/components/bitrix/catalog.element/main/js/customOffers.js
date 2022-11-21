@@ -60,20 +60,19 @@ window.OffersFilterComponent = {
 			document.querySelector(".btn.to-cart").style.display = "block";
 		}
 
+		if (this.result["CURRENT_OFFER"])
+		{
+			this.setProductName(this.result["CURRENT_OFFER"]["NAME"]);
+			this.setPreviewText(this.result["CURRENT_OFFER"]["PREVIEW_TEXT"]);
+		}
+
+		this.setProductName();
 		this.initFilterValues();
 		this.setCharacters();
 		this.setAccessibleFilterItems();
 
 		if (this.result["PRICE_MATRIX"])
 		{
-			let currentCurrencyIndex = Object.keys(this.result["PRICE_MATRIX"]["COLS"])[0];
-
-			if (this.result["PRICE_MATRIX"]["MATRIX"][currentCurrencyIndex]
-			&& this.result["PRICE_MATRIX"]["MATRIX"][currentCurrencyIndex][0])
-			{
-				prices.price = this.result["PRICE_MATRIX"]["MATRIX"][currentCurrencyIndex][0]["PRICE"];
-			}
-
 			if (this.result["CURRENT_OFFER"])
 			{
 				$('.button_block .btn.to-cart').attr("data-item", this.result["CURRENT_OFFER"]["ID"]);
@@ -178,7 +177,6 @@ window.OffersFilterComponent = {
 
 		this.filterProps.forEach(function (prop)
 		{
-
 			if (curProp)
 			{
 				self.setCurrentFilterValue(curProp, curValue);
@@ -205,8 +203,6 @@ window.OffersFilterComponent = {
 					});
 				}
 			});
-
-
 		});
 
 		self.setInaccessibleItems();
@@ -289,7 +285,7 @@ window.OffersFilterComponent = {
 		return array1.filter(value => array2.includes(value));
 	},
 
-	diff: function(array1, array2)
+	diff: function (array1, array2)
 	{
 		return array1.filter(x => !array2.includes(x));
 	},
