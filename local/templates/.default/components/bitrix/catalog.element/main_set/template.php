@@ -1751,11 +1751,17 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 								?>
 							<div class="stores_block wo_image">
 								<div class="stores_text_wrapp ">
-									<div class="main_info"><span><a
-										class="title_stores"
-										href="<?= $storePath ?>"
-										data-storehref="<?= $storePath ?>"
-										data-iblockhref=""><?= $store['NAME'] ?></a></span></div>
+									<div class="main_info">
+                                        <span>
+<!--                                            <a-->
+<!--                                                class="title_stores"-->
+<!--                                                href="--><?//= $storePath ?><!--"-->
+<!--                                                data-storehref="--><?//= $storePath ?><!--"-->
+<!--                                                data-iblockhref="">--><?//= $store['NAME'] ?>
+<!--                                            </a>-->
+                                            <?=$store['NAME']?>
+                                        </span>
+                                    </div>
 								</div>
 								<?=$store['AMOUNT_HTML']?>
 							</div>
