@@ -37,6 +37,17 @@ $arItemsFilter = [
 	"PROPERTY_" . $arParams["LINKED_PRODUCTS_PROPERTY"] => $arElement["ID"], // выбираем элементы текущего бренда
 	'SECTION_GLOBAL_ACTIVE' => 'Y',
 ];
+$res = CIBlockSection::GetList(Array("NAME"=>"ASC"),
+    array("IBLOCK_ID"=>17), false,
+    array("ID","UF_DISABLE_GLOBAL"));
+$arNotShowSections = array();
+while($ar_result = $res->GetNext()){
+
+    if($ar_result["UF_DISABLE_GLOBAL"]){
+        $arNotShowSections[] = $ar_result['ID'];
+    }
+}
+unset($res);
 
 
 CNext::makeElementFilterInRegion($arItemsFilter);
@@ -194,6 +205,11 @@ $arParams["AJAX_FILTER_CATALOG"] = "N";
 				$arrFilter[0] = ['!SECTION_ID' => $arNotShowSections];
 				#######################bart			#######################bart
 
+                $GLOBALS["BRANDS_SMART_PRE_FILTER"] = [
+                        "ID" => $arItemsID,
+                        "!SECTION_ID" => $arNotShowSections,
+                ];
+
 				$APPLICATION->IncludeComponent(
 					"bitrix:catalog.smart.filter",
 					($arParams["AJAX_FILTER_CATALOG"] == "Y" ? "main_ajax" : "main"),
@@ -230,6 +246,9 @@ $arParams["AJAX_FILTER_CATALOG"] = "N";
 						"AVAILABLE_SORT" => $arAvailableSort,
 						"SORT" => $sort,
 						"SORT_ORDER" => $sort_order,
+						"LINKED_BRAND_PROPERTY" => $arParams["LINKED_PRODUCTS_PROPERTY"],
+						"LINKED_BRAND_VALUE" => $arElement["ID"],
+                        "PREFILTER_NAME" => "BRANDS_SMART_PRE_FILTER"
 					],
 					$component);
 				?>
@@ -456,22 +475,40 @@ $arParams["AJAX_FILTER_CATALOG"] = "N";
 			}
 
 			// Выводим вложенные разделы
-			$res = CIBlockSection::GetList(
+			$rsSubsections = CIBlockSection::GetList(
 				[],
 				array_merge(
 					$arFilterSection,
 					[
 						"IBLOCK_ID" => $catalogIBlockID,
-						"ACTIVE" => "Y"
+						"ACTIVE" => "Y",
 					]
 				)
 			);
 			$subsections = [];
 
-			while ($sec = $res->GetNext())
+			while ($sec = $rsSubsections->GetNext())
 			{
-				$subsections[] = $sec;
+				$rsElement = CIBlockElement::GetList(
+					[],
+					[
+						"IBLOCK_ID" => $catalogIBlockID,
+						"SECTION_ID" => $sec["ID"],
+						"ACTIVE" => "Y",
+						"PROPERTY_".$arParams["LINKED_PRODUCTS_PROPERTY"] => $arElement["ID"]
+					],
+					false,
+					false,
+					["NAME"]
+				);
+
+				// Выводим только секции с товарами
+				if ($elem = $rsElement->Fetch())
+				{
+					$subsections[] = $sec;
+				}
 			}
+
 			?>
 
 			<div class="">

@@ -138,8 +138,6 @@
 
 		getTemplate: function(templateName)
 		{
-			console.log(this.items);
-
 			if (!this.templates.hasOwnProperty(templateName))
 			{
 				var template = BX(templateName);

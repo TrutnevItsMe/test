@@ -84,7 +84,6 @@ BX.addCustomEvent(window, "onAjaxSuccess", function(eventdata){
 (function (window) {
 if (!window.JCCatalogSectionOnlyElement)
 {
-
 	window.JCCatalogSectionOnlyElement = function (arParams)
 	{
 		if (typeof arParams === 'object')
@@ -244,7 +243,6 @@ if (!!window.JCCatalogSection)
 {
 	return;
 }
-
 window.JCCatalogSection = function (arParams)
 {
 	this.skuVisualParams = {
@@ -705,14 +703,10 @@ window.JCCatalogSection.prototype.Init = function()
 				this.SetCurrent('init');
 				break;
 		}
-		// $(this.obProduct).find(".read_more.to-cart").on('click', BX.delegate(this.Add2Basket, this));
 		if (!!this.obBuyBtn)
 		{
 			if (this.basketAction === 'ADD')
 			{
-				// BX.bind(this.obBuyBtn, 'click', BX.delegate(this.Add2Basket, this));
-
-
 			}
 			else
 			{
@@ -1589,7 +1583,7 @@ window.JCCatalogSection.prototype.ItemInfoResult = function(result)
 /*get basket items*/
 window.JCCatalogSection.prototype.BasketCountResult = function(result)
 {
-	//if(result.TOTAL_COUNT){
+
 		for(var i in result.ITEMS){
 			if(result.ITEMS[i].PRODUCT_ID==this.offers[this.offerNum].ID){
 				this.offers[this.offerNum].BASKET_ACTIVE=true;
@@ -1608,36 +1602,10 @@ window.JCCatalogSection.prototype.BasketCountResult = function(result)
 		}
 
 		this.BasketStateRefresh();
-	//}
 }
 
 window.JCCatalogSection.prototype.BasketStateRefresh = function(buy_basket)
 {
-	/*if(this.offers[this.offerNum].SUBSCRIBE_ACTIVE){
-		$(this.obBasketActions).addClass('wide');
-		$(this.obSubscribeBtn).hide();
-		$(this.obSubscribedBtn).show();
-	}else{
-		$(this.obBasketActions).addClass('wide');
-		$(this.obSubscribedBtn).hide();
-		$(this.obSubscribeBtn).show();
-	}
-	if(this.offers[this.offerNum].BASKET_ACTIVE){
-		$(this.obBuyBtn).hide();
-		$(this.obBasketBtn).show();
-		$(this.obQuantity).closest('.counter_wrapp').find('.counter_block').hide();
-		$(this.obBasketActions).addClass('wide');
-	}else{
-		$(this.obBasketActions).removeClass('wide');
-		$(this.obBasketBtn).hide();
-		$(this.obBuyBtn).show();
-		if(this.ajax_type_item=="ADD" || this.canBuy)
-			$(this.obQuantity).closest('.counter_wrapp').find('.counter_block').show();
-
-	}
-	if(!this.canBuy){
-		$(this.obBasketActions).addClass('wide');
-	}*/
 	if(this.offers[this.offerNum].SUBSCRIBE_ACTIVE){
 		$(this.obProduct).find('.hover_block .o_'+this.offers[this.offerNum].ID+' .to-subscribe').hide();
 		$(this.obProduct).find('.hover_block .o_'+this.offers[this.offerNum].ID+' .in-subscribe').show();
@@ -1675,11 +1643,6 @@ window.JCCatalogSection.prototype.BasketStateRefresh = function(buy_basket)
 				touchBasket('.cart:not(.empty_cart) .basket_block .link');
 			}
 			reloadTopBasket('add', $('#basket_line'), 200, 2000, 'Y');
-			/*if($(window).outerWidth() > 520){
-				//if(arNextOptions['THEME']['SHOW_BASKET_ONADDTOCART'] !== 'N'){
-					preAnimateBasketPopup('', $('.card_popup_frame'), 0, 200);
-				//}
-			};*/
 		}
 		animateBasketLine(200);
 	}
@@ -2024,14 +1987,6 @@ window.JCCatalogSection.prototype.CompareResult = function(result)
 
 	if (result.STATUS === 'OK'){
 		BX.onCustomEvent('OnCompareChange');
-		/*if(!this.compareData.Added){
-			$(this.obCompare).find('.in').hide();
-			$(this.obCompare).find('.to').show();
-		}
-		else{
-			$(this.obCompare).find('.to').hide();
-			$(this.obCompare).find('.in').show();
-		}*/
 		if(!this.compareData.Added){
 			$(this.obProduct).find('.like_icons .o_'+this.offers[this.offerNum].ID).find('.in').hide();
 			$(this.obProduct).find('.like_icons .o_'+this.offers[this.offerNum].ID).find('.to').show();
@@ -2178,6 +2133,8 @@ window.JCCatalogSection.prototype.SendToBasket = function()
 	if (!this.canBuy){
 		return;
 	}
+
+	return;
 
 	this.InitBasketUrl();
 	this.FillBasketProps();
