@@ -34,8 +34,7 @@ if(strlen($arResult["ERROR_MESSAGE"]) > 0){
 						<?if (isset($arProperty["TITLE"])):?>
 							<span>
 <!--								<a class="title_stores" href="--><?//=$arProperty["URL"]?><!--" data-storehref="--><?//=$arProperty["URL"]?><!--" data-iblockhref="--><?//=$arShops[$arProperty['ID']]['DETAIL_PAGE_URL']?><!--"> --><?//=$arProperty["TITLE"].(strlen($arProperty["ADDRESS"]) && strlen($arProperty["TITLE"]) ? ', ' : '').$arProperty["ADDRESS"]?><!--</a>-->
-								<?=$arProperty["TITLE"].(strlen($arProperty["ADDRESS"]) &&
-									strlen($arProperty["TITLE"]) ? ', ' : ''). $arProperty["ADDRESS"]?>
+								<?=$arProperty["TITLE"].(strlen($arProperty["ADDRESS"]) && strlen($arProperty["TITLE"]) ? ', ' : ''). $arProperty["ADDRESS"]?>
 							</span>
 						<?endif;?>
 						<?if(isset($arProperty["PHONE"])):?><span class="store_phone p10"><?=GetMessage('S_PHONE')?> <?=$arProperty["PHONE"]?></span><?endif;?>
