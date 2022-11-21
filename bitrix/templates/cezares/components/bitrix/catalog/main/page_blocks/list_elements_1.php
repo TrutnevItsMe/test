@@ -445,6 +445,7 @@ if($isAjaxFilter == "Y")
 						"SHOW_RATING" => $arParams["SHOW_RATING"],
 						"ADD_PICT_PROP" => $arParams["ADD_PICT_PROP"],
 						"IBINHERIT_TEMPLATES" => $arSeoItem ? $arIBInheritTemplates : array(),
+						"ADDING_STORE_BASKET" => $arParams["ADDING_STORE_BASKET"]
 					), $component, array("HIDE_ICONS" => $isAjax)
 				);?>
 			<?if($isAjax !== 'Y'){?>

@@ -1,4 +1,18 @@
 <?
+
+
+if ($arResult['SECTIONS'])
+{
+	foreach ($arResult['SECTIONS'] as $i => $arSection)
+	{
+		if ($arSection["CODE"] == "snyato_s_proizvodstva"
+			|| strpos($arSection["CODE"], "komplektuyushchie_dlya") !== false)
+		{
+			unset($arResult['SECTIONS'][$i]);
+		}
+	}
+}
+
 // count elements with region filter
 if(
 	$arResult['SECTIONS'] &&
@@ -6,6 +20,7 @@ if(
 	$arParams['FILTER_NAME'] &&
 	$GLOBALS[$arParams['FILTER_NAME']]['PROPERTY_LINK_REGION']
 ){
+
 	$elementFilter = array(
 		'IBLOCK_ID' => $arParams['IBLOCK_ID'],
 		'CHECK_PERMISSIONS' => 'Y',
