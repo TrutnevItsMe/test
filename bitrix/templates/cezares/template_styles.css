@@ -1919,7 +1919,7 @@ body .logo_and_menu-row .wrap_icon.inner-table-block .basket-link.delay, body .l
 .counter_block.big_basket > span.minus:before{background-position:-18px -189px;}
 .counter_block.big_basket > span.plus:before{background-position:1px -189px;}
 .counter_block > span.plus:before{background-position:-54px -191px;}
-.counter_block > span:hover:before{opacity:1;}
+.counter_block:not(.disabled) > span:hover:before{opacity:1;}
 .counter_block input[type="text"]{padding:7px 3px 7px;}
 
 .counter_wrapp{font-size:0px;padding:15px 0px 0px;   white-space:nowrap;}

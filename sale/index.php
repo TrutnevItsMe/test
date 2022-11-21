@@ -193,7 +193,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUE
 		"OFFERS_SORT_ORDER2" => "desc",
 		"PRODUCT_DISPLAY_MODE" => "N",
 		"OFFERS_CART_PROPERTIES" => array(
-		)
+		),
+        "STORES" => \Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS
 	),
 	false
 );?>
