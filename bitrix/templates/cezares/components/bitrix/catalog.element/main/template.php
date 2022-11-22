@@ -418,11 +418,18 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 								<?$frame->end();?>
 							</div>
 						<?endif;?>
-						<?if($isArticle):?>
+						<?if($isArticle && !$arResult["OFFERS"]):?>
 							<div class="item_block col-<?=$col;?>">
 								<div class="article iblock" itemprop="additionalProperty" itemscope itemtype="http://schema.org/PropertyValue" <?if($arResult['SHOW_OFFERS_PROPS']){?>id="<? echo $arItemIDs["ALL_ITEM_IDS"]['DISPLAY_PROP_ARTICLE_DIV'] ?>" style="display: none;"<?}?>>
 									<span class="block_title" itemprop="name"><?=$arResult["DISPLAY_PROPERTIES"]["CML2_ARTICLE"]["NAME"];?>:</span>
 									<span class="value" itemprop="value"><?=$arResult["DISPLAY_PROPERTIES"]["CML2_ARTICLE"]["VALUE"]?></span>
+								</div>
+							</div>
+						<?elseif($arResult["OFFERS"] && $arResult["CURRENT_OFFER"]):?>
+							<div class="item_block col-<?=$col;?>">
+								<div class="article iblock" itemprop="additionalProperty" itemscope itemtype="http://schema.org/PropertyValue" <?if($arResult['SHOW_OFFERS_PROPS']){?>id="<? echo $arItemIDs["ALL_ITEM_IDS"]['DISPLAY_PROP_ARTICLE_DIV'] ?>" style="display: none;"<?}?>>
+									<span class="block_title" itemprop="name"><?=$arResult["CURRENT_OFFER"]["PROPERTIES"]["CML2_ARTICLE"]["NAME"];?>:</span>
+									<span class="value" itemprop="value"><?=$arResult["CURRENT_OFFER"]["PROPERTIES"]["CML2_ARTICLE"]["VALUE"]?></span>
 								</div>
 							</div>
 						<?endif;?>
@@ -444,7 +451,13 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 						<?}?>
 					</div>
 					<?if(strlen($arResult["PREVIEW_TEXT"])):?>
-						<div class="preview_text dotdot"><?=$arResult["PREVIEW_TEXT"]?></div>
+						<div class="preview_text dotdot">
+					<?if($arResult["CURRENT_OFFER"]):?>
+						<?=$arResult["CURRENT_OFFER"]["PREVIEW_TEXT"]?>
+					<?else:?>
+						<?=$arResult["PREVIEW_TEXT"]?>
+					<?endif;?>
+					</div>
 						<?if(strlen($arResult["DETAIL_TEXT"])):?>
 							<div class="more_block icons_fa color_link"><span><?=\Bitrix\Main\Config\Option::get('aspro.next', "EXPRESSION_READ_MORE_OFFERS_DEFAULT", GetMessage("MORE_TEXT_BOTTOM"));?></span></div>
 						<?endif;?>
