@@ -60,6 +60,13 @@ window.OffersFilterComponent = {
 			document.querySelector(".btn.to-cart").style.display = "block";
 		}
 
+		if (this.result["CURRENT_OFFER"])
+		{
+			this.setProductName(this.result["CURRENT_OFFER"]["NAME"]);
+			this.setPreviewText(this.result["CURRENT_OFFER"]["PREVIEW_TEXT"]);
+		}
+
+		this.setProductName();
 		this.initFilterValues();
 		this.setCharacters();
 		this.setAccessibleFilterItems();
@@ -80,7 +87,6 @@ window.OffersFilterComponent = {
 		}
 
 		this.bindEvents();
-
 	},
 
 	/**
@@ -90,7 +96,7 @@ window.OffersFilterComponent = {
 	 */
 	setCurrentFilterValue: function (prop, value)
 	{
-		this.currentFilterValues[prop] = value;
+		this.currentFilterValues[prop] = value ? value : "";
 	},
 
 	/**
@@ -279,7 +285,7 @@ window.OffersFilterComponent = {
 		return array1.filter(value => array2.includes(value));
 	},
 
-	diff: function(array1, array2)
+	diff: function (array1, array2)
 	{
 		return array1.filter(x => !array2.includes(x));
 	},
@@ -391,6 +397,8 @@ window.OffersFilterComponent = {
 	 */
 	setCurrentOffer: function ()
 	{
+		self = this;
+
 		if (!this.templateSets)
 		{
 			this.templateSets = $("#sets-template").html();
@@ -500,6 +508,10 @@ window.OffersFilterComponent = {
 				$('.button_block .btn.to-cart').show();
 				$(".btn.in-cart").hide();
 			}
+
+			self.setProductName(currentOffer["NAME"]);
+			self.setPreviewText(currentOffer["PREVIEW_TEXT"]);
+			self.setArticle(currentOffer["PROPERTIES"]["CML2_ARTICLE"]["VALUE"]);
 		}
 
 		this.setCharacters();
@@ -529,10 +541,10 @@ window.OffersFilterComponent = {
 					self.setCurrentFilterValue($(this).data("column"), $(this).data("value"));
 					self.setCurrentFilterByFirstValues();
 
-					self.filterProps.forEach(function(prop)
+					self.filterProps.forEach(function (prop)
 					{
 						let value = self.getCurrentFilterValue(prop);
-						let elem = $("." + self.classOfferValueItem + "[data-column='" + prop +"'][data-value='" + value + "']");
+						let elem = $("." + self.classOfferValueItem + "[data-column='" + prop + "'][data-value='" + value + "']");
 						$(elem).addClass(self.classActiveOfferValueItem);
 					});
 				}
@@ -545,12 +557,8 @@ window.OffersFilterComponent = {
 				}
 
 				self.setAccessibleFilterItems();
-
-				if (self.isAllValuesSelected())
-				{
-					self.setCurrentValueTitles();
-					self.setCurrentOffer();
-				}
+				self.setCurrentValueTitles();
+				self.setCurrentOffer();
 			}
 		});
 	},
@@ -606,9 +614,16 @@ window.OffersFilterComponent = {
 			let isAllSelected = true;
 			let accessibleItems = self.getAccessibleFilterItems();
 
-			this.filterProps.forEach(function(prop)
+			this.filterProps.forEach(function (prop)
 			{
-				self.setCurrentFilterValue(prop, accessibleItems[prop][0]);
+				if (accessibleItems[prop])
+				{
+					self.setCurrentFilterValue(prop, accessibleItems[prop][0]);
+				}
+				else
+				{
+					self.setCurrentFilterValue(prop, "");
+				}
 
 				if (accessibleItems[prop].length > 1)
 				{
@@ -620,6 +635,44 @@ window.OffersFilterComponent = {
 			if (isAllSelected)
 			{
 				break;
+			}
+		}
+	},
+
+	/** Устанавливает назавание товара в верстке */
+	setProductName: function (name)
+	{
+		let nodeName = $("#pagetitle");
+
+		if (nodeName.length)
+		{
+			nodeName.html(name);
+		}
+	},
+
+	/** Устанавливает PREVIEW_TEXT в верстке */
+	setPreviewText: function (text)
+	{
+		let node = $(".preview_text");
+
+		if (node.length)
+		{
+			node.html(text);
+		}
+	},
+
+	/** Устанавливает артикул в верстке */
+	setArticle: function(article)
+	{
+		let node = document.querySelector(".article");
+
+		if (node)
+		{
+			let valueNode = node.querySelector(".value");
+
+			if (valueNode)
+			{
+				valueNode.innerHTML = article;
 			}
 		}
 	}
