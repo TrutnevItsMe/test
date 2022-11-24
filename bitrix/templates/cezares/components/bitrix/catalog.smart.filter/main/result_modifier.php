@@ -43,6 +43,17 @@ foreach ($arResult["ITEMS"] as $key => &$arItem)
 			$arResult["ITEMS"][$key]["VALUES"][0]["VALUE"] = $arItem["NAME"];
 	}
 
+	if ($arItem["CODE"] == "KATEGORIYA_DLYA_SAYTA")
+	{
+		foreach ($arItem["VALUES"] as $id => $arValue)
+		{
+			if (strpos($arValue["UPPER"], "КОМПЛЕКТУЮЩИЕ") !== false)
+			{
+				unset($arItem["VALUES"][$id]);
+			}
+		}
+	}
+
 	// Оставляем только те значения, для которых есть хотя бы 1 товар
 	if ($arItem["PROPERTY_TYPE"] == "L")
 	{

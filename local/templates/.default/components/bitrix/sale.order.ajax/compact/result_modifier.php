@@ -14,6 +14,8 @@ use \Bitrix\Main\Localization\Loc;
  * @var SaleOrderAjax $component
  */
 
+//
+
 $component = $this->__component;
 $component::scaleImages($arResult['JS_DATA'], $arParams['SERVICES_IMAGES_SCALING']);
 

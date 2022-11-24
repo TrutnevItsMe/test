@@ -271,54 +271,54 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 						}
 					});
 
-				}
-				else
-				{
-					BX.ajax({
-						method: 'POST',
-						dataType: 'json',
-						url: this.ajaxUrl,
-						data: this.getData(action, actionData),
-						onsuccess: BX.delegate(function (result)
+			}
+			else
+			{
+				BX.ajax({
+					method: 'POST',
+					dataType: 'json',
+					url: this.ajaxUrl,
+					data: this.getData(action, actionData),
+					onsuccess: BX.delegate(function (result)
+					{
+						if (result.redirect && result.redirect.length)
 						{
-							if (result.redirect && result.redirect.length)
-							{
-								document.location.href = result.redirect;
-							}
+							document.location.href = result.redirect;
+						}
 
-							this.saveFiles();
-							switch (action)
-							{
-								case 'refreshOrderAjax':
+						this.saveFiles();
+						switch (action)
+						{
+							case 'refreshOrderAjax':
+								this.refreshOrder(result);
+								break;
+							case 'confirmSmsCode':
+							case 'showAuthForm':
+								this.firstLoad = true;
+								this.refreshOrder(result);
+								break;
+							case 'enterCoupon':
+								if (result && result.order)
+								{
+									this.deliveryCachedInfo = [];
 									this.refreshOrder(result);
-									break;
-								case 'confirmSmsCode':
-								case 'showAuthForm':
-									this.firstLoad = true;
-									this.refreshOrder(result);
-									break;
-								case 'enterCoupon':
-									if (result && result.order)
-									{
-										this.deliveryCachedInfo = [];
-										this.refreshOrder(result);
-									}
-									else
-									{
-										this.addCoupon(result);
-									}
+								}
+								else
+								{
+									this.addCoupon(result);
+								}
 
-									break;
-								case 'removeCoupon':
-									if (result && result.order)
-									{
-										this.deliveryCachedInfo = [];
-										this.refreshOrder(result);
-									}
-									else
-									{
-										this.removeCoupon(result);
-									}
+								break;
+							case 'removeCoupon':
+								if (result && result.order)
+								{
+									this.deliveryCachedInfo = [];
+									this.refreshOrder(result);
+								}
+								else
+								{
+									this.removeCoupon(result);
+								}
 
 									break;
 							}

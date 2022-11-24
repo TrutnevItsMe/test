@@ -9,6 +9,12 @@
  */
 
 use Bitrix\Main\Localization\Loc;
+
+if ($arResult["CURRENT_OFFER"])
+{
+	$APPLICATION->SetTitle($arResult["CURRENT_OFFER"]["NAME"]);
+}
+
 ?>
 
 <div class="basket_props_block" id="bx_basket_div_<?=$arResult["ID"];?>" style="display: none;">
@@ -418,11 +424,18 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 								<?$frame->end();?>
 							</div>
 						<?endif;?>
-						<?if($isArticle):?>
+						<?if($isArticle && !$arResult["OFFERS"]):?>
 							<div class="item_block col-<?=$col;?>">
 								<div class="article iblock" itemprop="additionalProperty" itemscope itemtype="http://schema.org/PropertyValue" <?if($arResult['SHOW_OFFERS_PROPS']){?>id="<? echo $arItemIDs["ALL_ITEM_IDS"]['DISPLAY_PROP_ARTICLE_DIV'] ?>" style="display: none;"<?}?>>
 									<span class="block_title" itemprop="name"><?=$arResult["DISPLAY_PROPERTIES"]["CML2_ARTICLE"]["NAME"];?>:</span>
 									<span class="value" itemprop="value"><?=$arResult["DISPLAY_PROPERTIES"]["CML2_ARTICLE"]["VALUE"]?></span>
+								</div>
+							</div>
+						<?elseif($arResult["OFFERS"] && $arResult["CURRENT_OFFER"]):?>
+							<div class="item_block col-<?=$col;?>">
+								<div class="article iblock" itemprop="additionalProperty" itemscope itemtype="http://schema.org/PropertyValue" <?if($arResult['SHOW_OFFERS_PROPS']){?>id="<? echo $arItemIDs["ALL_ITEM_IDS"]['DISPLAY_PROP_ARTICLE_DIV'] ?>" style="display: none;"<?}?>>
+									<span class="block_title" itemprop="name"><?=$arResult["CURRENT_OFFER"]["PROPERTIES"]["CML2_ARTICLE"]["NAME"];?>:</span>
+									<span class="value" itemprop="value"><?=$arResult["CURRENT_OFFER"]["PROPERTIES"]["CML2_ARTICLE"]["VALUE"]?></span>
 								</div>
 							</div>
 						<?endif;?>
@@ -1833,17 +1846,13 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 								?>
 							<div class="stores_block wo_image">
 								<div class="stores_text_wrapp ">
-									<div class="main_info">
-                                        <span>
-<!--                                            <a-->
-<!--                                                class="title_stores"-->
-<!--                                                href="--><?//= $storePath ?><!--"-->
-<!--                                                data-storehref="--><?//= $storePath ?><!--"-->
-<!--                                                data-iblockhref="">--><?//= $store['NAME'] ?>
-<!--                                            </a>-->
-                                            <?=$store['NAME']?>
-                                        </span>
-                                    </div>
+<!--									<div class="main_info"><span><a-->
+<!--										class="title_stores"-->
+<!--										href="--><?//= $storePath ?><!--"-->
+<!--										data-storehref="--><?//= $storePath ?><!--"-->
+<!--										data-iblockhref="">--><?//= $store['NAME'] ?><!--</a></span>-->
+<!--                                    </div>-->
+									<?=$store['NAME']?>
 								</div>
 								<?=$store['AMOUNT_HTML']?>
 							</div>
@@ -1866,7 +1875,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 								"USE_ONLY_MAX_AMOUNT" => $arParams["USE_ONLY_MAX_AMOUNT"],
 								"USER_FIELDS" => $arParams['USER_FIELDS'],
 								"FIELDS" => $arParams['FIELDS'],
-								"STORES" => $arParams['STORES'],
+								"STORES" => \Intervolga\Custom\Helpers\StoreHelper::SHOP_STORE_IDS,
 								"SET_ITEMS" => $arResult["SET_ITEMS"],
 							),
 							$component
