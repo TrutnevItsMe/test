@@ -37,7 +37,7 @@ $aMenuLinks = Array(
 	),
 	Array(
 		"Партнерам", 
-		"/info/docs/",
+		"/info/",
 		Array(), 
 		Array(), 
 		"" 
