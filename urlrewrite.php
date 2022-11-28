@@ -152,7 +152,7 @@ $arUrlRewrite=array (
     'PATH' => '/contacts/page_contacts_3.php',
     'SORT' => 100,
   ),
-  38 => 
+  40 => 
   array (
     'CONDITION' => '#^/catalog/#',
     'RULE' => '',
@@ -190,6 +190,14 @@ $arUrlRewrite=array (
     'RULE' => '',
     'ID' => 'aspro:auth.next',
     'PATH' => '/auth/index.php',
+    'SORT' => 100,
+  ),
+  39 => 
+  array (
+    'CONDITION' => '#^/news/#',
+    'RULE' => '',
+    'ID' => 'bitrix:news',
+    'PATH' => '/news/index.php',
     'SORT' => 100,
   ),
 );

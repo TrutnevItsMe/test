@@ -2,7 +2,7 @@
 $aMenuLinks = Array(
 	Array(
 		"Документы",
-		"/info/docs/",
+		"/info/index.php",
 		Array(), 
 		Array(), 
 		"" 

@@ -397,6 +397,8 @@ window.OffersFilterComponent = {
 	 */
 	setCurrentOffer: function ()
 	{
+		self = this;
+
 		if (!this.templateSets)
 		{
 			this.templateSets = $("#sets-template").html();
@@ -509,6 +511,7 @@ window.OffersFilterComponent = {
 
 			self.setProductName(currentOffer["NAME"]);
 			self.setPreviewText(currentOffer["PREVIEW_TEXT"]);
+			self.setArticle(currentOffer["PROPERTIES"]["CML2_ARTICLE"]["VALUE"]);
 		}
 
 		this.setCharacters();
@@ -636,7 +639,7 @@ window.OffersFilterComponent = {
 		}
 	},
 
-	/* Устанавливает назавание товара в верстке */
+	/** Устанавливает назавание товара в верстке */
 	setProductName: function (name)
 	{
 		let nodeName = $("#pagetitle");
@@ -647,6 +650,7 @@ window.OffersFilterComponent = {
 		}
 	},
 
+	/** Устанавливает PREVIEW_TEXT в верстке */
 	setPreviewText: function (text)
 	{
 		let node = $(".preview_text");
@@ -654,6 +658,22 @@ window.OffersFilterComponent = {
 		if (node.length)
 		{
 			node.html(text);
+		}
+	},
+
+	/** Устанавливает артикул в верстке */
+	setArticle: function(article)
+	{
+		let node = document.querySelector(".article");
+
+		if (node)
+		{
+			let valueNode = node.querySelector(".value");
+
+			if (valueNode)
+			{
+				valueNode.innerHTML = article;
+			}
 		}
 	}
 };
