@@ -53,7 +53,7 @@
 		"SET_META_KEYWORDS" => "N",
 		"SET_META_DESCRIPTION" => "N",
 		"TITLE_BLOCK" => "Новости",
-		"ALL_URL" => "company/news/",
+		"ALL_URL" => "news/",
 		"SET_LAST_MODIFIED" => "N",
 		"TITLE_BLOCK_ALL" => "Все новости",
 		"SHOW_DATE" => "Y",
