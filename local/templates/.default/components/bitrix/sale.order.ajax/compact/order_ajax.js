@@ -176,13 +176,8 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 		sendRequest: function (action, actionData)
 		{
 			var form;
-
-			if (!this.startLoader())
-			{
-				return;
-			}
-
 			this.firstLoad = false;
+			self = this;
 
 			action = BX.type.isNotEmptyString(action) ? action : 'refreshOrderAjax';
 
@@ -217,8 +212,6 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 						uncheckedBlock.remove();
 					}
 				}
-
-				var form;
 
 				if (!this.startLoader())
 				{
@@ -264,10 +257,13 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 									onfailure: BX.proxy(BX.Sale.OrderAjaxComponent.handleNotRedirected, BX.Sale.OrderAjaxComponent)
 								}
 							);
+
+							self.endLoader();
 						},
 						onfailure: function ()
 						{
-							console.log("failure update prices");
+							self.endLoader();
+							console.error("failure update prices");
 						}
 					});
 
@@ -324,7 +320,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 							}
 
 							BX.cleanNode(this.savedFilesBlockNode);
-							this.endLoader();
+							self.endLoader();
 							self = this;
 							this.interval = setInterval(function ()
 								{
@@ -343,7 +339,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 						}, this),
 						onfailure: BX.delegate(function ()
 						{
-							this.endLoader();
+							self.endLoader();
 						}, this)
 					});
 				}
@@ -5822,15 +5818,16 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 				]
 			});
 
-            if (paySystem.DESCRIPTION && paySystem.DESCRIPTION.length) {
-                title = BX.create('DIV', {
-                    props: {className: 'bx-soa-pp-company-block'},
-                    children: [BX.create('DIV', {
-                        props: {className: 'bx-soa-pp-company-desc'},
-                        html: paySystem.DESCRIPTION
-                    })]
-                });
-            }
+			if (paySystem.DESCRIPTION && paySystem.DESCRIPTION.length)
+			{
+				title = BX.create('DIV', {
+					props: {className: 'bx-soa-pp-company-block'},
+					children: [BX.create('DIV', {
+						props: {className: 'bx-soa-pp-company-desc'},
+						html: paySystem.DESCRIPTION
+					})]
+				});
+			}
 
 			hiddenInput = BX.create('INPUT', {
 				props: {
