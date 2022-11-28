@@ -205,7 +205,7 @@
     vertical-align: middle;
 }
 .bx-soa-item-properties .bx-soa-item-td-title,
-.bx-soa-item-properties .bx-soa-item-td-text{ text-align:center;}
+.bx-soa-item-properties .bx-soa-item-td-text{ text-align:left;}
 .bx-soa-item-properties.bx-text-right .bx-soa-item-td-title,
 .bx-soa-item-properties.bx-text-right .bx-soa-item-td-text{ text-align:right;}
 .bx-soa-item-td-text input[type="number"] {
@@ -558,7 +558,7 @@
     padding: 5px;
     margin-right: 10px;
     border: none;
-    width: 200px;
+    width: 250px;
     -webkit-transition: opacity .2s ease;
     -moz-transition: opacity .2s ease;
     -o-transition: opacity .2s ease;
@@ -1612,6 +1612,14 @@ textarea{
 
 .edit-order-section{
 	padding-bottom: 10px;
+}
+
+.bx-soa-item-td.bx-soa-item-properties:nth-child(1){
+	width: 300px;
+}
+
+.bx-soa-item-td.bx-soa-item-properties:nth-child(1) span{
+	white-space: nowrap;
 }
 
 .bx-soa-item-td.bx-soa-item-properties:nth-child(2){
