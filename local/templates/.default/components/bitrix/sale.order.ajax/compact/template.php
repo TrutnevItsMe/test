@@ -532,6 +532,7 @@ else
 	$messages = Loc::loadLanguageFile(__FILE__);
 	?>
 
+
 	<script>
 		BX.message(<?=CUtil::PhpToJSObject($messages)?>);
 		BX.Sale.OrderAjaxComponent.init({
@@ -540,8 +541,7 @@ else
 			params: <?=CUtil::PhpToJSObject($arParams)?>,
 			signedParamsString: '<?=CUtil::JSEscape($signedParams)?>',
 			siteID: '<?=CUtil::JSEscape($component->getSiteId())?>',
-			ajaxUrl: '<?=CUtil::JSEscape($templateFolder.'/ajax/ajax.php')?>',
-			ajaxSaveOrderUrl: '<?=CUtil::JSEscape($component->GetPath().'/ajax.php')?>',
+			ajaxUrl: '<?=CUtil::JSEscape($component->getPath().'/ajax.php')?>',
 			templateFolder: '<?=CUtil::JSEscape($templateFolder)?>',
 			propertyValidation: true,
 			showWarnings: true,
