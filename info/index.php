@@ -1,13 +1,207 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetTitle("Справочная информация");
-?> 
-<div class="inside_page_content">
-	<div>Справочная информация на сайте помогает посетителю ресурса быстрее найти ответы на вопросы и дает подсказки о том, как быстрее и проще сделать те или иные вещи.</div>
-	<br />
-	<div>В разделе &quot;<a href="<?=SITE_DIR?>blog/" >Статьи</a>&quot; Вы найдете интересные материалы о способах обращения с техникой, оптимальных способах использования строительных материалов и многих других вещах, которые позволят Вам быстрее выбрать нужный товар и как можно легче его использовать.</div>
-	<br />
-	<div>Ответы на типовые вопросы посетителей мы собрали в разделе &quot;<a href="<?=SITE_DIR?>info/faq/" >Вопрос-ответ</a>&quot;. Если Вам что-то не понятно на сайте, предлагаем посетить этот раздел, чтобы разобраться со всеми сложностями в считанные минуты. Если же ответа найти не удалось, можно задать его нам на той же странице, и мы обязательно Вам ответим!</div>
-	<div>И, наконец, с информацией о производителях и списком их продукции можно ознакомиться на странице &quot;<a href="<?=SITE_DIR?>info/brands/" >Бренды</a>&quot;.</div>
-</div>
- <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+$APPLICATION->SetTitle("Документация");
+?><?$APPLICATION->IncludeComponent("bitrix:news", "files", Array(
+	"COMPONENT_TEMPLATE" => "partners",
+		"IBLOCK_TYPE" => "aspro_next_content",	// Тип инфоблока
+		"IBLOCK_ID" => "26",	// Инфоблок
+		"NEWS_COUNT" => "20",	// Количество новостей на странице
+		"USE_SEARCH" => "N",	// Разрешить поиск
+		"USE_RSS" => "N",	// Разрешить RSS
+		"USE_RATING" => "N",	// Разрешить голосование
+		"USE_CATEGORIES" => "N",	// Выводить материалы по теме
+		"USE_REVIEW" => "N",	// Разрешить отзывы
+		"USE_FILTER" => "N",	// Показывать фильтр
+		"SORT_BY1" => "ACTIVE_FROM",	// Поле для первой сортировки новостей
+		"SORT_ORDER1" => "DESC",	// Направление для первой сортировки новостей
+		"SORT_BY2" => "SORT",	// Поле для второй сортировки новостей
+		"SORT_ORDER2" => "ASC",	// Направление для второй сортировки новостей
+		"CHECK_DATES" => "Y",	// Показывать только активные на данный момент элементы
+		"SEF_MODE" => "Y",	// Включить поддержку ЧПУ
+		"SEF_FOLDER" => "/info/docs/",	// Каталог ЧПУ (относительно корня сайта)
+		"AJAX_MODE" => "N",	// Включить режим AJAX
+		"AJAX_OPTION_JUMP" => "N",	// Включить прокрутку к началу компонента
+		"AJAX_OPTION_STYLE" => "Y",	// Включить подгрузку стилей
+		"AJAX_OPTION_HISTORY" => "N",	// Включить эмуляцию навигации браузера
+		"AJAX_OPTION_ADDITIONAL" => "",	// Дополнительный идентификатор
+		"CACHE_TYPE" => "A",	// Тип кеширования
+		"CACHE_TIME" => "36000000",	// Время кеширования (сек.)
+		"CACHE_FILTER" => "N",	// Кешировать при установленном фильтре
+		"CACHE_GROUPS" => "Y",	// Учитывать права доступа
+		"SET_LAST_MODIFIED" => "N",	// Устанавливать в заголовках ответа время модификации страницы
+		"SET_TITLE" => "Y",	// Устанавливать заголовок страницы
+		"INCLUDE_IBLOCK_INTO_CHAIN" => "N",	// Включать инфоблок в цепочку навигации
+		"ADD_SECTIONS_CHAIN" => "Y",	// Включать раздел в цепочку навигации
+		"ADD_ELEMENT_CHAIN" => "N",	// Включать название элемента в цепочку навигации
+		"USE_PERMISSIONS" => "N",	// Использовать дополнительное ограничение доступа
+		"STRICT_SECTION_CHECK" => "Y",	// Строгая проверка раздела
+		"DISPLAY_DATE" => "N",
+		"DISPLAY_PICTURE" => "N",
+		"DISPLAY_PREVIEW_TEXT" => "N",
+		"USE_SHARE" => "N",
+		"PREVIEW_TRUNCATE_LEN" => "",	// Максимальная длина анонса для вывода (только для типа текст)
+		"LIST_ACTIVE_DATE_FORMAT" => "d.m.Y",	// Формат показа даты
+		"LIST_FIELD_CODE" => array(	// Поля
+			0 => "NAME",
+			1 => "",
+		),
+		"LIST_PROPERTY_CODE" => array(	// Свойства
+			0 => "",
+			1 => "",
+		),
+		"HIDE_LINK_WHEN_NO_DETAIL" => "N",	// Скрывать ссылку, если нет детального описания
+		"DISPLAY_NAME" => "Y",	// Выводить название элемента
+		"META_KEYWORDS" => "-",	// Установить ключевые слова страницы из свойства
+		"META_DESCRIPTION" => "-",	// Установить описание страницы из свойства
+		"BROWSER_TITLE" => "-",	// Установить заголовок окна браузера из свойства
+		"DETAIL_SET_CANONICAL_URL" => "N",	// Устанавливать канонический URL
+		"DETAIL_ACTIVE_DATE_FORMAT" => "d.m.Y",	// Формат показа даты
+		"DETAIL_FIELD_CODE" => array(	// Поля
+			0 => "",
+			1 => "",
+		),
+		"DETAIL_PROPERTY_CODE" => array(	// Свойства
+			0 => "",
+			1 => "DOC_FILE",
+			2 => "",
+		),
+		"DETAIL_DISPLAY_TOP_PAGER" => "N",	// Выводить над списком
+		"DETAIL_DISPLAY_BOTTOM_PAGER" => "Y",	// Выводить под списком
+		"DETAIL_PAGER_TITLE" => "Страница",	// Название категорий
+		"DETAIL_PAGER_TEMPLATE" => "",	// Название шаблона
+		"DETAIL_PAGER_SHOW_ALL" => "Y",	// Показывать ссылку "Все"
+		"PAGER_TEMPLATE" => ".default",	// Шаблон постраничной навигации
+		"DISPLAY_TOP_PAGER" => "N",	// Выводить над списком
+		"DISPLAY_BOTTOM_PAGER" => "Y",	// Выводить под списком
+		"PAGER_TITLE" => "Новости",	// Название категорий
+		"PAGER_SHOW_ALWAYS" => "N",	// Выводить всегда
+		"PAGER_DESC_NUMBERING" => "N",	// Использовать обратную навигацию
+		"PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",	// Время кеширования страниц для обратной навигации
+		"PAGER_SHOW_ALL" => "N",	// Показывать ссылку "Все"
+		"PAGER_BASE_LINK_ENABLE" => "N",	// Включить обработку ссылок
+		"SET_STATUS_404" => "N",	// Устанавливать статус 404
+		"SHOW_404" => "N",	// Показ специальной страницы
+		"MESSAGE_404" => "",	// Сообщение для показа (по умолчанию из компонента)
+		"SECTION_ELEMENTS_TYPE_VIEW" => "list_elements_1",	// Шаблон страницы блока списка элементов
+		"ELEMENT_TYPE_VIEW" => "element_1",	// Шаблон страницы блока детальной страницы
+		"SHOW_SECTION_PREVIEW_DESCRIPTION" => "Y",
+		"IMAGE_POSITION" => "left",	// Положение картинки анонса
+		"COUNT_IN_LINE" => "3",	// Количество элементов в строке
+		"TEMPLATE_THEME" => "blue",
+		"MEDIA_PROPERTY" => "",
+		"SLIDER_PROPERTY" => "",
+		"S_ASK_QUESTION" => "",
+		"S_ORDER_SERVISE" => "",
+		"FORM_ID_ORDER_SERVISE" => "",
+		"T_GALLERY" => "",	// Заголовок блока "Галерея"
+		"T_DOCS" => "",
+		"T_GOODS" => "",	// Заголовок блока "Товары"
+		"T_NEXT_LINK" => "",
+		"T_PREV_LINK" => "",
+		"SHOW_DETAIL_LINK" => "Y",
+		"SHOW_FILTER_DATE" => "Y",
+		"LINE_ELEMENT_COUNT_LIST" => "3",
+		"SHOW_NEXT_ELEMENT" => "N",
+		"LIST_VIEW" => "slider",	// Вид отображения связанных товаров
+		"LINKED_ELEMENST_PAGE_COUNT" => "20",	// Количество связанных товаров на странице
+		"SHOW_DISCOUNT_PERCENT_NUMBER" => "N",	// Показывать процент экономии
+		"PRICE_CODE" => array(	// Тип цены
+			0 => "",
+			1 => "",
+		),
+		"STORES" => array(	// Склады
+			0 => "",
+			1 => "",
+		),
+		"HIDE_NOT_AVAILABLE" => "N",	// Не отображать товары, которых нет на складах
+		"TAGS_CLOUD_ELEMENTS" => "150",
+		"PERIOD_NEW_TAGS" => "",
+		"DISPLAY_AS_RATING" => "rating",
+		"FONT_MAX" => "50",
+		"FONT_MIN" => "10",
+		"COLOR_NEW" => "3E74E6",
+		"COLOR_OLD" => "C0C0C0",
+		"TAGS_CLOUD_WIDTH" => "100%",
+		"DETAIL_BRAND_USE" => "N",
+		"T_SERVICES" => "",
+		"T_CLIENTS" => "",
+		"T_PROJECTS" => "",
+		"SHOW_SECTION_DESCRIPTION" => "Y",
+		"LINE_ELEMENT_COUNT" => "2",
+		"VIEW_TYPE" => "list",
+		"SHOW_TABS" => "Y",
+		"SHOW_SECTION_NAME" => "N",
+		"SHOW_ASK_QUESTION_BLOCK" => "Y",
+		"SECTIONS_TYPE_VIEW" => "sections_1",
+		"SECTION_TYPE_VIEW" => "section_1",
+		"TIZERS_IBLOCK_ID" => "",
+		"LANDING_IBLOCK_ID" => "",
+		"LANDING_SECTION_COUNT" => "10",
+		"LANDING_TITLE" => "Популярные категории",
+		"T_REVIEWS" => "",
+		"T_STAFF" => "",
+		"IMAGE_CATALOG_POSITION" => "left",
+		"SHOW_CHILD_SECTIONS" => "Y",
+		"GALLERY_TYPE" => "small",
+		"T_ALSO_ITEMS" => "",
+		"ALSO_ITEMS_POSITION" => "bottom",
+		"ALSO_ITEMS_COUNT" => "5",
+		"DETAIL_USE_COMMENTS" => "Y",
+		"DETAIL_BLOG_USE" => "N",
+		"DETAIL_VK_USE" => "N",
+		"DETAIL_FB_USE" => "N",
+		"SHOW_TOP_MAP" => "N",
+		"T_GOODS_SECTION" => "",	// Заголовок блока "Разделы с товарами"
+		"LINKED_PRODUCTS_PROPERTY" => "BRAND",	// Свойство с связанными товарами
+		"SHOW_LINKED_PRODUCTS" => "N",	// Показывать связанные товары
+		"SHOW_MEASURE" => "N",	// Отображать единицы измерения
+		"DEFAULT_LIST_TEMPLATE" => "block",	// Показывать товары в разделе по умолчанию
+		"SHOW_UNABLE_SKU_PROPS" => "Y",	// Отображать недоступные значения свойств для ТП
+		"SHOW_ARTICLE_SKU" => "N",	// Отображать артикул товара, если у ТП нет своего значения артикула
+		"SHOW_MEASURE_WITH_RATIO" => "N",	// Выводить единицу измерения с коэффициентом при отображении минимальной цены для товаров с торговыми предложениями
+		"SHOW_DISCOUNT_PERCENT" => "N",	// Показывать экономию
+		"ALT_TITLE_GET" => "NORMAL",	// Брать alt и title для картинок из
+		"SHOW_DISCOUNT_TIME" => "Y",	// Отображать срок действия скидки
+		"SHOW_DISCOUNT_TIME_EACH_SKU" => "N",	// Отображать срок действия скидки для каждого торгового предложения
+		"SHOW_RATING" => "Y",	// Отображать рейтинг
+		"DISPLAY_COMPARE" => "Y",	// Отображать кнопку сравнения
+		"DISPLAY_WISH_BUTTONS" => "Y",	// Отображать кнопку отложить
+		"SHOW_OLD_PRICE" => "N",	// Показывать старую цену
+		"ADD_PROPERTIES_TO_BASKET" => "Y",	// Добавлять в корзину свойства товаров и предложений
+		"PRODUCT_PROPS_VARIABLE" => "prop",	// Название переменной, в которой передаются характеристики товара
+		"PARTIAL_PRODUCT_PROPERTIES" => "N",	// Разрешить добавлять в корзину товары, у которых заполнены не все характеристики
+		"PRODUCT_PROPERTIES" => "",	// Характеристики товара, добавляемые в корзину
+		"LIST_PROPERTY_CATALOG_CODE" => array(	// Свойства товаров
+			0 => "",
+			1 => "",
+		),
+		"SORT_BUTTONS" => array(	// Кнопки сортировки
+			0 => "POPULARITY",
+			1 => "NAME",
+			2 => "PRICE",
+		),
+		"IBLOCK_CATALOG_TYPE" => "-",	// Тип инфоблока
+		"IBLOCK_CATALOG_ID" => "1",	// ID инфоблока с каталогом
+		"SHOW_GALLERY" => "Y",	// Показывать галерею товара
+		"GALLERY_PRODUCTS_PROPERTY" => "PHOTOS",	// Свойство с галереей товара
+		"DEPTH_LEVEL_BRAND" => "4",	// Уровень вложенности связанных разделов
+		"SECTIONS_DETAIL_COUNT" => "10",	// Количество видимых разделов
+		"USE_PRICE_COUNT" => "N",	// Использовать вывод цен с диапазонами
+		"CONVERT_CURRENCY" => "N",	// Показывать цены в одной валюте
+		"SORT_PRICES" => "MINIMUM_PRICE",	// Сортировка по цене
+		"SORT_REGION_PRICE" => "РРЦ 2022",	// Цена для сортировки в регионе по умолчанию
+		"SALE_STIKER" => "-",	// Свойство со стикером акций
+		"STIKERS_PROP" => "-",	// Свойство со стикерами
+		"FORM" => "Y",
+		"FORM_ID" => "",
+		"FORM_BUTTON_TITLE" => "",
+		"GOOGLE_API_KEY" => "",
+		"MAP_TYPE" => "0",
+		"SEF_URL_TEMPLATES" => array(
+			"news" => "",
+			"section" => "",
+			"detail" => "#SECTION_CODE_PATH#/#ELEMENT_CODE#/",
+		)
+	),
+	false
+);?><br><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

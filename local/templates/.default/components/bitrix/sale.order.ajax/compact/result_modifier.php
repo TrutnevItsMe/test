@@ -14,10 +14,28 @@ use \Bitrix\Main\Localization\Loc;
  * @var SaleOrderAjax $component
  */
 
-//
-
 $component = $this->__component;
 $component::scaleImages($arResult['JS_DATA'], $arParams['SERVICES_IMAGES_SCALING']);
+
+$arProductValues = array_values($arResult['JS_DATA']["GRID"]["ROWS"]);
+$arProductValues = array_column($arProductValues, "data");
+$arProductId = array_column($arProductValues, "PRODUCT_ID");
+
+$rsStoreProduct = \Bitrix\Catalog\StoreProductTable::getList([
+	'filter' => [
+		'=PRODUCT_ID' => $arProductId,
+		'=STORE.ACTIVE' => 'Y',
+		"!=AMOUNT" => 0,
+	],
+	'select' => ['AMOUNT', 'STORE_ID', 'STORE_TITLE' => 'STORE.TITLE', "PRODUCT_ID"],
+]);
+
+$arStores = [];
+
+while ($store = $rsStoreProduct->fetch())
+{
+	$arStores[$store["PRODUCT_ID"]][$store["STORE_ID"]] = $store;
+}
 
 const STORE_CODE = "STORE";
 const RESTS_CODE = "RESTS";
@@ -142,7 +160,6 @@ if (is_array($arResult["GRID"]["ROWS"]))
 	}
 }
 
-
 $headerCodes = array_column($arResult['JS_DATA']["GRID"]["HEADERS"], "id");
 
 // Выводим склад
@@ -256,38 +273,40 @@ if (is_array($arResult["GRID"]["ROWS"]))
 		$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["DISCOUNT_PRICE_PERCENT_FORMATED"] = round($arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["DISCOUNT_PRICE_PERCENT"] * 100, 2) . "%";
 
 		$productId = $arItem["data"]["PRODUCT_ID"];
+
+		if ($arParams["SHOW_STORE"])
+		{
+			if ($arParams["DEF_STORE_ID"])
+			{
+				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][STORE_CODE] = $arStores[$productId][$arParams["DEF_STORE_ID"]]["STORE_TITLE"];
+			}
+			else
+			{
+				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][STORE_CODE] = current($arStores[$productId])["STORE_TITLE"];
+			}
+		}
+
+		if ($arParams["SHOW_RESTS"])
+		{
+
+			if ($arParams["DEF_STORE_ID"])
+			{
+				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][RESTS_CODE] = $arStores[$productId][$arParams["DEF_STORE_ID"]]["AMOUNT"];
+				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][RESTS_CODE] = CNext::GetQuantityArray($arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][RESTS_CODE])["TEXT"];
+			}
+			else
+			{
+				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][RESTS_CODE] = current($arStores[$productId])["AMOUNT"];
+				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][RESTS_CODE] = CNext::GetQuantityArray($arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][RESTS_CODE])["TEXT"];
+			}
+		}
+
 		$rsProperty = CIBlockElement::GetProperty(
 			$catalogIblockID,
 			$productId,
 			[],
 			["CODE" => "COMPOSITION"]
 		);
-
-		if ($arParams["SHOW_STORE"])
-		{
-			$res = CCatalogStoreProduct::GetList([],
-				["=PRODUCT_ID" => $arItem["data"]["PRODUCT_ID"],
-					'=STORE.ACTIVE' => 'Y',
-					"!=AMOUNT" => 0]);
-
-			if ($arStore = $res->GetNext())
-			{
-				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][STORE_CODE] = $arStore["STORE_NAME"];
-			}
-		}
-
-		if ($arParams["SHOW_RESTS"])
-		{
-			$res = CCatalogStoreProduct::GetList([],
-				["=PRODUCT_ID" => $arItem["data"]["PRODUCT_ID"],
-					'=STORE.ACTIVE' => 'Y',
-					"!=AMOUNT" => 0]);
-
-			if ($arStoreProduct = $res->GetNext())
-			{
-				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][RESTS_CODE] = CNext::GetQuantityArray($arStore["AMOUNT"])["TEXT"];
-			}
-		}
 
 		if ($property = $rsProperty->Fetch())
 		{

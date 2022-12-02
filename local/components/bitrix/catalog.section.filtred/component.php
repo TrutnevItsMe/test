@@ -706,6 +706,8 @@ if($this->StartResultCache(false, array($arrFilter, ($arParams["CACHE_GROUPS"]==
 	$intKey = 0;
 	while($arItem = $rsElements->GetNext())
 	{
+		$arItem['CATALOG_QUANTITY'] = 0;
+		$arItem['~CATALOG_QUANTITY'] = 0;
 		$arItem['ID'] = intval($arItem['ID']);
 
 		$arItem['ACTIVE_FROM'] = $arItem['DATE_ACTIVE_FROM'];
@@ -784,6 +786,25 @@ if($this->StartResultCache(false, array($arrFilter, ($arParams["CACHE_GROUPS"]==
 	$arResult["NAV_RESULT"] = $rsElements;
 	if (isset($arItem))
 		unset($arItem);
+
+    $storeFilter = ['ACTIVE' => 'Y','PRODUCT_ID'=> array_keys($arElementLink)];
+    if ($arParams["STORES"]) {
+        $storeFilter["ID"] = $arParams["STORES"];
+    }
+    $dbResult = CCatalogStore::GetList(
+        ['PRODUCT_ID' => 'ASC','ID' => 'ASC'],
+        $storeFilter,
+        false,
+        false,
+        ["ID","PRODUCT_AMOUNT","ELEMENT_ID"]
+    );
+
+    $arr = [];
+    while ($item = $dbResult->fetch()) {
+        $arElementLink[$item["ELEMENT_ID"]]['CATALOG_QUANTITY'] += $item["PRODUCT_AMOUNT"];
+        $arElementLink[$item["ELEMENT_ID"]]['~CATALOG_QUANTITY'] += $item["PRODUCT_AMOUNT"];
+        $arElementLink[$item["ELEMENT_ID"]]['STORES'][$item["ID"]] = $item["PRODUCT_AMOUNT"];
+    }
 
 	if (!empty($arResult["ELEMENTS"]) && $bGetProperties)
 	{

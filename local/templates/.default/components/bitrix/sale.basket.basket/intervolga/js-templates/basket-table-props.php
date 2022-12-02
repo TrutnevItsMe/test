@@ -233,7 +233,7 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 			<? if ($arParams["DISPLAY_RESTS"] === "Y")
 			{
 				?>
-				<td class="rests">{{STORE.AMOUNT}}</td>
+				<td class="rests">{{{DISPLAY_QUANTITY}}}</td>
 				<?
 			} ?>
 

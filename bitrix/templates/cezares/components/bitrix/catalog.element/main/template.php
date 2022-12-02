@@ -126,8 +126,9 @@ if($arResult["OFFERS"]){
 	}
 }
 
-$arAddToBasketData = CNext::GetAddToBasketArray(array_diff($arResult, $arResult["OFFERS"]), $totalCount, $arParams["DEFAULT_COUNT"],
-$arParams["BASKET_URL"], true, $arItemIDs["ALL_ITEM_IDS"], 'btn-lg w_icons', $arParams);
+$arAddToBasketData = CNext::GetAddToBasketArray(array_diff($arResult, $arResult["OFFERS"]), $totalCount,
+    $arParams["DEFAULT_COUNT"], $arParams["BASKET_URL"], true, $arItemIDs["ALL_ITEM_IDS"],
+    'btn-lg w_icons' . ($totalCount ? '' : ' disabled'), $arParams);
 $arOfferProps = implode(';', $arParams['OFFERS_CART_PROPERTIES']);
 
 // save item viewed
@@ -661,16 +662,16 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 						<div class="counter_wrapp">
 							<? if (!$arResult["OFFERS"]): ?>
 								<? if (($arAddToBasketData["OPTIONS"]["USE_PRODUCT_QUANTITY_DETAIL"] && $arAddToBasketData["ACTION"] == "ADD") && $arAddToBasketData["CAN_BUY"]): ?>
-									<div class="counter_block big_basket"
+									<div class="counter_block big_basket <?=$totalCount ? '' : 'disabled'?>"
 										 data-offers="<?= ($arResult["OFFERS"] ? "Y" : "N"); ?>"
 										 data-item="<?= $arResult["ID"]; ?>" <?= (($arResult["OFFERS"] && $arParams["TYPE_SKU"] == "N") ? "style='display: none;'" : ""); ?>>
-										<span class="minus"
+										<span class="minus <?=$totalCount ? '' : 'disabled'?>"
 											  id="<? echo $arItemIDs["ALL_ITEM_IDS"]['QUANTITY_DOWN']; ?>">-</span>
 										<input type="text" class="text"
 											   id="<? echo $arItemIDs["ALL_ITEM_IDS"]['QUANTITY']; ?>"
 											   name="<? echo $arParams["PRODUCT_QUANTITY_VARIABLE"]; ?>"
 											   value="<?= $arAddToBasketData["MIN_QUANTITY_BUY"] ?>"/>
-										<span class="plus"
+										<span class="plus <?=$totalCount ? '' : 'disabled'?>"
 											  id="<? echo $arItemIDs["ALL_ITEM_IDS"]['QUANTITY_UP']; ?>" <?= ($arAddToBasketData["MAX_QUANTITY_BUY"] ? "data-max='" . $arAddToBasketData["MAX_QUANTITY_BUY"] . "'" : "") ?>>+</span>
 									</div>
 								<? endif; ?>
@@ -1846,11 +1847,13 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 								?>
 							<div class="stores_block wo_image">
 								<div class="stores_text_wrapp ">
-									<div class="main_info"><span><a
-										class="title_stores"
-										href="<?= $storePath ?>"
-										data-storehref="<?= $storePath ?>"
-										data-iblockhref=""><?= $store['NAME'] ?></a></span></div>
+<!--									<div class="main_info"><span><a-->
+<!--										class="title_stores"-->
+<!--										href="--><?//= $storePath ?><!--"-->
+<!--										data-storehref="--><?//= $storePath ?><!--"-->
+<!--										data-iblockhref="">--><?//= $store['NAME'] ?><!--</a></span>-->
+<!--                                    </div>-->
+									<?=$store['NAME']?>
 								</div>
 								<?=$store['AMOUNT_HTML']?>
 							</div>
@@ -1873,7 +1876,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 								"USE_ONLY_MAX_AMOUNT" => $arParams["USE_ONLY_MAX_AMOUNT"],
 								"USER_FIELDS" => $arParams['USER_FIELDS'],
 								"FIELDS" => $arParams['FIELDS'],
-								"STORES" => $arParams['STORES'],
+								"STORES" => \Intervolga\Custom\Helpers\StoreHelper::SHOP_STORE_IDS,
 								"SET_ITEMS" => $arResult["SET_ITEMS"],
 							),
 							$component

@@ -1919,7 +1919,7 @@ body .logo_and_menu-row .wrap_icon.inner-table-block .basket-link.delay, body .l
 .counter_block.big_basket > span.minus:before{background-position:-18px -189px;}
 .counter_block.big_basket > span.plus:before{background-position:1px -189px;}
 .counter_block > span.plus:before{background-position:-54px -191px;}
-.counter_block > span:hover:before{opacity:1;}
+.counter_block:not(.disabled) > span:hover:before{opacity:1;}
 .counter_block input[type="text"]{padding:7px 3px 7px;}
 
 .counter_wrapp{font-size:0px;padding:15px 0px 0px;   white-space:nowrap;}
@@ -6538,7 +6538,7 @@ body #bx-soa-order .bx-soa-cart-total-line.bx-soa-cart-total-line-highlighted{ba
 .sale_order_full_table form[name="ShopForm"] .tablebodytext b{font-weight:normal;color:#333333;}
 
 #bx-soa-order a{text-decoration:none;}
-#bx-soa-order .bx-soa-cart-total .change_basket{font-size:16px;font-weight:600;position:relative;color:#333;border-bottom:1px solid #f2f2f2;margin:0px -29px 43px;padding:2px 29px 31px;}
+#bx-soa-order .bx-soa-cart-total .change_basket{font-size:16px;font-weight:600;position:relative;color:#333;padding:2px 29px 31px;}
 #bx-soa-order .bx-soa-cart-total .change_basket .change_link{position:absolute;top:3px;right:29px;font-size:14px;font-weight:400;}
 
 .bx-soa-auth .bx-authform-input-container input[type="text"], .bx-soa-auth .bx-authform-input-container input[type="password"]{box-sizing:border-box;-moz-box-sizing:border-box;-o-box-sizing:border-box;-webkit-box-sizing:border-box;background:#f7f7f7;border:1px solid #eaebec;
