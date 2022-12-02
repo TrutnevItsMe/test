@@ -103,11 +103,12 @@ $APPLICATION->IncludeComponent(
 		"HIDE_ORDER_DESCRIPTION" => "Y",
 		"USE_ENHANCED_ECOMMERCE" => "N",
 		"ADDITIONAL_PICT_PROP_26" => "-",
-		"ACTIVE_SAVE_DRAFT_ORDER" => "Y",
+		"ACTIVE_SAVE_DRAFT_ORDER" => "N",
 		"INDEX_PICTURE" => "10",
 		"SHOW_STORE" => "Y",
 		"SHOW_RESTS" => "Y",
-		"ADDITIONAL_PICT_PROP_27" => "-"
+		"ADDITIONAL_PICT_PROP_27" => "-",
+		"DEF_STORE_ID" => "376"
 	),
 	false
 );

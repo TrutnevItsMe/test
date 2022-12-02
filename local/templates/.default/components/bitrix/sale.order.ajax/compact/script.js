@@ -436,8 +436,7 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
 
 /**
  * https://youtrack.ivsupport.ru/issue/iberisweb-12
- * @param id
- * @param values
+ * @param data
  */
 function activateAgreementsField(data) {
 	

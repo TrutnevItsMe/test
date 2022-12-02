@@ -96,6 +96,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 			this.defaultPaySystemLogo = this.templateFolder + "/images/pay_system_logo.png";
 
 			this.ajaxUpdateBasketUrl = parameters.ajaxUpdateBasketUrl || "ajax/updateBasket.php";
+			this.ajaxSaveOrderUrl = parameters.ajaxSaveOrderUrl || "ajax.php";
 			this.updateBasketData = parameters.updateBasketData;
 
 			this.orderBlockNode = BX(parameters.orderBlockId);
@@ -235,7 +236,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 						BX.ajax.submitAjax(
 							BX('bx-soa-order-form'),
 							{
-								url: BX.Sale.OrderAjaxComponent.ajaxUrl,
+								url: BX.Sale.OrderAjaxComponent.ajaxSaveOrderUrl,
 								method: 'POST',
 								dataType: 'json',
 								data: {
@@ -308,8 +309,24 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 
 								break;
 						}
+
 						BX.cleanNode(this.savedFilesBlockNode);
 						this.endLoader();
+						self = this;
+						this.interval = setInterval(function ()
+							{
+								if (document.querySelector("div.change_basket"))
+								{
+									document.querySelectorAll("div.change_basket").forEach(function (div)
+									{
+										div.remove();
+									});
+									clearInterval(self.interval);
+								}
+							}
+							, 100);
+
+
 					}, this),
 					onfailure: BX.delegate(function ()
 					{
@@ -398,7 +415,46 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 					this.deliveryCachedInfo = [];
 				}
 
+				let headers = this.result["GRID"]["HEADERS"];
+				let mapProductStore = {};
+				let mapProductRest = {};
+
+				if (this.params["SHOW_STORE"])
+				{
+					Object.values(this.result["GRID"]["ROWS"]).forEach(function(prod)
+					{
+						mapProductStore[prod["id"]] = prod["data"]["STORE"];
+					});
+				}
+
+				if (this.params["SHOW_RESTS"])
+				{
+					Object.values(this.result["GRID"]["ROWS"]).forEach(function(prod)
+					{
+						mapProductRest[prod["id"]] = prod["data"]["RESTS"];
+					});
+				}
+
 				this.result = result.order;
+				this.result["GRID"]["HEADERS"] = headers;
+				self = this;
+
+				if (Object.keys(mapProductStore).length)
+				{
+					Object.values(this.result["GRID"]["ROWS"]).forEach(function(prod)
+					{
+						self.result["GRID"]["ROWS"][prod["id"]]["data"]["STORE"] = mapProductStore[prod["id"]];
+					});
+				}
+
+				if (Object.keys(mapProductRest).length)
+				{
+					Object.values(this.result["GRID"]["ROWS"]).forEach(function(prod)
+					{
+						self.result["GRID"]["ROWS"][prod["id"]]["data"]["RESTS"] = mapProductRest[prod["id"]];
+					});
+				}
+
 				this.prepareLocations(result.locations);
 				this.locationsInitialized = false;
 				this.maxWaitTimeExpired = false;
@@ -410,6 +466,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 
 				this.initOptions();
 				this.editOrder();
+
 				this.mapsReady && this.initMaps();
 				BX.saleOrderAjax && BX.saleOrderAjax.initDeferredControl();
 			}

@@ -30,6 +30,16 @@ if (is_dir($dir))
 	}
 }
 
+$arStores = [];
+
+$rsStoreProduct = \Bitrix\Catalog\StoreProductTable::getList(array(
+	'filter' => ['=STORE.ACTIVE'=>'Y'],
+	'select' => ['STORE_ID','STORE_TITLE' => 'STORE.TITLE'],
+));
+while($arStoreProduct=$rsStoreProduct->fetch()) {
+	$arStores[$arStoreProduct["STORE_ID"]] = $arStoreProduct["STORE_TITLE"];
+}
+
 $arTemplateParameters = array(
 	"TEMPLATE_THEME" => array(
 		"NAME" => GetMessage("TEMPLATE_THEME"),
@@ -807,3 +817,10 @@ if ($arCurrentValues['USE_CUSTOM_ERROR_MESSAGES'] == 'Y')
 		"PARENT" => "ERROR_MESSAGE_SETTINGS"
 	);
 }
+
+$arTemplateParameters["DEF_STORE_ID"] =  array(
+	"NAME" => GetMessage("DEF_STORE_ID"),
+	"TYPE" => "LIST",
+	"VALUES" => $arStores,
+	"PARENT" => "ADDITIONAL_SETTINGS"
+);

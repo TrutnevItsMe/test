@@ -97,11 +97,11 @@
 			this.useDynamicScroll = this.params.USE_DYNAMIC_SCROLL === 'Y';
 			this.useItemsFilter = this.params.SHOW_FILTER === 'Y' && !this.isMobile;
 
-			this.maxAmount = parameters.maxAmount || 10;
-			this.minAmount = parameters.minAmount || 2;
-			this.manyText = parameters.manyText || "Много";
-			this.fewText = parameters.fewText || "Мало";
-			this.enoughText = parameters.enoughText || "Достаточно";
+			// this.maxAmount = parameters.maxAmount || 10;
+			// this.minAmount = parameters.minAmount || 2;
+			// this.manyText = parameters.manyText || "Много";
+			// this.fewText = parameters.fewText || "Мало";
+			// this.enoughText = parameters.enoughText || "Достаточно";
 
 			this.templateItemsDisplay = parameters.templateItemsDisplay;
 
@@ -120,10 +120,6 @@
 			this.editWarnings();
 
 			this.getCacheNode(this.ids.basketRoot).style.opacity = 1;
-
-			if (this.displayRests){
-				this.showTextRests();
-			}
 
 			if (this.displayArticleBeforeName){
 				this.moveArticleBlock();
@@ -709,7 +705,6 @@
 						BX.Sale.OrderAjaxComponent.sendRequest();
 					}
 					if (this.displayRests){
-						this.showTextRests();
 						this.removeDoubleHeader();
 					}
 
@@ -1790,22 +1785,6 @@
 				articleNode.remove();
 			});
 		},
-
-		showTextRests: function () {
-			$(this.selectorRestItem).each(function () {
-
-				let currentRest = $(this).html();
-
-				if (currentRest > BX.Sale.BasketComponent.maxAmount) {
-					$(this).html(BX.Sale.BasketComponent.manyText);
-				} else if (currentRest < BX.Sale.BasketComponent.minAmount) {
-					$(this).html(BX.Sale.BasketComponent.fewText);
-				} else {
-					$(this).html(BX.Sale.BasketComponent.enoughText);
-				}
-
-			});
-	},
 
 		startQuantityInterval: function()
 		{
