@@ -110,15 +110,7 @@ $APPLICATION->SetTitle("Партнеры");
 			4 => "Оптовые руб. 2021 Акция/Распродажа",
 			5 => "",
 		),
-		"STORES" => array(
-			0 => "374",
-			1 => "375",
-			2 => "376",
-			3 => "377",
-			4 => "378",
-			5 => "1",
-			6 => "",
-		),
+		"STORES" => \Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS,
 		"OFFER_HIDE_NAME_PROPS" => "N",
 		"LIST_OFFERS_FIELD_CODE" => array(
 			0 => "ID",
