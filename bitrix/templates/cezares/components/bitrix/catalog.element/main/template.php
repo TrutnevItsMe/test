@@ -9,12 +9,6 @@
  */
 
 use Bitrix\Main\Localization\Loc;
-
-if ($arResult["CURRENT_OFFER"])
-{
-	$APPLICATION->SetTitle($arResult["CURRENT_OFFER"]["NAME"]);
-}
-
 ?>
 
 <div class="basket_props_block" id="bx_basket_div_<?=$arResult["ID"];?>" style="display: none;">
