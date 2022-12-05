@@ -5,18 +5,15 @@ $arParams["POPUP_POSITION"] = (isset($arParams["POPUP_POSITION"]) && in_array($a
 // Убираем разделы из фильтра
 $arHiddenProps = [];
 
+$properties = array_column($arResult["ITEMS"], "CODE", "ID");
+
 foreach ($arParams["HIDDEN_PROP"] as $hiddenProp)
 {
-	//Ни один параметр фильтра не принимает массивы
-	$rsProp = CIBlockProperty::GetList(
-		$arOrder=[],
-		$arFilter=[
-			"CODE" => $hiddenProp
-	]);
+	$searchedProp = array_search($hiddenProp, $properties);
 
-	if ($prop = $rsProp->Fetch())
+	if ($searchedProp !== false)
 	{
-		$arHiddenProps[] = $prop["ID"];
+		$arHiddenProps[] = $searchedProp;
 	}
 }
 
@@ -48,36 +45,6 @@ foreach ($arResult["ITEMS"] as $key => &$arItem)
 		foreach ($arItem["VALUES"] as $id => $arValue)
 		{
 			if (strpos($arValue["UPPER"], "КОМПЛЕКТУЮЩИЕ") !== false)
-			{
-				unset($arItem["VALUES"][$id]);
-			}
-		}
-	}
-
-	// Оставляем только те значения, для которых есть хотя бы 1 товар
-	if ($arItem["PROPERTY_TYPE"] == "L")
-	{
-		foreach ($arItem["VALUES"] as $id => $arValue)
-		{
-			$filter = [
-				"IBLOCK_ID" => $arParams["IBLOCK_ID"],
-				"PROPERTY_".$arItem["CODE"]."_VALUE" => $arValue["VALUE"],
-			];
-
-			if ($arParams["LINKED_BRAND_PROPERTY"])
-			{
-				$filter["PROPERTY_".$arParams["LINKED_BRAND_PROPERTY"]] = $arParams["LINKED_BRAND_VALUE"];
-			}
-
-			$rsElem = CIBlockElement::GetList(
-				[],
-				$filter,
-				false,
-				false,
-				["ID"]
-			);
-
-			if (!$rsElem->GetNext())
 			{
 				unset($arItem["VALUES"][$id]);
 			}
