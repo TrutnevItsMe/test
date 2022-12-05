@@ -49,15 +49,32 @@ window.OffersFilterComponent = {
 			});
 		}
 
+		let btnInCart = document.querySelector(".btn.in-cart");
+		let btnToCart = document.querySelector(".btn.to-cart");
+
 		if (this.result["CURRENT_OFFER"] && this.offersInBasket.includes(this.result["CURRENT_OFFER"]["ID"]))
 		{
-			document.querySelector(".btn.in-cart").style.display = "block";
-			document.querySelector(".btn.to-cart").style.display = "none";
+			if (btnInCart)
+			{
+				btnInCart.style.display = "block";
+			}
+
+			if (btnToCart)
+			{
+				btnToCart.style.display = "none";
+			}
 		}
 		else
 		{
-			document.querySelector(".btn.in-cart").style.display = "none";
-			document.querySelector(".btn.to-cart").style.display = "block";
+			if (btnInCart)
+			{
+				btnInCart.style.display = "none";
+			}
+
+			if (btnToCart)
+			{
+				btnToCart.style.display = "block";
+			}
 		}
 
 		if (this.result["CURRENT_OFFER"])
