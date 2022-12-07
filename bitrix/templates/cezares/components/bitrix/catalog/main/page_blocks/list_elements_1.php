@@ -265,6 +265,7 @@ if($isAjaxFilter == "Y")
 		<?}?>
 		<div class="inner_wrapper">
 <?endif;?>
+			<a href="<?= $APPLICATION->GetCurPage() ?>?CSV=Y">Получить СSV</a>
 			<?if(!$arSeoItem):?>
 				<?if($arParams["SHOW_SECTION_DESC"] != 'N' && strpos($_SERVER['REQUEST_URI'], 'PAGEN') === false):?>
 					<?ob_start();?>
@@ -313,6 +314,27 @@ if($isAjaxFilter == "Y")
 					<a class="filter_opener<?=($_REQUEST['set_filter'] === 'y' ? ' active num' : '')?><?=(($_REQUEST['set_filter'] === 'y' || (count($matchesFilter)>1 && $matchesFilter[1] != 'clear')) ? ' active num' : '')?>"><i></i><span><?=GetMessage("CATALOG_SMART_FILTER_TITLE")?></span></a>
 				</div>
 			<?endif;?>
+			<?php
+			if(isset($_GET["CSV"]) && $_GET["CSV"] == "Y"){
+				$APPLICATION->IncludeComponent(
+					"bitrix:catalog.section",
+					"catalogcsv",
+					Array(
+						"IBLOCK_ID" => $arParams["IBLOCK_ID"],
+						"SECTION_ID" => $arResult["VARIABLES"]["SECTION_ID"],
+						"SECTION_CODE" => $arResult["VARIABLES"]["SECTION_CODE"],
+						"FILTER_NAME" => $arParams["FILTER_NAME"],
+						"INCLUDE_SUBSECTIONS" => $arParams["INCLUDE_SUBSECTIONS"],
+						"PAGE_ELEMENT_COUNT" => 9999999,
+						"PROPERTY_CODE" => [],
+						"CACHE_TYPE" => $arParams["CACHE_TYPE"],
+						"CACHE_TIME" => $arParams["CACHE_TIME"],
+						"CACHE_GROUPS" => $arParams["CACHE_GROUPS"],
+						"CACHE_FILTER" => "Y",
+						"PRICE_CODE" => $arParams['PRICE_CODE'],
+					), $component, array("HIDE_ICONS" => $isAjax)
+				);
+			}?>
 
 			<?if($isAjax=="N"){
 				$frame = new \Bitrix\Main\Page\FrameHelper("viewtype-block");
@@ -330,6 +352,7 @@ if($isAjaxFilter == "Y")
 			<?if($isAjax === 'N'){?>
 				<div class="ajax_load <?=$display;?>">
 			<?}?>
+
 				<?$APPLICATION->IncludeComponent(
 					"bitrix:catalog.section",
 					$listElementsTemplate,
