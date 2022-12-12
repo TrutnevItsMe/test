@@ -25,7 +25,7 @@ if (!empty($arResult)):
 						<ul class="dropdown brand-dropdown">
 							<?php foreach($arItem["CHILD"] as $arChildItem):
 								if($arChildItem["UF_DISABLE_MENU"] == 1) continue;
-								?>
+//								?>
 								<li class="<?= ($arChildItem["CHILD"] ? "has-childs" : "") ?> <?= $arChildItem["SELECTED"] ?  'current' : '' ?>">
                                     <?php if ($arChildItem["IMAGES"] && $arTheme['SHOW_CATALOG_SECTIONS_ICONS']['VALUE'] == 'Y' && $arTheme["MENU_TYPE_VIEW"]["VALUE"] !== 'BOTTOM'): ?>
 										<span class="image">
@@ -37,18 +37,18 @@ if (!empty($arResult)):
 									<a class="section" href="<?=$arChildItem["SECTION_PAGE_URL"];?>">
                                         <span><?=$arChildItem["NAME"];?></span>
                                     </a>
-									<?php if($arChildItem["CHILD"]): ?>
+									<? // if все ломает ?>
+<!--									--><?php //if($arChildItem["CHILD"]): ?>
 										<ul class="dropdown">
 											<?php foreach($arChildItem["CHILD"] as $arChildItem1):
 												if($arChildItem1["UF_DISABLE_MENU"] == 1) continue;
-                                            ?>
+//                                            ?>
 												<li class="menu_item <?= $arChildItem1["SELECTED"] ? 'current' : '' ?>">
 													<a class="parent1 section1" href="<?=$arChildItem1["SECTION_PAGE_URL"];?>"><span><?=$arChildItem1["NAME"];?></span></a>
 												</li>
 											<?php endforeach; ?>
 										</ul>
-									<?php endif;?>
-									<div class="clearfix"></div>
+<!--									--><?php //endif;?>
 								</li>
 							<?php endforeach;?>
 						</ul>
