@@ -759,23 +759,3 @@ $asset->addJs($templateFolder."/script.js");
 	})
 	sliceItemBlock();
 </script>
-
-<script>
-
-	let q = <? echo CUtil::PhpToJSObject($arResult, false, true); ?>;
-
-	$(document).ready(function()
-	{
-		console.log(q);
-
-		$(".to-cart").on("click", function(e)
-		{
-			e.stopPropagation();
-			e.preventDefault();
-
-		});
-	});
-
-
-
-</script>
