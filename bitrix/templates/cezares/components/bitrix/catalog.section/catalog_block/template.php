@@ -119,6 +119,8 @@ $asset->addJs($templateFolder."/script.js");
 
 				$arItem["strMainID"] = $this->GetEditAreaId($arItem['ID']);
 				$arItemIDs = CNext::GetItemsIDs($arItem);
+\Bitrix\Main\Diag\Debug::writeToFile(__FILE__ . ':' . __LINE__ . "\n(" . date('Y-m-d H:i:s').")\n" . print_r
+	($arParams["STORES"], TRUE) . "\n\n", '', 'log/__debug_trutnev.log');
 
 				$totalCount = CNext::GetTotalCount($arItem, $arParams);
 				$arQuantityData = CNext::GetQuantityArray($totalCount, $arItemIDs["ALL_ITEM_IDS"], "N", $arItem["PRODUCT"]["TYPE"]);
