@@ -1,4 +1,5 @@
 <?
+$PERM["video"]["*"]="R";
 $PERM["catalog"]["G2"]="R";
 $PERM["catalog"]["G6"]="R";
 $PERM["catalog"]["G9"]="R";
@@ -39,7 +40,6 @@ $PERM["rasprodazha"]["*"]="D";
 $PERM["rasprodazha"]["G9"]="R";
 $PERM["landings"]["*"]="D";
 $PERM["include"]["*"]="R";
-$PERM["video"]["*"]="R";
 $PERM["personal"]["8"]="W";
 $PERM["news"]["8"]="W";
 $PERM["about"]["8"]="W";

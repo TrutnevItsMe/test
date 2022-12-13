@@ -10,6 +10,13 @@ use Bitrix\Main\ErrorCollection;
 try
 {
 	require($_SERVER["DOCUMENT_ROOT"]."/desktop_app/headers.php");
+	if (!defined("BX_FORCE_DISABLE_SEPARATED_SESSION_MODE"))
+	{
+		if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('%Bitrix24.Disk/([0-9.]+)%i', $_SERVER['HTTP_USER_AGENT']))
+		{
+			define("BX_FORCE_DISABLE_SEPARATED_SESSION_MODE", true);
+		}
+	}
 	require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.php");
 
 	/** @var CAllMain $APPLICATION */
@@ -24,7 +31,8 @@ try
 			$storageController = new Bitrix\Disk\Bitrix24Disk\Legacy\StorageController();
 			$storageController
 				->setActionName($_REQUEST['action'])
-				->exec();
+				->exec()
+			;
 		}
 		else
 		{
@@ -57,12 +65,25 @@ catch (\Throwable $e)
 		$exceptionHandler->writeToLog($e);
 	}
 
-
-	/** @global \CMain $APPLICATION */
 	global $APPLICATION;
+	$application = Application::getInstance();
+	if (($APPLICATION instanceof \CMain) && $application->isInitialized())
+	{
+		$APPLICATION->RestartBuffer();
+		while (ob_end_clean());
 
-	$APPLICATION->RestartBuffer();
-	while(ob_end_clean());
-
-	Application::getInstance()->end(0, AjaxJson::createError($errorCollection));
+		Application::getInstance()->end(0, AjaxJson::createError($errorCollection));
+	}
+	if (!headers_sent())
+	{
+		header('Content-Type: application/json; charset=UTF-8');
+		echo json_encode([
+			'status' => 'error',
+			'errors' => [
+				[
+					'message' => 'Application can\'t start ',
+				],
+			],
+		]);
+	}
 }

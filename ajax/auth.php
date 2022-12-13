@@ -12,7 +12,6 @@ if(!$USER->IsAuthorized()){?>
 		{
 			$_SERVER['QUERY_STRING'] = '';
 			$_SERVER['REQUEST_URI'] = $_REQUEST['backurl'];
-			$APPLICATION->reinitPath();
 		}
 	}?>
 	<a href="#" class="close jqmClose"><i></i></a>
