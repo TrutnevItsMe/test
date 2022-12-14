@@ -852,7 +852,7 @@
 	font: 400 14px/24px "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	transition: 300ms all ease;
 	line-height: 15px;
-	max-width: 250px;
+	/*max-width: 250px;*/
 }
 
 h2.basket-item-info-name {

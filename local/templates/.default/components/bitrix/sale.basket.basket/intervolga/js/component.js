@@ -115,19 +115,20 @@
 				this.bindHeaderEvents();
 			}
 
+			this.initializeBasketHeaders(parameters.headers);
 			this.initializeBasketItems();
 			this.editTotal();
 			this.editWarnings();
 
 			this.getCacheNode(this.ids.basketRoot).style.opacity = 1;
 
-			if (this.displayRests){
+			/*if (this.displayRests){
 				this.showTextRests();
 			}
-
-			if (this.displayArticleBeforeName){
+*/
+			/*if (this.displayArticleBeforeName){
 				this.moveArticleBlock();
-			}
+			}*/
 
 			if (this.displayDiscountPercent){
 				this.moveDiscountPercentBlock();
@@ -710,14 +711,14 @@
 					{
 						BX.Sale.OrderAjaxComponent.sendRequest();
 					}
-					if (this.displayRests){
+					/*if (this.displayRests){
 						this.showTextRests();
 						this.removeDoubleHeader();
 					}
 
 					if (this.displayArticleBeforeName){
 						this.moveArticleBlock();
-					}
+					}*/
 
 					if (this.displayDiscountPercent){
 						this.moveDiscountPercentBlock();
@@ -1219,6 +1220,12 @@
 			return BX.util.in_array(itemId, this.shownItems);
 		},
 
+		initializeBasketHeaders: function(headers){
+			let headersTemplate = this.getTemplate("basket-table-headers-template");
+			let headersRender = Mustache.render(headersTemplate, headers);
+			$(".basket-items-list-table .table-header").prepend(headersRender)
+		},
+
 		initializeBasketItems: function()
 		{
 			if (Object.keys(this.items).length === 0)
@@ -1656,8 +1663,7 @@
 				{
 					oldHeight = nodeAligner.clientHeight;
 				}
-
-				var basketItemHtml = this.renderBasketItem(basketItemTemplate, this.items[itemId]);
+				var basketItemHtml=this.renderBasketItem(basketItemTemplate, this.items[itemId]);
 				basketItemNode.insertAdjacentHTML('beforebegin', basketItemHtml);
 				BX.remove(basketItemNode);
 

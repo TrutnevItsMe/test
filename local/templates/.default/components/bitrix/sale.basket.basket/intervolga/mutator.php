@@ -28,6 +28,18 @@ foreach ($this->basketItems as $row)
         $row["STORES"][$arStoreProduct["STORE_ID"]] = $arStoreProduct;
     }
 
+	$stores = Coption::GetOptionString("aspro.next", "LIST_STORES");
+	$stores = explode(",", $stores);
+
+	$totalCount = 0;
+
+	foreach ($stores as $storeId)
+	{
+		$totalCount += $row["STORES"][$storeId]["AMOUNT"];
+	}
+
+	$arQuantityData = CNext::GetQuantityArray($totalCount);
+
     $rowData = array(
 		'ID' => $row['ID'],
 		'PRODUCT_ID' => $row['PRODUCT_ID'],
@@ -68,6 +80,7 @@ foreach ($this->basketItems as $row)
 		'LABEL_VALUES' => array(),
 		'ARTICLE' => $row["LABEL_ARRAY_VALUE"]["CML2_ARTICLE"],
 		'STORE' => $row["STORES"][$this->arParams["DEF_STORE_ID"]],
+		'DISPLAY_QUANTITY' => $arQuantityData["TEXT"],
 		'BRAND' => isset($row[$this->arParams['BRAND_PROPERTY'].'_VALUE'])
 			? $row[$this->arParams['BRAND_PROPERTY'].'_VALUE']
 			: '',
@@ -290,6 +303,15 @@ foreach ($this->basketItems as $row)
 						'HIDE_MOBILE' => !isset($mobileColumns[$value['id']])
 					);
 				}
+				else{
+					$rowData['COLUMN_LIST'][] = array(
+						'CODE' => $value['id'],
+						'NAME' => $value['name'],
+						'VALUE' => Loc::getMessage("NOT_EXIST_TYPE"),
+						'IS_TEXT' => true,
+						'HIDE_MOBILE' => !isset($mobileColumns[$value['id']])
+					);
+				}
 			}
 			elseif ($value['id'] === 'DISCOUNT')
 			{
@@ -368,12 +390,11 @@ foreach ($this->basketItems as $row)
 					'HIDE_MOBILE' => !isset($mobileColumns[$value['id']])
 				);
 			}
-			elseif (!empty($row[$value['id']]))
-			{
-				$rawValue = isset($row['~'.$value['id']]) ? $row['~'.$value['id']] : $row[$value['id']];
-				$isHtml = !empty($row[$value['id'].'_HTML']);
+			elseif (!empty($row[$value['id']])) {
+				$rawValue = isset($row['~' . $value['id']]) ? $row['~' . $value['id']] : $row[$value['id']];
+				$isHtml = !empty($row[$value['id'] . '_HTML']);
 
-				$rowData['COLUMN_LIST'][] = array(
+				$rowData['COLUMN_LIST'][] = [
 					'CODE' => $value['id'],
 					'NAME' => $value['name'],
 					'VALUE' => $rawValue,
@@ -381,10 +402,12 @@ foreach ($this->basketItems as $row)
 					'IS_HTML' => $isHtml,
 					'HIDE_MOBILE' => !isset($mobileColumns[$value['id']])
 				);
-			}
+			}*/
 		}
 
 		unset($value);
+
+		$result["PARAM_HEADERS"] = [["CODE" => "TYPE", "NAME" => "Тип цены"]];
 	}
 
 	if (!empty($row['LABEL_ARRAY_VALUE']))
@@ -402,26 +425,14 @@ foreach ($this->basketItems as $row)
 		$rowData['SHOW_LABEL'] = true;
 		$rowData['LABEL_VALUES'] = $labels;
 	}
+    //Метод для отделения артикуля из списка столбцов
+    if($arParams["ARTICLE_BEFORE_SECTION"] = "Y"){
+            $idArticleInColumns = (array_search("PROPERTY_CML2_ARTICLE_VALUE", array_column($rowData["COLUMN_LIST"], "CODE")) !== false) ?: "";
+            $rowData["ARTICLE_SEPARATE"] = $rowData["COLUMN_LIST"][$idArticleInColumns];
+            unset($rowData["COLUMN_LIST"][$idArticleInColumns]);
+    }
 
 	$result['BASKET_ITEM_RENDER_DATA'][] = $rowData;
-}
-
-$ids = array_column($this->basketItems, "PRODUCT_ID");
-
-$res = CIBlockElement::GetList([],
-[
-	"IBLOCK_ID" => COption::GetOptionString("aspro.next", "CATALOG_IBLOCK_ID"),
-	"ID" => $ids
-],
-false,
-false,
-["PROPERTY_OBYEM_INDIVIDUALNOY_UPAKOVKI_SM3"]);
-
-$commonVolume = 0;
-
-while ($elem = $res->GetNext())
-{
-	$commonVolume += $elem["PROPERTY_OBYEM_INDIVIDUALNOY_UPAKOVKI_SM3_VALUE"];
 }
 
 $totalData = array(
@@ -429,10 +440,7 @@ $totalData = array(
 	'PRICE' => $result['allSum'],
 	'PRICE_FORMATED' => $result['allSum_FORMATED'],
 	'PRICE_WITHOUT_DISCOUNT_FORMATED' => $result['PRICE_WITHOUT_DISCOUNT'],
-	'CURRENCY' => $result['CURRENCY'],
-	'COMMON_VOLUME' => $commonVolume,
-	'COMMON_VOLUME_FORMATED' => number_format($commonVolume, 0, '.', ' ') . " см3",
-	'PRODUCT_COUNT' => $result['BASKET_ITEMS_COUNT']
+	'CURRENCY' => $result['CURRENCY']
 );
 
 if ($result['DISCOUNT_PRICE_ALL'] > 0)

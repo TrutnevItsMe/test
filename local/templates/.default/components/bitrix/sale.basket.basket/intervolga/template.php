@@ -286,10 +286,11 @@ if (empty($arResult['ERROR_MESSAGE']))
 	$signedParams = $signer->sign(base64_encode(serialize($arParams)), 'sale.basket.basket');
 	$messages = Loc::loadLanguageFile(__FILE__);
 	?>
-	<script>
+	<script defer>
 		BX.message(<?=CUtil::PhpToJSObject($messages)?>);
 		BX.Sale.BasketComponent.init({
 			result: <?=CUtil::PhpToJSObject($arResult, false, false, true)?>,
+            headers: <?=CUtil::PhpToJSObject(["PARAM_HEADERS" => $arResult["PARAM_HEADERS"]])?>,
 			params: <?=CUtil::PhpToJSObject($arParams)?>,
 			template: '<?=CUtil::JSEscape($signedTemplate)?>',
 			signedParamsString: '<?=CUtil::JSEscape($signedParams)?>',
@@ -297,22 +298,10 @@ if (empty($arResult['ERROR_MESSAGE']))
 			siteTemplateId: '<?=CUtil::JSEscape($component->getSiteTemplateId())?>',
 			templateFolder: '<?=CUtil::JSEscape($templateFolder)?>',
             templateItemsDisplay: '<?=$arParams["DISPLAY_MODE_ITEMS"]?>',
-            displayRests: !!<?=($arParams["DISPLAY_RESTS"] === "Y")?>,
-            maxAmount: '<?=COption::GetOptionString("aspro.next","MAX_AMOUNT")?>',
-            minAmount: '<?=COption::GetOptionString("aspro.next","MIN_AMOUNT")?>',
-            manyText: '<?=CNext::GetQuantityArray(COption::GetOptionString("aspro.next","MAX_AMOUNT") + 1)["TEXT"]?>',
-            enoughText: '<?=CNext::GetQuantityArray((COption::GetOptionString("aspro.next","MAX_AMOUNT") - COption::GetOptionString("aspro.next","MIN_AMOUNT")) / 2)["TEXT"]?>',
-            fewText: '<?=CNext::GetQuantityArray(COption::GetOptionString("aspro.next","MIN_AMOUNT") - 1)["TEXT"]?>',
-            displayArticleBeforeName: !!<?=$arParams["SHOW_ARTICLE_BEFORE_NAME"] === "Y"?>,
-            displayDiscountPercent: !!<?=$arParams["SHOW_DISCOUNT_PERCENT_COLUMN"] === "Y"?>
+            displayRests: !!<?=intval($arParams["DISPLAY_RESTS"] == "Y")?>,
+			displayArticleBeforeName: !!<?=intval($arParams["SHOW_ARTICLE_BEFORE_NAME"] === "Y")?>,
+            displayDiscountPercent: !!<?=intval($arParams["SHOW_DISCOUNT_PERCENT_COLUMN"] === "Y")?>
 		});
-
-        $(document).ready(function(){
-            $(".basket-items-list-table .table-header").prepend($(".basket-header").html());
-            $(".basket-header").remove();
-        });
-
-
 	</script>
 	<?
 	if ($arParams['USE_GIFTS'] === 'Y' && $arParams['GIFTS_PLACE'] === 'BOTTOM')
