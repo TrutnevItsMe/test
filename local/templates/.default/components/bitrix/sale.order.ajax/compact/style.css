@@ -1618,18 +1618,6 @@ textarea{
 	width: 300px;
 }
 
-.bx-soa-item-td.bx-soa-item-properties:nth-child(1) span{
-	white-space: nowrap;
-}
-
-.bx-soa-item-td.bx-soa-item-properties:nth-child(2){
-	width: 300px;
-}
-
-.bx-soa-item-td.bx-soa-item-properties:nth-child(2) span{
-	white-space: nowrap;
-}
-
 [data-type="informer"]{
 	margin: 0;
 }
@@ -1637,4 +1625,11 @@ textarea{
 .uncheckedBlock p{
 	margin: 0;
 	color: #d73434;
+}
+
+[data-column="PROPERTY_CML2_ARTICLE_VALUE"] span{
+	white-space: normal;
+	display: block;
+	width: 361px;
+	word-break: break-all;
 }
