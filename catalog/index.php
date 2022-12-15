@@ -385,7 +385,7 @@ $APPLICATION->IncludeComponent(
 			1 => "NAME",
 			2 => "PRICE",
 		),
-		"SORT_PRICES" => "MINIMUM_PRICE",
+		"SORT_PRICES" => "РРЦ",
 		"DEFAULT_LIST_TEMPLATE" => "block",
 		"SECTION_DISPLAY_PROPERTY" => "UF_SECTION_TEMPLATE",
 		"LIST_DISPLAY_POPUP_IMAGE" => "Y",
