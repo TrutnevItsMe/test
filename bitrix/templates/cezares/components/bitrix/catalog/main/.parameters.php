@@ -200,7 +200,7 @@
 			"DEFAULT" => array("POPULARITY", "NAME", "PRICE"),
 			"PARENT" => "LIST_SETTINGS",
 			"TYPE" => "LIST",
-			"REFRESH" => "Y",
+			"REFRESH" => "N",
 			"MULTIPLE" => "Y",
 		),
 	));
