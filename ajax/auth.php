@@ -12,6 +12,8 @@ if(!$USER->IsAuthorized()){?>
 		{
 			$_SERVER['QUERY_STRING'] = '';
 			$_SERVER['REQUEST_URI'] = $_REQUEST['backurl'];
+			$APPLICATION->sDocPath2 = GetPagePath(false, true);
+			$APPLICATION->sDirPath = GetDirPath($APPLICATION->sDocPath2);
 		}
 	}?>
 	<a href="#" class="close jqmClose"><i></i></a>
