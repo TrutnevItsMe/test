@@ -526,7 +526,14 @@ $APPLICATION->IncludeComponent(
 		"ADD_PROPERTIES_TO_BASKET" => "Y",
 		"PARTIAL_PRODUCT_PROPERTIES" => "Y",
 		"DETAIL_CHECK_SECTION_ID_VARIABLE" => "N",
-		"STORES" => \Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS,
+		"STORES" => array(
+			0 => "374",
+			1 => "375",
+			2 => "376",
+			3 => "377",
+			4 => "378",
+			5 => "",
+		),
 		"USER_FIELDS" => array(
 			0 => "",
 			1 => "",

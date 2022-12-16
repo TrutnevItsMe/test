@@ -8,22 +8,8 @@ $aMenuLinks = Array(
 		"" 
 	),
 	Array(
-		"Текущие заказы", 
+		"Предварительные заказы", 
 		"/personal/orders/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
-		"Личные данные", 
-		"/personal/private/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
-		"Корзина", 
-		"/basket/", 
 		Array(), 
 		Array(), 
 		"" 
@@ -36,8 +22,22 @@ $aMenuLinks = Array(
 		"" 
 	),
 	Array(
+		"Личные данные", 
+		"/personal/private/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
 		"Контрагенты и договора", 
 		"/personal/profiles/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Корзина", 
+		"/basket/", 
 		Array(), 
 		Array(), 
 		"" 

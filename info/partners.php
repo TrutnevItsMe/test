@@ -2,7 +2,6 @@
 require_once $_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php";
 $APPLICATION->SetTitle("Партнерам");
 ?>
-
 <h5>Мы предлагаем нашим партнерам</h5>
 
 <ul>
@@ -83,22 +82,7 @@ $APPLICATION->SetTitle("Партнерам");
 <p>Мы активно расширяем канал сбыта и приглашаем к сотрудничеству салоны, магазины, дизайн студии и оптовые компании.
 	С нами просто, удобно и прибыльно работать!</p>
 
-<h5 style="color: dodgerblue">2020</h5>
-<ul>
-	<li><a href="#">Каталог BELBAGNO 2020</a></li>
-	<li><a href="#">Каталог CEZARES смесители 2020</a></li>
-	<li><a href="#">Мебель CEZARES 2020</a></li>
-</ul>
 
-	<h5 style="color: dodgerblue">2019</h5>
-<ul>
-	<li><a href="#">Каталог CEZARES 2019</a></li>
-	<li><a href="#">Каталог CEZARES мебели для ванных комнат 2019</a></li>
-	<li><a href="#">Каталог CEZARES смесители 2019</a></li>
-	<li><a href="#">Каталог BELBAGNO 2019</a></li>
-	<li><a href="#">Каталог BELBAGNO Мебель 2019</a></li>
-	<li><a href="#">Каталог ART&MAX 2019</a></li>
-</ul>
 
 <?php
 require_once $_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php";

@@ -1235,7 +1235,6 @@
 				return;
 			}
 
-			// var basketItemTemplate = this.getTemplate('basket-item-template');
 			var basketItemTemplate = this.getTemplate(this.templateItemsDisplay);
 			if (basketItemTemplate)
 			{

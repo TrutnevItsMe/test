@@ -390,8 +390,9 @@ $arParams["AJAX_FILTER_CATALOG"] = "N";
 					foreach ($arTopSections as $sId => $arSection): ?>
 						<?
 
-						// Снято с производства
-						if ($arSection["ID"] == OUT_OF_PRODUCTION_IBLOCK_ID)
+						// Снято с производства | комплекктующие
+						if (strstr($arSection["CODE"], OUT_OF_PRODUCTION_IBLOCK_SECTION_CODE) !== false ||
+							strstr($arSection["CODE"], "komplektuyushchie") !== false)
 						{
 							continue;
 						}
@@ -493,8 +494,9 @@ $arParams["AJAX_FILTER_CATALOG"] = "N";
 					<? foreach ($subsections as $sId => $arSection): ?>
 						<?
 
-						// Снято с производства
-						if ($arSection["ID"] == OUT_OF_PRODUCTION_IBLOCK_ID)
+						// Снято с производства | комплектующие
+						if (strstr($arSection["CODE"], OUT_OF_PRODUCTION_IBLOCK_SECTION_CODE) !== false ||
+							strstr($arSection["CODE"], "komplektuyushchie") !== false)
 						{
 							continue;
 						}
