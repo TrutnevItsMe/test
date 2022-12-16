@@ -143,4 +143,5 @@ $MESS["RESTS"] = "Rests";
 $MESS["COUNT_PRODUCTS"] = "product`s count: ";
 $MESS["VOLUME"] = "Volume: ";
 $MESS["PERSONAL_DATA_ERROR"] = "Accept consent to the processing of personal data";
+$MESS["PIECES_SHORT_CAPTURE"] = "pcs.";
 ?>
