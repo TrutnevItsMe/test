@@ -1,0 +1,19 @@
+.catalog_block .item-stock, .catalog_block .article_block
+{
+	text-align: left;
+}
+
+.sa_block > .item-stock-qnty,
+.sa_block > .item-stock
+{
+	display: block;
+	text-align: center;
+}
+
+.item-stock-qnty > .value
+{
+	display: inline-block;
+	vertical-align: top;
+	font-size: 12px;
+	color: #666;
+}
