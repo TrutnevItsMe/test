@@ -192,7 +192,8 @@ $headerCodes = array_column($arResult['JS_DATA']["GRID"]["HEADERS"], "id");
 $storeIndex = array_search(STORE_CODE, $headerCodes);
 $qntyIndex = array_search("QUANTITY", $headerCodes);
 
-if ($storeIndex != count($arResult['JS_DATA']["GRID"]["HEADERS"]) - 1){
+if ($storeIndex != count($arResult['JS_DATA']["GRID"]["HEADERS"]) - 1)
+{
 
 	$tmp = $arResult['JS_DATA']["GRID"]["HEADERS"][$storeIndex + 1];
 	$arResult['JS_DATA']["GRID"]["HEADERS"][$storeIndex + 1] = $arResult['JS_DATA']["GRID"]["HEADERS"][$qntyIndex];
@@ -272,6 +273,47 @@ if (is_array($arResult["GRID"]["ROWS"]))
 		$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["DISCOUNT_PRICE_PERCENT_FORMATED"] = round($arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]["DISCOUNT_PRICE_PERCENT"] * 100, 2) . "%";
 
 		$productId = $arItem["data"]["PRODUCT_ID"];
+
+		if ($arParams["SHOW_STORE"])
+		{
+			if ($arParams["DEF_STORE_ID"])
+			{
+				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][STORE_CODE] = $arStores[$productId][$arParams["DEF_STORE_ID"]]["STORE_TITLE"];
+			}
+			else
+			{
+				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][STORE_CODE] = current($arStores[$productId])["STORE_TITLE"];
+			}
+		}
+
+		if ($arParams["SHOW_RESTS"])
+		{
+			$quantity = "";
+
+			if ($arParams["DEF_STORE_ID"])
+			{
+				$quantity = $arStores[$productId][$arParams["DEF_STORE_ID"]]["AMOUNT"];
+			}
+			else
+			{
+				$quantity = current($arStores[$productId])["AMOUNT"];
+			}
+
+			$arQuantityData = CNext::GetQuantityArray($quantity);
+			$displayQuantity = "";
+
+			if ($quantity <= 0 || $quantity >= $arQuantityData["OPTIONS"]["MAX_AMOUNT"])
+			{
+				$displayQuantity = $arQuantityData["TEXT"];
+			}
+			else
+			{
+				$displayQuantity = $quantity . " " . Loc::getMessage("PIECES_SHORT_CAPTURE");
+			}
+
+			$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][RESTS_CODE] = $displayQuantity;
+		}
+
 		$rsProperty = CIBlockElement::GetProperty(
 			$catalogIblockID,
 			$productId,
@@ -279,35 +321,14 @@ if (is_array($arResult["GRID"]["ROWS"]))
 			["CODE" => "COMPOSITION"]
 		);
 
-		if ($arParams["SHOW_STORE"]){
-			$res = CCatalogStoreProduct::GetList([],
-				["=PRODUCT_ID" => $arItem["data"]["PRODUCT_ID"],
-					'=STORE.ACTIVE'=>'Y',
-					"!=AMOUNT" => 0]);
-
-			if ($arStore = $res->GetNext())
+		if ($property = $rsProperty->Fetch())
+		{
+			if (is_array($value = $property['VALUE']))
 			{
-				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][STORE_CODE] = $arStore["STORE_NAME"];
-			}
-		}
-
-		if ($arParams["SHOW_RESTS"]){
-			$res = CCatalogStoreProduct::GetList([],
-				["=PRODUCT_ID" => $arItem["data"]["PRODUCT_ID"],
-					'=STORE.ACTIVE'=>'Y',
-					"!=AMOUNT" => 0]);
-
-			if ($arStoreProduct = $res->GetNext())
-			{
-				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][RESTS_CODE] = CNext::GetQuantityArray($arStore["AMOUNT"])["TEXT"];
-			}
-		}
-
-		if ($property = $rsProperty->Fetch()) {
-			if (is_array($value = $property['VALUE'])) {
 				$set = Sets::getSet($value['TEXT']);
-				$set = array_column ($set['SET'], 'NAME');
-				if (count ($set) > 0) {
+				$set = array_column($set['SET'], 'NAME');
+				if (count($set) > 0)
+				{
 					$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"]['SET'] = $set;
 				}
 			}

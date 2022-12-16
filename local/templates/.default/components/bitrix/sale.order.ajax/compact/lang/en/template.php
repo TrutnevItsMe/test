@@ -139,4 +139,9 @@ $MESS["USE_COUPON_DEFAULT"] = "Apply coupon";
 $MESS["ORDER_ITEMS"] = "Products in order";
 $MESS["EDIT_ORDER"] = "Edit order";
 $MESS["RESTS"] = "Rests";
+
+$MESS["COUNT_PRODUCTS"] = "product`s count: ";
+$MESS["VOLUME"] = "Volume: ";
+$MESS["PERSONAL_DATA_ERROR"] = "Accept consent to the processing of personal data";
+$MESS["PIECES_SHORT_CAPTURE"] = "pcs.";
 ?>
