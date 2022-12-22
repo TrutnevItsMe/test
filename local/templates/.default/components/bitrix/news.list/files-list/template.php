@@ -1,5 +1,6 @@
-<?php if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
-	die(); ?>
+<?php if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
+	die();
+} ?>
 <?php
 
 $this->setFrameMode(true);
@@ -24,8 +25,9 @@ $this->setFrameMode(true);
 			<ul class="nav nav-tabs">
 				<?php $i = 0; ?>
 				<?php foreach ($arResult['SECTIONS'] as $SID => $arSection): ?>
-					<?php if (!$SID)
-						continue; ?>
+					<?php if (!$SID) {
+						continue;
+					} ?>
 					<li class="<?=$i++ == 0 ? 'active' : ''?>"><a data-toggle="tab"
 																  href="#<?=$this->GetEditAreaId($arSection['ID'])?>"><?=$arSection['NAME']?></a>
 					</li>
@@ -113,7 +115,7 @@ $this->setFrameMode(true);
 										</div>
 										<?php if ($file["TIMESTAMP_X"]): ?>
 											<div class="info-row__item">
-												<p><?=$file["TIMESTAMP_X"]->format("d.m.Y")?></p>
+												<p><?=substr($file["TIMESTAMP_X"], 0, -9)?></p>
 											</div>
 										<?php endif; ?>
 										<div class="info-row__item">
