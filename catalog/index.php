@@ -333,8 +333,8 @@ $APPLICATION->IncludeComponent(
 		"ELEMENT_SORT_FIELD2" => "shows",
 		"ELEMENT_SORT_ORDER2" => "asc",
 		"LIST_PROPERTY_CODE" => array(
-			0 => "BRAND",
-			1 => "TSVET",
+			0 => "TSVET",
+			1 => "BREND",
 			2 => "CML2_ARTICLE",
 			3 => "STRANA",
 			4 => "PROP_159",
