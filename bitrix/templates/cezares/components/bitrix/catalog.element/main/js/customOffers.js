@@ -102,6 +102,18 @@ window.OffersFilterComponent = {
 		{
 			showPrice(price);
 		}
+		else
+		{
+			let currentOffer = this.result["CURRENT_OFFER"];
+			if (currentOffer && currentOffer["ITEM_PRICES"] && currentOffer["ITEM_PRICES"][0])
+			{
+				let arPrice = currentOffer["ITEM_PRICES"][0];
+				showPrice({
+					price: arPrice["BASE_PRICE"],
+					old: arPrice["BASE_PRICE"]
+				});
+			}
+		}
 
 		this.bindEvents();
 	},
@@ -444,10 +456,14 @@ window.OffersFilterComponent = {
 			// устанавливаем цену из предлоржения
 			else
 			{
-				showPrice({
-					price: currentOffer["CATALOG_PURCHASING_PRICE"],
-					old: currentOffer["CATALOG_PURCHASING_PRICE"]
-				});
+				if (currentOffer["ITEM_PRICES"] && currentOffer["ITEM_PRICES"][0])
+				{
+					let arPrice = currentOffer["ITEM_PRICES"][0];
+					showPrice({
+						price: arPrice["BASE_PRICE"],
+						old: arPrice["BASE_PRICE"]
+					});
+				}
 			}
 
 			// Меняем картинки в слайдере
