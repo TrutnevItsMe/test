@@ -339,12 +339,6 @@ $asset->addJs($templateFolder."/script.js");
 							<div class="sa_block" style="min-height: 190px;">
 								<?= $displayQuantity; ?>
 								<div class="article_block"
-									 <? if (isset($arItem['ARTICLE']) && $arItem['ARTICLE']['VALUE']): ?>data-name="<?= $arItem['ARTICLE']['NAME']; ?>"
-									 data-value="<?= $arItem['ARTICLE']['VALUE']; ?>"<? endif; ?>>
-									<? if (isset($arItem['ARTICLE']) && $arItem['ARTICLE']['VALUE']) { ?>
-										<div><?= $arItem['ARTICLE']['NAME']; ?>
-											: <?= $arItem['ARTICLE']['VALUE']; ?></div>
-									<? } ?>
 									<table>
 										<?foreach ($arParams["PROPERTY_CODE"] as $prop):?>
 											<?if ($arItem["PROPERTIES"][$prop]["VALUE"]):?>
@@ -352,6 +346,7 @@ $asset->addJs($templateFolder."/script.js");
 												<td><?=$arItem["PROPERTIES"][$prop]["NAME"]?>:
 													<?=$arItem["PROPERTIES"][$prop]["VALUE"]?></td>
 											</tr>
+											<br>
 											<?endif?>
 										<?endforeach;?>
 										<tr>

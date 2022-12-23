@@ -1,46 +1,48 @@
-<?
+<?php
 
 		######################################powerd by bart####################
 			##########################################################################
-$res = CIBlockSection::GetList(Array("NAME"=>"ASC"), 
-	array("IBLOCK_ID"=>17), false,
-	array("ID","UF_*"));
-	$arNotShowSections = array();
-	while($ar_result = $res->GetNext()){
-	
-		if($ar_result["UF_DISABLE_GLOBAL"]){
-			$arNotShowSections[] = $ar_result['ID'];			
-		}
+$res = CIBlockSection::GetList(["NAME" => "ASC"],
+	["IBLOCK_ID" => 17], false,
+	[
+		"ID",
+		"UF_*"
+	]);
+$arNotShowSections = [];
+while ($ar_result = $res->GetNext()) {
+	if ($ar_result["UF_DISABLE_GLOBAL"]) {
+		$arNotShowSections[] = $ar_result['ID'];
 	}
+}
 unset($res);
 global $NEXT_SMART_FILTER;
 $NEXT_SMART_FILTER[0] = array('!SECTION_ID' => $arNotShowSections);
 
 global $arTheme;?>
-<?if($arSeoItem):?>
+<?php if($arSeoItem):?>
 	<div class="seo_block">
-		<?if($arSeoItem["DETAIL_PICTURE"]):?>
+		<?php if($arSeoItem["DETAIL_PICTURE"]):?>
 			<img src="<?=CFile::GetPath($arSeoItem["DETAIL_PICTURE"]);?>" alt="" title="" class="img-responsive"/>
-		<?endif;?>
+		<?php endif;?>
 
-		<?ob_start();?>
-		<?if($arSeoItem["PREVIEW_TEXT"]):?>
+		<?php ob_start();?>
+		<?php if($arSeoItem["PREVIEW_TEXT"]):?>
 			<?=$arSeoItem["PREVIEW_TEXT"]?>
-		<?endif;?>
-		<?
+		<?php endif;?>
+		<?php
 		$html = ob_get_clean();
 		$APPLICATION->AddViewContent('top_desc', $html);
 		$APPLICATION->ShowViewContent('top_desc');
 		$APPLICATION->ShowViewContent('sotbit_seometa_top_desc');
 		?>
 
-		<?if($arSeoItem["PROPERTY_FORM_QUESTION_VALUE"]):?>
+		<?php if($arSeoItem["PROPERTY_FORM_QUESTION_VALUE"]):?>
 			<table class="order-block noicons">
 				<tbody>
 					<tr>
 						<td class="col-md-9 col-sm-8 col-xs-7 valign">
 							<div class="text">
-								<?$APPLICATION->IncludeComponent(
+								<?php $APPLICATION->IncludeComponent(
 									 'bitrix:main.include',
 									 '',
 									 Array(
@@ -59,10 +61,10 @@ global $arTheme;?>
 					</tr>
 				</tbody>
 			</table>
-		<?endif;?>
-		<?if($arSeoItem["PROPERTY_TIZERS_VALUE"]):?>
-			<?$GLOBALS["arLandingTizers"] = array("ID" => $arSeoItem["PROPERTY_TIZERS_VALUE"]);?>
-			<?$APPLICATION->IncludeComponent(
+		<?php endif;?>
+		<?php if($arSeoItem["PROPERTY_TIZERS_VALUE"]):?>
+			<?php $GLOBALS["arLandingTizers"] = array("ID" => $arSeoItem["PROPERTY_TIZERS_VALUE"]);?>
+			<?php $APPLICATION->IncludeComponent(
 				"bitrix:news.list",
 				"next",
 				array(
@@ -122,14 +124,14 @@ global $arTheme;?>
 				),
 				false, array("HIDE_ICONS" => "Y")
 			);?>
-		<?endif;?>
-		<?$APPLICATION->ShowViewContent('sotbit_seometa_add_desc');?>
+		<?php endif;?>
+		<?php $APPLICATION->ShowViewContent('sotbit_seometa_add_desc');?>
 	</div>
-<?endif;?>
+<?php endif;?>
 
-<?if($iSectionsCount):?>
+<?php if($iSectionsCount):?>
 	<div class="section_block">
-		<?$APPLICATION->IncludeComponent(
+		<?php $APPLICATION->IncludeComponent(
 			"bitrix:catalog.section.list",
 			"front_sections_only",
 			Array(
@@ -158,21 +160,21 @@ global $arTheme;?>
 			$component, array('HIDE_ICONS' => 'Y')
 		);?>
 	</div>
-<?endif;?>
+<?php endif;?>
 
-<?$isAjax="N";?>
-<?if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest"  && isset($_GET["ajax_get"]) && $_GET["ajax_get"] == "Y" || (isset($_GET["ajax_basket"]) && $_GET["ajax_basket"]=="Y")){
+<?php $isAjax="N";?>
+<?php if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest"  && isset($_GET["ajax_get"]) && $_GET["ajax_get"] == "Y" || (isset($_GET["ajax_basket"]) && $_GET["ajax_basket"]=="Y")){
 	$isAjax="Y";
 }?>
-<?if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest" && isset($_GET["ajax_get_filter"]) && $_GET["ajax_get_filter"] == "Y" ){
+<?php if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == "xmlhttprequest" && isset($_GET["ajax_get_filter"]) && $_GET["ajax_get_filter"] == "Y" ){
 	$isAjaxFilter="Y";
 }
 if($isAjaxFilter == "Y")
 	$isAjax="N";?>
-<?$section_pos_top = \Bitrix\Main\Config\Option::get("aspro.next", "TOP_SECTION_DESCRIPTION_POSITION", "UF_SECTION_DESCR", SITE_ID );?>
-<?$section_pos_bottom = \Bitrix\Main\Config\Option::get("aspro.next", "BOTTOM_SECTION_DESCRIPTION_POSITION", "DESCRIPTION", SITE_ID );?>
-<?if($itemsCnt):?>
-	<?
+<?php $section_pos_top = \Bitrix\Main\Config\Option::get("aspro.next", "TOP_SECTION_DESCRIPTION_POSITION", "UF_SECTION_DESCR", SITE_ID );?>
+<?php $section_pos_bottom = \Bitrix\Main\Config\Option::get("aspro.next", "BOTTOM_SECTION_DESCRIPTION_POSITION", "DESCRIPTION", SITE_ID );?>
+<?php if($itemsCnt):?>
+<?php
 	//sort
 	ob_start();
 	include_once(__DIR__."/../sort.php");
@@ -180,8 +182,8 @@ if($isAjaxFilter == "Y")
 	$listElementsTemplate = $template;
 	?>
 
-	<?// sliceheight for ajax mode?>
-	<?if($arParams['AJAX_MODE'] == 'Y' && strpos($_SERVER['REQUEST_URI'], 'bxajaxid') !== false):?>
+<?php // sliceheight for ajax mode?>
+<?php if($arParams['AJAX_MODE'] == 'Y' && strpos($_SERVER['REQUEST_URI'], 'bxajaxid') !== false):?>
 		<script type="text/javascript">
 			setTimeout(function(){
 				$('.ajax_load .catalog_block .catalog_item_wrapp .catalog_item .item-title').sliceHeight({resize: false});
@@ -191,14 +193,14 @@ if($isAjaxFilter == "Y")
 			}, 100);
 			setStatusButton();
 		</script>
-	<?endif;?>
+<?php endif;?>
 
-	<?// filter?>
-	<?if($arTheme["FILTER_VIEW"]["VALUE"] === "VERTICAL"):?>
-		<?//add filter with ajax?>
-		<?if($arParams['AJAX_MODE'] == 'Y' && strpos($_SERVER['REQUEST_URI'], 'bxajaxid') !== false):?>
+<?php // filter?>
+<?php if($arTheme["FILTER_VIEW"]["VALUE"] === "VERTICAL"):?>
+	<?php //add filter with ajax?>
+	<?php if($arParams['AJAX_MODE'] == 'Y' && strpos($_SERVER['REQUEST_URI'], 'bxajaxid') !== false):?>
 			<div class="filter_tmp swipeignore">
-				<?include_once(__DIR__."/../filter.php")?>
+				<?php include_once(__DIR__."/../filter.php")?>
 			</div>
 			<script type="text/javascript">
 				if(typeof window['trackBarOptions'] !== 'undefined'){
@@ -243,64 +245,64 @@ if($isAjaxFilter == "Y")
 				}
 
 			</script>
-		<?endif;?>
-		<?ob_start();?>
-			<?include_once(__DIR__."/../filter.php")?>
+	<?php endif;?>
+	<?php ob_start();?>
+	<?php include_once(__DIR__."/../filter.php")?>
 			<script>
 				$('#content > .wrapper_inner > .left_block').addClass('filter_ajax filter_visible');
 			</script>
-		<?$html = ob_get_clean();?>
-		<?$APPLICATION->AddViewContent('left_menu', $html);?>
-	<?endif;?>
-	<?if(isset($arParams['LANDING_POSITION']) && $arParams['LANDING_POSITION'] === 'BEFORE_PRODUCTS'):?>
+	<?php $html = ob_get_clean();?>
+	<?php $APPLICATION->AddViewContent('left_menu', $html);?>
+<?php endif;?>
+<?php if(isset($arParams['LANDING_POSITION']) && $arParams['LANDING_POSITION'] === 'BEFORE_PRODUCTS'):?>
 	    <div class="<?=($arParams["LANDING_TYPE_VIEW"] ? $arParams["LANDING_TYPE_VIEW"] : "landing_1" );?>" >
-		    <?@include_once(($arParams["LANDING_TYPE_VIEW"] ? $arParams["LANDING_TYPE_VIEW"] : "landing_1").'.php');?>
+			<?php @include_once(($arParams["LANDING_TYPE_VIEW"] ? $arParams["LANDING_TYPE_VIEW"] : "landing_1").'.php');?>
 	    </div>
-	<?endif;?>
+<?php endif;?>
 	<div class="right_block1 clearfix catalog <?=strtolower($arTheme["FILTER_VIEW"]["VALUE"]);?>" id="right_block_ajax">
-		<?if($arTheme["FILTER_VIEW"]["VALUE"] === "HORIZONTAL" || $arTheme["FILTER_VIEW"]["VALUE"] === "COMPACT"){?>
+		<?php if($arTheme["FILTER_VIEW"]["VALUE"] === "HORIZONTAL" || $arTheme["FILTER_VIEW"]["VALUE"] === "COMPACT"){?>
 			<div class="<?=($arTheme["FILTER_VIEW"]["VALUE"]=="HORIZONTAL" ? 'filter_horizontal' : '');?><?=($arTheme["FILTER_VIEW"]["VALUE"]=="COMPACT" ? ' filter_compact' : '');?> swipeignore">
-				<?include_once(__DIR__."/../filter.php")?>
+				<?php include_once(__DIR__."/../filter.php")?>
 			</div>
-		<?}?>
+		<?php }?>
 		<div class="inner_wrapper">
-<?endif;?>
-			<?if(!$arSeoItem):?>
-				<?if($arParams["SHOW_SECTION_DESC"] != 'N' && strpos($_SERVER['REQUEST_URI'], 'PAGEN') === false):?>
-					<?ob_start();?>
-					<?if($posSectionDescr === "BOTH"):?>
-						<?if ($arSection[$section_pos_top]):?>
+			<?php endif;?>
+			<?php if(!$arSeoItem):?>
+				<?php if($arParams["SHOW_SECTION_DESC"] != 'N' && strpos($_SERVER['REQUEST_URI'], 'PAGEN') === false):?>
+					<?php ob_start();?>
+					<?php if($posSectionDescr === "BOTH"):?>
+						<?php if ($arSection[$section_pos_top]):?>
 							<div class="group_description_block top">
 								<div><?=$arSection[$section_pos_top]?></div>
 							</div>
-						<?endif;?>
-					<?elseif($posSectionDescr === "TOP"):?>
-						<?if($arSection[$arParams["SECTION_PREVIEW_PROPERTY"]]):?>
+						<?php endif;?>
+					<?php elseif($posSectionDescr === "TOP"):?>
+						<?php if($arSection[$arParams["SECTION_PREVIEW_PROPERTY"]]):?>
 							<div class="group_description_block top">
 								<div><?=$arSection[$arParams["SECTION_PREVIEW_PROPERTY"]]?></div>
 							</div>
-						<?elseif($arSection["DESCRIPTION"]):?>
+						<?php elseif($arSection["DESCRIPTION"]):?>
 							<div class="group_description_block top">
 								<div><?=$arSection["DESCRIPTION"]?></div>
 							</div>
-						<?elseif($arSection["UF_SECTION_DESCR"]):?>
+						<?php elseif($arSection["UF_SECTION_DESCR"]):?>
 							<div class="group_description_block top">
 								<div><?=$arSection["UF_SECTION_DESCR"]?></div>
 							</div>
-						<?endif;?>
-					<?endif;?>
-					<?
+						<?php endif;?>
+					<?php endif;?>
+					<?php
 					$html = ob_get_clean();
 					$APPLICATION->AddViewContent('top_desc', $html);
 					$APPLICATION->ShowViewContent('sotbit_seometa_top_desc');
 					$APPLICATION->ShowViewContent('top_desc');
 					?>
-				<?endif;?>
-			<?endif;?>
+				<?php endif;?>
+			<?php endif;?>
 
-<?if($itemsCnt):?>
-			<?if('Y' === $arParams['USE_FILTER']):?>
-				<?
+			<?php if($itemsCnt):?>
+				<?php if('Y' === $arParams['USE_FILTER']):?>
+					<?php
 			    $matchesFilter = array();
 			    if(isset($arParams["SEF_URL_TEMPLATES"]['smart_filter']) && strripos($arParams["SEF_URL_TEMPLATES"]['smart_filter'], "#SMART_FILTER_PATH#")) {
 				$isSmartFilter = str_replace("#SMART_FILTER_PATH#", "(.*?)", $arParams["SEF_URL_TEMPLATES"]['smart_filter']);
@@ -312,25 +314,25 @@ if($isAjaxFilter == "Y")
 				<div class="adaptive_filter">
 					<a class="filter_opener<?=($_REQUEST['set_filter'] === 'y' ? ' active num' : '')?><?=(($_REQUEST['set_filter'] === 'y' || (count($matchesFilter)>1 && $matchesFilter[1] != 'clear')) ? ' active num' : '')?>"><i></i><span><?=GetMessage("CATALOG_SMART_FILTER_TITLE")?></span></a>
 				</div>
-			<?endif;?>
+				<?php endif;?>
 
-			<?if($isAjax=="N"){
+				<?php if($isAjax=="N"){
 				$frame = new \Bitrix\Main\Page\FrameHelper("viewtype-block");
 				$frame->begin();?>
-			<?}?>
+				<?php }?>
 
-			<?// sort?>
+				<?php // sort?>
 			<?=$sortHtml;?>
 
-			<?if($isAjax === 'Y'){
+				<?php if($isAjax === 'Y'){
 				$APPLICATION->RestartBuffer();
 			}?>
 
-			<?$show = $arParams["PAGE_ELEMENT_COUNT"];?>
-			<?if($isAjax === 'N'){?>
+				<?php $show = $arParams["PAGE_ELEMENT_COUNT"];?>
+				<?php if($isAjax === 'N'){?>
 				<div class="ajax_load <?=$display;?>">
-			<?}?>
-				<?$APPLICATION->IncludeComponent(
+				<?php }?>
+				<?php $APPLICATION->IncludeComponent(
 					"bitrix:catalog.section",
 					$listElementsTemplate,
 					Array(
@@ -448,69 +450,69 @@ if($isAjaxFilter == "Y")
 						"ADDING_STORE_BASKET" => $arParams["ADDING_STORE_BASKET"]
 					), $component, array("HIDE_ICONS" => $isAjax)
 				);?>
-			<?if($isAjax !== 'Y'){?>
+				<?php if($isAjax !== 'Y'){?>
 				</div>
-				<?$frame->end();?>
-			<?}?>
-<?endif;?>
-			<?if($isAjax === 'N'){?>
-				<?if(!$arSeoItem):?>
-					<?if($arParams["SHOW_SECTION_DESC"] != 'N' && strpos($_SERVER['REQUEST_URI'], 'PAGEN') === false):?>
-						<?ob_start();?>
-						<?if($posSectionDescr === "BOTH"):?>
-							<?if($arSection[$section_pos_bottom]):?>
+					<?php $frame->end();?>
+				<?php }?>
+			<?php endif;?>
+			<?php if($isAjax === 'N'){?>
+				<?php if(!$arSeoItem):?>
+					<?php if($arParams["SHOW_SECTION_DESC"] != 'N' && strpos($_SERVER['REQUEST_URI'], 'PAGEN') === false):?>
+						<?php ob_start();?>
+						<?php if($posSectionDescr === "BOTH"):?>
+							<?php if($arSection[$section_pos_bottom]):?>
 								<div class="group_description_block bottom">
 									<div><?=$arSection[$section_pos_bottom]?></div>
 								</div>
-							<?endif;?>
-						<?elseif($posSectionDescr === "BOTTOM"):?>
-							<?if($arSection[$arParams["SECTION_PREVIEW_PROPERTY"]]):?>
+							<?php endif;?>
+						<?php elseif($posSectionDescr === "BOTTOM"):?>
+							<?php if($arSection[$arParams["SECTION_PREVIEW_PROPERTY"]]):?>
 								<div class="group_description_block bottom">
 									<div><?=$arSection[$arParams["SECTION_PREVIEW_PROPERTY"]]?></div>
 								</div>
-							<?elseif ($arSection["DESCRIPTION"]):?>
+							<?php elseif ($arSection["DESCRIPTION"]):?>
 								<div class="group_description_block bottom">
 									<div><?=$arSection["DESCRIPTION"]?></div>
 								</div>
-							<?elseif($arSection["UF_SECTION_DESCR"]):?>
+							<?php elseif($arSection["UF_SECTION_DESCR"]):?>
 								<div class="group_description_block bottom">
 									<div><?=$arSection["UF_SECTION_DESCR"]?></div>
 								</div>
-							<?endif;?>
-						<?endif;?>
-						<?
+							<?php endif;?>
+						<?php endif;?>
+						<?php
 						$html = ob_get_clean();
 						$APPLICATION->AddViewContent('bottom_desc', $html);
 						$APPLICATION->ShowViewContent('bottom_desc');
 						$APPLICATION->ShowViewContent('sotbit_seometa_bottom_desc');
 						$APPLICATION->ShowViewContent('sotbit_seometa_add_desc');
 						?>
-					<?endif;?>
-				<?else:?>
-					<?ob_start();?>
-					<?if($arSeoItem["DETAIL_TEXT"]):?>
+					<?php endif;?>
+				<?php else:?>
+					<?php ob_start();?>
+					<?php if($arSeoItem["DETAIL_TEXT"]):?>
 						<?=$arSeoItem["DETAIL_TEXT"];?>
-					<?endif;?>
-					<?
+					<?php endif;?>
+					<?php
 					$html = ob_get_clean();
 					$APPLICATION->AddViewContent('bottom_desc', $html);
 					$APPLICATION->ShowViewContent('bottom_desc');
 					$APPLICATION->ShowViewContent('sotbit_seometa_bottom_desc');
 					?>
-				<?endif;?>
-				<?if(!isset($arParams['LANDING_POSITION']) || $arParams['LANDING_POSITION'] === 'AFTER_PRODUCTS'):?>
+				<?php endif;?>
+				<?php if(!isset($arParams['LANDING_POSITION']) || $arParams['LANDING_POSITION'] === 'AFTER_PRODUCTS'):?>
 					<div class="<?=($arParams["LANDING_TYPE_VIEW"] ? $arParams["LANDING_TYPE_VIEW"] : "landing_1" );?>" >
-						<?@include_once(($arParams["LANDING_TYPE_VIEW"] ? $arParams["LANDING_TYPE_VIEW"] : "landing_1" ).'.php');?>
+						<?php @include_once(($arParams["LANDING_TYPE_VIEW"] ? $arParams["LANDING_TYPE_VIEW"] : "landing_1" ).'.php');?>
 					</div>
-				<?endif;?>
+				<?php endif;?>
 
-				<?if($itemsCnt):?>
+				<?php if($itemsCnt):?>
 					<div class="clear"></div>
-					<?//</div> //.ajax_load?>
-				<?endif;?>
-			<?}?>
+					<?php //</div> //.ajax_load?>
+				<?php endif;?>
+			<?php }?>
 
-<?
+			<?php
 global $arSite, $arTheme;
 $postfix = "";
 $bBitrixAjax = (strpos($_SERVER["QUERY_STRING"], "bxajaxid") !== false);
@@ -519,43 +521,43 @@ if($arTheme["HIDE_SITE_NAME_TITLE"]["VALUE"] == "N" && ($bBitrixAjax || $isAjaxF
 	$postfix = " - ".$arSite["NAME"];
 }
 ?>
-<?if($itemsCnt):?>
-			<?if($isAjax == 'Y'){
+			<?php if($itemsCnt):?>
+			<?php if($isAjax == 'Y'){
 				die();
 			}?>
 		</div>
 	</div>
-	<?if($bBitrixAjax)
+<?php if($bBitrixAjax)
 	{
 		$page_title = $arValues['SECTION_META_TITLE'] ? $arValues['SECTION_META_TITLE'] : $arSection["NAME"];
 		if($page_title){
 			$APPLICATION->SetPageProperty("title", $page_title.$postfix);
 		}
 	}?>
-<?else:?>
-	<?if(!$section):?>
-		<?\Bitrix\Iblock\Component\Tools::process404(
+<?php else:?>
+	<?php if(!$section):?>
+		<?php \Bitrix\Iblock\Component\Tools::process404(
 			trim($arParams["MESSAGE_404"]) ?: GetMessage("T_NEWS_NEWS_NA")
 			,true
 			,$arParams["SET_STATUS_404"] === "Y"
 			,$arParams["SHOW_404"] === "Y"
 			,$arParams["FILE_404"]
 		);?>
-	<?else:?>
-		<?if(!$iSectionsCount):?>
+	<?php else:?>
+		<?php if(!$iSectionsCount):?>
 			<div class="no_goods">
 				<div class="no_products">
 					<div class="wrap_text_empty">
-						<?if($_REQUEST["set_filter"]){?>
-							1<?$APPLICATION->IncludeFile(SITE_DIR."include/section_no_products_filter.php", Array(), Array("MODE" => "html",  "NAME" => GetMessage('EMPTY_CATALOG_DESCR')));?>
-						<?}else{?>
-							<?$APPLICATION->IncludeFile(SITE_DIR."include/section_no_products.php", Array(), Array("MODE" => "html",  "NAME" => GetMessage('EMPTY_CATALOG_DESCR')));?>
-						<?}?>
+						<?php if($_REQUEST["set_filter"]){?>
+							1<?php $APPLICATION->IncludeFile(SITE_DIR."include/section_no_products_filter.php", Array(), Array("MODE" => "html",  "NAME" => GetMessage('EMPTY_CATALOG_DESCR')));?>
+						<?php }else{?>
+							<?php $APPLICATION->IncludeFile(SITE_DIR."include/section_no_products.php", Array(), Array("MODE" => "html",  "NAME" => GetMessage('EMPTY_CATALOG_DESCR')));?>
+						<?php }?>
 					</div>
 				</div>
 			</div>
-		<?endif;?>
-		<?
+		<?php endif;?>
+		<?php
 		$ipropValues = new \Bitrix\Iblock\InheritedProperty\SectionValues($arParams["IBLOCK_ID"], IntVal($arSection["ID"]));
 		$arValues = $ipropValues->getValues();
 		if($arParams["SET_TITLE"] !== 'N'){
@@ -578,9 +580,9 @@ if($arTheme["HIDE_SITE_NAME_TITLE"]["VALUE"] == "N" && ($bBitrixAjax || $isAjaxF
 			$APPLICATION->SetPageProperty("keywords", $arValues['SECTION_META_KEYWORDS']);
 		}
 		?>
-	<?endif;?>
-<?endif;?>
-<?
+	<?php endif;?>
+<?php endif;?>
+<?php
 if($arSeoItem)
 {
 	$langing_seo_h1 = ($arSeoItem["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"] != "" ? $arSeoItem["IPROPERTY_VALUES"]["ELEMENT_PAGE_TITLE"] : $arSeoItem["NAME"]);
@@ -598,10 +600,10 @@ if($arSeoItem)
 	if($arSeoItem["IPROPERTY_VALUES"]['ELEMENT_META_KEYWORDS'])
 		$APPLICATION->SetPageProperty("keywords", $arSeoItem["IPROPERTY_VALUES"]['ELEMENT_META_KEYWORDS']);
 	?>
-<?}?>
-<?if($isAjaxFilter):?>
-	<?global $APPLICATION;?>
-	<?$arAdditionalData['TITLE'] = htmlspecialcharsback($APPLICATION->GetTitle());
+<?php }?>
+<?php if($isAjaxFilter):?>
+	<?php global $APPLICATION;?>
+	<?php $arAdditionalData['TITLE'] = htmlspecialcharsback($APPLICATION->GetTitle());
 	if($arSeoItem)
 	{
 		$postfix = '';
@@ -617,4 +619,4 @@ if($arSeoItem)
 				BX.ajax.UpdateWindowTitle(arAjaxPageData.WINDOW_TITLE || arAjaxPageData.TITLE);
 		});
 	</script>
-<?endif;?>
+<?php endif;?>
