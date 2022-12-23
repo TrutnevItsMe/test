@@ -4145,7 +4145,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 
 			var data = allData.columns[column.id] ? allData.columns : allData.data,
 				toRight = BX.util.in_array(column.id, ["QUANTITY", "PRICE_FORMATED", "DISCOUNT_PRICE_PERCENT_FORMATED", "SUM"]),
-				textNode = BX.create('DIV', {props: {className: 'bx-soa-item-td-text'}}),
+				textNode = BX.create('DIV', {props: {className: 'bx-soa-item-td-text'}, attrs: { "data-column": column.id}}),
 				logotype, img;
 
 			if (column.id === 'PRICE_FORMATED')
@@ -9050,7 +9050,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 			}
 
 			// Показываем общий вес
-			if (this.params["COLUMNS_COMMON_INFO"] && this.options.showOrderWeight && this.params["COLUMNS_COMMON_INFO"].includes("WEIGHT"))
+			if (this.options.showOrderWeight && this.params["COLUMNS_COMMON_INFO"] && this.params["COLUMNS_COMMON_INFO"].includes("WEIGHT"))
 			{
 				this.totalInfoBlockNode.appendChild(this.createTotalUnit(BX.message('SOA_SUM_WEIGHT_SUM'), total.ORDER_WEIGHT_FORMATED));
 			}
