@@ -573,12 +573,12 @@
 
 .basket-item-block-store{
 	text-align: center;
-	width: 200px;
+	/*width: 200px;*/
 }
 
 .basket-item-block-rests{
 	text-align: center;
-	width: 100px;
+	/*width: 100px;*/
 }
 
 .basket-items-list-item-descriptions-inner {
@@ -2263,7 +2263,6 @@ body.bx-theme-yellow .catalog-block-header{border-color:#f4b236;}
 }
 
 .article-before-name-section{
-	width: 200px;
 	/*width: auto;*/
 	white-space: nowrap;
 	text-align: left;
@@ -2288,39 +2287,43 @@ td{
 }
 
 .preview-image-header{
-	width: 150px;
+	/*width: 150px;*/
+}
+
+.article-header{
+	/*min-width: 190px;*/
 }
 
 .product-header{
-	width: 250px;
+	/*width: 250px;*/
 	text-align: center;
 }
 
 .store-header{
 	text-align: center;
-	width: 200px;
+	/*width: 200px;*/
 }
 
 .amount-header{
-	width: 150px;
+	/*width: 150px;*/
 	text-align: center;
 }
 
 .rests-header{
-	width: 100px;
+	/*width: 100px;*/
 	text-align: center;
 }
 
 .property-TYPE{
-	width: 80px;
+	/*width: 80px;*/
 }
 
 .price_header{
-	width: 110px;
+	/*width: 110px;*/
 }
 
 .sum-header{
-	width: 90px;
+	/*width: 90px;*/
 }
 
 .td-price-header{

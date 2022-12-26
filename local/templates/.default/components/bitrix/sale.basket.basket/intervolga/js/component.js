@@ -122,13 +122,7 @@
 
 			this.getCacheNode(this.ids.basketRoot).style.opacity = 1;
 
-			/*if (this.displayRests){
-				this.showTextRests();
-			}
-*/
-			/*if (this.displayArticleBeforeName){
-				this.moveArticleBlock();
-			}*/
+			this.setWidthArticle();
 
 			if (this.displayDiscountPercent){
 				this.moveDiscountPercentBlock();
@@ -137,9 +131,16 @@
 			this.bindInitialEvents();
 		},
 
+		setWidthArticle: function (){
+			let minWidth = $(".article-before-name-section:first").width();
+			$(".article-header:first").css({
+				"min-width": minWidth
+			});
+		},
+
 		getTemplate: function(templateName)
 		{
-			console.log(this.items);
+			/*console.log(this.items);*/
 
 			if (!this.templates.hasOwnProperty(templateName))
 			{
