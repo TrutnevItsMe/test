@@ -397,12 +397,14 @@ foreach ($this->basketItems as $row)
 				$rowData['COLUMN_LIST'][] = [
 					'CODE' => $value['id'],
 					'NAME' => $value['name'],
-					'VALUE' => $rawValue,
+					'VALUE' => ($value["id"] == "PROPERTY_CML2_ARTICLE_VALUE") && (strlen($rawValue) > 25) ?
+						substr_replace($rawValue, "<br>", 25, 0)
+						:$rawValue,
 					'IS_TEXT' => !$isHtml,
 					'IS_HTML' => $isHtml,
 					'HIDE_MOBILE' => !isset($mobileColumns[$value['id']])
-				);
-			}*/
+				];
+			}
 		}
 
 		unset($value);
