@@ -2,7 +2,7 @@
 $APPLICATION->SetPageProperty("HIDETITLE", "Y");
 $APPLICATION->IncludeComponent(
 	"bitrix:sale.order.ajax", 
-	"compact",
+	"compact", 
 	array(
 		"PAY_FROM_ACCOUNT" => "N",
 		"ONLY_FULL_PAY_FROM_ACCOUNT" => "N",
@@ -100,7 +100,7 @@ $APPLICATION->IncludeComponent(
 		"USE_PHONE_NORMALIZATION" => "Y",
 		"ADDITIONAL_PICT_PROP_17" => "-",
 		"ADDITIONAL_PICT_PROP_20" => "-",
-		"HIDE_ORDER_DESCRIPTION" => "Y",
+		"HIDE_ORDER_DESCRIPTION" => "N",
 		"USE_ENHANCED_ECOMMERCE" => "N",
 		"ADDITIONAL_PICT_PROP_26" => "-",
 		"ACTIVE_SAVE_DRAFT_ORDER" => "Y",
