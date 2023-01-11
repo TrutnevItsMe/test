@@ -9,7 +9,7 @@ $bIncludedModule = (\Bitrix\Main\Loader::includeModule("aspro.next"));?>
 
 
 <?php
-
+$asset = Bitrix\Main\Page\Asset::getInstance();
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?=LANGUAGE_ID?>" lang="<?=LANGUAGE_ID?>" <?=($htmlClass ? 'class="'.$htmlClass.'"' : '')?>>
@@ -22,6 +22,9 @@ $bIncludedModule = (\Bitrix\Main\Loader::includeModule("aspro.next"));?>
 	<?$APPLICATION->ShowMeta("SKYPE_TOOLBAR");?>
 	<?$APPLICATION->ShowHead();?>
 	<?$APPLICATION->AddHeadString('<script>BX.message('.CUtil::PhpToJSObject( $MESS, false ).')</script>', true);?>
+	<?$asset->addCss(SITE_TEMPLATE_PATH."/css/common/display.css");?>
+	<?$asset->addCss(SITE_TEMPLATE_PATH."/css/common/margin.css");?>
+	<?$asset->addCss(SITE_TEMPLATE_PATH."/css/common/size.css");?>
 	<?if($bIncludedModule)
 		CNext::Start(SITE_ID);?>
 </head>
