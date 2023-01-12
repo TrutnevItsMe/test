@@ -22,9 +22,12 @@ $asset = Bitrix\Main\Page\Asset::getInstance();
 	<?$APPLICATION->ShowMeta("SKYPE_TOOLBAR");?>
 	<?$APPLICATION->ShowHead();?>
 	<?$APPLICATION->AddHeadString('<script>BX.message('.CUtil::PhpToJSObject( $MESS, false ).')</script>', true);?>
+
 	<?$asset->addCss(SITE_TEMPLATE_PATH."/css/common/display.css");?>
 	<?$asset->addCss(SITE_TEMPLATE_PATH."/css/common/margin.css");?>
 	<?$asset->addCss(SITE_TEMPLATE_PATH."/css/common/size.css");?>
+	<?$asset->addCss(SITE_TEMPLATE_PATH."/css/common/float.css");?>
+
 	<?if($bIncludedModule)
 		CNext::Start(SITE_ID);?>
 </head>

@@ -26,6 +26,55 @@ class PartnersStores extends CBitrixComponent
 			$this->arResult["MAP_FILTER_FIELDS"] = static::getMapFilterFields($this->arParams["FILTER_VALUES"]);
 		}
 
+		if ($this->arParams["USE_PAGINATION"] === "Y") {
+			if (is_numeric($this->arParams["PAGINATION_COUNT_ELEMENTS"])
+				&& $this->arParams["PAGINATION_COUNT_ELEMENTS"] > 0) {
+				$pageSize = intval($this->arParams["PAGINATION_COUNT_ELEMENTS"]);
+			} else {
+				$pageSize = 6;
+			}
+
+			$nav = new \Bitrix\Main\UI\PageNavigation("page");
+
+			$nav->allowAllRecords(true)
+				->setPageSize($pageSize)
+				->setRecordCount(count($this->arResult["ITEMS"]))
+				->initFromUri();
+
+			// Заполняем массив ID элементов для текущей пагинации
+			$this->arResult["PAGINATION_ELEMENT_IDS"] = [];
+			$arrayKeys = array_keys($this->arResult["ITEMS"]);
+			$index = $nav->getOffset();
+
+			for ($i = 0; $i < $pageSize; ++$i)
+			{
+				try
+				{
+					$this->arResult["PAGINATION_ELEMENT_IDS"][] = $arrayKeys[$index];
+				}
+				catch (Exception $e)
+				{
+					break;
+				}
+
+				++$index;
+			}
+
+			global $APPLICATION;
+
+			ob_start();
+			$APPLICATION->IncludeComponent(
+				"bitrix:main.pagenavigation",
+				$this->arParams["PAGINATION_TEMPLATE"],
+				[
+					"NAV_OBJECT" => $nav
+				]
+			);
+			$navString = ob_get_clean();
+
+			$this->arResult["NAV_STRING"] = $navString;
+		}
+
 		$this->includeComponentTemplate();
 	}
 
@@ -34,6 +83,7 @@ class PartnersStores extends CBitrixComponent
 		$partnersStores = [];
 
 		$rsShops = MagazinyPartnerovTable::getList([
+			"order" => ["ID" => "ASC"],
 			"select" => ["*"]
 		]);
 

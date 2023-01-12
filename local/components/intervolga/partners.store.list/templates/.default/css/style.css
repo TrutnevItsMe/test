@@ -1,0 +1,8 @@
+.item-wrap{
+	border: solid 1px #ededed;
+}
+
+.item-wrap:hover{
+	border: none;
+	box-shadow: 0px 0px 20px #bbbbbb;
+}
