@@ -495,6 +495,7 @@ function addGetCustomPricesButton(data) {
         if (!data.counterparties[profileId]) { return; }
         var counterpartyXmlId = data.counterparties[profileId].XML_ID;
         var agreementXmlId = $('#soa-property-' + data.agreementFieldId).val();
+		const comment = $("#orderDescription").val();
         $.post(
             '/ajax/getCustomPrices.php',
             {
@@ -502,7 +503,7 @@ function addGetCustomPricesButton(data) {
                 counterpartyXmlId: counterpartyXmlId,
                 agreementXmlId: agreementXmlId,
                 basket: data.basket,
-                sessid: BX.bitrix_sessid(),
+                sessid: BX.bitrix_sessid()
             },
             function(res) {
                 if (res.result == 'ok') {
@@ -519,6 +520,7 @@ function addGetCustomPricesButton(data) {
 					});
 						form.innerHTML += "<input type='text' name='USER_PROFILE' value='" + profileId + "'>";
 						form.innerHTML += "<input type='text' name='AGREEMENT_XML_ID' value='" + agreementXmlId + "'>";
+						form.innerHTML += "<input type='text' name='COMMENT' value='" + comment + "'>";
 
 					document.querySelector("body").append(form);
 					form.submit();
