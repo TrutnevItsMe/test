@@ -439,7 +439,6 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
  * @param data
  */
 function activateAgreementsField(data) {
-	
     window.currentAgreementId = '';
     setInterval(function () {
 		var $profile = $('[name=PROFILE_ID]');
@@ -476,7 +475,7 @@ function activateAgreementsField(data) {
             }
 		}
 		if ($('#bx-soa-properties input').length > 0) {
-			$('#bx-soa-properties input, #bx-soa-properties textarea').prop("disabled", true);
+			$('#bx-soa-properties input, #bx-soa-properties textarea:not([name="ORDER_DESCRIPTION"])').prop("disabled", true);
 		}
 		$('#bx-soa-properties a.bx-soa-editstep').hide();
     }, 300)
