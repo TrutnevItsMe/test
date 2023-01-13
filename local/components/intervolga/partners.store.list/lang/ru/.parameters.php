@@ -15,4 +15,5 @@ $MESS["USE_PAGINATION"] = "Выводить элементы постранич�
 $MESS["PAGINATION_AJAX"] = "Ajax";
 $MESS["PAGINATION_TEMPLATE"] = "Шаблон пагинации";
 $MESS["PAGINATION_COUNT_ELEMENTS"] = "Количество элементов на странице";
+$MESS["DISPLAY_FIELDS"] = "Выводимые поля";
 

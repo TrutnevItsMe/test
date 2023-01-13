@@ -7,23 +7,20 @@ use Intervolga\Custom\ORM\KontragentyTable;
 class PartnersStores extends CBitrixComponent
 {
 	static $COORDS_DELIMITER;
+
 	public function executeComponent()
 	{
-		if (strlen($this->arParams["COORDINATES_DELIMITER"]))
-		{
+		if (strlen($this->arParams["COORDINATES_DELIMITER"])) {
 			static::$COORDS_DELIMITER = $this->arParams["COORDINATES_DELIMITER"];
-		}
-		else
-		{
+		} else {
 			static::$COORDS_DELIMITER = "_";
 		}
 
 		$this->arResult["ITEMS"] = static::getPartnersStores();
+		$this->arResult["MAP_FIELDS"] = static::getMapFields();
 
-		if ($this->arParams["USE_FILTER"] === "Y")
-		{
+		if ($this->arParams["USE_FILTER"] === "Y") {
 			$this->arResult["MAP_FILTER_VALUES"] = static::getMapFilterValues($this->arParams["FILTER_VALUES"]);
-			$this->arResult["MAP_FILTER_FIELDS"] = static::getMapFilterFields($this->arParams["FILTER_VALUES"]);
 		}
 
 		if ($this->arParams["USE_PAGINATION"] === "Y") {
@@ -46,14 +43,10 @@ class PartnersStores extends CBitrixComponent
 			$arrayKeys = array_keys($this->arResult["ITEMS"]);
 			$index = $nav->getOffset();
 
-			for ($i = 0; $i < $pageSize; ++$i)
-			{
-				try
-				{
+			for ($i = 0; $i < $pageSize; ++$i) {
+				try {
 					$this->arResult["PAGINATION_ELEMENT_IDS"][] = $arrayKeys[$index];
-				}
-				catch (Exception $e)
-				{
+				} catch (Exception $e) {
 					break;
 				}
 
@@ -75,6 +68,13 @@ class PartnersStores extends CBitrixComponent
 			$this->arResult["NAV_STRING"] = $navString;
 		}
 
+		if ($this->arParams["USE_MAP"] === "Y")
+		{
+			$apiKey =  \Bitrix\Main\Config\Option::get('fileman', 'yandex_map_api_key', '');
+			static::includeMapScript($apiKey);
+			$this->arResult["MAP_ID"] = "MAP_" . rand();
+		}
+
 		$this->includeComponentTemplate();
 	}
 
@@ -87,8 +87,7 @@ class PartnersStores extends CBitrixComponent
 			"select" => ["*"]
 		]);
 
-		while ($shop = $rsShops->fetch())
-		{
+		while ($shop = $rsShops->fetch()) {
 			$shop["COORDINATES"] = static::parseCoordinates($shop["UF_KOORDINATY"], static::$COORDS_DELIMITER);
 			$shop["PARTNER"] = PartneryTable::getByXmlId($shop["UF_VLADELETS"]);
 			$shop["KONTRAGENTS"] = KontragentyTable::getByPartner($shop["UF_VLADELETS"]);
@@ -111,8 +110,7 @@ class PartnersStores extends CBitrixComponent
 
 		$explodedCoords = explode($delimiter, $coordinates);
 
-		if (count($explodedCoords) == 2)
-		{
+		if (count($explodedCoords) == 2) {
 			$arCoordinates["x"] = $explodedCoords[0];
 			$arCoordinates["y"] = $explodedCoords[1];
 		}
@@ -124,17 +122,17 @@ class PartnersStores extends CBitrixComponent
 	 * Возвращает map поля фильтрации со значением
 	 *
 	 * [
-	 * 	<FIELD_CODE> => [
-	 * 		<VALUE> => [          -- Значение поля
-	 * 			ID => string,     -- ID записи в HLB
-	 * 			COORDINATES => [  -- Координаты магазина партнера
-	 * 				x => string,
-	 * 				y => string
-	 * 			]
-	 * 		],
-	 * 		...
-	 * 	],
-	 * 	...
+	 *    <FIELD_CODE> => [
+	 *        <VALUE> => [          -- Значение поля
+	 *            ID => string,     -- ID записи в HLB
+	 *            COORDINATES => [  -- Координаты магазина партнера
+	 *                x => string,
+	 *                y => string
+	 *            ]
+	 *        ],
+	 *        ...
+	 *    ],
+	 *    ...
 	 * ]
 	 *
 	 * @param array $filterFields
@@ -144,8 +142,7 @@ class PartnersStores extends CBitrixComponent
 	{
 		$mapFilter = [];
 
-		if (!empty($filterFields))
-		{
+		if (!empty($filterFields)) {
 			$rsFilterValues = MagazinyPartnerovTable::getList([
 				"select" => array_merge(
 					["ID", "UF_KOORDINATY"],
@@ -153,10 +150,8 @@ class PartnersStores extends CBitrixComponent
 				)
 			]);
 
-			while ($arFilterValues = $rsFilterValues->fetch())
-			{
-				foreach ($filterFields as $filterField)
-				{
+			while ($arFilterValues = $rsFilterValues->fetch()) {
+				foreach ($filterFields as $filterField) {
 					$mapFilter[$filterField][$arFilterValues[$filterField]][] = [
 						"ID" => $arFilterValues["ID"],
 						"COORDINATES" => static::parseCoordinates($arFilterValues["UF_KOORDINATY"], static::$COORDS_DELIMITER)
@@ -172,28 +167,67 @@ class PartnersStores extends CBitrixComponent
 	 * Возвращает map кода поля с выводимым названием
 	 *
 	 * [
-	 * 	<FIELD_CODE> => <DISPLAY_FIELD>,
-	 * 	...
+	 *    <FIELD_CODE> => <DISPLAY_FIELD>,
+	 *    ...
 	 * ]
 	 *
-	 * @param array $filterFields
 	 * @return array
 	 */
-	public static function getMapFilterFields(array $filterFields): array
+	public static function getMapFields(): array
 	{
-		$mapFilter = [];
+		$mapFields = [];
+		$mapFieldsShops = MagazinyPartnerovTable::getMap();
 
-		if (!empty($filterFields))
+		foreach ($mapFieldsShops as $field => $arMapField)
 		{
-			$mapFieldsShops = MagazinyPartnerovTable::getMap();
-
-			foreach ($filterFields as $filterField)
-			{
-				$mapFilter[$filterField] = $mapFieldsShops[$filterField]["title"];
-			}
+			$mapFields[$field] = $mapFieldsShops[$field]["title"];
 		}
 
-		return $mapFilter;
+		return $mapFields;
+	}
+
+	public static function includeMapScript($apiKey = "")
+	{
+		$locale = "";
+		$scheme = (CMain::IsHTTPS() ? "https" : "http");
+		$yandexVersion = "2.1";
+
+		switch (LANGUAGE_ID)
+		{
+			case 'ru':
+				$locale = 'ru-RU';
+				break;
+			case 'ua':
+				$locale = 'ru-UA';
+				break;
+			case 'tk':
+				$locale = 'tr-TR';
+				break;
+			default:
+				$locale = 'en-US';
+				break;
+		}
+
+		if($apiKey == '')
+		{
+			$host = 'api-maps.yandex.ru';
+		}
+		else
+		{
+			$host = 'enterprise.api-maps.yandex.ru';
+		}
+
+		$scriptUrl = $scheme.'://'.$host.'/'.$yandexVersion.'/?load=package.full&mode=release&lang='.$locale.'&wizard=bitrix';
+
+		if($apiKey <> '')
+		{
+			$scriptUrl .= '&apikey='.$apiKey;
+		}
+
+		?>
+		<script src="<?=$scriptUrl?>"></script>
+		<?php
+
 	}
 }
 

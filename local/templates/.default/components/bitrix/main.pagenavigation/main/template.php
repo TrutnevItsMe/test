@@ -57,18 +57,18 @@ $this->setFrameMode(true); ?>
 			<ul class="flex-direction-nav">
 				<?php if(!$bPrevDisabled):?>
 					<?php $url = $APPLICATION->GetCurPageParam($arResult["ID"]."=page-".($arResult["CURRENT_PAGE"] - 1), [$arResult["ID"]]);?>
-					<li class="flex-nav-prev "><a href="<?=$url?>" class="flex-prev"></a></li>
+					<li class="flex-nav-prev "><a href="<?=$url?>" class="flex-prev pagination-item"></a></li>
 				<?php endif;?>
 
 				<?php if(!$bNextDisabled):?>
 					<?php $url = $APPLICATION->GetCurPageParam($arResult["ID"]."=page-".($arResult["CURRENT_PAGE"] + 1), [$arResult["ID"]]);?>
-					<li class="flex-nav-next "><a href="<?=$url?>" class="flex-next"></a></li>
+					<li class="flex-nav-next "><a href="<?=$url?>" class="flex-next pagination-item"></a></li>
 				<?php endif;?>
 			</ul>
 
 			<?php if($showPrevDots):?>
 				<?php $url = $APPLICATION->GetCurPageParam($arResult["ID"]."=page-".$arResult["START_PAGE"], [$arResult["ID"]]);?>
-				<a href="<?=$url?>" class="dark_link"><?=$arResult["START_PAGE"]?></a>
+				<a href="<?=$url?>" class="dark_link pagination-item"><?=$arResult["START_PAGE"]?></a>
 				<span class="point_sep"></span>
 			<?php endif;?>
 
@@ -80,12 +80,12 @@ $this->setFrameMode(true); ?>
 
 				<?php $url = $APPLICATION->GetCurPageParam($arResult["ID"]."=page-".$i, [$arResult["ID"]]);?>
 
-				<a href="<?=$url?>" class="dark_link"><?=$i?></a>
+				<a href="<?=$url?>" class="dark_link pagination-item"><?=$i?></a>
 			<?php endfor;?>
 
 			<?php if($showAfterDots):?>
 				<?php $url = $APPLICATION->GetCurPageParam($arResult["ID"]."=page-".$arResult["END_PAGE"], [$arResult["ID"]]);?>
-				<a href="<?=$url?>" class="dark_link"><?=$arResult["END_PAGE"]?></a>
+				<a href="<?=$url?>" class="dark_link pagination-item"><?=$arResult["END_PAGE"]?></a>
 				<span class="point_sep"></span>
 			<?php endif;?>
 		</div>

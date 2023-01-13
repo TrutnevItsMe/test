@@ -13,6 +13,14 @@ foreach ($fields as $CODE => $arField)
 	$arFields[$CODE] = $arField["title"] . " [" . $CODE . "]";
 }
 
+$arDisplayFields = array_diff_key(
+	$arFields,
+	[
+		"ID" => "EXCLUDED_KEY",
+		"UF_NAME" => "EXCLUDED_KEY"
+	]
+);
+
 $arComponentParameters = [
 	"GROUPS" => [
 		"FILTER" => [
@@ -31,6 +39,13 @@ $arComponentParameters = [
 			"NAME" => Loc::getMessage("COORDINATES_DELIMITER"),
 			"TYPE" => "STRING",
 			"DEFAULT" => "_"
+		],
+		"DISPLAY_FIELDS" => [
+			"PARENT" => "BASE",
+			"NAME" => Loc::getMessage("DISPLAY_FIELDS"),
+			"TYPE" => "LIST",
+			"VALUES" => $arDisplayFields,
+			"MULTIPLE" => "Y"
 		],
 		"USE_FILTER" => [
 			"PARENT" => "FILTER",
@@ -58,7 +73,7 @@ $arComponentParameters = [
 
 if ($arCurrentValues["USE_FILTER"] == "Y")
 {
-	$arFilterFields = $arDisplayFields = array_diff_key(
+	$arFilterFields = array_diff_key(
 		$arFields,
 		[
 			"ID" => "EXCLUDED_KEY",

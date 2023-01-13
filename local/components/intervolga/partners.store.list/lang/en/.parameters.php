@@ -15,3 +15,4 @@ $MESS["USE_PAGINATION"] = "Show pagination elements";
 $MESS["PAGINATION_AJAX"] = "Ajax";
 $MESS["PAGINATION_TEMPLATE"] = "Pagination template";
 $MESS["PAGINATION_COUNT_ELEMENTS"] = "Page count elements";
+$MESS["DISPLAY_FIELDS"] = "Display fields";

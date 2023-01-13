@@ -1,0 +1,127 @@
+class YandexMap
+{
+	static #oMap = null;
+	static #MAX_ZOOM = 19;
+	static #MIN_ZOOM = 0;
+
+	/**
+	 *
+	 * @param {string} mapId
+	 * @param {object} params
+	 */
+	static init(mapId, params)
+	{
+		if (!ymaps)
+		{
+			throw "YMaps not defined!";
+		}
+
+		if (YandexMap.getMap())
+		{
+			return;
+		}
+
+		return ymaps.ready(function(){
+
+			let controlsMap = [];
+
+			if (params["SHOW_MAP_ZOOM"] === "Y")
+			{
+				controlsMap.push('zoomControl'); // Ползунок масштаба
+			}
+
+			if (params["SHOW_MAP_RULER"] === "Y")
+			{
+				controlsMap.push('rulerControl'); // Линейка
+			}
+
+			if (params["SHOW_MAP_FULLSCREEN"] === "Y")
+			{
+				controlsMap.push('fullscreenControl'); // Полноэкранный режим
+			}
+
+			// Создание карты.
+			// https://tech.yandex.ru/maps/doc/jsapi/2.1/dg/concepts/map-docpage/
+			YandexMap.#oMap = new ymaps.Map(
+				mapId,
+				{
+					// Координаты центра карты.
+					// Порядок по умолчнию: «широта, долгота».
+					center: [55.76, 37.64],
+					// Уровень масштабирования. Допустимые значения:
+					// от 0 (весь мир) до 19.
+					zoom: 3,
+					// Элементы управления
+					// https://tech.yandex.ru/maps/doc/jsapi/2.1/dg/concepts/controls/standard-docpage/
+					controls: controlsMap
+				});
+
+			if (params["BALLOONS"])
+			{
+				params["BALLOONS"].forEach(function(oBalloon)
+				{
+					YandexMap.setBalloon(
+						oBalloon["x"],
+						oBalloon["y"],
+						oBalloon["hintContent"] ?? "",
+						oBalloon["balloonContent"] ?? ""
+					)
+				});
+			}
+		});
+	}
+
+	/**
+	 * Добавление метки
+	 * @param {float} x
+	 * @param {float} y
+	 * @param {string} hintContent -- показывается при наведении мышкой
+	 * @param {string} balloonContent -- откроется при клике по метке
+	 */
+	static setBalloon(x,
+					  y,
+					  hintContent = "",
+					  balloonContent = "")
+	{
+		console.log("x: " + x);
+		console.log("y: " + y);
+		console.log(YandexMap.getMap());
+
+		if (!ymaps)
+		{
+			throw "YMaps not defined!";
+		}
+
+		if (!YandexMap.getMap())
+		{
+			return;
+		}
+
+		// https://tech.yandex.ru/maps/doc/jsapi/2.1/ref/reference/Placemark-docpage/
+		let placemark = new ymaps.Placemark(
+			[x, y], {
+			// Хинт показывается при наведении мышкой на иконку метки.
+			hintContent: hintContent,
+			// Балун откроется при клике по метке.
+			balloonContent: balloonContent
+		});
+
+		// После того как метка была создана, добавляем её на карту.
+		YandexMap.getMap().geoObjects.add(placemark);
+	}
+
+	static getMap()
+	{
+		return YandexMap.#oMap;
+	}
+
+	static getMaxZoom()
+	{
+		return YandexMap.#MAX_ZOOM;
+	}
+
+	static getMinZoom()
+	{
+		return YandexMap.#MIN_ZOOM;
+	}
+}

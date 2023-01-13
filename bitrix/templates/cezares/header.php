@@ -27,6 +27,7 @@ $asset = Bitrix\Main\Page\Asset::getInstance();
 	<?$asset->addCss(SITE_TEMPLATE_PATH."/css/common/margin.css");?>
 	<?$asset->addCss(SITE_TEMPLATE_PATH."/css/common/size.css");?>
 	<?$asset->addCss(SITE_TEMPLATE_PATH."/css/common/float.css");?>
+	<?$asset->addCss(SITE_TEMPLATE_PATH."/css/common/cursor.css");?>
 
 	<?if($bIncludedModule)
 		CNext::Start(SITE_ID);?>
