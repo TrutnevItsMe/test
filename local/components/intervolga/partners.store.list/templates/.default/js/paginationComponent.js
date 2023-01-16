@@ -38,7 +38,10 @@ if (!window.PaginationComponent) {
 						dataType: "html",
 						onsuccess: function (response) {
 
-							URLUtils.setUrl(new URL(item.href));
+							// Устанавливаем get параметры в url
+							for (const [key, value] of Object.entries(URLUtils.getAttrs())) {
+								URLUtils.setAttr(key, value);
+							}
 
 							let elem = document.createElement("div");
 							elem.innerHTML = response;
@@ -60,6 +63,7 @@ if (!window.PaginationComponent) {
 									BX("items").innerHTML = elem.querySelector("#items").innerHTML;
 									window.ElementComponent.bindClickElems();
 									window.ElementComponent.setItemsOneHeight();
+									window.ElementComponent.addGetParamsToDetail();
 								}
 							});
 

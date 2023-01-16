@@ -54,6 +54,54 @@ if (!window.ElementComponent)
 					item.style.height = maxHeight + "px";
 				}
 			)
+		},
+
+		addGetParamsToDetail: function()
+		{
+			let items = document.querySelectorAll(".item-wrap");
+			let getParams = URLUtils.getAttrs();
+
+			items.forEach(function(item){
+				let elemUrl = item.href;
+
+				if (!elemUrl)
+				{
+					elemUrl = "";
+				}
+
+				if (!elemUrl.includes("?"))
+				{
+					elemUrl += "?";
+					for (const [key, value] of Object.entries(getParams)) {
+						elemUrl += "&" + key + "=" + value;
+					}
+				}
+				else
+				{
+					let strGetParams = [];
+
+					elemUrl.split("&").forEach(function(elemGetParam){
+
+						if (!elemGetParam)
+						{
+							return; // continue
+						}
+
+						let key = elemUrl.split("=")[0];
+						strGetParams.push(key);
+					});
+
+					for (const [key, value] of Object.entries(getParams)) {
+
+						if (!strGetParams.includes(key))
+						{
+							elemUrl += "&" + key + "=" + value;
+						}
+					}
+				}
+
+				item.href = elemUrl;
+			});
 		}
 	};
 }

@@ -67,4 +67,16 @@ class MagazinyPartnerovTable extends DataManager
 			],
 		];
 	}
+
+	public static function getById($id)
+	{
+		$rs = static::getList([
+			"select" => ["*", "UF_*"],
+			"filter" => [
+				"=ID" => $id
+			]
+		]);
+
+		return $rs->fetch();
+	}
 }

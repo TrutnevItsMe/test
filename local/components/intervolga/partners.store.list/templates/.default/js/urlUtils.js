@@ -13,9 +13,17 @@ class URLUtils{
 	}
 
 	static getAttr(key) {
-		let s = window.location.search;
-		s = decodeURI(s).match(new RegExp(key + '=([^&=]+)'));
-		return s ? s[1] : false;
+
+		let getAttrs = URLUtils.getAttrs();
+
+		if (getAttrs && getAttrs[key])
+		{
+			return getAttrs[key];
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	static delAttr(key){
@@ -27,5 +35,31 @@ class URLUtils{
 	static setUrl(url)
 	{
 		history.pushState(null, null, url);
+	}
+
+	static getAttrs()
+	{
+		if (!window.location.href.includes("?"))
+		{
+			return false;
+		}
+
+		let params = window.location.href.split("?")[1];
+		let getParams = {};
+
+		params.split("&").forEach(function(getParam)
+		{
+			if (!getParam)
+			{
+				return; // continue
+			}
+
+			let key = getParam.split("=")[0];
+			let value = getParam.split("=")[1];
+
+			getParams[key] = value;
+		});
+
+		return getParams;
 	}
 }

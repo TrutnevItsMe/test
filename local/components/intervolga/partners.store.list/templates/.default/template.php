@@ -15,6 +15,15 @@ if ($arParams["USE_PAGINATION"] === "Y")
 	CJSCore::Init(["fx"]);
 }
 
+if ($component->getParent())
+{
+	$detailUrlTemplate = $component->getParent()->arParams["SEF_URL_TEMPLATES"]["detail"];
+}
+else
+{
+	$detailUrlTemplate = "";
+}
+
 ?>
 	<div class="d-flex mt-5">
 		<section class="w-20">
@@ -92,7 +101,18 @@ if ($arParams["USE_PAGINATION"] === "Y")
 					<div class="w-25 d-inline-block m-3 mt-5 ml-5 item-wrap cursor-pointer"
 						 data-coordinates="<?= $arItem["UF_KOORDINATY"] ?>"
 					>
-						<div class="item-field-block ml-3"><a href=""><?= $arItem["UF_NAME"] ?></a></div>
+						<?php
+							$detailUrl = str_replace("#ELEMENT_ID#", $ID, $detailUrlTemplate) . "?";
+
+							foreach ($_GET as $key => $value)
+							{
+								$detailUrl .= "&$key=$value";
+							}
+
+							$detailUrl .= "&backurl=" . parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+						?>
+
+						<div class="item-field-block ml-3"><a href="<?=$detailUrl?>"><?= $arItem["UF_NAME"] ?></a></div>
 
 						<?php foreach ($arParams["DISPLAY_FIELDS"] as $field): ?>
 							<?php if ($arItem[$field] != ""): ?>
@@ -165,6 +185,7 @@ if ($arParams["USE_PAGINATION"] === "Y")
 							<?php endif; ?>
 
 						<?php endif; ?>
+						
 					</div>
 				<?php endforeach; ?>
 			</div>
