@@ -1,14 +1,19 @@
 <?php
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
+/**
+ * @global $arParams
+ * @global $arResult
+ */
+
 use Bitrix\Main\Localization\Loc;
 
 Loc::loadMessages(__FILE__);
 
-/**
- * @global $arResult
- * @global $arParams
- */
+if ($arParams["USE_PAGINATION"] === "Y")
+{
+	CJSCore::Init(["fx"]);
+}
 
 ?>
 	<div class="d-flex mt-5">
@@ -20,33 +25,45 @@ Loc::loadMessages(__FILE__);
 
 					<?php foreach ($arParams["FILTER_VALUES"] as $arFilterField): ?>
 
-						<span class="filter-block-title"><?= $arResult["MAP_FIELDS"][$arFilterField] ?></span>
+						<div class="filter-block">
 
-						<?php foreach ($arResult["MAP_FILTER_VALUES"][$arFilterField] as $value => $arFilterItem): ?>
-
-							<?php if (strlen($value) == ""): ?>
-								<?php continue; ?>
-							<?php endif; ?>
-
-							<?
-							$strIds = implode(",", array_column($arFilterItem, "ID"));
-							$checkboxId = md5($value);
-							?>
-							<div class="filter-value-block">
-								<label class="cursor-pointer d-flex w-100" for="<?= $checkboxId ?>">
-									<label class="custom-checkbox cursor-pointer" for="<?= $checkboxId ?>"></label>
-									<input id="<?= $checkboxId ?>"
-										   type="checkbox"
-										   class="cursor-pointer d-none"
-										   data-filter-field="<?= $arFilterField ?>"
-										   data-filter-items="<?= $strIds ?>">
-									<span class="filter-value-item ml-2"><?= $value ?></span>
-								</label>
+							<div class="filter-item-title-block d-flex justify-content-space-between cursor-pointer">
+								<span class="filter-block-title ml-5"><?= $arResult["MAP_FIELDS"][$arFilterField] ?></span>
+								<span class="w-10 down-icon"></span>
 							</div>
 
-						<?php endforeach; ?>
+							<div class="filter-block-inner" style="display: none;">
+
+								<?php foreach ($arResult["MAP_FILTER_VALUES"][$arFilterField] as $value => $arFilterItem): ?>
+
+									<?php if (strlen($value) == ""): ?>
+										<?php continue; ?>
+									<?php endif; ?>
+
+									<?php
+									$strIds = implode(",", array_column($arFilterItem, "ID"));
+									$checkboxId = md5($value);
+									?>
+									<div class="filter-value-block">
+										<label class="cursor-pointer d-flex w-100" for="<?= $checkboxId ?>">
+											<label class="custom-checkbox cursor-pointer"
+												   for="<?= $checkboxId ?>"></label>
+											<input id="<?= $checkboxId ?>"
+												   type="checkbox"
+												   class="cursor-pointer d-none"
+												   data-filter-field="<?= $arFilterField ?>"
+												   data-filter-items="<?= $strIds ?>">
+											<span class="filter-value-item ml-2"><?= $value ?></span>
+										</label>
+									</div>
+
+								<?php endforeach; ?>
+							</div>
+						</div>
 
 					<?php endforeach; ?>
+					<button class="btn btn-default w-100"
+							role="button"><?= Loc::getMessage("SUBMIT_FILTER_BTN") ?></button>
 				</div>
 			<?php endif; ?>
 		</section>
@@ -61,93 +78,96 @@ Loc::loadMessages(__FILE__);
 				$arItemsId = array_keys($arResult["ITEMS"]);
 			}
 			?>
+			<div id="items">
+				<?php foreach ($arItemsId
 
-			<?php foreach ($arItemsId as $ID): ?>
+							   as $ID): ?>
 
-				<?php if (!$ID) {
-					continue;
-				}
-				?>
+					<?php if (!$ID) {
+						continue;
+					}
+					?>
 
-				<?php $arItem = $arResult["ITEMS"][$ID] ?>
-				<div class="w-25 d-inline-block m-3 mt-5 ml-5 item-wrap cursor-pointer"
-					 data-coordinates="<?= $arItem["UF_KOORDINATY"] ?>"
-				>
-					<div class="item-field-block ml-3"><a href=""><?= $arItem["UF_NAME"] ?></a></div>
+					<?php $arItem = $arResult["ITEMS"][$ID] ?>
+					<div class="w-25 d-inline-block m-3 mt-5 ml-5 item-wrap cursor-pointer"
+						 data-coordinates="<?= $arItem["UF_KOORDINATY"] ?>"
+					>
+						<div class="item-field-block ml-3"><a href=""><?= $arItem["UF_NAME"] ?></a></div>
 
-					<?php foreach ($arParams["DISPLAY_FIELDS"] as $field): ?>
-						<?php if ($arItem[$field] != ""): ?>
-							<div class="item-field-block">
-								<span class="ml-3 item-field-name"><?= $arResult["MAP_FIELDS"][$field] ?>:</span>
-								<span class="ml-1"><?= $arItem[$field] ?></span>
-							</div>
-						<?php endif; ?>
-					<?php endforeach; ?>
-
-					<?php if ($arItem["KONTRAGENTS"]): ?>
-
-						<?php
-						$arPhones = [];
-						$arAddresses = [];
-						$arEmails = [];
-
-						foreach ($arItem["KONTRAGENTS"] as $arKontragent) {
-							if ($arKontragent["UF_TELEFON"]) {
-								$arPhones[] = $arKontragent["UF_TELEFON"];
-							}
-
-							if ($arKontragent["UF_YURIDICHESKIYADRE"]) {
-								$arAddresses[] = $arKontragent["UF_YURIDICHESKIYADRE"];
-							}
-
-							if ($arKontragent["UF_ELEKTRONNAYAPOCHT"]) {
-								$arEmails[] = $arKontragent["UF_ELEKTRONNAYAPOCHT"];
-							}
-						}
-						?>
-
-						<?php if ($arPhones): ?>
-							<div class="item-field-block">
-								<div class="d-flex">
-									<span class="ml-3 item-field-name"><?= Loc::getMessage("PHONE") ?>:</span>
-									<ul class="ml-1">
-										<?php foreach ($arPhones as $phone): ?>
-											<li><?= $phone ?></li>
-										<?php endforeach; ?>
-									</ul>
+						<?php foreach ($arParams["DISPLAY_FIELDS"] as $field): ?>
+							<?php if ($arItem[$field] != ""): ?>
+								<div class="item-field-block">
+									<span class="ml-3 item-field-name"><?= $arResult["MAP_FIELDS"][$field] ?>:</span>
+									<span class="ml-1"><?= $arItem[$field] ?></span>
 								</div>
-							</div>
-						<?php endif; ?>
+							<?php endif; ?>
+						<?php endforeach; ?>
 
-						<?php if ($arAddresses): ?>
-							<div class="item-field-block">
-								<div class="d-flex">
-									<span class="ml-3 item-field-name"><?= Loc::getMessage("ADDRESS") ?>:</span>
-									<ul class="ml-1">
-										<?php foreach ($arAddresses as $address): ?>
-											<li><?= $address ?></li>
-										<?php endforeach; ?>
-									</ul>
+						<?php if ($arItem["KONTRAGENTS"]): ?>
+
+							<?php
+							$arPhones = [];
+							$arAddresses = [];
+							$arEmails = [];
+
+							foreach ($arItem["KONTRAGENTS"] as $arKontragent) {
+								if ($arKontragent["UF_TELEFON"]) {
+									$arPhones[] = $arKontragent["UF_TELEFON"];
+								}
+
+								if ($arKontragent["UF_YURIDICHESKIYADRE"]) {
+									$arAddresses[] = $arKontragent["UF_YURIDICHESKIYADRE"];
+								}
+
+								if ($arKontragent["UF_ELEKTRONNAYAPOCHT"]) {
+									$arEmails[] = $arKontragent["UF_ELEKTRONNAYAPOCHT"];
+								}
+							}
+							?>
+
+							<?php if ($arPhones): ?>
+								<div class="item-field-block">
+									<div class="d-flex">
+										<span class="ml-3 item-field-name"><?= Loc::getMessage("PHONE") ?>:</span>
+										<ul class="ml-1">
+											<?php foreach ($arPhones as $phone): ?>
+												<li><?= $phone ?></li>
+											<?php endforeach; ?>
+										</ul>
+									</div>
 								</div>
-							</div>
-						<?php endif; ?>
+							<?php endif; ?>
 
-						<?php if ($arEmails): ?>
-							<div class="item-field-block">
-								<div class="d-flex">
-									<span class="ml-3 item-field-name"><?= Loc::getMessage("EMAIL") ?>:</span>
-									<ul class="ml-1">
-										<?php foreach ($arEmails as $email): ?>
-											<li><?= $email ?></li>
-										<?php endforeach; ?>
-									</ul>
+							<?php if ($arAddresses): ?>
+								<div class="item-field-block">
+									<div class="d-flex">
+										<span class="ml-3 item-field-name"><?= Loc::getMessage("ADDRESS") ?>:</span>
+										<ul class="ml-1">
+											<?php foreach ($arAddresses as $address): ?>
+												<li><?= $address ?></li>
+											<?php endforeach; ?>
+										</ul>
+									</div>
 								</div>
-							</div>
-						<?php endif; ?>
+							<?php endif; ?>
 
-					<?php endif; ?>
-				</div>
-			<?php endforeach; ?>
+							<?php if ($arEmails): ?>
+								<div class="item-field-block">
+									<div class="d-flex">
+										<span class="ml-3 item-field-name"><?= Loc::getMessage("EMAIL") ?>:</span>
+										<ul class="ml-1">
+											<?php foreach ($arEmails as $email): ?>
+												<li><?= $email ?></li>
+											<?php endforeach; ?>
+										</ul>
+									</div>
+								</div>
+							<?php endif; ?>
+
+						<?php endif; ?>
+					</div>
+				<?php endforeach; ?>
+			</div>
 
 		</section>
 	</div>
@@ -162,15 +182,9 @@ Loc::loadMessages(__FILE__);
 
 	$arBalloons = [];
 
-	foreach ($arItemsId as $ID) {
+	foreach ($arResult["ITEMS"] as $ID => $arItem) {
 
 		$arBalloon = [];
-
-		if (!$ID) {
-			continue;
-		}
-
-		$arItem = $arResult["ITEMS"][$ID];
 
 		if (!$arItem["COORDINATES"]) {
 			continue;
@@ -181,10 +195,8 @@ Loc::loadMessages(__FILE__);
 		$arBalloon["hintContent"] = "";
 		$arBalloon["balloonContent"] = "";
 
-		foreach ($arItem["KONTRAGENTS"] as $arKontragent)
-		{
-			if ($arKontragent["UF_YURIDICHESKIYADRE"])
-			{
+		foreach ($arItem["KONTRAGENTS"] as $arKontragent) {
+			if ($arKontragent["UF_YURIDICHESKIYADRE"]) {
 				$arBalloon["hintContent"] .= $arKontragent["UF_YURIDICHESKIYADRE"];
 				$arBalloon["balloonContent"] .= $arKontragent["UF_YURIDICHESKIYADRE"];
 			}
@@ -194,29 +206,39 @@ Loc::loadMessages(__FILE__);
 	}
 	?>
 
+	<script id="script-pagination">
+		BX.ready(function () {
+			window.PaginationComponent.init({
+				result: <?=Bitrix\Main\Web\Json::encode($arResult)?>,
+				params: <?=Bitrix\Main\Web\Json::encode($arParams)?>
+			});
+		});
+	</script>
 
 	<script>
 		BX.ready(function () {
 
+			window.FilterComponent.init({
+				result: <?=Bitrix\Main\Web\Json::encode($arResult)?>,
+				params: <?=Bitrix\Main\Web\Json::encode($arParams)?>
+			});
+
+			let balloons = window.FilterComponent.getBalloons(window.FilterComponent.getIdsFromUrl());
+			let params = <?=Bitrix\Main\Web\Json::encode($arParams)?>;
+
+			if (balloons.length) {
+				params["BALLOONS"] = balloons;
+			} else {
+				params["BALLOONS"] = <?=Bitrix\Main\Web\Json::encode($arBalloons)?>;
+			}
+
 			YandexMap.init(
 				<?=$arResult["MAP_ID"]?>,
-				<?=Bitrix\Main\Web\Json::encode(
-						array_merge(
-							$arParams,
-							["BALLOONS" => $arBalloons]
-						)
-				)?>
+				params
 			);
 
 		});
 	</script>
 <?php endif; ?>
 
-	<pre>
-	<? var_dump($arParams) ?>
-</pre>
-
-	<pre>
-	<? var_dump($arResult["ITEMS"][2]) ?>
-</pre>
 <?php

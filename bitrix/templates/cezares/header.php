@@ -28,6 +28,8 @@ $asset = Bitrix\Main\Page\Asset::getInstance();
 	<?$asset->addCss(SITE_TEMPLATE_PATH."/css/common/size.css");?>
 	<?$asset->addCss(SITE_TEMPLATE_PATH."/css/common/float.css");?>
 	<?$asset->addCss(SITE_TEMPLATE_PATH."/css/common/cursor.css");?>
+	<?$asset->addCss(SITE_TEMPLATE_PATH."/css/common/align-items.css");?>
+	<?$asset->addCss(SITE_TEMPLATE_PATH."/css/common/justify-content.css");?>
 
 	<?if($bIncludedModule)
 		CNext::Start(SITE_ID);?>

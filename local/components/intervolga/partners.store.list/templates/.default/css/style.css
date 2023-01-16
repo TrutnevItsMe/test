@@ -11,21 +11,32 @@
 
 #filter{
 	border: solid 1px #b1b1b1;
+	background-color: #f9f9f9;
 	overflow-wrap: break-word;
 }
 
 #filter-title{
-	border-bottom: solid 1px #b1b1b1;
 	display: block;
 	text-align: center;
 	font-weight: 1000;
+	padding: 12px;
+	border-bottom: solid 1px #e7e7e7;
 }
 
-.filter-block-title{
-	border-bottom: solid 1px #f0f0f0;
+.filter-block{
+	border-bottom: solid 1px #e7e7e7;
 	display: block;
 	text-align: center;
 	padding: 5px;
+}
+
+.filter-block:hover{
+	background-color: #fff;
+}
+
+.filter-item-title-block{
+	padding: 8px 0;
+	padding-right: 4px;
 }
 
 .filter-value-block{
@@ -69,4 +80,13 @@
 
 .map-block{
 	height: 400px;
+}
+
+.down-icon{
+	background: url("../images/down-arrow.png") center no-repeat;
+	background-size: 22px;
+}
+
+.rotated{
+	transform: rotate(180deg);
 }

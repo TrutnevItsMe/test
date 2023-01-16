@@ -83,10 +83,6 @@ class YandexMap
 					  hintContent = "",
 					  balloonContent = "")
 	{
-		console.log("x: " + x);
-		console.log("y: " + y);
-		console.log(YandexMap.getMap());
-
 		if (!ymaps)
 		{
 			throw "YMaps not defined!";
@@ -123,5 +119,46 @@ class YandexMap
 	static getMinZoom()
 	{
 		return YandexMap.#MIN_ZOOM;
+	}
+
+	/**
+	 *
+	 * @param {float} x
+	 * @param {float} y
+	 */
+	static moveTo(x, y)
+	{
+		if (!YandexMap.getMap())
+		{
+			return;
+		}
+
+		return YandexMap.getMap().panTo(
+			[x, y]
+		);
+	}
+
+	/**
+	 *
+	 * @param {int} k
+	 */
+	static zoom(k)
+	{
+		if (!YandexMap.getMap())
+		{
+			return;
+		}
+
+		YandexMap.getMap().setZoom(k);
+	}
+
+	static removeBalloons()
+	{
+		if (!YandexMap.getMap())
+		{
+			return;
+		}
+
+		YandexMap.getMap().geoObjects.removeAll();
 	}
 }
