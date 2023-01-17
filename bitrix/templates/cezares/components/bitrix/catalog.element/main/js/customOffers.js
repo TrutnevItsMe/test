@@ -438,6 +438,8 @@ window.OffersFilterComponent = {
 
 		if (currentOffer)
 		{
+			console.log(currentOffer);
+
 			// У предложения есть набор
 			if (currentOffer && currentOffer["SET"] && currentOffer["SET"].length > 0)
 			{
