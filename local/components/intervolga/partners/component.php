@@ -5,7 +5,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
 
 $arDefaultUrlTemplates404 = [
 	'list'    => 'index.php',
-	'element' => '/#ELEMENT_ID#.php',
+	'detail' => '#ELEMENT_ID#/',
 ];
 
 $arDefaultVariableAliases404 = [];
@@ -64,11 +64,10 @@ if ($arParams['SEF_MODE'] == 'Y') {
 	$componentPage = '';
 
 	if (intval($arVariables['ELEMENT_ID']) > 0) {
-		$componentPage = 'element';
+		$componentPage = 'detail';
 	} else {
 		$componentPage = 'list';
 	}
-
 }
 
 $arResult = [
