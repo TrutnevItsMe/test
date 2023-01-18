@@ -1,0 +1,11 @@
+ul li{
+	list-style: none;
+}
+
+li::before{
+	content: "" !important;
+}
+
+.title{
+	font-weight: 500;
+}

@@ -1,5 +1,5 @@
 module.exports = {
-	input: './src/index.js',
+	input: './src/script.js',
 	output: {
 		js: './script.js',
 		css: './style.css',

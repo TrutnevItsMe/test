@@ -1,0 +1,45 @@
+.float-unset{
+	float: unset !important;
+}
+.float-revert{
+	float: revert !important;
+}
+.float-initial{
+	float: initial !important;
+}
+.float-inherit{
+	float: inherit !important;
+}
+.float-none{
+	float: none !important;
+}
+.float-bottom{
+	float: bottom !important;
+}
+.float-contour{
+	float: contour !important;
+}
+.float-end{
+	float: end !important;
+}
+.float-inside{
+	float: inside !important;
+}
+.float-left{
+	float: left !important;
+}
+.float-outside{
+	float: outside !important;
+}
+.float-right{
+	float: right !important;
+}
+.float-snap{
+	float: snap !important;
+}
+.float-start{
+	float: start !important;
+}
+.float-top{
+	float: top !important;
+}
