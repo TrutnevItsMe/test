@@ -59,3 +59,4 @@ test*
 *.php.back*
 *.css.back*
 *.js.back*
+bitrix_server_test.php

@@ -145,4 +145,5 @@ $MESS["RESTS"] = "Остатки";
 $MESS["COUNT_PRODUCTS"] = "Количество товаров: ";
 $MESS["VOLUME"] = "Объем: ";
 $MESS["PERSONAL_DATA_ERROR"] = "Необходимо принять согласие на обработку персональных данных";
+$MESS["PIECES_SHORT_CAPTURE"] = "шт.";
 ?>

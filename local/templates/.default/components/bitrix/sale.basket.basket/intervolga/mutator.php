@@ -39,6 +39,7 @@ foreach ($this->basketItems as $row)
 	}
 
 	$arQuantityData = CNext::GetQuantityArray($totalCount);
+	$isDisplayQntyText = $totalCount >= $arQuantityData["OPTIONS"]["MAX_AMOUNT"] || $totalCount <= 0;
 
     $rowData = array(
 		'ID' => $row['ID'],
@@ -80,7 +81,7 @@ foreach ($this->basketItems as $row)
 		'LABEL_VALUES' => array(),
 		'ARTICLE' => $row["LABEL_ARRAY_VALUE"]["CML2_ARTICLE"],
 		'STORE' => $row["STORES"][$this->arParams["DEF_STORE_ID"]],
-		'DISPLAY_QUANTITY' => $arQuantityData["TEXT"],
+		'DISPLAY_QUANTITY' => $isDisplayQntyText ? $arQuantityData["TEXT"] : $totalCount . " " . Loc::getMessage("PIECES_SHORT_CAPTURE"),
 		'BRAND' => isset($row[$this->arParams['BRAND_PROPERTY'].'_VALUE'])
 			? $row[$this->arParams['BRAND_PROPERTY'].'_VALUE']
 			: '',

@@ -288,17 +288,30 @@ if (is_array($arResult["GRID"]["ROWS"]))
 
 		if ($arParams["SHOW_RESTS"])
 		{
+			$quantity = "";
 
 			if ($arParams["DEF_STORE_ID"])
 			{
-				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][RESTS_CODE] = $arStores[$productId][$arParams["DEF_STORE_ID"]]["AMOUNT"];
-				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][RESTS_CODE] = CNext::GetQuantityArray($arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][RESTS_CODE])["TEXT"];
+				$quantity = $arStores[$productId][$arParams["DEF_STORE_ID"]]["AMOUNT"];
 			}
 			else
 			{
-				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][RESTS_CODE] = current($arStores[$productId])["AMOUNT"];
-				$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][RESTS_CODE] = CNext::GetQuantityArray($arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][RESTS_CODE])["TEXT"];
+				$quantity = current($arStores[$productId])["AMOUNT"];
 			}
+
+			$arQuantityData = CNext::GetQuantityArray($quantity);
+			$displayQuantity = "";
+
+			if ($quantity <= 0 || $quantity >= $arQuantityData["OPTIONS"]["MAX_AMOUNT"])
+			{
+				$displayQuantity = $arQuantityData["TEXT"];
+			}
+			else
+			{
+				$displayQuantity = $quantity . " " . Loc::getMessage("PIECES_SHORT_CAPTURE");
+			}
+
+			$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][RESTS_CODE] = $displayQuantity;
 		}
 
 		$rsProperty = CIBlockElement::GetProperty(
