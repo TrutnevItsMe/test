@@ -37,7 +37,9 @@ $APPLICATION->IncludeComponent(
 		"FILTER_PROPERTY_CODE" => array(
 			0 => "CML2_ARTICLE",
 			1 => "IN_STOCK",
-			2 => "",
+			2 => "TSVET_KORPUSA",
+			3 => "TSVET_PROFILYA",
+			4 => "",
 		),
 		"FILTER_PRICE_CODE" => array(
 		),
@@ -528,15 +530,7 @@ $APPLICATION->IncludeComponent(
 		"ADD_PROPERTIES_TO_BASKET" => "Y",
 		"PARTIAL_PRODUCT_PROPERTIES" => "Y",
 		"DETAIL_CHECK_SECTION_ID_VARIABLE" => "N",
-		"STORES" => array(
-			0 => "",
-			1 => "374",
-			2 => "375",
-			3 => "376",
-			4 => "377",
-			5 => "378",
-			6 => "",
-		),
+		"STORES" => \Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS,
 		"USER_FIELDS" => array(
 			0 => "",
 			1 => "",
