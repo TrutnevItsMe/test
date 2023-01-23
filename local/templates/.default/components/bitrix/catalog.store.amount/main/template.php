@@ -52,7 +52,7 @@ if(strlen($arResult["ERROR_MESSAGE"]) > 0){
 					</div>
 				</div>
 				<?
-				$totalCount = CNext::CheckTypeCount($arProperty["AMOUNT"]);
+				$totalCount = CNext::CheckTypeCount($arProperty["NUM_AMOUNT"]);
 				$arQuantityData = CNext::GetQuantityArray($totalCount);
 
 				$displayStoreAmount = "";
