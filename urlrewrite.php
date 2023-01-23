@@ -152,14 +152,6 @@ $arUrlRewrite=array (
     'PATH' => '/personal/index.php',
     'SORT' => 100,
   ),
-  34 => 
-  array (
-    'CONDITION' => '#^/contacts/#',
-    'RULE' => '',
-    'ID' => 'bitrix:news',
-    'PATH' => '/contacts/page_contacts_3.php',
-    'SORT' => 100,
-  ),
   40 => 
   array (
     'CONDITION' => '#^/catalog/#',
