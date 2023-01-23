@@ -146,7 +146,7 @@ if (!window.FilterComponent){
 				});
 			});
 
-			let ids = ArrayUtils.intersection(Object.values(mapFieldIds));
+			let ids = ArrayUtils.intersectionArray(Object.values(mapFieldIds));
 			return ids;
 		},
 
