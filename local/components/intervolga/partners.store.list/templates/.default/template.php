@@ -88,9 +88,7 @@ else
 			}
 			?>
 			<div id="items">
-				<?php foreach ($arItemsId
-
-							   as $ID): ?>
+				<?php foreach ($arItemsId as $ID): ?>
 
 					<?php if (!$ID) {
 						continue;
@@ -199,34 +197,6 @@ else
 
 <?php if ($arParams["USE_MAP"] === "Y"): ?>
 
-	<?php
-
-	$arBalloons = [];
-
-	foreach ($arResult["ITEMS"] as $ID => $arItem) {
-
-		$arBalloon = [];
-
-		if (!$arItem["COORDINATES"]) {
-			continue;
-		}
-
-		$arBalloon["x"] = floatval($arItem["COORDINATES"]["x"]);
-		$arBalloon["y"] = floatval($arItem["COORDINATES"]["y"]);
-		$arBalloon["hintContent"] = "";
-		$arBalloon["balloonContent"] = "";
-
-		foreach ($arItem["KONTRAGENTS"] as $arKontragent) {
-			if ($arKontragent["UF_YURIDICHESKIYADRE"]) {
-				$arBalloon["hintContent"] .= $arKontragent["UF_YURIDICHESKIYADRE"];
-				$arBalloon["balloonContent"] .= $arKontragent["UF_YURIDICHESKIYADRE"];
-			}
-		}
-
-		$arBalloons[] = $arBalloon;
-	}
-	?>
-
 	<script id="script-pagination">
 		BX.ready(function () {
 			window.PaginationComponent.init({
@@ -239,19 +209,28 @@ else
 	<script>
 		BX.ready(function () {
 
-			window.FilterComponent.init({
-				result: <?=Bitrix\Main\Web\Json::encode($arResult)?>,
-				params: <?=Bitrix\Main\Web\Json::encode($arParams)?>
+			BX.message({
+				"WORKTIME": "<?=Loc::getMessage("WORKTIME")?>",
+				"PHONE": "<?=Loc::getMessage("PHONE")?>",
+				"EMAIL": "<?=Loc::getMessage("EMAIL")?>"
 			});
 
-			let balloons = window.FilterComponent.getBalloons(window.FilterComponent.getIdsFromUrl());
-			let params = <?=Bitrix\Main\Web\Json::encode($arParams)?>;
+			window.FilterComponent.init({
+				result: <?=Bitrix\Main\Web\Json::encode($arResult)?>,
+				params: <?=Bitrix\Main\Web\Json::encode($arParams)?>,
+				detailUrlTemplate: "<?=$detailUrlTemplate?>"
+			});
 
-			if (balloons.length) {
-				params["BALLOONS"] = balloons;
-			} else {
-				params["BALLOONS"] = <?=Bitrix\Main\Web\Json::encode($arBalloons)?>;
+			let ids = window.FilterComponent.getIdsFromUrl();
+
+			if (!ids)
+			{
+				ids = Object.keys(<?=Bitrix\Main\Web\Json::encode($arResult)?>["ITEMS"]);
 			}
+
+			let balloons = window.FilterComponent.getBalloons(ids);
+			let params = <?=Bitrix\Main\Web\Json::encode($arParams)?>;
+			params["BALLOONS"] = balloons;
 
 			YandexMap.init(
 				<?=$arResult["MAP_ID"]?>,

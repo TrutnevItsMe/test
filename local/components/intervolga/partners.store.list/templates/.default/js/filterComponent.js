@@ -7,11 +7,13 @@ if (!window.FilterComponent){
 		 * @param {object} params
 		 * @param {object} params.result -- $arResult
 		 * @param {object} params.params -- $arParams
+		 * @param {string} params.detailUrlTemplate
 		 */
 		init: function(params){
 
 			this.result = params.result;
 			this.params = params.params;
+			this.detailUrlTemplate = params.detailUrlTemplate || "";
 
 			this.initFromUrl();
 			this.bindEvents();
@@ -112,6 +114,8 @@ if (!window.FilterComponent){
 							balloon["y"],
 							balloon["hintContent"],
 							balloon["balloonContent"]);
+
+
 					});
 				}
 			});
@@ -146,7 +150,7 @@ if (!window.FilterComponent){
 				});
 			});
 
-			let ids = ArrayUtils.intersection(Object.values(mapFieldIds));
+			let ids = ArrayUtils.intersectionArray(Object.values(mapFieldIds));
 			return ids;
 		},
 
@@ -158,6 +162,13 @@ if (!window.FilterComponent){
 
 			let balloons = [];
 
+			if (!ids)
+			{
+				return [];
+			}
+
+			let detailUrlTemplate = this.detailUrlTemplate;
+
 			ids.forEach(function (id){
 				let item = window.FilterComponent.result["ITEMS"][parseInt(id)];
 
@@ -166,19 +177,71 @@ if (!window.FilterComponent){
 					return; // continue
 				}
 
+				let detailUrl = detailUrlTemplate = detailUrlTemplate.replace("#ELEMENT_ID#", id);
+
+					for (const [key, value] of Object.entries(URLUtils.getAttrs())) {
+						detailUrl += "&"+key+"="+value;
+					}
+
+					if (URLUtils.getAttr("backurl"))
+					{
+						detailUrl += "&backurl=" + URLUtils.getAttr("backurl");
+					}
+
 				let balloon = {
 					x: parseFloat(item["COORDINATES"]["x"]),
 					y: parseFloat(item["COORDINATES"]["y"]),
-					hintContent: "",
-					balloonContent: ""
+					hintContent: "<a class='ymap-balloon-link' onclick='YandexMap.clickBalloonHint(this)' href='" + detailUrl + "'>" + item["UF_NAME"] + "</a><br>",
+					balloonContent: "<a class='ymap-balloon-link' onclick='YandexMap.clickBalloonHint(this)' href='" + detailUrl + "'>" + item["UF_NAME"] + "</a><br>"
 				};
+
+				if (item["UF_VREMYARABOTY"])
+				{
+					balloon["hintContent"] += "<b>" + BX.message("WORKTIME") + ":</b> " + item["UF_VREMYARABOTY"] + "<br>";
+					balloon["balloonContent"] += "<b>" + BX.message("WORKTIME") + ":</b> " + item["UF_VREMYARABOTY"]  + "<br>";
+				}
+
+				let phones = [];
+				let emails = [];
+				let addresses = [];
 
 				if (item["KONTRAGENTS"])
 				{
-						item["KONTRAGENTS"].forEach(function(kontragent){
-							balloon["hintContent"] += kontragent["UF_YURIDICHESKIYADRE"];
-							balloon["balloonContent"] += kontragent["UF_YURIDICHESKIYADRE"];
-						});
+					item["KONTRAGENTS"].forEach(function(kontragent){
+
+						if (kontragent["UF_ELEKTRONNAYAPOCHT"])
+						{
+							emails.push(kontragent["UF_ELEKTRONNAYAPOCHT"]);
+						}
+
+						if (kontragent["UF_TELEFON"])
+						{
+							phones.push(kontragent["UF_TELEFON"]);
+						}
+
+						if (kontragent["UF_YURIDICHESKIYADRE"])
+						{
+							addresses.push(kontragent["UF_YURIDICHESKIYADRE"]);
+						}
+					});
+				}
+
+				if (phones.length)
+				{
+					balloon["hintContent"] += "<b>" + BX.message("PHONE") + ":</b> " + phones.join(",") + "<br>";
+					balloon["balloonContent"] += "<b>" + BX.message("PHONE") + ":</b> " + phones.join(",") + "<br>";
+				}
+
+				if (emails.length)
+				{
+					balloon["hintContent"] += "<b>" + BX.message("EMAIL") + ":</b> " + emails.join(",") + "<br>";
+					balloon["balloonContent"] += "<b>" + BX.message("EMAIL") + ":</b> " + emails.join(",") + "<br>";
+				}
+
+				if (addresses.length)
+				{
+					balloon["hintContent"] += addresses.join("<br>") + "<br>";
+					balloon["balloonContent"] += addresses.join("<br>") + "<br>";
 				}
 
 				balloons.push(balloon);

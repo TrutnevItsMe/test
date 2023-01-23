@@ -6,3 +6,5 @@ $MESS["WORKTIME"] = "Время работы";
 $MESS["PHONE"] = "Телефон";
 $MESS["ADDRESS"] = "Адрес";
 $MESS["EMAIL"] = "email";
+$MESS["PHOTOS"] = "Фотографии магазина";
+$MESS["PHOTO"] = "Фотография магазина";

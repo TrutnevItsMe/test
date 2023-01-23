@@ -16,4 +16,5 @@ $MESS["PAGINATION_AJAX"] = "Ajax";
 $MESS["PAGINATION_TEMPLATE"] = "Шаблон пагинации";
 $MESS["PAGINATION_COUNT_ELEMENTS"] = "Количество элементов на странице";
 $MESS["DISPLAY_FIELDS"] = "Выводимые поля";
+$MESS["USE_DRAG"] = "Разрешить перемещение по карте";
 

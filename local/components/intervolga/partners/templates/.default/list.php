@@ -15,7 +15,8 @@ $APPLICATION->IncludeComponent(
 		"PAGINATION_AJAX" => isset($arParams["PAGINATION_AJAX"]) ? $arParams["PAGINATION_AJAX"] : "Y",
 		"PAGINATION_TEMPLATE" => isset($arParams["PAGINATION_TEMPLATE"]) ? $arParams["PAGINATION_TEMPLATE"] : "main",
 		"PAGINATION_COUNT_ELEMENTS" => isset($arParams["PAGINATION_COUNT_ELEMENTS"]) ? $arParams["PAGINATION_COUNT_ELEMENTS"] : "6",
-		"DISPLAY_FIELDS" => $arParams["DISPLAY_FIELDS"]
+		"DISPLAY_FIELDS" => $arParams["DISPLAY_FIELDS"],
+		"USE_DRAG" => isset($arParams["USE_DRAG"]) ? $arParams["USE_DRAG"] : "Y"
 	),
 	$component
 );

@@ -9,3 +9,42 @@ li::before{
 .title{
 	font-weight: 500;
 }
+
+
+
+
+
+._slider {
+	height: 600px;
+	overflow: hidden;
+}
+._slider ul {
+	margin: 0;
+	padding: 0;
+}
+
+/* Пагинация */
+._slider .bx-pager {
+	text-align: center;
+	padding: 20px 0;
+}
+._slider .bx-pager-item {
+	display: inline-block;
+	margin: 0 4px;
+}
+._slider .bx-pager-item a {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	background: #fff;
+	border-radius: 50%;
+	border: 1px solid #999;
+	overflow: hidden;
+	text-indent: 999px;
+}
+._slider .bx-pager-item a.active {
+	background: #ffe318;
+}
+._slider .bx-pager-item a:hover {
+	background: #f3e792;
+}

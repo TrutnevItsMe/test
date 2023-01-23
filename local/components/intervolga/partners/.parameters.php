@@ -32,6 +32,9 @@ $arComponentParameters = [
 		],
 		"PAGINATION" => [
 			"NAME" => Loc::getMessage("PAGINATION_GROUP_NAME")
+		],
+		"DETAIL" => [
+			"NAME" => Loc::getMessage("DETAIL_GROUP_NAME")
 		]
 	],
 	"PARAMETERS" => [
@@ -71,6 +74,24 @@ $arComponentParameters = [
 				"NAME" => Loc::getMessage("SEF_DETAIL"),
 				"DEFAULT" => "#ELEMENT_ID#/"
 			]
+		],
+		"AUTO_SCROLL" => [
+			"NAME" => Loc::getMessage("AUTO_SCROLL"),
+			"TYPE" => "CHECKBOX",
+			"DEFAULT" => "Y",
+			"PARENT" => "DETAIL"
+		],
+		"DURATION" => [
+			"NAME" => Loc::getMessage("DURATION"),
+			"TYPE" => "STRING",
+			"DEFAULT" => 1000,
+			"PARENT" => "DETAIL"
+		],
+		"INTERVAL_DURATION" => [
+			"NAME" => Loc::getMessage("INTERVAL_DURATION"),
+			"TYPE" => "STRING",
+			"DEFAULT" => 2000,
+			"PARENT" => "DETAIL"
 		]
 	]
 ];
@@ -119,6 +140,13 @@ if ($arCurrentValues["USE_MAP"] == "Y")
 	$arComponentParameters["PARAMETERS"]["SHOW_MAP_FULLSCREEN"] = [
 		"PARENT" => "MAP",
 		"NAME" => Loc::getMessage("SHOW_MAP_FULLSCREEN"),
+		"TYPE" => "CHECKBOX",
+		"DEFAULT" => "Y"
+	];
+
+	$arComponentParameters["PARAMETERS"]["USE_DRAG"] = [
+		"PARENT" => "MAP",
+		"NAME" => Loc::getMessage("USE_DRAG"),
 		"TYPE" => "CHECKBOX",
 		"DEFAULT" => "Y"
 	];
