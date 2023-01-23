@@ -65,6 +65,25 @@ class MagazinyPartnerovTable extends DataManager
 				"data_type" => "string",
 				"title" => Loc::getMessage("VERSION")
 			],
+			"UF_PHOTOS" => [
+				'data_type' => "integer",
+				'validation' => function() {
+					return array(
+						function ($value) {
+							/*Валидация - файл может быть только картинкой*/
+							if(intval($value)>0){
+								$rsFile = \CFile::GetByID($value);
+								if($arFile = $rsFile->Fetch()){
+									if (!\CFile::IsImage($arFile["FILE_NAME"], $arFile["CONTENT_TYPE"])) {
+										return Loc::getMessage("FILE_ERROR");
+									}
+								}
+							}
+							return true;
+						}
+					);
+				}
+			]
 		];
 	}
 
