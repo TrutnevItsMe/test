@@ -451,14 +451,25 @@ window.OffersFilterComponent = {
 			}
 
 			// Меняем картинки в слайдере
-			let htmlSlider = "";
+			let htmlThumbs = ""; // картинки в списке
+			let htmlSlider = ""; // картинки в слайдере
 			let i = 0;
 
 			for (let j = 0; j < currentOffer["MORE_PHOTO"].length; ++j)
 			{
 				let _class = !j ? "current" : "";
+				let srcImg = (currentOffer["MORE_PHOTO"][i]["BIG"]["src"]) ? currentOffer["MORE_PHOTO"][i]["BIG"]["src"] : currentOffer["MORE_PHOTO"][i]["SMALL"]["src"];
+				let slideItemAttribute = (_class) ? "class='current'" : "style='display: none;'";
 
-				htmlSlider += "<li class='" + _class + "' " +
+				htmlSlider += "<li id='photo-"+i+"' "+ slideItemAttribute +">" +
+				"<link href='" + srcImg + "'>" +
+					"<a href='" + srcImg + "' data-fancybox-group='item_slider' class='popup_link fancy' title='" + currentOffer["MORE_PHOTO"][i]["TITLE"] + "'>" +
+						"<img data-lazyload='' class=' lazyloaded' data-src='" + srcImg + "' src='" + srcImg + "' alt='"+ currentOffer["MORE_PHOTO"][i]["TITLE"] +"' title='"+ currentOffer["MORE_PHOTO"][i]["TITLE"] +"'>" +
+						"<div class='zoom'></div>" +
+					"</a>" +
+				"</li>";
+
+				htmlThumbs += "<li class='" + _class + "' " +
 					" data-slide_key='" + j + "'" +
 					" data-big_img='" + currentOffer["MORE_PHOTO"][i]["BIG"]["src"] + "'" +
 					" data-small_img='" + currentOffer["MORE_PHOTO"][i]["SMALL"]["src"] + "'>" +
@@ -476,7 +487,17 @@ window.OffersFilterComponent = {
 
 			if (currentOffer["PREVIEW_PICTURE"])
 			{
-				htmlSlider += "<li class='' " +
+				let srcImg = currentOffer["PREVIEW_PICTURE"]["SRC"];
+
+				htmlSlider += "<li id='photo-"+i+"' style='display: none;'>" +
+					"<link href='" + srcImg + "'>" +
+					"<a href='" + srcImg + "' data-fancybox-group='item_slider' class='popup_link fancy' title='" + currentOffer["PREVIEW_PICTURE"]["NAME"] + "'>" +
+					"<img data-lazyload='' class=' lazyloaded' data-src='" + srcImg + "' src='" + srcImg + "' alt='"+ currentOffer["PREVIEW_PICTURE"]["NAME"] +"' title='"+ currentOffer["PREVIEW_PICTURE"]["NAME"] +"'>" +
+					"<div class='zoom'></div>" +
+					"</a>" +
+					"</li>";
+
+				htmlThumbs += "<li class='' " +
 					" data-slide_key='" + i + "'" +
 					" data-big_img='" + currentOffer["PREVIEW_PICTURE"]["SRC"] + "'" +
 					" data-small_img='" + currentOffer["PREVIEW_PICTURE"]["SRC"] + "'>" +
@@ -494,7 +515,17 @@ window.OffersFilterComponent = {
 
 			if (currentOffer["DETAIL_PICTURE"])
 			{
-				htmlSlider += "<li class='' " +
+				let srcImg = currentOffer["DETAIL_PICTURE"]["SRC"];
+
+				htmlSlider += "<li id='photo-"+i+"' style='display: none;'>" +
+					"<link href='" + srcImg + "'>" +
+					"<a href='" + srcImg + "' data-fancybox-group='item_slider' class='popup_link fancy' title='" + currentOffer["DETAIL_PICTURE"]["NAME"] + "'>" +
+					"<img data-lazyload='' class=' lazyloaded' data-src='" + srcImg + "' src='" + srcImg + "' alt='"+ currentOffer["DETAIL_PICTURE"]["NAME"] +"' title='"+ currentOffer["DETAIL_PICTURE"]["NAME"] +"'>" +
+					"<div class='zoom'></div>" +
+					"</a>" +
+					"</li>";
+
+				htmlThumbs += "<li class='' " +
 					" data-slide_key='" + i + "'" +
 					" data-big_img='" + currentOffer["DETAIL_PICTURE"]["SRC"] + "'" +
 					" data-small_img='" + currentOffer["DETAIL_PICTURE"]["SRC"] + "'>" +
@@ -510,7 +541,8 @@ window.OffersFilterComponent = {
 				++i;
 			}
 
-			$("#thumbs").html(htmlSlider);
+			$(".slides ul").html(htmlSlider);
+			$("#thumbs").html(htmlThumbs);
 			window.slider.reloadSlider();
 			$('.button_block .btn.to-cart').attr("data-item", currentOffer["ID"]);
 
