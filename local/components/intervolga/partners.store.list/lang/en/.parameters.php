@@ -16,3 +16,4 @@ $MESS["PAGINATION_AJAX"] = "Ajax";
 $MESS["PAGINATION_TEMPLATE"] = "Pagination template";
 $MESS["PAGINATION_COUNT_ELEMENTS"] = "Page count elements";
 $MESS["DISPLAY_FIELDS"] = "Display fields";
+$MESS["USE_DRAG"] = "Allow map navigation";

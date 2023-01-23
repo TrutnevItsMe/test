@@ -103,7 +103,7 @@ Loc::loadMessages(__FILE__);
 			?>
 				<div class="carousel shadow mb-5">
 
-					<p>Фотографии магазина</p>
+					<p><?=Loc::getMessage("PHOTOS")?></p>
 
 					<div class="carousel-buttons-block d-flex justify-content-center">
 						<div class="carousel-button-left d-inline-block <?php if ($isAutoScroll || !$isMaxCarouselItems): ?>d-none<?php endif; ?>">
@@ -150,10 +150,10 @@ Loc::loadMessages(__FILE__);
 							// объект со стилями для иконки закрытия, при null - иконки не будет
 							opacity: 1
 						},
-						titleBar: 'Фотография магазина',
+						titleBar: '<?=Loc::getMessage("PHOTO")?>',
 						closeByEsc: true, // закрытие окна по esc
 						darkMode: false, // окно будет светлым или темным
-						autoHide: false, // закрытие при клике вне окна
+						autoHide: true, // закрытие при клике вне окна
 						draggable: true, // можно двигать или нет
 						resizable: true, // можно ресайзить
 						min_height: 100, // минимальная высота окна

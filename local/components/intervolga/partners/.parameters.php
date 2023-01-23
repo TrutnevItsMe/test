@@ -143,6 +143,13 @@ if ($arCurrentValues["USE_MAP"] == "Y")
 		"TYPE" => "CHECKBOX",
 		"DEFAULT" => "Y"
 	];
+
+	$arComponentParameters["PARAMETERS"]["USE_DRAG"] = [
+		"PARENT" => "MAP",
+		"NAME" => Loc::getMessage("USE_DRAG"),
+		"TYPE" => "CHECKBOX",
+		"DEFAULT" => "Y"
+	];
 }
 
 if ($arCurrentValues["USE_PAGINATION"] == "Y")

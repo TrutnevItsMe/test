@@ -19,6 +19,7 @@ $MESS["DISPLAY_FIELDS"] = "Display fields";
 $MESS["AUTO_SCROLL"] = "Auto scroll";
 $MESS["DURATION"] = "Scroll speed";
 $MESS["INTERVAL_DURATION"] = "Time between auto scroll";
+$MESS["USE_DRAG"] = "Allow map navigation";
 
 $MESS["SEF_LIST"] = "List page shops";
 $MESS["SEF_DETAIL"] = "Detail page shop";

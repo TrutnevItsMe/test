@@ -4,3 +4,5 @@ $MESS["ADDRESS"] = "Адрес";
 $MESS["EMAIL"] = "email";
 $MESS["PHONE"] = "Телефон";
 $MESS["SUBMIT_FILTER_BTN"] = "Применить";
+$MESS["WORKTIME"] = "Время работы";
+
