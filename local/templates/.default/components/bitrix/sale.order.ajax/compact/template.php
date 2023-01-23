@@ -17,7 +17,6 @@ $context = Main\Application::getInstance()->getContext();
 $request = $context->getRequest();
 
 $APPLICATION->SetTitle("Предварительный заказ");
-
 if (empty($arParams['TEMPLATE_THEME']))
 {
 	$arParams['TEMPLATE_THEME'] = Main\ModuleManager::isModuleInstalled('bitrix.eshop') ? 'site' : 'blue';
@@ -530,6 +529,8 @@ else
 	$signer = new Main\Security\Sign\Signer;
 	$signedParams = $signer->sign(base64_encode(serialize($arParams)), 'sale.order.ajax');
 	$messages = Loc::loadLanguageFile(__FILE__);
+
+	$request = \Bitrix\Main\Context::getCurrent()->getRequest();
 	?>
 
 
@@ -572,6 +573,7 @@ else
 			pickUpBlockId: 'bx-soa-pickup',
 			propsBlockId: 'bx-soa-properties',
 			totalBlockId: 'bx-soa-total',
+			comment: '<?= htmlentities($request->getPost("COMMENT")??""); ?>',
 			ajaxUpdateBasketUrl: "<?=$templateFolder . "/ajax/updateBasket.php"?>",
 			updateBasketData: <?=CUtil::PhpToJSObject($arResult["UPDATE_BASKET_DATA"])?>
 		});

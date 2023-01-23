@@ -37,7 +37,9 @@ $APPLICATION->IncludeComponent(
 		"FILTER_PROPERTY_CODE" => array(
 			0 => "CML2_ARTICLE",
 			1 => "IN_STOCK",
-			2 => "",
+			2 => "TSVET_KORPUSA",
+			3 => "TSVET_PROFILYA",
+			4 => "",
 		),
 		"FILTER_PRICE_CODE" => array(
 		),
@@ -46,10 +48,10 @@ $APPLICATION->IncludeComponent(
 			1 => "",
 		),
 		"FILTER_OFFERS_PROPERTY_CODE" => array(
-			0 => "GLUBINA_IZDELIYA_SM",
-			1 => "MONTAZH",
-			2 => "TSVET",
-			3 => "SHIRINA_IZDELIYA_SM",
+			0 => "TSVET",
+			1 => "SHIRINA_IZDELIYA_SM",
+			2 => "MONTAZH",
+			3 => "GLUBINA_IZDELIYA_SM",
 			4 => "",
 		),
 		"USE_REVIEW" => "N",
@@ -307,7 +309,8 @@ $APPLICATION->IncludeComponent(
 		"COMPARE_ELEMENT_SORT_ORDER" => "asc",
 		"DISPLAY_ELEMENT_SELECT_BOX" => "N",
 		"PRICE_CODE" => array(
-			0 => "РРЦ Константа",
+			0 => "РРЦ",
+			1 => "РРЦ Константа",
 		),
 		"USE_PRICE_COUNT" => "Y",
 		"SHOW_PRICE_COUNT" => "1",
