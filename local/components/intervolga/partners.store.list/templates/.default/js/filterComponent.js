@@ -24,16 +24,19 @@ if (!window.FilterComponent){
 		 */
 		initFromUrl: function()
 		{
-			this.params["FILTER_VALUES"].forEach(function(field){
-				let param = URLUtils.getAttr(field.replace("UF_", ""));
+			if (this.params["FILTER_VALUES"])
+			{
+				this.params["FILTER_VALUES"].forEach(function(field){
+					let param = URLUtils.getAttr(field.replace("UF_", ""));
 
-				if (param)
-				{
-					param.split("-or-").forEach(function(checkboxId){
-						BX(checkboxId).click();
-					});
-				}
-			});
+					if (param)
+					{
+						param.split("-or-").forEach(function(checkboxId){
+							BX(checkboxId).click();
+						});
+					}
+				});
+			}
 		},
 
 		bindEvents: function(){
