@@ -373,6 +373,34 @@ foreach($arResult["SEARCH"] as $i=>$arItem)
 			unset($arResult["SEARCH"][$i]);
 	}
 }
+
+$ids = [];
+foreach (array_column($arResult["CATEGORIES"][0]["ITEMS"], "ITEM_ID") as $id){
+    $ids[] = intval($id);
+}
+if(!empty($ids)){
+    $products = CIBlockElement::getList(
+        [],
+        ["ID" => $ids,
+            "IBLOCK_ID" => 17],
+        false,
+        false,
+        ["ID",
+            "NAME"]
+    );
+    $productsName = [];
+
+    $needle = [$arResult["query"], $arResult["alt_query"]];
+    $replace = ["<b>" . $arResult["query"] . "</b>", "<b>" . $arResult["alt_query"] . "</b>"];
+    while($product = $products->Fetch()){
+        $productsName[$product["ID"]] = str_replace($needle, $replace , $product["NAME"]);
+    }
+
+    foreach ($arResult["CATEGORIES"][0]["ITEMS"] as &$arItem){
+        $arItem["NAME"] = $productsName[$arItem["ITEM_ID"]];
+    }
+}
+
 if(!$arResult["SEARCH"])
 	$arResult["CATEGORIES"] = array();
 ?>
