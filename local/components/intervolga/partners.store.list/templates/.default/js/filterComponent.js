@@ -67,79 +67,86 @@ if (!window.FilterComponent){
 		 */
 		bindSubmit: function(){
 
-			let btn = BX("filter").querySelector(".btn");
+			let filter = BX("filter")
 
-			BX.bind(btn, "click", function(){
+			if (filter)
+			{
+				let btn = filter.querySelector(".btn");
 
-				let urlParams = {};
+				BX.bind(btn, "click", function(){
 
-				// Проходим по всем активным чекбоксам
-				BX("filter").querySelectorAll("input[type='checkbox']:checked").forEach(function (checkbox){
+					let urlParams = {};
 
-					let field = checkbox.getAttribute("data-filter-field");
+					// Проходим по всем активным чекбоксам
+					BX("filter").querySelectorAll("input[type='checkbox']:checked").forEach(function (checkbox){
 
-					if (!urlParams[field]){
-						urlParams[field] = [];
-					}
+						let field = checkbox.getAttribute("data-filter-field");
 
-					urlParams[field].push(checkbox.id);
-				});
+						if (!urlParams[field]){
+							urlParams[field] = [];
+						}
 
-				// Проходим по всем активным radio
-				BX("filter").querySelectorAll("input[type='radio']:checked").forEach(function (radio){
-
-					let field = radio.getAttribute("data-filter-field");
-
-					if (!urlParams[field]){
-						urlParams[field] = [];
-					}
-
-					urlParams[field].push(radio.id);
-				});
-
-				// Добавляем в URL параметры для фильтрации
-				Object.keys(urlParams).forEach(function (field){
-					let fieldWithoutUF = field.replace("UF_", "");
-					let params = urlParams[field].join("-or-");
-					URLUtils.setAttr(fieldWithoutUF, params);
-				});
-
-				// Формируем параметры, которые нужно удалить из URL
-				let deletingParamsFromUrls = ArrayUtils.difference(window.FilterComponent.params["FILTER_VALUES"], Object.keys(urlParams));
-
-				deletingParamsFromUrls.forEach(function(param){
-					URLUtils.delAttr(param.replace("UF_", ""));
-				});
-
-				let ids = window.FilterComponent.getIdsFromUrl();
-
-				if (!ids.length)
-				{
-					ids = Object.keys(window.FilterComponent.result["ITEMS"]);
-				}
-
-				let balloons = window.FilterComponent.getBalloons(ids);
-
-				if (balloons.length)
-				{
-					YandexMap.removeBalloons();
-
-					YandexMap.moveTo(
-						parseFloat(balloons[0]["x"]),
-						parseFloat(balloons[0]["y"])
-					).then(function(){
-						YandexMap.zoom(12);
+						urlParams[field].push(checkbox.id);
 					});
 
-					balloons.forEach(function(balloon){
-						YandexMap.setBalloon(
-							balloon["x"],
-							balloon["y"],
-							balloon["hintContent"],
-							balloon["balloonContent"]);
+					// Проходим по всем активным radio
+					BX("filter").querySelectorAll("input[type='radio']:checked").forEach(function (radio){
+
+						let field = radio.getAttribute("data-filter-field");
+
+						if (!urlParams[field]){
+							urlParams[field] = [];
+						}
+
+						urlParams[field].push(radio.id);
 					});
-				}
-			});
+
+					// Добавляем в URL параметры для фильтрации
+					Object.keys(urlParams).forEach(function (field){
+						let fieldWithoutUF = field.replace("UF_", "");
+						let params = urlParams[field].join("-or-");
+						URLUtils.setAttr(fieldWithoutUF, params);
+					});
+
+					// Формируем параметры, которые нужно удалить из URL
+					let deletingParamsFromUrls = ArrayUtils.difference(window.FilterComponent.params["FILTER_VALUES"], Object.keys(urlParams));
+
+					deletingParamsFromUrls.forEach(function(param){
+						URLUtils.delAttr(param.replace("UF_", ""));
+					});
+
+					let ids = window.FilterComponent.getIdsFromUrl();
+
+					if (!ids.length)
+					{
+						ids = Object.keys(window.FilterComponent.result["ITEMS"]);
+					}
+
+					let balloons = window.FilterComponent.getBalloons(ids);
+
+					if (balloons.length)
+					{
+						YandexMap.removeBalloons();
+
+						YandexMap.moveTo(
+							parseFloat(balloons[0]["x"]),
+							parseFloat(balloons[0]["y"])
+						).then(function(){
+							YandexMap.zoom(12);
+						});
+
+						balloons.forEach(function(balloon){
+							YandexMap.setBalloon(
+								balloon["x"],
+								balloon["y"],
+								balloon["hintContent"],
+								balloon["balloonContent"]);
+						});
+					}
+				});
+			}
+
+
 		},
 
 		/**
