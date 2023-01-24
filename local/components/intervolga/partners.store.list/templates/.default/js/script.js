@@ -11,7 +11,6 @@ BX.ready(function()
 			});
 		});
 
-
 	window.ElementComponent.setItemsOneHeight();
 	window.ElementComponent.bindClickElems();
 
