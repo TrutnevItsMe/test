@@ -102,6 +102,19 @@ if (!window.ElementComponent)
 
 				item.href = elemUrl;
 			});
+		},
+
+		/**
+		 * Клик по ссылке на детальную страницу
+		 * @param {Element} link
+		 */
+		clickDetailShop: function(link)
+		{
+			let href = link.href;
+			let url = new URL(href);
+			url.searchParams.set("backurl", window.location.href);
+			href = url.toString();
+			link.href = href;
 		}
 	};
 }

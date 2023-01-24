@@ -39,6 +39,7 @@ if (!window.FilterComponent){
 		bindEvents: function(){
 			this.bindToggleElement();
 			this.bindSubmit();
+			this.bindSearchCity();
 		},
 
 		/**
@@ -81,6 +82,18 @@ if (!window.FilterComponent){
 					urlParams[field].push(checkbox.id);
 				});
 
+				// Проходим по всем активным radio
+				BX("filter").querySelectorAll("input[type='radio']:checked").forEach(function (radio){
+
+					let field = radio.getAttribute("data-filter-field");
+
+					if (!urlParams[field]){
+						urlParams[field] = [];
+					}
+
+					urlParams[field].push(radio.id);
+				});
+
 				// Добавляем в URL параметры для фильтрации
 				Object.keys(urlParams).forEach(function (field){
 					let fieldWithoutUF = field.replace("UF_", "");
@@ -108,14 +121,19 @@ if (!window.FilterComponent){
 				{
 					YandexMap.removeBalloons();
 
+					YandexMap.moveTo(
+						parseFloat(balloons[0]["x"]),
+						parseFloat(balloons[0]["y"])
+					).then(function(){
+						YandexMap.zoom(12);
+					});
+
 					balloons.forEach(function(balloon){
 						YandexMap.setBalloon(
 							balloon["x"],
 							balloon["y"],
 							balloon["hintContent"],
 							balloon["balloonContent"]);
-
-
 					});
 				}
 			});
@@ -179,20 +197,25 @@ if (!window.FilterComponent){
 
 				let detailUrl = detailUrlTemplate = detailUrlTemplate.replace("#ELEMENT_ID#", id);
 
-					for (const [key, value] of Object.entries(URLUtils.getAttrs())) {
-						detailUrl += "&"+key+"="+value;
-					}
+				if (!detailUrl.includes("?"))
+				{
+					detailUrl += "?";
+				}
 
-					if (URLUtils.getAttr("backurl"))
-					{
-						detailUrl += "&backurl=" + URLUtils.getAttr("backurl");
-					}
+				for (const [key, value] of Object.entries(URLUtils.getAttrs())) {
+					detailUrl += "&"+key+"="+value;
+				}
+
+				if (URLUtils.getAttr("backurl"))
+				{
+					detailUrl += "&backurl=" + URLUtils.getAttr("backurl");
+				}
 
 				let balloon = {
 					x: parseFloat(item["COORDINATES"]["x"]),
 					y: parseFloat(item["COORDINATES"]["y"]),
-					hintContent: "<a class='ymap-balloon-link' onclick='YandexMap.clickBalloonHint(this)' href='" + detailUrl + "'>" + item["UF_NAME"] + "</a><br>",
-					balloonContent: "<a class='ymap-balloon-link' onclick='YandexMap.clickBalloonHint(this)' href='" + detailUrl + "'>" + item["UF_NAME"] + "</a><br>"
+					hintContent: "<a class='ymap-balloon-link' onclick='window.ElementComponent.clickDetailShop(this)' href='" + detailUrl + "'>" + item["UF_NAME"] + "</a><br>",
+					balloonContent: "<a class='ymap-balloon-link' onclick='window.ElementComponent.clickDetailShop(this)' href='" + detailUrl + "'>" + item["UF_NAME"] + "</a><br>"
 				};
 
 				if (item["UF_VREMYARABOTY"])
@@ -248,6 +271,38 @@ if (!window.FilterComponent){
 			});
 
 			return balloons;
+		},
+
+		bindSearchCity: function()
+		{
+			let searchInput = document.getElementById("city-filter-search");
+
+			if (searchInput)
+			{
+				BX.bind(searchInput, "keyup", function(e){
+
+					let searchValue = searchInput.value
+
+					searchInput.parentElement.querySelectorAll(".filter-value-block").forEach(function (filterElemBlock){
+
+						if (searchInput.value == "")
+						{
+							BX.removeClass(filterElemBlock, "d-none");
+						}
+
+						let city = filterElemBlock.querySelector(".filter-value-item").innerHTML;
+
+						if (city.toUpperCase().includes(searchValue.toUpperCase()))
+						{
+							BX.removeClass(filterElemBlock, "d-none");
+						}
+						else
+						{
+							BX.addClass(filterElemBlock, "d-none");
+						}
+					});
+				});
+			}
 		}
 	};
 }

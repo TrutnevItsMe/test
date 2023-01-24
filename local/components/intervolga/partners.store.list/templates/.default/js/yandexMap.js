@@ -167,16 +167,4 @@ class YandexMap
 		YandexMap.getMap().geoObjects.removeAll();
 	}
 
-	/**
-	 * Клик по ссылке внутри всплывающей подсказки внутри метки на карте
-	 * @param {Element} balloonHint
-	 */
-	static clickBalloonHint(balloonHint)
-	{
-		let href = balloonHint.href;
-		let url = new URL(href);
-		url.searchParams.set("backurl", window.location.href);
-		href = url.toString();
-		balloonHint.href = href;
-	}
 }

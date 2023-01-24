@@ -4,6 +4,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 /**
  * @global $arParams
  * @global $arResult
+ * @global $component
  */
 
 use Bitrix\Main\Localization\Loc;
@@ -43,6 +44,10 @@ else
 
 							<div class="filter-block-inner" style="display: none;">
 
+								<?php if($arFilterField == "UF_GOROD"):?>
+									<input id="city-filter-search" type="text">
+								<?php endif;?>
+
 								<?php foreach ($arResult["MAP_FILTER_VALUES"][$arFilterField] as $value => $arFilterItem): ?>
 
 									<?php if (strlen($value) == ""): ?>
@@ -53,15 +58,17 @@ else
 									$strIds = implode(",", array_column($arFilterItem, "ID"));
 									$checkboxId = md5($value);
 									?>
+
 									<div class="filter-value-block">
 										<label class="cursor-pointer d-flex w-100" for="<?= $checkboxId ?>">
-											<label class="custom-checkbox cursor-pointer"
+											<label class="cursor-pointer"
 												   for="<?= $checkboxId ?>"></label>
 											<input id="<?= $checkboxId ?>"
-												   type="checkbox"
-												   class="cursor-pointer d-none"
+												   type="radio"
+												   class="cursor-pointer"
 												   data-filter-field="<?= $arFilterField ?>"
-												   data-filter-items="<?= $strIds ?>">
+												   data-filter-items="<?= $strIds ?>"
+												   name="<?=$arFilterField?>">
 											<span class="filter-value-item ml-2"><?= $value ?></span>
 										</label>
 									</div>
@@ -110,7 +117,7 @@ else
 							$detailUrl .= "&backurl=" . parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 						?>
 
-						<div class="item-field-block ml-3"><a href="<?=$detailUrl?>"><?= $arItem["UF_NAME"] ?></a></div>
+						<div class="item-field-block ml-3"><a onclick="window.ElementComponent.clickDetailShop(this)" href="<?=$detailUrl?>"><?= $arItem["UF_NAME"] ?></a></div>
 
 						<?php foreach ($arParams["DISPLAY_FIELDS"] as $field): ?>
 							<?php if ($arItem[$field] != ""): ?>
