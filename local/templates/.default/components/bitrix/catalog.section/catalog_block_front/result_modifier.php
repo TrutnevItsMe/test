@@ -636,6 +636,17 @@ if (!empty($arResult['ITEMS'])){
 		$arNewItemsList[$key] = $arItem;
 	}
 
+	$productIds = array_column($arResult["ITEMS"], "ID");
+
+	$rsStoreProduct = \Bitrix\Catalog\StoreProductTable::getList([
+		'filter' => [
+			'=PRODUCT_ID'=>$productIds,
+			'=STORE.ACTIVE'=>'Y',
+			"STORE_ID" => \Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS
+		],
+		'select' => ['AMOUNT','PRODUCT_ID']
+	]);
+
 	$arNewItemsList[$key]['LAST_ELEMENT'] = 'Y';
 	$arResult['ITEMS'] = $arNewItemsList;
 	unset($arNewItemsList);
@@ -698,5 +709,23 @@ if (!empty($arResult['ITEMS'])){
 			}
 			unset($currencyFormat, $currency, $currencyIterator);
 		}
+	}
+
+	$mapIdAmount = [];
+
+	while($arStoreProduct=$rsStoreProduct->fetch())
+	{
+		if (!$mapIdAmount[$arStoreProduct["PRODUCT_ID"]])
+		{
+			$mapIdAmount[$arStoreProduct["PRODUCT_ID"]] = 0;
+		}
+
+		$mapIdAmount[$arStoreProduct["PRODUCT_ID"]] += $arStoreProduct["AMOUNT"];
+	}
+
+	foreach ($mapIdAmount as $ID => $amount)
+	{
+		$key = array_search($ID, $productIds);
+		$arResult["ITEMS"][$key]["STORES_AMOUNT"] = $amount;
 	}
 }?>
