@@ -87,7 +87,7 @@ else
 {
 	foreach ($arSections as $ID => $arSection)
 	{
-		if (strpos($arSection["CODE"],"komplektuyushchie") !== false)
+		if (strpos($arSection["CODE"],"komplektuyushchie_dlya") !== false)
 		{
 			continue;
 		}

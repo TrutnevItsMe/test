@@ -18,7 +18,7 @@ if($arMenuParametrs = CNext::GetDirMenuParametrs(__DIR__))
 				continue;
 			}
 
-			if (strpos($arSection["CODE"], "komplektuyushchie_") !== false)
+			if (strpos($arSection["CODE"], "komplektuyushchie_dlya") !== false)
 			{
 				unset($arSections[$i]);
 				continue;

@@ -44,7 +44,7 @@ foreach ($arResult["ITEMS"] as $key => &$arItem)
 	{
 		foreach ($arItem["VALUES"] as $id => $arValue)
 		{
-			if (strpos($arValue["UPPER"], "КОМПЛЕКТУЮЩИЕ") !== false)
+			if (strpos($arValue["UPPER"], "КОМПЛЕКТУЮЩИЕ ДЛЯ") !== false)
 			{
 				unset($arItem["VALUES"][$id]);
 			}

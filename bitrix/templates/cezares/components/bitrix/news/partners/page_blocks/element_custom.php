@@ -392,7 +392,7 @@ $arParams["AJAX_FILTER_CATALOG"] = "N";
 
 						// Снято с производства | комплекктующие
 						if (strstr($arSection["CODE"], OUT_OF_PRODUCTION_IBLOCK_SECTION_CODE) !== false ||
-							strstr($arSection["CODE"], "komplektuyushchie") !== false)
+							strstr($arSection["CODE"], "komplektuyushchie_dlya") !== false)
 						{
 							continue;
 						}
@@ -496,7 +496,7 @@ $arParams["AJAX_FILTER_CATALOG"] = "N";
 
 						// Снято с производства | комплектующие
 						if (strstr($arSection["CODE"], OUT_OF_PRODUCTION_IBLOCK_SECTION_CODE) !== false ||
-							strstr($arSection["CODE"], "komplektuyushchie") !== false)
+							strstr($arSection["CODE"], "komplektuyushchie_dlya") !== false)
 						{
 							continue;
 						}
