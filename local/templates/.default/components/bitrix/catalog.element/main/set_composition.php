@@ -64,13 +64,11 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 
 			});
 
-
 			var price = calculatePrice();
 			if (price.price > 0)
 			{
 				showPrice(price);
 			}
-
 
 		});
 	</script>

@@ -1848,7 +1848,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 					<div class="title-tab-heading visible-xs"><?=($arParams["TAB_STOCK_NAME"] ? $arParams["TAB_STOCK_NAME"] : GetMessage("STORES_TAB"));?></div>
 					<div class="stores_wrapp_1">				
 					<?if($arResult["OFFERS"]){?>
-						<span></span>
+						<span id="offers-stores-block"></span>
 					<?}elseif(isset($arResult['SET_STORES']) && count($arResult['SET_STORES']) > 0){?>
 						<div class="stores_block_wrap">
 							<? foreach ($arResult['SET_STORES'] as $store):
@@ -2148,6 +2148,7 @@ if ($arResult['CATALOG'] && $arParams['USE_GIFTS_MAIN_PR_SECTION_LIST'] == 'Y' &
 			classInactive: "inactive-offer",
 			classAccessibleOfferValue: "accessible-offer-filter-value",
 			classInaccessibleOfferValue: "inaccessible-offer-filter-value",
+			ajaxFolder: "<?=$templateFolder?>/ajax/"
 		});
 	});
 </script>
