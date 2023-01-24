@@ -7,6 +7,7 @@ if(strlen($arResult["ERROR_MESSAGE"]) > 0){
 ?>
 <?if(count($arResult["STORES"]) > 0):?>
 	<?
+
 	// get shops
 	$arShops = array();
 	CModule::IncludeModule('iblock');
