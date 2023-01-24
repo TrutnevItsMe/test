@@ -254,13 +254,16 @@
                                     <div class="sa_block">
 
 										<?php
-										if ($totalCount <= 0 || $totalCount >= $arQuantityData["OPTIONS"]["MAX_AMOUNT"])
+										$storeCount = intval($arItem["STORES_AMOUNT"]);
+
+										$arQuantityStoreData = CNext::GetQuantityArray($storeCount);
+										if ($storeCount <= 0 || $storeCount >= $arQuantityStoreData["OPTIONS"]["MAX_AMOUNT"])
 										{
-											$displayStoreAmount = $arQuantityData["HTML"];
+											$displayStoreAmount = $arQuantityStoreData["HTML"];
 										}
 										else
 										{
-											$displayStoreAmount ="<div class='item-stock'><span class='value'>" . $totalCount .
+											$displayStoreAmount ="<div class='item-stock'><span class='value'>" . $storeCount .
 												" " .
 												\Bitrix\Main\Localization\Loc::getMessage("PIECES_SHORT_CAPTURE") . "</span></div>";
 										}
