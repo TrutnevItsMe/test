@@ -157,26 +157,29 @@ if (!window.FilterComponent){
 
 			let mapFieldIds = {};
 
-			this.params["FILTER_VALUES"].forEach(function(field){
-				let params = URLUtils.getAttr(field.replace("UF_", ""));
+			if (this.params["FILTER_VALUES"])
+			{
+				this.params["FILTER_VALUES"].forEach(function(field){
+					let params = URLUtils.getAttr(field.replace("UF_", ""));
 
-				if (!params)
-				{
-					return;
-				}
+					if (!params)
+					{
+						return;
+					}
 
-				params = params.split("-or-");
+					params = params.split("-or-");
 
-				if (!mapFieldIds[field])
-				{
-					mapFieldIds[field] = [];
-				}
+					if (!mapFieldIds[field])
+					{
+						mapFieldIds[field] = [];
+					}
 
-				params.forEach(function(param){
-					let ids = BX(param).getAttribute("data-filter-items").split(",");
-					mapFieldIds[field] = mapFieldIds[field].concat(ids);
+					params.forEach(function(param){
+						let ids = BX(param).getAttribute("data-filter-items").split(",");
+						mapFieldIds[field] = mapFieldIds[field].concat(ids);
+					});
 				});
-			});
+			}
 
 			let ids = ArrayUtils.intersectionArray(Object.values(mapFieldIds));
 			return ids;
