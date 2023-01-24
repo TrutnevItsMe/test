@@ -52,18 +52,27 @@ if(strlen($arResult["ERROR_MESSAGE"]) > 0){
 					</div>
 				</div>
 				<?
-				$totalCount = CNext::CheckTypeCount($arProperty["NUM_AMOUNT"]);
-				$arQuantityData = CNext::GetQuantityArray($totalCount);
+				if (isset($arProperty["NUM_AMOUNT"]))
+				{
+					$amount = $arProperty["NUM_AMOUNT"];
+				}
+				else
+				{
+					$amount = $arProperty["AMOUNT"];
+				}
+
+//				$totalCount = CNext::CheckTypeCount($amount);
+				$arQuantityData = CNext::GetQuantityArray($amount);
 
 				$displayStoreAmount = "";
 
-				if ($totalCount <= 0 || $totalCount >= $arQuantityData["OPTIONS"]["MAX_AMOUNT"])
+				if ($amount <= 0 || $amount >= $arQuantityData["OPTIONS"]["MAX_AMOUNT"])
 				{
 					$displayStoreAmount = $arQuantityData["HTML"];
 				}
 				else
 				{
-					$displayStoreAmount ="<div class='item-stock'><span class='value'>" . $totalCount .
+					$displayStoreAmount ="<div class='item-stock'><span class='value'>" . $amount .
 						" " .
 						\Bitrix\Main\Localization\Loc::getMessage("PIECES_SHORT_CAPTURE") . "</span></div>";
 				}

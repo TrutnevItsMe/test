@@ -5073,7 +5073,7 @@ function formatNumber(n, digits)
 }
 
 
-// Считаем цену для набора
+//Считаем цену для набора
 var price = calculatePrice();
 if (price.price > 0)
 {
