@@ -780,7 +780,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 	<?if($arResult['OFFERS']):?>
 		<div class="offers-filter">
 			<?foreach($arResult["OFFERS_MAP_FILTER"] as $prop => $arValueOffers):?>
-				<h4 class="offers-filter-column"><?=$arResult["PROPERTIES"][$prop]["NAME"]?>: </h4>
+				<h4 class="offers-filter-column <?if(!$arValueOffers):?>d-none<?endif;?>"><?=$arResult["PROPERTIES"][$prop]["NAME"]?>: </h4>
 				<span class="prop-current-value"><?=$arResult["CURRENT_OFFER"]["PROPERTIES"][$prop]["VALUE"]?></span>
 				<div class="flex filter-item-container" data-column="<?=$prop?>">
 					<?
