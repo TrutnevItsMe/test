@@ -697,34 +697,6 @@ window.OffersFilterComponent = {
 			++i;
 		}
 
-		if (item["DETAIL_PICTURE"])
-		{
-			let srcImg = item["DETAIL_PICTURE"]["SRC"];
-
-			htmlSlider += "<li id='photo-"+i+"' style='display: none;'>" +
-				"<link href='" + srcImg + "'>" +
-				"<a href='" + srcImg + "' data-fancybox-group='item_slider' class='popup_link fancy' title='" + item["DETAIL_PICTURE"]["NAME"] + "'>" +
-				"<img data-lazyload='' class=' lazyloaded' data-src='" + srcImg + "' src='" + srcImg + "' alt='"+ item["DETAIL_PICTURE"]["NAME"] +"' title='"+ item["DETAIL_PICTURE"]["NAME"] +"'>" +
-				"<div class='zoom'></div>" +
-				"</a>" +
-				"</li>";
-
-			htmlThumbs += "<li class='' " +
-				" data-slide_key='" + i + "'" +
-				" data-big_img='" + item["DETAIL_PICTURE"]["SRC"] + "'" +
-				" data-small_img='" + item["DETAIL_PICTURE"]["SRC"] + "'>" +
-				"<span>" +
-				"<img class='xzoom-gallery'" +
-				" data-xpreview='" + item["DETAIL_PICTURE"]["SRC"] + "'" +
-				" src='" + item["DETAIL_PICTURE"]["SRC"] + "'" +
-				" alt='" + item["DETAIL_PICTURE"]["NAME"] + "'" +
-				" title='" + item["DETAIL_PICTURE"]["NAME"] + "'>" +
-				"</span>" +
-				"</li>";
-
-			++i;
-		}
-
 		$(".slides ul").html(htmlSlider);
 		$("#thumbs").html(htmlThumbs);
 		window.slider.reloadSlider();
