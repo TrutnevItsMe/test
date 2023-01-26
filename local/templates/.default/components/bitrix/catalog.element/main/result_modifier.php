@@ -2168,22 +2168,6 @@ if ($arResult["OFFERS"])
 				];
 			}
 
-			if ($arOffer["DETAIL_PICTURE"])
-			{
-				$arResult["MORE_PHOTO"][] = [
-					"BIG" => [
-						"src" => $arOffer["DETAIL_PICTURE"]["SRC"]
-					],
-					"SMALL" => [
-						"src" => $arOffer["DETAIL_PICTURE"]["SRC"]
-					],
-					"THUMB" => [
-						"src" => $arOffer["DETAIL_PICTURE"]["SRC"]
-					],
-					"ALT" => $arOffer["NAME"],
-					"TITLE" => $arOffer["NAME"]
-				];
-			}
 
 			if ($arOffer["SET"])
 			{

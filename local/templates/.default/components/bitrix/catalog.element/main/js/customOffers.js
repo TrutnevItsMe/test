@@ -25,6 +25,7 @@ window.OffersFilterComponent = {
 		// Класс, указывающий, что данное предложение недоступно (нельзя выбрать значение в фильтре по предложениям)
 		this.classInactive = params.classInactive || "inactive";
 		this.currentFilterValues = {};
+		this.ajaxFolder = params.ajaxFolder || "/ajax/";
 
 		// JQuery элемент, на который кликнули
 		this.clickedItem = null;
@@ -79,11 +80,12 @@ window.OffersFilterComponent = {
 
 		if (this.result["CURRENT_OFFER"])
 		{
+			this.setRest(this.result["CURRENT_OFFER"]["ID"], this.params["STORES"]);
+			this.setStoresBlock(this.result["CURRENT_OFFER"]["ID"]);
 			this.setProductName(this.result["CURRENT_OFFER"]["NAME"]);
 			this.setPreviewText(this.result["CURRENT_OFFER"]["PREVIEW_TEXT"]);
 		}
 
-		this.setProductName();
 		this.initFilterValues();
 		this.setCharacters();
 		this.setAccessibleFilterItems();
@@ -96,12 +98,8 @@ window.OffersFilterComponent = {
 			}
 		}
 
-		let price = calculatePrice();
-
-		if (price.price > 0)
-		{
-			showPrice(price);
-		}
+		this.setPrice(this.result["CURRENT_OFFER"]["PRICES"]["РРЦ"]["VALUE"],
+			this.result["CURRENT_OFFER"]["PRICES"]["РРЦ Константа"]["VALUE"]);
 
 		this.bindEvents();
 	},
@@ -426,6 +424,9 @@ window.OffersFilterComponent = {
 
 		if (currentOffer)
 		{
+			self.setRest(currentOffer["ID"], self.params["STORES"]);
+			self.setStoresBlock(currentOffer["ID"]);
+
 			// У предложения есть набор
 			if (currentOffer && currentOffer["SET"] && currentOffer["SET"].length > 0)
 			{
@@ -434,84 +435,14 @@ window.OffersFilterComponent = {
 				$(".set_new").html(newHtmlSets);
 			}
 
-			let price = calculatePrice();
-
-			// Устанавливаем цену из набора
-			if (price.price > 0)
+			if (currentOffer["PRICES"])
 			{
-				showPrice(price);
-			}
-			// устанавливаем цену из предлоржения
-			else
-			{
-				showPrice({
-					price: currentOffer["CATALOG_PURCHASING_PRICE"],
-					old: currentOffer["CATALOG_PURCHASING_PRICE"]
-				});
+				self.setPrice(currentOffer["PRICES"]["РРЦ"]["VALUE"],
+					currentOffer["PRICES"]["РРЦ Константа"]["VALUE"]);
 			}
 
 			// Меняем картинки в слайдере
-			let htmlSlider = "";
-			let i = 0;
-
-			for (let j = 0; j < currentOffer["MORE_PHOTO"].length; ++j)
-			{
-				let _class = !j ? "current" : "";
-
-				htmlSlider += "<li class='" + _class + "' " +
-					" data-slide_key='" + j + "'" +
-					" data-big_img='" + currentOffer["MORE_PHOTO"][i]["BIG"]["src"] + "'" +
-					" data-small_img='" + currentOffer["MORE_PHOTO"][i]["SMALL"]["src"] + "'>" +
-					"<span>" +
-					"<img class='xzoom-gallery'" +
-					" data-xpreview='" + currentOffer["MORE_PHOTO"][i]["THUMB"]["src"] + "'" +
-					" src='" + currentOffer["MORE_PHOTO"][i]["THUMB"]["src"] + "'" +
-					" alt='" + currentOffer["MORE_PHOTO"][i]["ALT"] + "'" +
-					" title='" + currentOffer["MORE_PHOTO"][i]["TITLE"] + "'>" +
-					"</span>" +
-					"</li>";
-
-				++i;
-			}
-
-			if (currentOffer["PREVIEW_PICTURE"])
-			{
-				htmlSlider += "<li class='' " +
-					" data-slide_key='" + i + "'" +
-					" data-big_img='" + currentOffer["PREVIEW_PICTURE"]["SRC"] + "'" +
-					" data-small_img='" + currentOffer["PREVIEW_PICTURE"]["SRC"] + "'>" +
-					"<span>" +
-					"<img class='xzoom-gallery'" +
-					" data-xpreview='" + currentOffer["PREVIEW_PICTURE"]["SRC"] + "'" +
-					" src='" + currentOffer["PREVIEW_PICTURE"]["SRC"] + "'" +
-					" alt='" + currentOffer["PREVIEW_PICTURE"]["NAME"] + "'" +
-					" title='" + currentOffer["PREVIEW_PICTURE"]["NAME"] + "'>" +
-					"</span>" +
-					"</li>";
-
-				++i;
-			}
-
-			if (currentOffer["DETAIL_PICTURE"])
-			{
-				htmlSlider += "<li class='' " +
-					" data-slide_key='" + i + "'" +
-					" data-big_img='" + currentOffer["DETAIL_PICTURE"]["SRC"] + "'" +
-					" data-small_img='" + currentOffer["DETAIL_PICTURE"]["SRC"] + "'>" +
-					"<span>" +
-					"<img class='xzoom-gallery'" +
-					" data-xpreview='" + currentOffer["DETAIL_PICTURE"]["SRC"] + "'" +
-					" src='" + currentOffer["DETAIL_PICTURE"]["SRC"] + "'" +
-					" alt='" + currentOffer["DETAIL_PICTURE"]["NAME"] + "'" +
-					" title='" + currentOffer["DETAIL_PICTURE"]["NAME"] + "'>" +
-					"</span>" +
-					"</li>";
-
-				++i;
-			}
-
-			$("#thumbs").html(htmlSlider);
-			window.slider.reloadSlider();
+			self.setSliderPhotos(currentOffer);
 			$('.button_block .btn.to-cart').attr("data-item", currentOffer["ID"]);
 
 			// Показываем, что товар уже в корзине
@@ -692,5 +623,184 @@ window.OffersFilterComponent = {
 				valueNode.innerHTML = article;
 			}
 		}
+	},
+
+	/**
+	 * Устнавливает картинки в слайдере
+	 *
+	 * @param {Object} item
+	 */
+	setSliderPhotos: function(item)
+	{
+		let htmlThumbs = ""; // картинки в списке
+		let htmlSlider = ""; // картинки в слайдере
+		let i = 0;
+
+		if (item["MORE_PHOTO"])
+		{
+			for (let j = 0; j < item["MORE_PHOTO"].length; ++j)
+			{
+				let _class = !j ? "current" : "";
+				let srcImg = (item["MORE_PHOTO"][i]["BIG"]["src"]) ? item["MORE_PHOTO"][i]["BIG"]["src"] : item["MORE_PHOTO"][i]["SMALL"]["src"];
+				let slideItemAttribute = (_class) ? "class='current'" : "style='display: none;'";
+
+				htmlSlider += "<li id='photo-"+i+"' "+ slideItemAttribute +">" +
+					"<link href='" + srcImg + "'>" +
+					"<a href='" + srcImg + "' data-fancybox-group='item_slider' class='popup_link fancy' title='" + item["MORE_PHOTO"][i]["TITLE"] + "'>" +
+					"<img data-lazyload='' class=' lazyloaded' data-src='" + srcImg + "' src='" + srcImg + "' alt='"+ item["MORE_PHOTO"][i]["TITLE"] +"' title='"+ item["MORE_PHOTO"][i]["TITLE"] +"'>" +
+					"<div class='zoom'></div>" +
+					"</a>" +
+					"</li>";
+
+				htmlThumbs += "<li class='" + _class + "' " +
+					" data-slide_key='" + j + "'" +
+					" data-big_img='" + item["MORE_PHOTO"][i]["BIG"]["src"] + "'" +
+					" data-small_img='" + item["MORE_PHOTO"][i]["SMALL"]["src"] + "'>" +
+					"<span>" +
+					"<img class='xzoom-gallery'" +
+					" data-xpreview='" + item["MORE_PHOTO"][i]["THUMB"]["src"] + "'" +
+					" src='" + item["MORE_PHOTO"][i]["THUMB"]["src"] + "'" +
+					" alt='" + item["MORE_PHOTO"][i]["ALT"] + "'" +
+					" title='" + item["MORE_PHOTO"][i]["TITLE"] + "'>" +
+					"</span>" +
+					"</li>";
+
+				++i;
+			}
+		}
+
+		if (item["PREVIEW_PICTURE"])
+		{
+			let srcImg = item["PREVIEW_PICTURE"]["SRC"];
+
+			htmlSlider += "<li id='photo-"+i+"' style='display: none;'>" +
+				"<link href='" + srcImg + "'>" +
+				"<a href='" + srcImg + "' data-fancybox-group='item_slider' class='popup_link fancy' title='" + item["PREVIEW_PICTURE"]["NAME"] + "'>" +
+				"<img data-lazyload='' class=' lazyloaded' data-src='" + srcImg + "' src='" + srcImg + "' alt='"+ item["PREVIEW_PICTURE"]["NAME"] +"' title='"+ item["PREVIEW_PICTURE"]["NAME"] +"'>" +
+				"<div class='zoom'></div>" +
+				"</a>" +
+				"</li>";
+
+			htmlThumbs += "<li class='' " +
+				" data-slide_key='" + i + "'" +
+				" data-big_img='" + item["PREVIEW_PICTURE"]["SRC"] + "'" +
+				" data-small_img='" + item["PREVIEW_PICTURE"]["SRC"] + "'>" +
+				"<span>" +
+				"<img class='xzoom-gallery'" +
+				" data-xpreview='" + item["PREVIEW_PICTURE"]["SRC"] + "'" +
+				" src='" + item["PREVIEW_PICTURE"]["SRC"] + "'" +
+				" alt='" + item["PREVIEW_PICTURE"]["NAME"] + "'" +
+				" title='" + item["PREVIEW_PICTURE"]["NAME"] + "'>" +
+				"</span>" +
+				"</li>";
+
+			++i;
+		}
+
+		$(".slides ul").html(htmlSlider);
+		$("#thumbs").html(htmlThumbs);
+		window.slider.reloadSlider();
+	},
+
+	/**
+	 * Устанавливает верстку с ценами
+	 *
+	 * @param {float | undefined | null} price
+	 * @param {float | undefined | null} old
+	 */
+	setPrice: function(price, old)
+	{
+		let prices = {};
+
+		if (price)
+		{
+			prices["price"] = parseFloat(price);
+		}
+
+		if (old)
+		{
+			prices["old"] = parseFloat(old);
+		}
+
+		showPrice(prices);
+	},
+
+	/**
+	 * Устанавливает верстку блока со складами
+	 *
+	 * @param {string | int} offerId
+	 */
+	setStoresBlock: function(offerId)
+	{
+		self = this;
+
+		BX.ajax({
+			url: self.ajaxFolder+"stores.php",
+			method: "POST",
+			dataType: "html",
+			data: {
+				USE_STORE_PHONE: self.params["USE_STORE_PHONE"],
+				SCHEDULE: self.params["SCHEDULE"],
+				USE_MIN_AMOUNT: self.params["USE_MIN_AMOUNT"],
+				MIN_AMOUNT: self.params["MIN_AMOUNT"],
+				OFFER_ID: offerId,
+				ELEMENT_ID: self.params["ELEMENT_ID"],
+				STORE_PATH: self.params["STORE_PATH"],
+				MAIN_TITLE: self.params["MAIN_TITLE"],
+				MAX_AMOUNT: self.params["MAX_AMOUNT"],
+				USE_ONLY_MAX_AMOUNT: self.params["USE_ONLY_MAX_AMOUNT"],
+				SHOW_EMPTY_STORE: self.params['SHOW_EMPTY_STORE'],
+				SHOW_GENERAL_STORE_INFORMATION: self.params['SHOW_GENERAL_STORE_INFORMATION'],
+				USER_FIELDS: self.params['USER_FIELDS'],
+				FIELDS: self.params['FIELDS'],
+				SET_ITEMS: self.params["SET_ITEMS"],
+			},
+			onsuccess: function(response)
+			{
+				let storesBlock = BX("offers-stores-block");
+
+				if (storesBlock)
+				{
+					storesBlock.innerHTML = response;
+				}
+			},
+			onfailure: function()
+			{
+			}
+		});
+	},
+
+	/**
+	 * Устанавливает верстку с остатками для предложения
+	 *
+	 * @param {string | int} offerId
+	 * @param {Array} stores -- массив ID складов
+	 */
+	setRest: function(offerId, stores)
+	{
+		self = this;
+
+		BX.ajax({
+			url: self.ajaxFolder+"rest.php",
+			dataType: "html",
+			method: "POST",
+			data: {
+				ELEMENT_ID: offerId,
+				STORES: stores
+			},
+			onsuccess: function(response)
+			{
+				let restBlock = document.querySelector(".quantity_block_wrapper .p_block");
+
+				if (restBlock)
+				{
+					restBlock.innerHTML = response;
+				}
+			},
+			onfailure: function()
+			{
+			}
+		});
 	}
+
 };
