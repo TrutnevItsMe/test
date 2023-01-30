@@ -84,6 +84,24 @@ window.OffersFilterComponent = {
 			this.setStoresBlock(this.result["CURRENT_OFFER"]["ID"]);
 			this.setProductName(this.result["CURRENT_OFFER"]["NAME"]);
 			this.setPreviewText(this.result["CURRENT_OFFER"]["PREVIEW_TEXT"]);
+
+			if (this.result["CURRENT_OFFER"]["PRICES"])
+			{
+				let oldPrice = null;
+				let newPrice = null;
+
+				if (this.result["CURRENT_OFFER"]["PRICES"]["РРЦ"])
+				{
+					newPrice = this.result["CURRENT_OFFER"]["PRICES"]["РРЦ"]["VALUE"];
+				}
+
+				if (this.result["CURRENT_OFFER"]["PRICES"]["РРЦ Константа"])
+				{
+					oldPrice = this.result["CURRENT_OFFER"]["PRICES"]["РРЦ Константа"]["VALUE"];
+				}
+
+				this.setPrice(newPrice, oldPrice);
+			}
 		}
 
 		this.initFilterValues();
@@ -97,9 +115,6 @@ window.OffersFilterComponent = {
 				$('.button_block .btn.to-cart').attr("data-item", this.result["CURRENT_OFFER"]["ID"]);
 			}
 		}
-
-		this.setPrice(this.result["CURRENT_OFFER"]["PRICES"]["РРЦ"]["VALUE"],
-			this.result["CURRENT_OFFER"]["PRICES"]["РРЦ Константа"]["VALUE"]);
 
 		this.bindEvents();
 	},
@@ -437,8 +452,23 @@ window.OffersFilterComponent = {
 
 			if (currentOffer["PRICES"])
 			{
-				self.setPrice(currentOffer["PRICES"]["РРЦ"]["VALUE"],
-					currentOffer["PRICES"]["РРЦ Константа"]["VALUE"]);
+				if (currentOffer["PRICES"])
+				{
+					let oldPrice = null;
+					let newPrice = null;
+
+					if (currentOffer["PRICES"]["РРЦ"])
+					{
+						newPrice = currentOffer["PRICES"]["РРЦ"]["VALUE"];
+					}
+
+					if (currentOffer["PRICES"]["РРЦ Константа"])
+					{
+						oldPrice = currentOffer["PRICES"]["РРЦ Константа"]["VALUE"];
+					}
+
+					this.setPrice(newPrice, oldPrice);
+				}
 			}
 
 			// Меняем картинки в слайдере
