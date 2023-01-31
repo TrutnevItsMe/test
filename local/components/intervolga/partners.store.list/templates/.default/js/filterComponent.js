@@ -187,7 +187,6 @@ if (!window.FilterComponent){
 								paginationBlock.innerHTML = "";
 							}
 
-							console.log(response);
 						},
 						onfailure: function()
 						{
