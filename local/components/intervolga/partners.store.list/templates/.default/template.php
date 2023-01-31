@@ -79,8 +79,12 @@ else
 						</div>
 
 					<?php endforeach; ?>
-					<button class="btn btn-default w-100"
+					<button id="submit-filter-btn"
+							class="btn btn-default w-100"
 							role="button"><?= Loc::getMessage("SUBMIT_FILTER_BTN") ?></button>
+					<button id="reset-filter-btn"
+							class="btn btn-default white grey w-100"
+							role="button"><?= Loc::getMessage("RESET_FILTER_BTN") ?></button>
 				</div>
 			<?php endif; ?>
 		</section>
