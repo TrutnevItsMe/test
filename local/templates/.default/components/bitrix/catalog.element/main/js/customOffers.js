@@ -84,6 +84,24 @@ window.OffersFilterComponent = {
 			this.setStoresBlock(this.result["CURRENT_OFFER"]["ID"]);
 			this.setProductName(this.result["CURRENT_OFFER"]["NAME"]);
 			this.setPreviewText(this.result["CURRENT_OFFER"]["PREVIEW_TEXT"]);
+
+			if (this.result["CURRENT_OFFER"]["PRICES"])
+			{
+				let oldPrice = null;
+				let newPrice = null;
+
+				if (this.result["CURRENT_OFFER"]["PRICES"]["РРЦ"] && this.result["CURRENT_OFFER"]["PRICES"]["РРЦ"]["VALUE"])
+				{
+					newPrice = this.result["CURRENT_OFFER"]["PRICES"]["РРЦ"]["VALUE"];
+				}
+
+				if (this.result["CURRENT_OFFER"]["PRICES"]["РРЦ Константа"] && this.result["CURRENT_OFFER"]["PRICES"]["РРЦ Константа"]["VALUE"])
+				{
+					oldPrice = this.result["CURRENT_OFFER"]["PRICES"]["РРЦ Константа"]["VALUE"];
+				}
+
+				this.setPrice(newPrice, oldPrice);
+			}
 		}
 
 		this.initFilterValues();
@@ -97,9 +115,6 @@ window.OffersFilterComponent = {
 				$('.button_block .btn.to-cart').attr("data-item", this.result["CURRENT_OFFER"]["ID"]);
 			}
 		}
-
-		this.setPrice(this.result["CURRENT_OFFER"]["PRICES"]["РРЦ"]["VALUE"],
-			this.result["CURRENT_OFFER"]["PRICES"]["РРЦ Константа"]["VALUE"]);
 
 		this.bindEvents();
 	},
@@ -150,7 +165,10 @@ window.OffersFilterComponent = {
 		{
 			this.filterProps.forEach(function (prop)
 			{
-				self.setCurrentFilterValue(prop, self.result["CURRENT_OFFER"]["PROPERTIES"][prop]["VALUE"]);
+				if (self.result["CURRENT_OFFER"]["PROPERTIES"][prop] && self.result["CURRENT_OFFER"]["PROPERTIES"][prop]["VALUE"])
+				{
+					self.setCurrentFilterValue(prop, self.result["CURRENT_OFFER"]["PROPERTIES"][prop]["VALUE"]);
+				}
 			});
 		}
 		else
@@ -259,7 +277,14 @@ window.OffersFilterComponent = {
 
 						if (offer["ACTIVE_OFFER"])
 						{
-							ar.push(offer["PROPERTIES"][propCode] ? offer["PROPERTIES"][propCode]["VALUE"] : "");
+							if (offer["PROPERTIES"][propCode] && offer["PROPERTIES"][propCode]["VALUE"])
+							{
+								ar.push(offer["PROPERTIES"][propCode]["VALUE"]);
+							}
+							else
+							{
+								ar.push("");
+							}
 						}
 					});
 
@@ -389,6 +414,11 @@ window.OffersFilterComponent = {
 
 				Object.keys(self.currentFilterValues).forEach(function (prop)
 				{
+					if (!offer["PROPERTIES"][prop] || !offer["PROPERTIES"][prop]["VALUE"])
+					{
+						return;
+					}
+
 					if (offer["PROPERTIES"][prop]["VALUE"] != self.getCurrentFilterValue(prop))
 					{
 						isCurrentOffer = false;
@@ -437,8 +467,23 @@ window.OffersFilterComponent = {
 
 			if (currentOffer["PRICES"])
 			{
-				self.setPrice(currentOffer["PRICES"]["РРЦ"]["VALUE"],
-					currentOffer["PRICES"]["РРЦ Константа"]["VALUE"]);
+				if (currentOffer["PRICES"])
+				{
+					let oldPrice = null;
+					let newPrice = null;
+
+					if (currentOffer["PRICES"]["РРЦ"] && currentOffer["PRICES"]["РРЦ"]["VALUE"])
+					{
+						newPrice = currentOffer["PRICES"]["РРЦ"]["VALUE"];
+					}
+
+					if (currentOffer["PRICES"]["РРЦ Константа"] && currentOffer["PRICES"]["РРЦ Константа"]["VALUE"])
+					{
+						oldPrice = currentOffer["PRICES"]["РРЦ Константа"]["VALUE"];
+					}
+
+					this.setPrice(newPrice, oldPrice);
+				}
 			}
 
 			// Меняем картинки в слайдере
@@ -459,7 +504,15 @@ window.OffersFilterComponent = {
 
 			self.setProductName(currentOffer["NAME"]);
 			self.setPreviewText(currentOffer["PREVIEW_TEXT"]);
-			self.setArticle(currentOffer["PROPERTIES"]["CML2_ARTICLE"]["VALUE"]);
+
+			if (currentOffer["PROPERTIES"]["CML2_ARTICLE"] && currentOffer["PROPERTIES"]["CML2_ARTICLE"]["VALUE"])
+			{
+				self.setArticle(currentOffer["PROPERTIES"]["CML2_ARTICLE"]["VALUE"]);
+			}
+			else
+			{
+				self.setArticle("");
+			}
 		}
 
 		this.setCharacters();
