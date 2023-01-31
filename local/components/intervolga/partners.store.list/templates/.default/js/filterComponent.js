@@ -143,6 +143,58 @@ if (!window.FilterComponent){
 								balloon["balloonContent"]);
 						});
 					}
+
+					BX.ajax({
+						url: window.location.href,
+						method: "GET",
+						dataType: "html",
+						scriptsRunFirst: false,
+						emulateOnload: false,
+						processData: false,
+						onsuccess: function(response)
+						{
+							let elem = document.createElement("div");
+							elem.innerHTML = response;
+							BX("items").innerHTML = elem.querySelector("#items").innerHTML;
+
+							let items = BX("items").querySelectorAll(".item-wrap");
+
+							items.forEach(function(item){
+								window.ElementComponent.bindClickElem(item);
+							});
+
+							let paginationBlock = document.querySelector(".module-pagination");
+
+							if (!paginationBlock)
+							{
+								let rootElem = BX("items").parentElement.parentElement.parentElement;
+								let paginationElem = document.createElement("div");
+								BX.addClass(paginationElem, "module-pagination");
+								rootElem.append(paginationElem);
+								paginationBlock = document.querySelector(".module-pagination");
+							}
+
+							if (elem.querySelector(".module-pagination"))
+							{
+								paginationBlock.innerHTML = elem.querySelector(".module-pagination").innerHTML;
+
+								paginationBlock.querySelectorAll(".pagination-item").forEach(function(pagItem){
+									window.PaginationComponent.bindClickPaginationItem(pagItem);
+								});
+							}
+							else
+							{
+								paginationBlock.innerHTML = "";
+							}
+
+							console.log(response);
+						},
+						onfailure: function()
+						{
+
+						}
+					});
+
 				});
 			}
 

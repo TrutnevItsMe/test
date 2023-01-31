@@ -26,6 +26,7 @@ else
 }
 
 ?>
+
 	<div class="d-flex mt-5">
 		<section class="w-20">
 			<?php if ($arParams["USE_FILTER"] == "Y"): ?>
