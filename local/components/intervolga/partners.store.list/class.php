@@ -31,16 +31,68 @@ class PartnersStores extends CBitrixComponent
 				$pageSize = 6;
 			}
 
+			/**
+			 * Фильтр установлен в get параметрах
+			 */
+
+			$itemIds = [];
+			foreach ($this->arResult["MAP_FILTER_VALUES"] as $field => $arValues)
+			{
+				$fieldWithoutUF = str_replace("UF_", "", $field);
+
+				if (in_array(
+						$fieldWithoutUF,
+						array_keys($_GET)
+					)
+				)
+				{
+					foreach ($arValues as $value => $arItem)
+					{
+						if ($_GET[$fieldWithoutUF] == md5($value))
+						{
+							$itemIds[] = array_column($arItem, "ID");
+							break;
+						}
+					}
+				}
+			}
+
+			if (count($itemIds) > 1)
+			{
+				$itemId = $itemIds[0];
+
+				foreach ($itemIds as $arItemId)
+				{
+					$itemId = array_intersect($itemId, $arItemId);
+				}
+
+				$itemIds = $itemId;
+			}
+			elseif (count($itemIds) == 1)
+			{
+				$itemIds = $itemIds[0];
+			}
+
 			$nav = new \Bitrix\Main\UI\PageNavigation("page");
+			$count = count($itemIds)?:count($this->arResult["ITEMS"]);
 
 			$nav->allowAllRecords(true)
 				->setPageSize($pageSize)
-				->setRecordCount(count($this->arResult["ITEMS"]))
+				->setRecordCount($count)
 				->initFromUri();
 
 			// Заполняем массив ID элементов для текущей пагинации
 			$this->arResult["PAGINATION_ELEMENT_IDS"] = [];
-			$arrayKeys = array_keys($this->arResult["ITEMS"]);
+
+			if ($itemIds)
+			{
+				$arrayKeys = $itemIds;
+			}
+			else
+			{
+				$arrayKeys = array_keys($this->arResult["ITEMS"]);
+			}
+
 			$index = $nav->getOffset();
 
 			for ($i = 0; $i < $pageSize; ++$i) {
