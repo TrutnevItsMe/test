@@ -207,6 +207,7 @@ window.OffersFilterComponent = {
 
 		let curProp = "";
 		let curValue = "";
+		let accessibleItems = [];
 
 		this.filterProps.forEach(function (prop)
 		{
@@ -219,8 +220,8 @@ window.OffersFilterComponent = {
 			curValue = self.getCurrentFilterValue(prop);
 
 			self.setCurrentFilterValue(curProp, "");
-			let accessibleItems = self.getAccessibleFilterItems();
-
+			accessibleItems = self.getAccessibleFilterItems();
+			
 			self.filterProps.forEach(function (accessibleProp)
 			{
 				if (accessibleItems[accessibleProp])
@@ -253,62 +254,53 @@ window.OffersFilterComponent = {
 		self = this;
 		let accessibleItems = {};
 
+		let ids = [];
+
 		// Пробегаем все св-ва, участвующие в фильтрации
 		this.filterProps.forEach(function (prop)
 		{
 			// Выбранное значение в фильтре для св-ва
 			let value = self.getCurrentFilterValue(prop);
 
-			self.filterProps.forEach(function (propCode)
+			if (self.result["OFFERS_MAP_FILTER"]
+				&& typeof self.result["OFFERS_MAP_FILTER"][prop] != "undefined"
+				&& self.result["OFFERS_MAP_FILTER"][prop][value])
+			{
+				ids.push(self.result["OFFERS_MAP_FILTER_ID"][prop][value]);
+			}
+		});
+
+		let intsctIds = ids[0];
+
+		// Выбираем пересечения из всех возможных св-в => получаем доступные поля при выбранных значениях
+		ids.forEach(function (arId)
+		{
+			intsctIds = self.intersection(intsctIds, arId);
+		});
+
+		accessibleItems = {};
+
+		intsctIds.forEach(function (id)
+		{
+			self.filterProps.forEach(function (prop)
 			{
 				if (self.result["OFFERS_MAP_FILTER"]
 					&& self.result["OFFERS_MAP_FILTER"][prop]
-					&& self.result["OFFERS_MAP_FILTER"][prop][value])
+					&& self.result["OFFERS"][id]["PROPERTIES"][prop]
+					&& self.result["OFFERS"][id]["PROPERTIES"][prop]["VALUE"])
 				{
-					let ar = [];
-
-					// Выбираем все доступные значения для выбранных св-в в фильтре
-					self.result["OFFERS_MAP_FILTER"][prop][value].forEach(function (offer)
+					if (!accessibleItems[prop])
 					{
-						if (!accessibleItems[propCode])
-						{
-							accessibleItems[propCode] = [];
-						}
+						accessibleItems[prop] = [];
+					}
 
-						if (offer["ACTIVE_OFFER"])
-						{
-							if (offer["PROPERTIES"][propCode] && offer["PROPERTIES"][propCode]["VALUE"])
-							{
-								ar.push(offer["PROPERTIES"][propCode]["VALUE"]);
-							}
-							else
-							{
-								ar.push("");
-							}
-						}
-					});
-
-					accessibleItems[propCode].push(ar);
+					accessibleItems[prop].push(self.result["OFFERS"][id]["PROPERTIES"][prop]["VALUE"]);
 				}
 			});
 		});
 
-		// Выбираем пересечения из всех возможных св-в => получаем доступные поля при выбранных значениях
-		this.filterProps.forEach(function (prop)
-		{
-			if (accessibleItems[prop])
-			{
-				let _intersect = accessibleItems[prop][0];
-
-				for (let i = 1; i < accessibleItems[prop].length; ++i)
-				{
-					_intersect = self.intersection(_intersect, accessibleItems[prop][i]);
-				}
-
-				accessibleItems[prop] = _intersect;
-				accessibleItems[prop] = Array.from((new Set(accessibleItems[prop])));
-				accessibleItems[prop] = self.diff(accessibleItems[prop], ['']);
-			}
+		self.filterProps.forEach(function (prop){
+			accessibleItems[prop] = Array.from((new Set(accessibleItems[prop])));
 		});
 
 		return accessibleItems;
@@ -393,46 +385,31 @@ window.OffersFilterComponent = {
 	{
 		self = this;
 		let returnsOffer = null;
+		let ids = [];
 
-		Object.keys(self.currentFilterValues).forEach(function (prop)
+		// Пробегаем все св-ва, участвующие в фильтрации
+		this.filterProps.forEach(function (prop)
 		{
-			if (self.result["OFFERS_MAP_FILTER"][prop]
-				&& self.result["OFFERS_MAP_FILTER"][prop][self.getCurrentFilterValue(prop)]
-				&& self.result["OFFERS_MAP_FILTER"][prop][self.getCurrentFilterValue(prop)].length == 1)
+			// Выбранное значение в фильтре для св-ва
+			let value = self.getCurrentFilterValue(prop);
+
+			if (self.result["OFFERS_MAP_FILTER"]
+				&& self.result["OFFERS_MAP_FILTER"][prop]
+				&& self.result["OFFERS_MAP_FILTER"][prop][value])
 			{
-				returnsOffer = self.result["OFFERS_MAP_FILTER"][prop][self.getCurrentFilterValue(prop)][0];
-				return;
+				ids.push(self.result["OFFERS_MAP_FILTER_ID"][prop][value]);
 			}
 		});
 
-		// все предложения встречаются по несколько раз
-		if (!returnsOffer)
+		let intsctIds = ids[0];
+
+		// Выбираем пересечения из всех возможных св-в => получаем доступные поля при выбранных значениях
+		ids.forEach(function (arId)
 		{
-			Object.values(this.result['OFFERS']).forEach(function (offer)
-			{
-				let isCurrentOffer = true;
+			intsctIds = self.intersection(intsctIds, arId);
+		});
 
-				Object.keys(self.currentFilterValues).forEach(function (prop)
-				{
-					if (!offer["PROPERTIES"][prop] || !offer["PROPERTIES"][prop]["VALUE"])
-					{
-						return;
-					}
-
-					if (offer["PROPERTIES"][prop]["VALUE"] != self.getCurrentFilterValue(prop))
-					{
-						isCurrentOffer = false;
-						return;
-					}
-				});
-
-				if (isCurrentOffer)
-				{
-					returnsOffer = offer;
-					return;
-				}
-			});
-		}
+		returnsOffer = self.result["OFFERS"][intsctIds[0]];
 
 		return returnsOffer;
 	},
