@@ -2109,6 +2109,8 @@ if ($arResult["OFFERS"])
 
 	// значения св-в предложений в фильтре
 	$arResult["OFFERS_MAP_FILTER"] = [];
+	$arResult["OFFERS_MAP_FILTER_ID"] = [];
+
 	// Добавляем св-ва, по которым нужно фильтровать торговые предложения
 	foreach ($arParams["FILTER_OFFERS_PROPERTY_CODE"] as $filterProperty)
 	{
@@ -2122,6 +2124,7 @@ if ($arResult["OFFERS"])
 				{
 					$propValue = $arOffer["PROPERTIES"][$filterProperty]["VALUE"];
 					$arResult["OFFERS_MAP_FILTER"][$filterProperty][$propValue][] = $arOffer;
+					$arResult["OFFERS_MAP_FILTER_ID"][$filterProperty][$propValue][] = $arOffer["ID"];
 				}
 			}
 		}
