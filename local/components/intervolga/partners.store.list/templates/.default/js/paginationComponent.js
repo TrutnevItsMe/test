@@ -29,6 +29,17 @@ if (!window.PaginationComponent) {
 				if (self.params["PAGINATION_AJAX"] === "Y") {
 					e.preventDefault();
 
+					let re = /(page=[\w\-\d]*)/;
+					let attr = re.exec(item.href);
+
+					if (attr.length)
+					{
+						URLUtils.setAttr(
+							attr[0].split("=")[0],
+							attr[0].split("=")[1]
+						)
+					}
+
 					BX.ajax({
 						url: item.href,
 						method: "GET",
