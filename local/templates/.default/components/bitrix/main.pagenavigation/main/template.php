@@ -92,8 +92,8 @@ $this->setFrameMode(true); ?>
 
 			<?php if ($showAfterDots): ?>
 				<?php $url = $APPLICATION->GetCurPageParam($arResult["ID"] . "=page-" . $arResult["END_PAGE"], [$arResult["ID"]]); ?>
-				<a href="<?= $url ?>" class="dark_link pagination-item"><?= $arResult["END_PAGE"] ?></a>
 				<span class="point_sep"></span>
+				<a href="<?= $url ?>" class="dark_link pagination-item"><?= $arResult["END_PAGE"] ?></a>
 			<?php endif; ?>
 		</div>
 	<? endif; ?>

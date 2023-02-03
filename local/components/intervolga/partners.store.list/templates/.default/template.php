@@ -27,6 +27,8 @@ else
 
 ?>
 
+<div class="loader d-none"></div>
+
 	<div class="d-flex mt-5">
 		<section class="w-20">
 			<?php if ($arParams["USE_FILTER"] == "Y"): ?>
@@ -48,6 +50,10 @@ else
 								<?php if($arFilterField == "UF_GOROD"):?>
 									<input id="city-filter-search" type="text">
 								<?php endif;?>
+
+								<button class="reset-filter-block-btn btn btn-default white grey w-100 mt-2"
+										role="button"
+										data-filter-field="<?= $arFilterField ?>"><?= Loc::getMessage("RESET_FILTER_BLOCK_BTN") ?></button>
 
 								<?php foreach ($arResult["MAP_FILTER_VALUES"][$arFilterField] as $value => $arFilterItem): ?>
 

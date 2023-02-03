@@ -99,3 +99,27 @@ input[type='checkbox'].custom-checkbox-active{
 #city-filter-search:focus{
 	box-shadow: 0px 0px 20px #bbbbbb;
 }
+
+.loader{
+	width: 100px;
+	height: 100px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	background: url("../images/loader.png") center no-repeat;
+	background-size: 100px;
+	z-index: 1000;
+}
+
+.round{
+	animation:round 830ms linear infinite;
+}
+
+@keyframes round {
+	0%{
+		transform: rotate(0deg);
+	}
+	100%{
+		transform: rotate(360deg);
+	}
+}

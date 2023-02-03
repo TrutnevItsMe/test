@@ -12,6 +12,26 @@ class URLUtils{
 		URLUtils.setUrl(url);
 	}
 
+	/**
+	 *
+	 * @param param
+	 * @returns boolean
+	 */
+	static hasAttr(param)
+	{
+		if (URLUtils.getAttr(param) !== false)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 *
+	 * @param key
+	 * @returns {*|boolean}
+	 */
 	static getAttr(key) {
 
 		let getAttrs = URLUtils.getAttrs();
