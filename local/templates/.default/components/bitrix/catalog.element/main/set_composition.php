@@ -1120,8 +1120,6 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 							let elem = document.createElement("div");
 							BX.addClass(elem, "stickers");
 							elem.innerHTML = html;
-							console.log(imgBlock)
-							console.log(elem)
 							imgBlock.append(elem);
 						}
 						else
