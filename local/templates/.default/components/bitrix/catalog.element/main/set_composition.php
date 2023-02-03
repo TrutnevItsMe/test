@@ -48,6 +48,21 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 						"border-color": "#fc3"
 					});
 
+					let oldPrice = $('#add_input_' + id).data("old-price");
+					let price = $('#add_input_' + id).data("price");
+					let formatedOldPrice = new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(oldPrice);
+
+					if (oldPrice !== price)
+					{
+						$("#set_item_base_price_" + group).html(formatedOldPrice);
+					}
+					else
+					{
+						$("#set_item_base_price_" + group).html("");
+					}
+
+					$("#set_item_base_price_" + group).data("old-price", oldPrice);
+
 					finish_toggle = 1;
 				}
 				else
