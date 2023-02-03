@@ -83,6 +83,10 @@ class MagazinyPartnerovTable extends DataManager
 						}
 					);
 				}
+			],
+			"UF_TIPMAGAZINA" => [
+				"data_type" => "string",
+				"title" => Loc::getMessage("TIPMAGAZINA")
 			]
 		];
 	}
