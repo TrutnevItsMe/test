@@ -5,89 +5,6 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 }
 
 ?>
-	<script type="text/javascript">
-		$(document).ready(function ()
-		{
-			$('.set-composition_checkbox input.add_input_class').prop("checked", false);
-			$('.set-composition_checkbox input.add_input_class.default').prop("checked", true);
-		});
-
-		$(document).ready(function ()
-		{
-
-
-			$(".component_type,.set_group_items_link,.icon-popup,.include").fancybox({
-				'titlePosition': 'inside',
-				'transitionIn': 'none',
-				'transitionOut': 'none'
-			});
-			var finish_toggle = 0;
-			$('.add_sub_item').click(function ()
-			{
-				if ($(this).children().text() == 'Добавлено')
-				{
-					return true;
-				}
-				var group = $(this).children().data('group');
-				var id = $(this).children().data('id');
-
-				$('#add_input_' + id).click();
-				$.fancybox.close();
-
-				$('#set_group_' + group + ' .add_span').text('Добавить');
-				$('#set_group_' + group + ' .add_span').parent().css({
-					backgroundColor: "#107bb1",
-					"border-color": "#107bb1"
-				});
-
-				if ($('#add_input_' + id).is(':checked') == true)
-				{
-					$(this).children().text('Добавлено');
-					$(this).css({
-						backgroundColor: "#fc3",
-						"border-color": "#fc3"
-					});
-
-					let oldPrice = $('#add_input_' + id).data("old-price");
-					let price = $('#add_input_' + id).data("price");
-					let formatedOldPrice = new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(oldPrice);
-
-					if (oldPrice !== price)
-					{
-						$("#set_item_base_price_" + group).html(formatedOldPrice);
-					}
-					else
-					{
-						$("#set_item_base_price_" + group).html("");
-					}
-
-					$("#set_item_base_price_" + group).data("old-price", oldPrice);
-
-					finish_toggle = 1;
-				}
-				else
-				{
-					if (finish_toggle == 0)
-					{
-						$(this).text('Добавить');
-					}
-					else
-					{
-
-					}
-				}
-
-			});
-
-			var price = calculatePrice();
-			if (price.price > 0)
-			{
-				showPrice(price);
-			}
-
-
-		});
-	</script>
 
 	<style>
 		@media (min-width: 1200px)
@@ -499,7 +416,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 
 				$set_group;
 				$i = 1;
-				foreach ($arResult["SET"]["OPTIONAL"] as $arItem)
+				foreach ($arResult["SET"]["OPTIONAL"] as &$arItem)
 				{
 					$db_props = CIBlockElement::GetProperty(17, $arItem["ID"], array("sort" => "asc"), array("CODE" => "NAZNACHENIE"));
 					if ($ar_props = $db_props->Fetch())
@@ -1072,5 +989,169 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 
 		</div>
 	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function ()
+		{
+			$('.set-composition_checkbox input.add_input_class').prop("checked", false);
+			$('.set-composition_checkbox input.add_input_class.default').prop("checked", true);
+		});
+
+		$(document).ready(function ()
+		{
+
+
+			$(".component_type,.set_group_items_link,.icon-popup,.include").fancybox({
+				'titlePosition': 'inside',
+				'transitionIn': 'none',
+				'transitionOut': 'none'
+			});
+			var finish_toggle = 0;
+			$('.add_sub_item').click(function ()
+			{
+				if ($(this).children().text() == 'Добавлено')
+				{
+					return true;
+				}
+				var group = $(this).children().data('group');
+				var id = $(this).children().data('id');
+
+				$('#add_input_' + id).click();
+				$.fancybox.close();
+
+				$('#set_group_' + group + ' .add_span').text('Добавить');
+				$('#set_group_' + group + ' .add_span').parent().css({
+					backgroundColor: "#107bb1",
+					"border-color": "#107bb1"
+				});
+
+				if ($('#add_input_' + id).is(':checked') == true)
+				{
+					$(this).children().text('Добавлено');
+					$(this).css({
+						backgroundColor: "#fc3",
+						"border-color": "#fc3"
+					});
+
+					let oldPrice = $('#add_input_' + id).data("old-price");
+					let price = $('#add_input_' + id).data("price");
+					let formatedOldPrice = new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(oldPrice);
+
+					if (oldPrice !== price)
+					{
+						$("#set_item_base_price_" + group).html(formatedOldPrice);
+					}
+					else
+					{
+						$("#set_item_base_price_" + group).html("");
+					}
+
+					$("#set_item_base_price_" + group).data("old-price", oldPrice);
+
+					let imgBlock = $("#set_item_base_img_" + group);
+					let sets = <?=json_encode($arResult["SET"]["OPTIONAL"])?>;
+
+					if (imgBlock.length) {
+						let html = "";
+
+						if (sets) {
+							sets.forEach(function (arSet) {
+
+								if (arSet["ID"] == id) {
+									arSet['HIT'].forEach(function (hit_val) {
+										if (hit_val == 'Хит') {
+											html += '<div><div class="sticker_khit">Хит</div></div>';
+										}
+										if (hit_val == 'Акция') {
+											html += '<div><div class="sticker_aktsiya">Акция</div></div>';
+										}
+										if (hit_val == 'Распродажа') {
+											html += '<div><div class="sticker_rasprodazha">Распродажа</div></div>';
+										}
+										if (hit_val == 'Новинка') {
+											html += '<div><div class="sticker_novinka">Новинка</div></div>';
+										}
+										if (hit_val == '10%') {
+											html += '<div><div class="sticker_10">10%</div></div>';
+										}
+										if (hit_val == '5%') {
+											html += '<div><div class="sticker_5">5%</div></div>';
+										}
+										if (hit_val == '6%') {
+											html += '<div><div class="sticker_6">6%</div></div>';
+										}
+										if (hit_val == '7%') {
+											html += '<div><div class="sticker_7">7%</div></div>';
+										}
+										if (hit_val == '9%') {
+											html += '<div><div class="sticker_9">9%</div></div>';
+										}
+										if (hit_val == '15%') {
+											html += '<div><div class="sticker_15">15%</div></div>';
+										}
+										if (hit_val == '20%') {
+											html += '<div><div class="sticker_20">20%</div></div>';
+										}
+										if (hit_val == '25%') {
+											html += '<div><div class="sticker_25">25%</div></div>';
+										}
+										if (hit_val == '30%') {
+											html += '<div><div class="sticker_30">30%</div></div>';
+										}
+										if (hit_val == '40%') {
+											html += '<div><div class="sticker_40">40%</div></div>';
+										}
+										if (hit_val == '50%') {
+											html += '<div><div class="sticker_50">50%</div></div>';
+										}
+										if (hit_val == '58%') {
+											html += '<div><div class="sticker_58">58%</div></div>';
+										}
+										if (hit_val == '70%') {
+											html += '<div><div class="sticker_70">70%</div></div>';
+										}
+									});
+								}
+							});
+						}
+
+						if (!imgBlock.find(".stickers").length)
+						{
+							let elem = document.createElement("div");
+							BX.addClass(elem, "stickers");
+							elem.innerHTML = html;
+							imgBlock.append(elem);
+						}
+						else
+						{
+							imgBlock.find(".stickers").html(html);
+						}
+					}
+
+					finish_toggle = 1;
+				}
+				else
+				{
+					if (finish_toggle == 0)
+					{
+						$(this).text('Добавить');
+					}
+					else
+					{
+
+					}
+				}
+
+			});
+
+			var price = calculatePrice();
+			if (price.price > 0)
+			{
+				showPrice(price);
+			}
+
+
+		});
+	</script>
 <?
 endif;
