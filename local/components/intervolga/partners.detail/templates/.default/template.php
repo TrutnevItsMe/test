@@ -11,6 +11,7 @@ use Bitrix\Main\Localization\Loc;
 
 Loc::loadMessages(__FILE__);
 
+CJSCore::Init(["popup"]);
 ?>
 
 	<div class="d-flex mt-5">
