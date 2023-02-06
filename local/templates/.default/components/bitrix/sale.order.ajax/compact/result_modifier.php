@@ -299,7 +299,7 @@ if (is_array($arResult["GRID"]["ROWS"]))
 				$quantity = current($arStores[$productId])["AMOUNT"];
 			}
 
-			$displayQuantity = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($quantity);
+			$displayQuantity = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($quantity)["HTML"];
 			$displayQuantity = str_replace("#REST#", $displayQuantity, $displayQuantity);
 
 			$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][RESTS_CODE] = $displayQuantity;

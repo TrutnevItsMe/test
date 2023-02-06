@@ -25,19 +25,8 @@ if ($request->isPost())
 		$amount += $arStoreProduct['AMOUNT'];
 	}
 
-	$arQuantityData = CNext::GetQuantityArray($amount);
-	$displayQuantity = "";
-
-	if ($amount <= 0 || $amount >= $arQuantityData["OPTIONS"]["MAX_AMOUNT"])
-	{
-		$displayQuantity = $arQuantityData["HTML"];
-	}
-	else
-	{
-		$displayQuantity = "<div class='item-stock-qnty'><span class='value'>" . $amount .
-			" " .
-			\Bitrix\Main\Localization\Loc::getMessage("PIECES_SHORT_CAPTURE") . "</span></div>";
-	}
+	$displayQuantity = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($amount)["HTML"];
+	$displayQuantity = str_replace("#REST#", $amount, $displayQuantity);
 
 	echo $displayQuantity;
 }

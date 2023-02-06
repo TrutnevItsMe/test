@@ -102,7 +102,7 @@ $arItemIDs=CNext::GetItemsIDs($arResult, "Y");
 $totalCount = CNext::GetTotalCount($arResult, $arParams);
 $arQuantityData = CNext::GetQuantityArray($totalCount, $arItemIDs["ALL_ITEM_IDS"], "Y");
 
-$displayQuantity  = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($totalCount);
+$displayQuantity  = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($totalCount)["HTML"];
 $displayQuantity = str_replace("#REST#", $totalCount, $displayQuantity);
 
 $arParams["BASKET_ITEMS"]=($arParams["BASKET_ITEMS"] ? $arParams["BASKET_ITEMS"] : array());
@@ -1844,7 +1844,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 						<div class="stores_block_wrap">
 							<? foreach ($arResult['SET_STORES'] as $store):
 
-								$displayStoreAmount  = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($store["AMOUNT"]);
+								$displayStoreAmount  = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($store["AMOUNT"])["HTML"];
 								$displayStoreAmount = str_replace("#REST#", $store["AMOUNT"], $displayStoreAmount);
 
 								$storePath=str_replace(

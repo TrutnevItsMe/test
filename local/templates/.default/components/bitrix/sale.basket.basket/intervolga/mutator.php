@@ -38,7 +38,7 @@ foreach ($this->basketItems as $row)
 		$totalCount += $row["STORES"][$storeId]["AMOUNT"];
 	}
 
-	$displayQnty = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($totalCount);
+	$displayQnty = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($totalCount)["HTML"];
 	$displayQnty = str_replace("#REST#", $totalCount, $displayQnty);
 
     $rowData = array(

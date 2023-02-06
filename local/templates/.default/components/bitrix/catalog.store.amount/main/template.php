@@ -62,7 +62,7 @@ if(strlen($arResult["ERROR_MESSAGE"]) > 0){
 					$amount = $arProperty["AMOUNT"];
 				}
 
-				$displayStoreAmount = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($amount);
+				$displayStoreAmount = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($amount)["HTML"];
 				$displayStoreAmount = str_replace("#REST#", $amount, $displayStoreAmount);
 				?>
 				<?=$displayStoreAmount?>
