@@ -120,7 +120,8 @@ $asset->addJs($templateFolder."/script.js");
 				$arItem["strMainID"] = $this->GetEditAreaId($arItem['ID']);
 				$arItemIDs = CNext::GetItemsIDs($arItem);
 
-				$displayQuantity = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($totalCount);
+				$totalCount = CNext::GetTotalCount($arItem, $arParams);
+				$displayQuantity = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($totalCount)["HTML"];
 				$displayQuantity = str_replace("#REST#", $totalCount, $displayQuantity);
 
 				$bLinkedItems = (isset($arParams["LINKED_ITEMS"]) && $arParams["LINKED_ITEMS"]);
