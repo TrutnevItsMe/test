@@ -62,22 +62,8 @@ if(strlen($arResult["ERROR_MESSAGE"]) > 0){
 					$amount = $arProperty["AMOUNT"];
 				}
 
-//				$totalCount = CNext::CheckTypeCount($amount);
-				$arQuantityData = CNext::GetQuantityArray($amount);
-
-				$displayStoreAmount = "";
-
-				if ($amount <= 0 || $amount >= $arQuantityData["OPTIONS"]["MAX_AMOUNT"])
-				{
-					$displayStoreAmount = $arQuantityData["HTML"];
-				}
-				else
-				{
-					$displayStoreAmount ="<div class='item-stock'><span class='value'>" . $amount .
-						" " .
-						\Bitrix\Main\Localization\Loc::getMessage("PIECES_SHORT_CAPTURE") . "</span></div>";
-				}
-
+				$displayStoreAmount = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($amount);
+				$displayStoreAmount = str_replace("#REST#", $amount, $displayStoreAmount);
 				?>
 				<?=$displayStoreAmount?>
 			</div>

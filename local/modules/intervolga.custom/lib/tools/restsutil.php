@@ -18,12 +18,32 @@ class RestsUtil
 
 		if ($USER->IsAuthorized())
 		{
-			return static::parseRestsConditions($count, $conditions["AUTH"]);
+			$restText = static::parseRestsConditions($count, $conditions["AUTH"]);
 		}
 		else
 		{
-			return static::parseRestsConditions($count, $conditions["NO_AUTH"]);
+			$restText = static::parseRestsConditions($count, $conditions["NO_AUTH"]);
 		}
+
+		if ($count)
+		{
+			$classIcon = "stock stock_range_3";
+		}
+		else
+		{
+			$classIcon = "order";
+		}
+
+		return [
+			"QUANTITY" => $count,
+			"TEXT" => $restText,
+			"HTML" => <<<HTML
+				<div class="item-stock">
+				<span class="icon $classIcon"></span>
+				<span class="value">$restText</span>
+				</div>
+			HTML
+		];
 	}
 
 	/**

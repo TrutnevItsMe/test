@@ -38,8 +38,8 @@ foreach ($this->basketItems as $row)
 		$totalCount += $row["STORES"][$storeId]["AMOUNT"];
 	}
 
-	$arQuantityData = CNext::GetQuantityArray($totalCount);
-	$isDisplayQntyText = $totalCount >= $arQuantityData["OPTIONS"]["MAX_AMOUNT"] || $totalCount <= 0;
+	$displayQnty = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($totalCount);
+	$displayQnty = str_replace("#REST#", $totalCount, $displayQnty);
 
     $rowData = array(
 		'ID' => $row['ID'],
@@ -81,7 +81,7 @@ foreach ($this->basketItems as $row)
 		'LABEL_VALUES' => array(),
 		'ARTICLE' => $row["LABEL_ARRAY_VALUE"]["CML2_ARTICLE"],
 		'STORE' => $row["STORES"][$this->arParams["DEF_STORE_ID"]],
-		'DISPLAY_QUANTITY' => $isDisplayQntyText ? $arQuantityData["TEXT"] : $totalCount . " " . Loc::getMessage("PIECES_SHORT_CAPTURE"),
+		'DISPLAY_QUANTITY' => $displayQnty,
 		'BRAND' => isset($row[$this->arParams['BRAND_PROPERTY'].'_VALUE'])
 			? $row[$this->arParams['BRAND_PROPERTY'].'_VALUE']
 			: '',
