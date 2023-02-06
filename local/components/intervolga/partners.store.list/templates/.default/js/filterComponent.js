@@ -9,7 +9,7 @@ if (!window.FilterComponent){
 		 * @param {object} params.params -- $arParams
 		 * @param {string} params.detailUrlTemplate
 		 */
-		init: function(params){
+		init: function (params) {
 
 			this.result = params.result;
 			this.params = params.params;
@@ -22,16 +22,13 @@ if (!window.FilterComponent){
 		/**
 		 * Включаем чекбоксы по параметрам из URL
 		 */
-		initFromUrl: function()
-		{
-			if (this.params["FILTER_VALUES"])
-			{
-				this.params["FILTER_VALUES"].forEach(function(field){
+		initFromUrl: function () {
+			if (this.params["FILTER_VALUES"]) {
+				this.params["FILTER_VALUES"].forEach(function (field) {
 					let param = URLUtils.getAttr(field.replace("UF_", ""));
 
-					if (param)
-					{
-						param.split("-or-").forEach(function(checkboxId){
+					if (param) {
+						param.split("-or-").forEach(function (checkboxId) {
 							BX(checkboxId).click();
 						});
 					}
@@ -39,20 +36,21 @@ if (!window.FilterComponent){
 			}
 		},
 
-		bindEvents: function(){
+		bindEvents: function () {
 			this.bindToggleElement();
 			this.bindSubmit();
 			this.bindReset();
+			this.bindResetBlock();
 			this.bindSearchCity();
 		},
 
 		/**
 		 * Биндит раскрытие/сворачивание блока в фильтре
 		 */
-		bindToggleElement: function(){
+		bindToggleElement: function () {
 			document.querySelectorAll(".filter-item-title-block").forEach(
-				function(item){
-					BX.bind(item, "click", function(){
+				function (item) {
+					BX.bind(item, "click", function () {
 						let block = item.parentElement.querySelector(".filter-block-inner");
 						let icon = item.querySelector(".down-icon");
 
@@ -66,24 +64,23 @@ if (!window.FilterComponent){
 		/**
 		 * Биндит клик по кнопке "применить" фильтра
 		 */
-		bindSubmit: function(){
+		bindSubmit: function () {
 
 			let filter = BX("filter")
 
-			if (filter)
-			{
+			if (filter) {
 				let btn = BX("submit-filter-btn");
 
-				BX.bind(btn, "click", function(){
+				BX.bind(btn, "click", function () {
 
 					let urlParams = {};
 
 					// Проходим по всем активным чекбоксам
-					BX("filter").querySelectorAll("input[type='checkbox']:checked").forEach(function (checkbox){
+					BX("filter").querySelectorAll("input[type='checkbox']:checked").forEach(function (checkbox) {
 
 						let field = checkbox.getAttribute("data-filter-field");
 
-						if (!urlParams[field]){
+						if (!urlParams[field]) {
 							urlParams[field] = [];
 						}
 
@@ -91,11 +88,11 @@ if (!window.FilterComponent){
 					});
 
 					// Проходим по всем активным radio
-					BX("filter").querySelectorAll("input[type='radio']:checked").forEach(function (radio){
+					BX("filter").querySelectorAll("input[type='radio']:checked").forEach(function (radio) {
 
 						let field = radio.getAttribute("data-filter-field");
 
-						if (!urlParams[field]){
+						if (!urlParams[field]) {
 							urlParams[field] = [];
 						}
 
@@ -103,7 +100,7 @@ if (!window.FilterComponent){
 					});
 
 					// Добавляем в URL параметры для фильтрации
-					Object.keys(urlParams).forEach(function (field){
+					Object.keys(urlParams).forEach(function (field) {
 						let fieldWithoutUF = field.replace("UF_", "");
 						let params = urlParams[field].join("-or-");
 						URLUtils.setAttr(fieldWithoutUF, params);
@@ -112,31 +109,29 @@ if (!window.FilterComponent){
 					// Формируем параметры, которые нужно удалить из URL
 					let deletingParamsFromUrls = ArrayUtils.difference(window.FilterComponent.params["FILTER_VALUES"], Object.keys(urlParams));
 
-					deletingParamsFromUrls.forEach(function(param){
+					deletingParamsFromUrls.forEach(function (param) {
 						URLUtils.delAttr(param.replace("UF_", ""));
 					});
 
 					let ids = window.FilterComponent.getIdsFromUrl();
 
-					if (!ids.length)
-					{
+					if (ids && !ids.length && !window.FilterComponent.isSetFilter()) {
 						ids = Object.keys(window.FilterComponent.result["ITEMS"]);
 					}
 
 					let balloons = window.FilterComponent.getBalloons(ids);
 
-					if (balloons.length)
-					{
-						YandexMap.removeBalloons();
+					YandexMap.removeBalloons();
 
+					if (balloons.length) {
 						YandexMap.moveTo(
 							parseFloat(balloons[0]["x"]),
 							parseFloat(balloons[0]["y"])
-						).then(function(){
+						).then(function () {
 							YandexMap.zoom(12);
 						});
 
-						balloons.forEach(function(balloon){
+						balloons.forEach(function (balloon) {
 							YandexMap.setBalloon(
 								balloon["x"],
 								balloon["y"],
@@ -150,36 +145,51 @@ if (!window.FilterComponent){
 			}
 		},
 
-		bindReset: function()
+		isSetFilter: function () {
+			let isSet = false;
+
+			if (this.params["FILTER_VALUES"]) {
+				this.params["FILTER_VALUES"].forEach(function (field) {
+					if (isSet) {
+						return; //continue
+					}
+
+					if (URLUtils.hasAttr(field.replace("UF_", ""))) {
+						isSet = true;
+					}
+				});
+			}
+
+			return isSet;
+		},
+
+		bindReset: function ()
 		{
 			self = this;
 
 			let btn = BX("reset-filter-btn");
 
-			if (btn)
-			{
-				BX.bind(btn, "click", function(e){
+			if (btn) {
+				BX.bind(btn, "click", function (e) {
 
-					if (self.params["FILTER_VALUES"] && self.params["FILTER_VALUES"].length)
-					{
-						self.params["FILTER_VALUES"].forEach(function(field){
+					if (self.params["FILTER_VALUES"] && self.params["FILTER_VALUES"].length) {
+						self.params["FILTER_VALUES"].forEach(function (field) {
 
 							field = field.replace("UF_", "");
 							URLUtils.delAttr(field);
 						});
 					}
 
-					BX("filter").querySelectorAll("input:checked").forEach(function(input){
+					BX("filter").querySelectorAll("input:checked").forEach(function (input) {
 						input.checked = false;
 					});
 
 					let balloons = window.FilterComponent.getBalloons();
 
-					if (balloons.length)
-					{
+					if (balloons.length) {
 						YandexMap.removeBalloons();
 
-						balloons.forEach(function(balloon){
+						balloons.forEach(function (balloon) {
 							YandexMap.setBalloon(
 								balloon["x"],
 								balloon["y"],
@@ -194,10 +204,59 @@ if (!window.FilterComponent){
 		},
 
 		/**
+		 * Биндит клик по кнопке очистить значение одного поля фильтра
+		 */
+		bindResetBlock: function ()
+		{
+			self = this;
+
+			document.querySelectorAll(".reset-filter-block-btn").forEach(function(btn){
+				BX.bind(btn, "click", function(e)
+				{
+					let filterParam = btn.getAttribute("data-filter-field");
+					URLUtils.delAttr(filterParam.replace("UF_", ""));
+					let ids = [];
+
+					if (window.FilterComponent.isSetFilter())
+					{
+						ids = window.FilterComponent.getIdsFromUrl();
+					}
+					else
+					{
+						ids = Object.keys(self.result["ITEMS"]);
+					}
+
+					document.querySelectorAll("input[data-filter-field='" + filterParam +"']").forEach(function(input){
+						input.checked = false;
+					});
+
+					let balloons = window.FilterComponent.getBalloons(ids);
+
+					YandexMap.removeBalloons();
+
+					if (balloons.length) {
+
+						balloons.forEach(function (balloon) {
+							YandexMap.setBalloon(
+								balloon["x"],
+								balloon["y"],
+								balloon["hintContent"],
+								balloon["balloonContent"]);
+						});
+					}
+
+					window.FilterComponent.updateAjax();
+				});
+			});
+		},
+
+		/**
 		 * Обновляет пагинацию и элементы через ajax
 		 */
 		updateAjax: function()
 		{
+			window.FilterComponent.startAjaxAnimation();
+
 			BX.ajax({
 				url: window.location.href,
 				method: "GET",
@@ -207,6 +266,8 @@ if (!window.FilterComponent){
 				processData: false,
 				onsuccess: function(response)
 				{
+					window.FilterComponent.finishAjaxAnimation();
+
 					let elem = document.createElement("div");
 					elem.innerHTML = response;
 					BX("items").innerHTML = elem.querySelector("#items").innerHTML;
@@ -244,9 +305,31 @@ if (!window.FilterComponent){
 				},
 				onfailure: function()
 				{
-
+					window.FilterComponent.finishAjaxAnimation();
 				}
 			});
+		},
+
+		startAjaxAnimation: function()
+		{
+			let loader = document.querySelector(".loader");
+
+			if (loader)
+			{
+				BX.removeClass(loader, "d-none");
+				BX.addClass(loader, "round");
+			}
+		},
+
+		finishAjaxAnimation: function()
+		{
+			let loader = document.querySelector(".loader");
+
+			if (loader)
+			{
+				BX.removeClass(loader, "round");
+				BX.addClass(loader, "d-none");
+			}
 		},
 
 		/**

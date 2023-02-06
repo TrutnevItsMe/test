@@ -10,3 +10,4 @@ $MESS["GOROD"] = "Город";
 $MESS["RODITEL"] = "RODITEL";
 $MESS["DESCRIPTION"] = "Описание";
 $MESS["VERSION"] = "Версия";
+$MESS["TIPMAGAZINA"] = "Тип магазина";

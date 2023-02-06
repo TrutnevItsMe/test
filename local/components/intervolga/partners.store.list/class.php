@@ -34,8 +34,8 @@ class PartnersStores extends CBitrixComponent
 			/**
 			 * Фильтр установлен в get параметрах
 			 */
-
 			$itemIds = [];
+
 			foreach ($this->arResult["MAP_FILTER_VALUES"] as $field => $arValues)
 			{
 				$fieldWithoutUF = str_replace("UF_", "", $field);
@@ -50,41 +50,29 @@ class PartnersStores extends CBitrixComponent
 					{
 						if ($_GET[$fieldWithoutUF] == md5($value))
 						{
-							$itemIds[] = array_column($arItem, "ID");
+							$itemIds[$value] = array_column($arItem, "ID");
 							break;
 						}
 					}
 				}
 			}
 
-			if (count($itemIds) > 1)
+			if (count($itemIds) >= 1)
 			{
-				$itemId = $itemIds[0];
+				$itemId = current($itemIds);
 
-				foreach ($itemIds as $arItemId)
+				foreach ($itemIds as $value => $arItemId)
 				{
 					$itemId = array_intersect($itemId, $arItemId);
 				}
 
 				$itemIds = $itemId;
 			}
-			elseif (count($itemIds) == 1)
-			{
-				$itemIds = $itemIds[0];
-			}
-
-			$nav = new \Bitrix\Main\UI\PageNavigation("page");
-			$count = count($itemIds)?:count($this->arResult["ITEMS"]);
-
-			$nav->allowAllRecords(true)
-				->setPageSize($pageSize)
-				->setRecordCount($count)
-				->initFromUri();
 
 			// Заполняем массив ID элементов для текущей пагинации
 			$this->arResult["PAGINATION_ELEMENT_IDS"] = [];
 
-			if ($itemIds)
+			if ($this->isFilterSet())
 			{
 				$arrayKeys = $itemIds;
 			}
@@ -92,6 +80,14 @@ class PartnersStores extends CBitrixComponent
 			{
 				$arrayKeys = array_keys($this->arResult["ITEMS"]);
 			}
+
+			$nav = new \Bitrix\Main\UI\PageNavigation("page");
+			$count = count($arrayKeys);
+
+			$nav->allowAllRecords(true)
+				->setPageSize($pageSize)
+				->setRecordCount($count)
+				->initFromUri();
 
 			$index = $nav->getOffset();
 
@@ -128,6 +124,25 @@ class PartnersStores extends CBitrixComponent
 		}
 
 		$this->includeComponentTemplate();
+	}
+
+	public function isFilterSet(): bool
+	{
+		$isSet = false;
+
+		foreach ($this->arParams["FILTER_VALUES"] as $field)
+		{
+			if (in_array(
+				str_replace("UF_", "", $field),
+				array_keys($_GET)
+			))
+			{
+				$isSet = true;
+				break;
+			}
+		}
+
+		return $isSet;
 	}
 
 	public static function getPartnersStores(): array

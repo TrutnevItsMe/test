@@ -1883,6 +1883,22 @@ $url = $catalogSmartFilter->makeSmartUrl($url, true); // формируем url
 $url = str_replace("//", "/", $url);
 $arResult["ALL_COLLECTIONS_URL"] = $url;
 
+
+$rs = CIBlockSection::GetList(
+	[],
+	[
+		"IBLOCK_ID" => $arResult["SECTION"]["IBLOCK_ID"],
+		"ID" => $arResult["SECTION"]["ID"]
+	],
+	false,
+	["UF_*"]
+);
+
+$section = $rs->Fetch();
+
+$arParams["FILTER_OFFERS_PROPERTY_CODE"] = $section["UF_OFFERS_FILTER_PROPERTIES"];
+$arParams["OFFER_FILTER_REPLACED_PICTURE"] = $section["UF_OFFERS_FILTER_PROPERTIES_PICTURES"];
+
 if ($arResult["OFFERS"])
 {
 	$arOffersId = [];
@@ -2109,6 +2125,8 @@ if ($arResult["OFFERS"])
 
 	// значения св-в предложений в фильтре
 	$arResult["OFFERS_MAP_FILTER"] = [];
+	$arResult["OFFERS_MAP_FILTER_ID"] = [];
+
 	// Добавляем св-ва, по которым нужно фильтровать торговые предложения
 	foreach ($arParams["FILTER_OFFERS_PROPERTY_CODE"] as $filterProperty)
 	{
@@ -2122,6 +2140,7 @@ if ($arResult["OFFERS"])
 				{
 					$propValue = $arOffer["PROPERTIES"][$filterProperty]["VALUE"];
 					$arResult["OFFERS_MAP_FILTER"][$filterProperty][$propValue][] = $arOffer;
+					$arResult["OFFERS_MAP_FILTER_ID"][$filterProperty][$propValue][] = $arOffer["ID"];
 				}
 			}
 		}
@@ -2175,7 +2194,8 @@ if ($arResult["OFFERS"])
 			}
 		}
 	}
-
 }
+
+
 
 ?>
