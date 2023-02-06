@@ -299,17 +299,8 @@ if (is_array($arResult["GRID"]["ROWS"]))
 				$quantity = current($arStores[$productId])["AMOUNT"];
 			}
 
-			$arQuantityData = CNext::GetQuantityArray($quantity);
-			$displayQuantity = "";
-
-			if ($quantity <= 0 || $quantity >= $arQuantityData["OPTIONS"]["MAX_AMOUNT"])
-			{
-				$displayQuantity = $arQuantityData["TEXT"];
-			}
-			else
-			{
-				$displayQuantity = $quantity . " " . Loc::getMessage("PIECES_SHORT_CAPTURE");
-			}
+			$displayQuantity = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($quantity);
+			$displayQuantity = str_replace("#REST#", $displayQuantity, $displayQuantity);
 
 			$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][RESTS_CODE] = $displayQuantity;
 		}
