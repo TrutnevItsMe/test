@@ -302,6 +302,7 @@ if (!window.FilterComponent){
 						paginationBlock.innerHTML = "";
 					}
 
+					window.ElementComponent.setItemsOneHeight();
 				},
 				onfailure: function()
 				{

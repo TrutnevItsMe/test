@@ -42,10 +42,10 @@ else
 
 							<div class="filter-item-title-block d-flex justify-content-space-between cursor-pointer">
 								<span class="filter-block-title ml-5"><?= $arResult["MAP_FIELDS"][$arFilterField] ?></span>
-								<span class="w-10 down-icon"></span>
+								<span class="w-10 down-icon rotated"></span>
 							</div>
 
-							<div class="filter-block-inner" style="display: none;">
+							<div class="filter-block-inner" style="">
 
 								<?php if($arFilterField == "UF_GOROD"):?>
 									<input id="city-filter-search" type="text">
