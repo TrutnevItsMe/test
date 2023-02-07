@@ -102,4 +102,24 @@ class MagazinyPartnerovTable extends DataManager
 
 		return $rs->fetch();
 	}
+
+	public static function getShopTypes()
+	{
+		$rs = static::getList([
+			"select" => ["UF_TIPMAGAZINA"],
+			"group" => ["UF_TIPMAGAZINA"]
+		]);
+
+		$typeShops = [];
+
+		while ($typeShop = $rs->fetch())
+		{
+			if ($typeShop["UF_TIPMAGAZINA"])
+			{
+				$typeShops[] = $typeShop["UF_TIPMAGAZINA"];
+			}
+		}
+
+		return $typeShops;
+	}
 }
