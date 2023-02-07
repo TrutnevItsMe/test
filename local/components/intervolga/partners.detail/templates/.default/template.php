@@ -98,6 +98,12 @@ CJSCore::Init(["popup"]);
 				</div>
 			<?php endif; ?>
 
+			<?php if ($arResult["UF_DESCRIPTION"]):?>
+			<div class="mt-5 mb-5">
+				<span><?=$arResult["UF_DESCRIPTION"]?></span>
+			</div>
+			<?php endif;?>
+
 			<?php
 				$isAutoScroll = $arParams["AUTO_SCROLL"] === "Y";
 				$isMaxCarouselItems = count($arResult["PHOTOS"]) > 5;
