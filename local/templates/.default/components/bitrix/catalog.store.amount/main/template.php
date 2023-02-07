@@ -4,6 +4,7 @@
 if(strlen($arResult["ERROR_MESSAGE"]) > 0){
 	ShowError($arResult["ERROR_MESSAGE"]);
 }
+
 ?>
 <?if(count($arResult["STORES"]) > 0):?>
 	<?
@@ -64,6 +65,7 @@ if(strlen($arResult["ERROR_MESSAGE"]) > 0){
 
 				$displayStoreAmount = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($amount)["HTML"];
 				$displayStoreAmount = str_replace("#REST#", $amount, $displayStoreAmount);
+
 				?>
 				<?=$displayStoreAmount?>
 			</div>

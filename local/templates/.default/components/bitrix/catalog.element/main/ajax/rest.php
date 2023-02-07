@@ -12,8 +12,6 @@ if ($request->isPost())
 	$ID = $request->get("ELEMENT_ID");
 	$stores = $request->get("STORES");
 
-	\Bitrix\Main\Diag\Debug::writeToFile(__FILE__ . ':' . __LINE__ . "\n(" . date('Y-m-d H:i:s').")\n" . print_r($stores, TRUE) . "\n\n", '', 'log/__trutnev_debug.log');
-
 	$rsStoreProduct = \Bitrix\Catalog\StoreProductTable::getList(array(
 		'filter' => array('=PRODUCT_ID'=>$ID,'=STORE.ACTIVE'=>'Y', '=STORE_ID'=>$stores),
 		'select' => array('AMOUNT'),

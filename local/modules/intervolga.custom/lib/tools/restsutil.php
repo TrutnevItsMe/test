@@ -123,10 +123,6 @@ class RestsUtil
 				$cond = ">";
 			}
 
-			\Bitrix\Main\Diag\Debug::writeToFile(__FILE__ . ':' . __LINE__ . "\n(" . date('Y-m-d H:i:s').")\n" . print_r($reResult, TRUE) . "\n\n", '', 'log/__debug_trutnev.log');
-			\Bitrix\Main\Diag\Debug::writeToFile(__FILE__ . ':' . __LINE__ . "\n(" . date('Y-m-d H:i:s').")\n" . print_r(static::compare($count, $cond, $reResult["value"]), TRUE) . "\n\n", '', 'log/__debug_trutnev.log');
-
-
 			if (static::compare($count, $cond, $reResult["value"]))
 			{
 				$arResult[$cond][$reResult["value"]] = $description;
