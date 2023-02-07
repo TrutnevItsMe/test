@@ -1356,7 +1356,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 												"USER_FIELDS" => $arParams['USER_FIELDS'],
 												"FIELDS" => $arParams['FIELDS'],
 												"STORES" => $arParams['STORES'],
-												"CACHE_TYPE" => "A",
+												"CACHE_TYPE" => "N",
 												"SET_ITEMS" => $arResult["SET_ITEMS"],
 											),
 											$component
