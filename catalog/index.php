@@ -335,8 +335,8 @@ $APPLICATION->IncludeComponent(
 		"ELEMENT_SORT_FIELD2" => "shows",
 		"ELEMENT_SORT_ORDER2" => "asc",
 		"LIST_PROPERTY_CODE" => array(
-			0 => "TSVET",
-			1 => "BREND",
+			0 => "BRAND",
+			1 => "TSVET",
 			2 => "CML2_ARTICLE",
 			3 => "STRANA",
 			4 => "PROP_159",
@@ -778,9 +778,6 @@ $APPLICATION->IncludeComponent(
 		"OFFER_FILTER_REPLACED_PICTURE" => array(
 			0 => "TSVET",
 		),
-		"ADDING_STORE_BASKET" => array(
-		),
-		"SHOW_SKU_DESCRIPTION" => "N",
 		"SEF_URL_TEMPLATES" => array(
 			"sections" => "",
 			"section" => "#SECTION_CODE_PATH#/",
