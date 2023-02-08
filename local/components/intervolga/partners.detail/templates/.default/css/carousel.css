@@ -1,0 +1,60 @@
+
+.carousel  {
+	max-width: 1080px;
+	margin-left: -5px;
+	width: 785px;
+	height: 200px;
+	font-size: 18pt;
+	padding: 7px 0 0 0;
+}
+.carousel-wrapper {
+	overflow: hidden; /* скрываем содержимое, выходящее за рамки основной области */
+	position:relative;
+}
+.carousel-items {
+	width: 10000px; /* устанавливаем большую ширину для набора элементов */
+	position: relative; /* позиционируем блок относительно основной области карусели */
+}
+.carousel-block {
+	float: left;
+	width: 159px;
+	padding: 10px 10px 10px 0px;
+	height: 120px
+}
+.carousel-block:hover{
+	background-color: #bbb;
+}
+
+.carousel-block img{
+	display:block;
+}
+.carousel-block div{
+	background-size: 100px !important;
+	background-repeat: no-repeat !important;
+	background-position: center !important;
+	height: 100%;
+}
+/*********** BUTTONS ***********/
+.carousel-button-left a, .carousel-button-right a{
+	width: 36px;
+	height: 36px;
+	display: inline-block;
+	cursor: pointer;
+	text-decoration:none;
+	border-radius: 50%;
+}
+.carousel-button-left a:hover,
+.carousel-button-right a:hover
+{
+	background-color: #e7e7e7;
+	box-shadow: 0px 0px 20px #bbbbbb;
+}
+.carousel-button-left a{
+	background: url(../img/arrow-left.png) no-repeat center;
+	background-size: 22px;
+}
+.carousel-button-right a{
+	background: url(../img/arrow-left.png) no-repeat center;
+	transform: rotate(180deg);
+	background-size: 22px;
+}
