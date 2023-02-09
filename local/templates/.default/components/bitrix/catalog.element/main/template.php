@@ -101,18 +101,9 @@ $arItemIDs=CNext::GetItemsIDs($arResult, "Y");
 
 $totalCount = CNext::GetTotalCount($arResult, $arParams);
 $arQuantityData = CNext::GetQuantityArray($totalCount, $arItemIDs["ALL_ITEM_IDS"], "Y");
-$displayQuantity = "";
 
-if ($totalCount <= 0 || $totalCount >= $arQuantityData["OPTIONS"]["MAX_AMOUNT"])
-{
-	$displayQuantity = $arQuantityData["HTML"];
-}
-else
-{
-	$displayQuantity = "<div class='item-stock-qnty'><span class='value'>" . $totalCount .
-		" " .
-		\Bitrix\Main\Localization\Loc::getMessage("PIECES_SHORT_CAPTURE") . "</span></div>";
-}
+$displayQuantity  = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($totalCount)["HTML"];
+$displayQuantity = str_replace("#REST#", $totalCount, $displayQuantity);
 
 $arParams["BASKET_ITEMS"]=($arParams["BASKET_ITEMS"] ? $arParams["BASKET_ITEMS"] : array());
 $useStores = $arParams["USE_STORE"] == "Y" && $arResult["STORES_COUNT"] && $arQuantityData["RIGHTS"]["SHOW_QUANTITY"];
@@ -1365,7 +1356,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 												"USER_FIELDS" => $arParams['USER_FIELDS'],
 												"FIELDS" => $arParams['FIELDS'],
 												"STORES" => $arParams['STORES'],
-												"CACHE_TYPE" => "A",
+												"CACHE_TYPE" => "N",
 												"SET_ITEMS" => $arResult["SET_ITEMS"],
 											),
 											$component
@@ -1853,18 +1844,8 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 						<div class="stores_block_wrap">
 							<? foreach ($arResult['SET_STORES'] as $store):
 
-								$displayStoreAmount = "";
-
-								if ($store["AMOUNT"] <= 0 || $store["AMOUNT"] >= $arQuantityData["OPTIONS"]["MAX_AMOUNT"])
-								{
-									$displayStoreAmount = $store['AMOUNT_HTML'];
-								}
-								else
-								{
-									$displayStoreAmount ="<div class='item-stock'><span class='value'>" . $store["AMOUNT"] .
-										" " .
-										\Bitrix\Main\Localization\Loc::getMessage("PIECES_SHORT_CAPTURE") . "</span></div>";
-								}
+								$displayStoreAmount  = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($store["AMOUNT"])["HTML"];
+								$displayStoreAmount = str_replace("#REST#", $store["AMOUNT"], $displayStoreAmount);
 
 								$storePath=str_replace(
 									'#store_id#',

@@ -256,17 +256,8 @@
 										<?php
 										$storeCount = intval($arItem["STORES_AMOUNT"]);
 
-										$arQuantityStoreData = CNext::GetQuantityArray($storeCount);
-										if ($storeCount <= 0 || $storeCount >= $arQuantityStoreData["OPTIONS"]["MAX_AMOUNT"])
-										{
-											$displayStoreAmount = $arQuantityStoreData["HTML"];
-										}
-										else
-										{
-											$displayStoreAmount ="<div class='item-stock'><span class='value'>" . $storeCount .
-												" " .
-												\Bitrix\Main\Localization\Loc::getMessage("PIECES_SHORT_CAPTURE") . "</span></div>";
-										}
+										$displayStoreAmount = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($storeCount);
+										$displayStoreAmount = str_replace("#REST#", $storeCount, $displayStoreAmount);
 										?>
 
                                         <?=$displayStoreAmount;?>
