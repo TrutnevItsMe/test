@@ -106,7 +106,6 @@ $APPLICATION->IncludeComponent(
 			31 => "KOMPANIYA",
 			32 => "KOMPLEKTATSIYA_TUMBY",
 			33 => "EXPANDABLES",
-			34 => "CML2_ARTICLE",
 			35 => "CML2_BASE_UNIT",
 			36 => "IN_STOCK",
 			37 => "VID_OBESPECHENIYA_SKLAD_ZAKAZ",
@@ -337,7 +336,6 @@ $APPLICATION->IncludeComponent(
 		"LIST_PROPERTY_CODE" => array(
 			0 => "BRAND",
 			1 => "TSVET",
-			2 => "CML2_ARTICLE",
 			3 => "STRANA",
 			4 => "PROP_159",
 			5 => "PROP_2052",
@@ -356,7 +354,7 @@ $APPLICATION->IncludeComponent(
 			18 => "PROP_2062",
 			19 => "PROP_2061",
 			20 => "CML2_LINK",
-			21 => "",
+			21 => "CML2_ARTICLE",
 		),
 		"INCLUDE_SUBSECTIONS" => "Y",
 		"LIST_META_KEYWORDS" => "-",
@@ -371,7 +369,6 @@ $APPLICATION->IncludeComponent(
 		"LIST_OFFERS_PROPERTY_CODE" => array(
 			0 => "MORE_PHOTO",
 			1 => "SHIRINA_IZDELIYA_SM",
-			2 => "ARTICLE",
 			3 => "VOLUME",
 			4 => "SIZES",
 			5 => "COLOR_REF",
@@ -451,7 +448,6 @@ $APPLICATION->IncludeComponent(
 		),
 		"DETAIL_OFFERS_PROPERTY_CODE" => array(
 			0 => "MORE_PHOTO",
-			1 => "ARTICLE",
 			2 => "VOLUME",
 			3 => "SIZES",
 			4 => "COLOR_REF",

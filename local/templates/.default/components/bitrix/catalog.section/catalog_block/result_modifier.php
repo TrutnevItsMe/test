@@ -218,6 +218,28 @@ if (!empty($arResult['ITEMS']))
 			}
 		}
 
+		if ($arItem['PROPERTIES']["BRAND"]
+		&& $arItem['PROPERTIES']["BRAND"]["VALUE"])
+		{
+			$brandId = $arItem['PROPERTIES']["BRAND"]["VALUE"];
+
+			$rs = \CIBlockElement::GetList(
+				[],
+				[
+					"IBLOCK_CODE" => "aspro_next_brands",
+					"ID" => $brandId
+				],
+				false,
+				false,
+				["NAME"]
+			);
+
+			if ($brand = $rs->Fetch())
+			{
+				$arItem['PROPERTIES']["BRAND"]["VALUE"] = $brand["NAME"];
+			}
+		}
+
 		$productPictures = CIBlockPriceTools::getDoublePicturesForItem($arItem, $arParams['ADD_PICT_PROP']);
 
 		// set pictures descriptions
