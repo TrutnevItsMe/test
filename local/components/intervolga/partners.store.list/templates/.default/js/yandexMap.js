@@ -58,6 +58,8 @@ class YandexMap
 
 			if (params["BALLOONS"])
 			{
+				let isCentered = false;
+
 				params["BALLOONS"].forEach(function(oBalloon)
 				{
 					YandexMap.setBalloon(
@@ -65,7 +67,19 @@ class YandexMap
 						oBalloon["y"],
 						oBalloon["hintContent"] ?? "",
 						oBalloon["balloonContent"] ?? ""
-					)
+					);
+
+					if (!isCentered)
+					{
+						YandexMap.moveTo(
+							parseFloat(oBalloon["x"]),
+							parseFloat(oBalloon["y"])).
+						then(function(){
+							YandexMap.zoom(12);
+						});
+
+						isCentered = true;
+					}
 				});
 			}
 
