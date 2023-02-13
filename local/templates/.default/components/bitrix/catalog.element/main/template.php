@@ -812,7 +812,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 					>
 						<?if (in_array($prop, $arParams["OFFER_FILTER_REPLACED_PICTURE"])):?>
 							<?
-								$file = \CFile::ResizeImageGet($arValueOffers[$value][0]["PREVIEW_PICTURE"],
+								$file = \CFile::ResizeImageGet($arValueOffers[$value][0]["PROPERTIES"]["IMG_$prop"]["VALUE"],
 									[
 										'width' => 128,
 										'height' => 128
