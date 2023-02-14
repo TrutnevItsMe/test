@@ -53,12 +53,6 @@ class Sets
 				'composition' => self::getComposition($set),
 			];
 		}
-		// Intervolga Akentyev Logs
-		file_put_contents(
-			$_SERVER['DOCUMENT_ROOT'] . '/upload/logs/1c_catalog' . DATE('_Y_m_d') . '.log',
-			print_r($arrSets, true) . PHP_EOL,
-			FILE_APPEND
-		);
 		self::processSets($arrSets);
 	}
 	
@@ -167,12 +161,6 @@ class Sets
 					} else {
 						self::deleteSets($item['ID'], CCatalogProductSet::TYPE_SET);
 						self::deleteSets($item['ID'], CCatalogProductSet::TYPE_GROUP);
-						// Intervolga Akentyev Logs
-						file_put_contents(
-							$_SERVER['DOCUMENT_ROOT'] . '/upload/logs/1c_catalog' . DATE('_Y_m_d') . '.log',
-							"Delete:" . PHP_EOL . print_r($item, true) . PHP_EOL,
-							FILE_APPEND
-						);
 					}
 					CIBlockElement::SetPropertyValueCode(
 						$item['ID'],

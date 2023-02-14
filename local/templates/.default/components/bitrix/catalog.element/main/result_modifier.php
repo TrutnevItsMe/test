@@ -1883,6 +1883,22 @@ $url = $catalogSmartFilter->makeSmartUrl($url, true); // формируем url
 $url = str_replace("//", "/", $url);
 $arResult["ALL_COLLECTIONS_URL"] = $url;
 
+
+$rs = CIBlockSection::GetList(
+	[],
+	[
+		"IBLOCK_ID" => $arResult["SECTION"]["IBLOCK_ID"],
+		"ID" => $arResult["SECTION"]["ID"]
+	],
+	false,
+	["UF_*"]
+);
+
+$section = $rs->Fetch();
+
+$arParams["FILTER_OFFERS_PROPERTY_CODE"] = $section["UF_OFFERS_FILTER_PROPERTIES"];
+$arParams["OFFER_FILTER_REPLACED_PICTURE"] = $section["UF_OFFERS_FILTER_PROPERTIES_PICTURES"];
+
 if ($arResult["OFFERS"])
 {
 	$arOffersId = [];
@@ -2178,7 +2194,8 @@ if ($arResult["OFFERS"])
 			}
 		}
 	}
-
 }
+
+
 
 ?>

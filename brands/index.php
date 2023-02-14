@@ -104,21 +104,13 @@ $APPLICATION->SetTitle("Партнеры");
 		"SHOW_LINKED_PRODUCTS" => "Y",
 		"PRICE_CODE" => array(
 			0 => "",
-			1 => "Оптовые руб. 2021",
-			2 => "РРЦ МОСКВА, СПБ Акция/Распродажа",
-			3 => "Оптовые руб. 2021 Акция/Распродажа",
-			4 => "РРЦ МОСКВА, СПБ",
+			1 => "РРЦ МОСКВА, СПБ",
+			2 => "Оптовые руб. 2021",
+			3 => "РРЦ МОСКВА, СПБ Акция/Распродажа",
+			4 => "Оптовые руб. 2021 Акция/Распродажа",
 			5 => "",
 		),
-		"STORES" => array(
-			0 => "374",
-			1 => "375",
-			2 => "376",
-			3 => "377",
-			4 => "378",
-			5 => "1",
-			6 => "",
-		),
+		"STORES" => \Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS,
 		"OFFER_HIDE_NAME_PROPS" => "N",
 		"LIST_OFFERS_FIELD_CODE" => array(
 			0 => "ID",
@@ -137,8 +129,6 @@ $APPLICATION->SetTitle("Партнеры");
 		"DISPLAY_WISH_BUTTONS" => "Y",
 		"OFFER_ADD_PICT_PROP" => "-",
 		"OFFER_TREE_PROPS" => array(
-			0 => "SIZES",
-			1 => "COLOR_REF",
 		),
 		"LIST_OFFERS_LIMIT" => "10",
 		"DEFAULT_LIST_TEMPLATE" => "block",
@@ -178,7 +168,7 @@ $APPLICATION->SetTitle("Партнеры");
 		"PRODUCT_PROPERTIES" => array(
 		),
 		"LIST_PROPERTY_CATALOG_CODE" => array(
-			0 => "",
+			0 => "HIT",
 			1 => "",
 		),
 		"OFFER_SHOW_PREVIEW_PICTURE_PROPS" => array(

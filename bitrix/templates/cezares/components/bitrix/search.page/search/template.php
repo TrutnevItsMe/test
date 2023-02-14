@@ -35,7 +35,6 @@
 			</select>
 		<?}?>
 			</div>
-			<?/*<button class="btn btn-search" type="submit" name="s" value="<?=GetMessage("SEARCH_GO")?>"><i class="svg svg-search svg-black"></i></button>*/?>
 			<input type="submit" class="btn btn-default" value="<?=GetMessage("SEARCH_GO")?>">
 			<input type="hidden" name="how" value="<?=$arResult["REQUEST"]["HOW"]=="d"? "d": "r"?>" />
 		<?if( $arParams["SHOW_WHEN"] ){?>

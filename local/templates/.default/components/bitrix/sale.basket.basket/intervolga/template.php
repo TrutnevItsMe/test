@@ -298,12 +298,7 @@ if (empty($arResult['ERROR_MESSAGE']))
 			templateFolder: '<?=CUtil::JSEscape($templateFolder)?>',
             templateItemsDisplay: '<?=$arParams["DISPLAY_MODE_ITEMS"]?>',
             displayRests: !!<?=($arParams["DISPLAY_RESTS"] === "Y")?>,
-            maxAmount: '<?=COption::GetOptionString("aspro.next","MAX_AMOUNT")?>',
-            minAmount: '<?=COption::GetOptionString("aspro.next","MIN_AMOUNT")?>',
-            manyText: '<?=CNext::GetQuantityArray(COption::GetOptionString("aspro.next","MAX_AMOUNT") + 1)["TEXT"]?>',
-            enoughText: '<?=CNext::GetQuantityArray((COption::GetOptionString("aspro.next","MAX_AMOUNT") - COption::GetOptionString("aspro.next","MIN_AMOUNT")) / 2)["TEXT"]?>',
-            fewText: '<?=CNext::GetQuantityArray(COption::GetOptionString("aspro.next","MIN_AMOUNT") - 1)["TEXT"]?>',
-            displayArticleBeforeName: !!<?=$arParams["SHOW_ARTICLE_BEFORE_NAME"] === "Y"?>,
+			displayArticleBeforeName: !!<?=$arParams["SHOW_ARTICLE_BEFORE_NAME"] === "Y"?>,
             displayDiscountPercent: !!<?=$arParams["SHOW_DISCOUNT_PERCENT_COLUMN"] === "Y"?>
 		});
 

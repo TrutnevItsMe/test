@@ -1,4 +1,4 @@
-<?
+<?php
 global $arTheme, $arRegion;
 $catalog_id = \Bitrix\Main\Config\Option::get(
 	"aspro.next",
@@ -87,6 +87,11 @@ else
 {
 	foreach ($arSections as $ID => $arSection)
 	{
+		if (strpos($arSection["CODE"],"komplektuyushchie_dlya") !== false)
+		{
+			continue;
+		}
+
 		$arSections[$ID]["SELECTED"] = CMenu::IsItemSelected($arSection["SECTION_PAGE_URL"], $cur_page, $cur_page_no_index);
 		$arSections[$ID]["SECTION_PAGE_URL"] = $cur_page . "?section_id=" . $ID;
 
@@ -121,6 +126,7 @@ else
 				$arSections[$arSection["ID"]]["SECTION_PAGE_URL"] = $cur_page . "?section_id=" . $section_id;
 				$arSections[$arSection["IBLOCK_SECTION_ID"]]["CHILD"][$arSection["ID"]] = &$arSections[$arSection["ID"]];
 			}
+
 			// Вложенная в секцию бренда
 			if ($isSectionIdInIdSection && $isIdInBrandId)
 			{
@@ -138,4 +144,19 @@ else
 	}
 }
 
-?>
+// Удаляем разделы, в которых нет элементов
+foreach ($arResult as &$arTopMenuItem)
+{
+	if ($arTopMenuItem["CHILD"])
+	{
+		foreach ($arTopMenuItem["CHILD"] as $secondDepthId => &$arSecondDepthMenuItem)
+		{
+			if (!in_array($secondDepthId, array_column($brandSections, "IBLOCK_SECTION_ID"))
+			&& !in_array($secondDepthId, $arBrandsIds))
+			{
+				unset($arTopMenuItem["CHILD"][$secondDepthId]);
+			}
+		}
+	}
+
+}

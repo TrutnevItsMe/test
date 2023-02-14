@@ -23,6 +23,7 @@ class Cml extends \CIBlockCMLImport
 		)
 		{
 			$IBLOCK_ID = $this->arProperties[$this->PROPERTY_MAP["CML2_LINK"]]["IBLOCK_ID"];
+
 			if (!isset($catalogs[$IBLOCK_ID]))
 			{
 				$catalogs[$IBLOCK_ID] = true;

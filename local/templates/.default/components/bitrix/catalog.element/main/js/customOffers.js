@@ -263,7 +263,7 @@ window.OffersFilterComponent = {
 			let value = self.getCurrentFilterValue(prop);
 
 			if (self.result["OFFERS_MAP_FILTER"]
-				&& self.result["OFFERS_MAP_FILTER"][prop]
+				&& typeof self.result["OFFERS_MAP_FILTER"][prop] != "undefined"
 				&& self.result["OFFERS_MAP_FILTER"][prop][value])
 			{
 				ids.push(self.result["OFFERS_MAP_FILTER_ID"][prop][value]);

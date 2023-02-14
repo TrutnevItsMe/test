@@ -136,7 +136,6 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
 										ctx.properties[locPropId].control.setValueByLocationIds(locationsData);
 									}, function(){
 										try{
-											// ctx.properties[locPropId].control.clearSelected();
 										}catch(e){}
 									});
 								}
@@ -245,12 +244,6 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
 
 	checkMode: function(propId, mode){
 
-		//if(typeof this.modes[propId] == 'undefined')
-		//	this.modes[propId] = {};
-
-		//if(typeof this.modes[propId] != 'undefined' && this.modes[propId][mode])
-		//	return true;
-
 		if(mode == 'altLocationChoosen'){
 
 			if(this.checkAbility(propId, 'canHaveAltLocation')){
@@ -260,7 +253,6 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
 
 				if(input !== false && input.value.length > 0 && !input.disabled && this.properties[altPropId].valueSource != 'default'){
 
-					//this.modes[propId][mode] = true;
 					return true;
 				}
 			}
@@ -424,7 +416,6 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
 			emulateOnload: true,
 			start: true,
 			data: {'ACT': 'GET_LOCS_BY_ZIP', 'ZIP': value},
-			//cache: true,
 			onsuccess: function(result){
 				if(result.result)
 				{
@@ -445,11 +436,9 @@ BX.saleOrderAjax = { // bad solution, actually, a singleton at the page
 
 /**
  * https://youtrack.ivsupport.ru/issue/iberisweb-12
- * @param id
- * @param values
+ * @param data
  */
 function activateAgreementsField(data) {
-
     window.currentAgreementId = '';
     setInterval(function () {
 		var $profile = $('[name=PROFILE_ID]');
@@ -465,7 +454,8 @@ function activateAgreementsField(data) {
 						+ '<select id="soa-property-' + data.agreementFieldId + '" name="ORDER_PROP_'
 						+ data.agreementFieldId + '" class="form-control">';
 					profileValues.forEach(function (value) {
-						html += '<option value="' + value.UF_XML_ID + '">' + value.UF_NAME + '</option>';
+						selected = (value.CHECKED == "Y")?"selected='selected'":"";
+						html += '<option value="' + value.UF_XML_ID + '" ' + selected + '>' + value.UF_NAME + '</option>';
 					});
 					html += '</select></div></div>';
 					$('#bx-soa-region .bx-soa-location-input-container').after(html);
@@ -485,7 +475,7 @@ function activateAgreementsField(data) {
             }
 		}
 		if ($('#bx-soa-properties input').length > 0) {
-			$('#bx-soa-properties input, #bx-soa-properties textarea').prop("disabled", true);
+			$('#bx-soa-properties input, #bx-soa-properties textarea:not([name="ORDER_DESCRIPTION"])').prop("disabled", true);
 		}
 		$('#bx-soa-properties a.bx-soa-editstep').hide();
     }, 300)
@@ -505,6 +495,7 @@ function addGetCustomPricesButton(data) {
         if (!data.counterparties[profileId]) { return; }
         var counterpartyXmlId = data.counterparties[profileId].XML_ID;
         var agreementXmlId = $('#soa-property-' + data.agreementFieldId).val();
+		const comment = $("#orderDescription").val();
         $.post(
             '/ajax/getCustomPrices.php',
             {
@@ -512,7 +503,7 @@ function addGetCustomPricesButton(data) {
                 counterpartyXmlId: counterpartyXmlId,
                 agreementXmlId: agreementXmlId,
                 basket: data.basket,
-                sessid: BX.bitrix_sessid(),
+                sessid: BX.bitrix_sessid()
             },
             function(res) {
                 if (res.result == 'ok') {
@@ -527,6 +518,9 @@ function addGetCustomPricesButton(data) {
 						form.innerHTML += "<input type='text' name='price[]' value='" + product["price"] + "'>";
 						form.innerHTML += "<input type='text' name='discount[]' value='" + product["discount"] + "'>";
 					});
+						form.innerHTML += "<input type='text' name='USER_PROFILE' value='" + profileId + "'>";
+						form.innerHTML += "<input type='text' name='AGREEMENT_XML_ID' value='" + agreementXmlId + "'>";
+						form.innerHTML += "<input type='text' name='COMMENT' value='" + comment + "'>";
 
 					document.querySelector("body").append(form);
 					form.submit();

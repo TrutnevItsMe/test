@@ -583,12 +583,12 @@
 .basket-item-block-image {
 	position: relative;
 	-ms-flex-order: 1;
-	padding-right: 15px;
+	padding-right: 50px;
 	padding-bottom: 10px;
 	min-width: 48px;
 	max-width: 148px;
 	width: 100%;
-	text-align: center;
+	text-align: left;
 	-webkit-box-flex: 1;
 	-ms-flex: 1;
 	flex: 1;
@@ -1337,6 +1337,8 @@ h2.basket-item-info-name {
 	vertical-align: top;
 	-webkit-box-ordinal-group: 5;
 	order: 4;
+	display: flex;
+	align-items: start;
 }
 
 .basket-items-list-item-price-for-one {
@@ -2249,16 +2251,15 @@ body.bx-theme-yellow .catalog-block-header{border-color:#f4b236;}
 }
 
 .article-before-name-section{
-	width: 300px;
-	white-space: nowrap;
+	width: 330px;
 	text-align: left;
+	word-break: break-all;
 }
 
 td{
 	padding: 2px;
 }
 
-.basket-items-list-item-price,
 .basket-items-list-item-amount{
 	vertical-align: middle;
 }
@@ -2282,7 +2283,7 @@ td{
 }
 
 .img-header{
-	padding-left: 3%;
+	padding-left: 1%;
 }
 
 .td-header-rests{

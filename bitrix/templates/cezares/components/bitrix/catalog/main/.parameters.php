@@ -8,7 +8,21 @@
 	Loader::includeModule('iblock');
 	$arSKU = false;
 	$boolSKU = false;
+	$arStore = array();
 
+	if (Loader::includeModule("sale"))
+	{
+
+		$storeIterator = CCatalogStore::GetList(
+			array(),
+			array('ISSUING_CENTER' => 'Y'),
+			false,
+			false,
+			array('ID', 'TITLE')
+		);
+		while ($store = $storeIterator->GetNext())
+			$arStore[$store['ID']] = "[".$store['ID']."] ".$store['TITLE'];
+	}
 
 	$arSort = CIBlockParameters::GetElementSortFields(
 		array('SHOWS', 'SORT', 'TIMESTAMP_X', 'NAME', 'ID', 'ACTIVE_FROM', 'ACTIVE_TO'),
@@ -186,7 +200,7 @@
 			"DEFAULT" => array("POPULARITY", "NAME", "PRICE"),
 			"PARENT" => "LIST_SETTINGS",
 			"TYPE" => "LIST",
-			"REFRESH" => "Y",
+			"REFRESH" => "N",
 			"MULTIPLE" => "Y",
 		),
 	));

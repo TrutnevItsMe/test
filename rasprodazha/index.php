@@ -30,7 +30,7 @@ $APPLICATION->SetTitle("Распродажа");
 	?>
 	<?$APPLICATION->IncludeComponent(
 	"bitrix:catalog.smart.filter", 
-	"main", 
+	"rasprodazha", 
 	array(
 		"IBLOCK_TYPE" => "aspro_next_catalog",
 		"IBLOCK_ID" => "17",
@@ -63,7 +63,7 @@ $APPLICATION->SetTitle("Распродажа");
 		"AVAILABLE_SORT" => $arAvailableSort,
 		"SORT" => $sort,
 		"SORT_ORDER" => $sort_order,
-		"COMPONENT_TEMPLATE" => "main",
+		"COMPONENT_TEMPLATE" => "rasprodazha",
 		"SECTION_CODE" => "",
 		"PREFILTER_NAME" => "smartPreFilter",
 		"PAGER_PARAMS_NAME" => "arrPager"
@@ -163,7 +163,7 @@ $APPLICATION->SetTitle("Распродажа");
 		"PAGER_SHOW_ALWAYS" => "Y",
 		"PAGER_DESC_NUMBERING" => "N",
 		"PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",
-		"PAGER_SHOW_ALL" => "Y",
+		"PAGER_SHOW_ALL" => "N",
 		"AJAX_OPTION_ADDITIONAL" => "",
 		"PRODUCT_QUANTITY_VARIABLE" => "quantity",
 		"COMPONENT_TEMPLATE" => "catalog_block",

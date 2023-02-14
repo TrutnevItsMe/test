@@ -24,6 +24,7 @@ if ($request->isPost()) {
 		"FIELDS" => $request->get('FIELDS')!=='undefined'?$request->get('FIELDS'):[],
 		"STORES" => \Intervolga\Custom\Helpers\StoreHelper::SHOP_STORE_IDS,
 		"SET_ITEMS" => $request->get("SET_ITEMS")!=='undefined'?$request->get("SET_ITEMS"):[],
+		"CACHE_TYPE" => "N"
 	),
 		false
 	);
