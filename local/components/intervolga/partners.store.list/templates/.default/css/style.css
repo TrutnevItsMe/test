@@ -2,6 +2,8 @@
 	border: solid 1px #ededed;
 	min-height: 100px;
 	vertical-align: top;
+	height: 300px;
+	overflow: auto;
 }
 
 .item-wrap:hover{
