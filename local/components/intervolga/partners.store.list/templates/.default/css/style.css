@@ -17,6 +17,11 @@
 	overflow-wrap: break-word;
 }
 
+.filter-block-inner{
+	height: 320px;
+	overflow: auto;
+}
+
 #filter-title{
 	display: block;
 	text-align: center;
