@@ -1,3 +1,4 @@
+
 <?
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 {
@@ -24,6 +25,11 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 		{
 			content: "";
 			color: #383838;
+		}
+
+		.set_new_ul img
+		{
+			max-width: 220px;
 		}
 
 		.set_new
