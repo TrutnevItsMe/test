@@ -624,7 +624,7 @@ window.OffersFilterComponent = {
 
 		if ((name = this.trimOfferName(name)) != null)
 		{
-			nodeName.html(name);
+			nodeName.html(name[1]);
 			return;
 		}
 
@@ -638,7 +638,7 @@ window.OffersFilterComponent = {
 	{
 		const regexp = /\(([^)]+)\)/;
 
-		return regexp.exec(name)[1];
+		return regexp.exec(name);
 	},
 
 	/** Устанавливает PREVIEW_TEXT в верстке */
