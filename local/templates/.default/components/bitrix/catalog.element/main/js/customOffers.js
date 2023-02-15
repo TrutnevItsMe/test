@@ -620,12 +620,25 @@ window.OffersFilterComponent = {
 	/** Устанавливает назавание товара в верстке */
 	setProductName: function (name)
 	{
-		let nodeName = $("#pagetitle");
+		const nodeName = $("#pagetitle");
+
+		if ((name = this.trimOfferName(name)) != null)
+		{
+			nodeName.html(name);
+			return;
+		}
 
 		if (nodeName.length)
 		{
 			nodeName.html(name);
 		}
+	},
+
+	trimOfferName: function (name)
+	{
+		const regexp = /\(([^)]+)\)/;
+
+		return regexp.exec(name)[1];
 	},
 
 	/** Устанавливает PREVIEW_TEXT в верстке */
