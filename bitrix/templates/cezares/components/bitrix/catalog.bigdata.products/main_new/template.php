@@ -158,8 +158,15 @@ if($arResult['ITEMS']){?>
 									<?
 									}
 									elseif($arItem["PRICES"])
-									{?>
-										<?\Aspro\Functions\CAsproItem::showItemPrices($arParams, $arItem["PRICES"], $strMeasure, $min_price_id, ($arParams["SHOW_DISCOUNT_PERCENT_NUMBER"] == "Y" ? "N" : "Y"));?>
+									{
+										?>
+										<div class="price"
+											 data-currency="<?=$arItem["PRICES"]["РРЦ"]["CURRENCY"]?>"
+											 data-value="<?=$arItem["PRICES"]["РРЦ"]["VALUE"]?>">
+											<span class="values_wrapper">
+												<span class="price_value"><?=$arItem["PRICES"]["РРЦ"]["PRINT_VALUE"]?></span>
+											</span>
+										</div>
 									<?}?>
 								<?endif;?>
 							</div>
