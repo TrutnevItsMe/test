@@ -2119,18 +2119,20 @@ if ($arResult['CATALOG'] && $arParams['USE_GIFTS_MAIN_PR_SECTION_LIST'] == 'Y' &
 <script>
 	BX.ready(function()
 	{
-		window.OffersFilterComponent.init({
-			result: <?=CUtil::PhpToJSObject($arResult)?>,
-			params: <?=CUtil::PhpToJSObject($arParams)?>,
-			classActiveOfferValueItem: "active-offers-filter-item",
-			classClickedOfferValueItem: "selected-offers-filter-item",
-			classOfferValueItem: "offers-filter-item",
-			classOfferValueContainer: "filter-item-container",
-			classInactive: "inactive-offer",
-			classAccessibleOfferValue: "accessible-offer-filter-value",
-			classInaccessibleOfferValue: "inaccessible-offer-filter-value",
-			ajaxFolder: "<?=$templateFolder?>/ajax/"
-		});
+		<?php if ($arResult["OFFERS"]):?>
+			window.OffersFilterComponent.init({
+				result: <?=CUtil::PhpToJSObject($arResult)?>,
+				params: <?=CUtil::PhpToJSObject($arParams)?>,
+				classActiveOfferValueItem: "active-offers-filter-item",
+				classClickedOfferValueItem: "selected-offers-filter-item",
+				classOfferValueItem: "offers-filter-item",
+				classOfferValueContainer: "filter-item-container",
+				classInactive: "inactive-offer",
+				classAccessibleOfferValue: "accessible-offer-filter-value",
+				classInaccessibleOfferValue: "inaccessible-offer-filter-value",
+				ajaxFolder: "<?=$templateFolder?>/ajax/"
+			});
+		<?php endif;?>
 	});
 </script>
 

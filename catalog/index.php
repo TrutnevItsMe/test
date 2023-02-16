@@ -778,9 +778,6 @@ $APPLICATION->IncludeComponent(
 		"OFFER_FILTER_REPLACED_PICTURE" => array(
 			0 => "TSVET",
 		),
-		"ADDING_STORE_BASKET" => array(
-		),
-		"SHOW_SKU_DESCRIPTION" => "N",
 		"SEF_URL_TEMPLATES" => array(
 			"sections" => "",
 			"section" => "#SECTION_CODE_PATH#/",
