@@ -53,7 +53,7 @@ if($arResult['ITEMS']){?>
 				<li class="catalog_item visible" id="<?=$strMainID;?>">
 					<?
 					$totalCount = CNext::GetTotalCount($arItem, $arParams);
-					$arQuantityData = CNext::GetQuantityArray($totalCount);
+					$arQuantityData = Intervolga\Custom\Tools\RestsUtil::getQuantityArray($totalCount);
 					$arItem["FRONT_CATALOG"]="Y";
 					$arItem["RID"]=$arResult["RID"];
 					$arAddToBasketData = CNext::GetAddToBasketArray($arItem, $totalCount, $arParams["DEFAULT_COUNT"], $arParams["BASKET_URL"], true);
@@ -142,7 +142,11 @@ if($arResult['ITEMS']){?>
 								</div>
 							<?endif;?>
 							<div class="sa_block">
-								<?=$arQuantityData["HTML"];?>
+								<?
+									$displayRests = $arQuantityData["HTML"];
+									$displayRests = str_replace("#REST#", $totalCount, $displayRests);
+								?>
+								<?=$displayRests;?>
 							</div>
 							<div class="cost prices clearfix">
 								<?if($arItem["OFFERS"]):?>
@@ -159,15 +163,10 @@ if($arResult['ITEMS']){?>
 									}
 									elseif($arItem["PRICES"])
 									{
-										?>
-										<div class="price"
-											 data-currency="<?=$arItem["PRICES"]["РРЦ"]["CURRENCY"]?>"
-											 data-value="<?=$arItem["PRICES"]["РРЦ"]["VALUE"]?>">
-											<span class="values_wrapper">
-												<span class="price_value"><?=$arItem["PRICES"]["РРЦ"]["PRINT_VALUE"]?></span>
-											</span>
-										</div>
-									<?}?>
+										echo Intervolga\Custom\Tools\PriceUtil::getHtml(
+											$arItem["PRICES"]["РРЦ"]["VALUE"],
+											$arItem["PRICES"]["РРЦ Константа"]["VALUE"]);
+									}?>
 								<?endif;?>
 							</div>
 						</div>
