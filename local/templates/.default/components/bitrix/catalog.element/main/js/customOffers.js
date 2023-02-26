@@ -836,7 +836,7 @@ window.OffersFilterComponent = {
 					((!Array.isArray(arProp.DISPLAY_VALUE) && arProp.DISPLAY_VALUE !== "") || (Array.isArray(arProp.DISPLAY_VALUE) && arProp.DISPLAY_VALUE.length > 0));
 			}).map(function (arProp) {
 				var values = Array.isArray(arProp.VALUE) ? arProp.VALUE.join(", ") : arProp.VALUE;
-				if(values === '')
+				if(values == '')
 				{
 					values = this.result["DISPLAY_PROPERTIES"][arProp.CODE]["VALUE"];
 				}
