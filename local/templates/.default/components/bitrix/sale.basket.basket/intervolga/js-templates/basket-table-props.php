@@ -117,13 +117,6 @@ if (!empty($arParams['LABEL_PROP_POSITION'])) {
                 ?>
             </td>
 
-            <!--<td>
-                <?/* if ($arParams["SHOW_ARTICLE_BEFORE_NAME"] === "Y"): */?>
-                    <div class="article-before-name-section">
-                    </div>
-                <?/* endif; */?>
-            </td>-->
-
             <? if ($arParams["SHOW_ARTICLE_BEFORE_NAME"] === "Y"): ?>
                 <td>
                     <div class="article-before-name-section">
