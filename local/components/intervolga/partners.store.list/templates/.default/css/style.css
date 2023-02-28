@@ -2,6 +2,8 @@
 	border: solid 1px #ededed;
 	min-height: 100px;
 	vertical-align: top;
+	height: 300px;
+	overflow: auto;
 }
 
 .item-wrap:hover{
@@ -13,6 +15,11 @@
 	border: solid 1px #b1b1b1;
 	background-color: #f9f9f9;
 	overflow-wrap: break-word;
+}
+
+.filter-block-inner{
+	height: 320px;
+	overflow: auto;
 }
 
 #filter-title{
