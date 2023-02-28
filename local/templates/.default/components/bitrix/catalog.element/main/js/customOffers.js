@@ -831,6 +831,34 @@ window.OffersFilterComponent = {
 			{
 			}
 		});
-	}
+	},
 
+	refreshBundleAvailability: function (event)
+	{
+		var element = event.currentTarget;
+		var elementId = element.dataset.id;
+
+		$.ajax({
+			type: "POST",
+			url: arNextOptions['SITE_DIR'] + 'local/templates/.default/components/bitrix/catalog.element/main/ajax/bundles.php',
+			data: {
+				product_id: elementId,
+			},
+			dataType: "json",
+			success: function (data) {
+				console.log(data)
+			}
+		})
+	},
+
+	setBundleBtnEvents: function ()
+	{
+		var addItemBtns = document.querySelectorAll('span.add_sub_item span.add_span[data-id]');
+
+		addItemBtns.forEach(function (element, idx) {
+			element.addEventListener('click', function (event) {
+				this.refreshBundleAvailability(event)
+			});
+		});
+	},
 };
