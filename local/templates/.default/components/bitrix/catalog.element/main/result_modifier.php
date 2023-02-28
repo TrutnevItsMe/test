@@ -2195,7 +2195,3 @@ if ($arResult["OFFERS"])
 		}
 	}
 }
-
-
-
-?>
