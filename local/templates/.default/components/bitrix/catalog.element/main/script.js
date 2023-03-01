@@ -5112,11 +5112,13 @@ function setBundleBtnEvents()
 	addItemBtns.forEach(function (element) {
 		element.addEventListener('click', function (event) {
 			setTimeout(function () {
+				console.log('replace')
 				replaceProductElementData(event)
-			}, 500);
+			}, 100);
 			setTimeout(function() {
+				console.log('refresh')
 				refreshBundleAvailability(event)
-			},600);
+			},200);
 		});
 	});
 }
