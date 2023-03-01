@@ -1,5 +1,7 @@
-<? if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
+<?
+if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
 	die();
+}
 
 use Bitrix\Main\Localization\Loc;
 
@@ -21,7 +23,7 @@ $positionClassMap = [
 	'right' => 'basket-item-label-right',
 	'bottom' => 'basket-item-label-bottom',
 	'middle' => 'basket-item-label-middle',
-	'top' => 'basket-item-label-top'
+	'top' => 'basket-item-label-top',
 ];
 
 $discountPositionClass = '';
@@ -40,127 +42,88 @@ if (!empty($arParams['LABEL_PROP_POSITION'])) {
 ?>
 
 <script id="basket-table-headers-template" type="text/html">
-	<td class="img-header">
+	<th class="img-header">
 		<?
 		if (in_array('PREVIEW_PICTURE', $arParams['COLUMNS_LIST'])) {
 			?>
-			<div class="preview-image-header"><?=Loc::getMessage("IMAGE")?></div>
+			<div class="preview-image-header"><?= Loc::getMessage("IMAGE") ?></div>
 			<?
 		} ?>
-	</td>
-	<? if ($arParams["SHOW_ARTICLE_BEFORE_NAME"] === "Y"): ?>
-		<td>
-			<div class="article-header"><?=Loc::getMessage("ARTICLE")?></div>
-		</td>
-	<? endif; ?>
-	<td>
-		<div class="product-header"><?=Loc::getMessage("SBB_GOOD_CAP")?></div>
-	</td>
+	</th>
+	<?
+	if ($arParams["SHOW_ARTICLE_BEFORE_NAME"] === "Y"): ?>
+		<th>
+			<div class="article-header"><?= Loc::getMessage("ARTICLE") ?></div>
+		</th>
+	<?
+	endif; ?>
+	<th>
+		<div class="product-header"><?= Loc::getMessage("SBB_GOOD_CAP") ?></div>
+	</th>
 
-	<? if ($arParams["SHOW_STORE_NAME"] === "Y"): ?>
-		<td>
+	<?
+	if ($arParams["SHOW_STORE_NAME"] === "Y"): ?>
+		<th>
 			<div class="store_header">
 				<div class="store-header">
-					<?=Loc::getMessage("STORE")?>
+					<?= Loc::getMessage("STORE") ?>
 				</div>
 			</div>
-		</td>
-	<? endif; ?>
+		</th>
+	<?
+	endif; ?>
 
-	<td class="td-header-amount">
+	<th class="td-header-amount">
 		<div class="amount-header">
-			<?=Loc::getMessage("AMOUNT")?>
+			<?= Loc::getMessage("AMOUNT") ?>
 		</div>
-	</td>
+	</th>
 
-	<? if ($arParams["DISPLAY_RESTS"] === "Y") {
+	<?
+	if ($arParams["DISPLAY_RESTS"] === "Y") {
 		?>
-		<td class="td-header-rests">
+		<th class="td-header-rests">
 			<div class="rests-header">
-				<?=Loc::getMessage("RESTS")?>
+				<?= Loc::getMessage("RESTS") ?>
 			</div>
-		</td>
+		</th>
 		<?
 	} ?>
 
 	{{#PARAM_HEADERS}}
-	<td class="td-basket-header-property-{{CODE}}">
+	<th class="td-basket-header-property-{{CODE}}">
 		<div class="property-{{CODE}}">
 			{{{NAME}}}
 		</div>
-	</td>
+	</th>
 	{{/PARAM_HEADERS}}
-	<? /*
-		if (!empty($arParams['PRODUCT_BLOCKS_ORDER'])) {
-			foreach ($arParams['PRODUCT_BLOCKS_ORDER'] as $blockName) {
-				switch (trim((string)$blockName)) {
-					case 'props':
-						if (in_array('PROPS', $arParams['COLUMNS_LIST'])) {
-							 */ ?><!--
-							{{#PROPS}}
-							<td class="td-basket-header-property-{{CODE}}">
-								<div class="property-{{CODE}}">
-									{{{NAME}}}
-								</div>
-							</td>
-							{{/PROPS}}
-							<? /*
-						}
-
-						break;
-					case 'sku':
-						 */ ?>
-						{{#SKU_BLOCK_LIST}}
-						<td class="td-basket-header-property-{{CODE}}">
-							<div class="property-{{CODE}}">
-								{{{NAME}}}
-							</div>
-						</td>
-						{{/SKU_BLOCK_LIST}}
-
-						<? /*
-						break;
-					case 'columns':
-						 */ ?>
-						{{#COLUMN_LIST}}
-						<td class="td-basket-header-property-{{CODE}}">
-							<div class="property-{{CODE}}">
-								{{{NAME}}}
-							</div>
-						</td>
-						{{/COLUMN_LIST}}
-						--><? /*
-						break;
-				}
-			}
-		}  */ ?>
 
 	<?
 	if ($usePriceInAdditionalColumn) {
 		?>
-		<td class="td-price-header">
+		<th class="td-price-header">
 			<div class="price_header">
-				<?=Loc::getMessage("PRICE")?>
+				<?= Loc::getMessage("PRICE") ?>
 			</div>
-		</td>
+		</th>
 		<?
 	} ?>
 
 	<?
 	if ($useSumColumn) {
 		?>
-		<td class="td-sum-header">
+		<th class="td-sum-header">
 			<div class="sum-header">
-				<?=Loc::getMessage("SUM")?>
+				<?= Loc::getMessage("SUM") ?>
 			</div>
-		</td>
+		</th>
 		<?
 	} ?>
 	<?
 	if ($useActionColumn) {
 		?>
-		<td>
-		</td>
+		<th>
+		</th>
 		<?
 	} ?>
 
