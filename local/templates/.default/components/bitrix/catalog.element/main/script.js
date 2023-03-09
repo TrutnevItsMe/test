@@ -8,6 +8,7 @@ $(document).on('click', ".item-stock .store_view", function ()
 
 $(document).ready(function ()
 {
+	setBundleBtnEvents()
 	//set fixed tabs
 	$('<div class="product-item-detail-tabs-container-fixed">' +
 		'<div class="wrapper_inner">' +
@@ -5072,6 +5073,67 @@ function formatNumber(n, digits)
 		.replace(' ', '&nbsp;');
 }
 
+function replaceProductElementData(event)
+{
+	var element = event.target;
+	var catalogLink = element.closest('div.sub_items').querySelector('td a b').closest('a').getAttribute('href');
+	var bundleElement = document.querySelector('div.set_new a[href ="' + catalogLink + '"]');
+
+	bundleElement.closest('[data-price]').dataset.price = element.closest('table').querySelector('[data-price]').dataset.price;
+	bundleElement.closest('[data-old-price]').dataset.oldPrice = element.closest('table').querySelector('[data-old-price]').dataset.oldPrice;
+	bundleElement.closest('[data-id]').dataset.id = element.dataset.id;
+}
+
+function replaceStoresAvailability(data)
+{
+	var storesElements = document.querySelectorAll('div.stores_block_wrap .stores_block');
+
+	storesElements.forEach(function (element) {
+		var id = parseInt(element.querySelector('[id]').id.replace('store_', ''))
+		if(data[id]) {
+			$(element).closest('.stores_block').find('.item-stock').replaceWith(data[id]);
+		}
+	})
+}
+
+function refreshBundleAvailability()
+{
+	var bundleElementsIds = [];
+
+	document.querySelectorAll('.set_item_new[data-id]').forEach(function (element) {
+		bundleElementsIds.push(element.dataset.id);
+	});
+
+	$.ajax({
+		type: 'POST',
+		url: arNextOptions['SITE_DIR'] + 'local/templates/.default/components/bitrix/catalog.element/main/ajax/bundles.php',
+		data: {
+			product_id: bundleElementsIds,
+		},
+		success: function (data) {
+			replaceStoresAvailability(JSON.parse(data));
+		},
+		error: function (jqXHR, exception) {
+			console.error(exception);
+		}
+	})
+}
+
+function setBundleBtnEvents()
+{
+	var addItemBtns = document.querySelectorAll('span.add_sub_item span.add_span[data-id]');
+
+	addItemBtns.forEach(function (element) {
+		element.addEventListener('click', function (event) {
+			setTimeout(function () {
+				replaceProductElementData(event)
+			}, 100);
+			setTimeout(function() {
+				refreshBundleAvailability(event)
+			},200);
+		});
+	});
+}
 
 //Считаем цену для набора
 var price = calculatePrice();

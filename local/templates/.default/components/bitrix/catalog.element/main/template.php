@@ -1509,7 +1509,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 				<div class="tab-pane <?=(!($iTab++) ? ' active' : '')?>" id="haracter">
 					<div class="title-tab-heading visible-xs"><?=($arParams["TAB_CHAR_NAME"] ? $arParams["TAB_CHAR_NAME"] : GetMessage("PROPERTIES_TAB"));?></div>
 					<div>
-					
+
 						<?if($showProps && $arParams["PROPERTIES_DISPLAY_LOCATION"] != "TAB"):?>
 							<div style="padding:0px;" class="wraps">
 								<hr>
@@ -1626,10 +1626,10 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 								<?endif;?>
 							</div>
 						<?endif;?>
-					
+
 					</div>
 				</div>
-				
+
 				<div class="tab-pane <?=(!($iTab++) ? ' active' : '')?>" id="docs">
 					<div class="title-tab-heading visible-xs"><?=($arParams["TAB_CHAR_NAME"] ? $arParams["TAB_CHAR_NAME"] : GetMessage("PROPERTIES_TAB"));?></div>
 					<div>
@@ -1672,11 +1672,11 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 									</div>
 								</div>
 							</div>
-						<?endif;?>		
+						<?endif;?>
 					</div>
 				</div>
-					
-			
+
+
 			<?if($showProps && $arParams["PROPERTIES_DISPLAY_LOCATION"] == "TAB"):?>
 				<div class="tab-pane <?=(!($iTab++) ? ' active' : '')?>" id="props">
 					<div class="title-tab-heading visible-xs"><?=($arParams["TAB_CHAR_NAME"] ? $arParams["TAB_CHAR_NAME"] : GetMessage("PROPERTIES_TAB"));?></div>
@@ -1839,7 +1839,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 			<?if($useStores && ($showCustomOffer || !$arResult["OFFERS"] )):?>
 				<div class="tab-pane stores_tab<?=(!($iTab++) ? ' active' : '')?>" id="stores">
 					<div class="title-tab-heading visible-xs"><?=($arParams["TAB_STOCK_NAME"] ? $arParams["TAB_STOCK_NAME"] : GetMessage("STORES_TAB"));?></div>
-					<div class="stores_wrapp_1">				
+					<div class="stores_wrapp_1">
 					<?if($arResult["OFFERS"]){?>
 						<span id="offers-stores-block"></span>
 					<?}elseif(isset($arResult['SET_STORES']) && count($arResult['SET_STORES']) > 0){?>
@@ -1855,7 +1855,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 									$arParams["STORE_PATH"]);
 								?>
 							<div class="stores_block wo_image">
-								<div class="stores_text_wrapp ">
+								<div class="stores_text_wrapp" id="store_<?= $store['STORE_ID'] ?>">
 									<?=$store['NAME']?>
 								</div>
 								<?=$displayStoreAmount?>
@@ -2139,7 +2139,7 @@ if ($arResult['CATALOG'] && $arParams['USE_GIFTS_MAIN_PR_SECTION_LIST'] == 'Y' &
 </script>
 
 <script type="text/javascript">
-	BX.message({
+    BX.message({
 		QUANTITY_AVAILIABLE: '<? echo COption::GetOptionString("aspro.next", "EXPRESSION_FOR_EXISTS", GetMessage("EXPRESSION_FOR_EXISTS_DEFAULT"), SITE_ID); ?>',
 		QUANTITY_NOT_AVAILIABLE: '<? echo COption::GetOptionString("aspro.next", "EXPRESSION_FOR_NOTEXISTS", GetMessage("EXPRESSION_FOR_NOTEXISTS"), SITE_ID); ?>',
 		ADD_ERROR_BASKET: '<? echo GetMessage("ADD_ERROR_BASKET"); ?>',
