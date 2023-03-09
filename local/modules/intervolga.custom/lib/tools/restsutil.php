@@ -5,7 +5,7 @@ namespace Intervolga\Custom\Tools;
 class RestsUtil
 {
 	/**
-	 * Возвращает массив с описанием остатков из нстроек модуля
+	 * Возвращает массив с описанием остатков из настроек модуля
 	 *
 	 * @param $count
 	 * @return array
