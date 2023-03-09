@@ -5084,6 +5084,18 @@ function replaceProductElementData(event)
 	bundleElement.closest('[data-id]').dataset.id = element.dataset.id;
 }
 
+function replaceStoresAvailability(data)
+{
+	var storesElements = document.querySelectorAll('div.stores_block_wrap .stores_block');
+
+	storesElements.forEach(function (element) {
+		var id = parseInt(element.querySelector('[id]').id.replace('store_', ''))
+		if(data[id]) {
+			$(element).closest('.stores_block').find('.item-stock').replaceWith(data[id]);
+		}
+	})
+}
+
 function refreshBundleAvailability()
 {
 	var bundleElementsIds = [];
@@ -5098,9 +5110,11 @@ function refreshBundleAvailability()
 		data: {
 			product_id: bundleElementsIds,
 		},
-		dataType: 'json',
 		success: function (data) {
-			console.log(data)
+			replaceStoresAvailability(JSON.parse(data));
+		},
+		error: function (jqXHR, exception) {
+			console.error(exception);
 		}
 	})
 }

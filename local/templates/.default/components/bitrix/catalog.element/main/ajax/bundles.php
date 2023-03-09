@@ -38,11 +38,11 @@ if ($request->isPost()) {
 
 	foreach ($amount as $id => $value) {
 		$buffValue = $value;
-		$amount[$id] = Intervolga\Custom\Tools\RestsUtil::getQuantityArray($value)['TEXT'];
+		$amount[$id] = Intervolga\Custom\Tools\RestsUtil::getQuantityArray($value)['HTML'];
 		if (strpos($amount[$id], '#REST#') >= 0) {
-			$amount[$id] = str_replace('#REST', $amount[$id], $buffValue);
+			$amount[$id] = str_replace('#REST#', $buffValue, $amount[$id]);
 		}
 	}
 
-	echo CUtil::PhpToJSObject($amount);
+	echo json_encode($amount);
 }
