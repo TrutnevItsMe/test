@@ -20,23 +20,29 @@ if ($request->isPost()) {
 				'=STORE_ID' => $stores
 			],
 			'select' => [
-				'AMOUNT'
+				'AMOUNT',
+				'STORE_ID',
 			],
 		]
 	);
 
-	$amount = 0;
+
+	$amount = [];
 	while ($arStoreProduct = $rsStoreProduct->fetch()) {
-		if ($amount === 0) {
-			$amount = $arStoreProduct['AMOUNT'];
-		}
-		if ($arStoreProduct['AMOUNT'] < $amount) {
-			$amount = $arStoreProduct['AMOUNT'];
+		if (!$amount[$arStoreProduct['STORE_ID']]) {
+			$amount[$arStoreProduct['STORE_ID']] = $arStoreProduct['AMOUNT'];
+		} elseif($amount[$arStoreProduct['STORE_ID']] > $arStoreProduct['AMOUNT']) {
+			$amount[$arStoreProduct['STORE_ID']] = $arStoreProduct['AMOUNT'];
 		}
 	}
 
-	$displayQuantity = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($amount)["HTML"];
-	$displayQuantity = str_replace("#REST#", $amount, $displayQuantity);
+	foreach ($amount as $id => $value) {
+		$buffValue = $value;
+		$amount[$id] = Intervolga\Custom\Tools\RestsUtil::getQuantityArray($value)['TEXT'];
+		if (strpos($amount[$id], '#REST#') >= 0) {
+			$amount[$id] = str_replace('#REST', $amount[$id], $buffValue);
+		}
+	}
 
-	echo $displayQuantity;
+	echo CUtil::PhpToJSObject($amount);
 }
