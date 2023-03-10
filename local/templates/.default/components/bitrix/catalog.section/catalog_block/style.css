@@ -1,7 +1,7 @@
 .catalog_block .item-stock, .catalog_block .article_block
 {
 	text-align: left;
-	max-height: 190px;
+	max-height: 175px;
 	overflow: auto;
 }
 
