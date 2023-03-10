@@ -5096,6 +5096,24 @@ function replaceStoresAvailability(data)
 	})
 }
 
+function replaceMainStoreAvailability(data)
+{
+	var quantityElement = document.querySelector('div.prices_block div.item-stock');
+	var $data = data;
+
+	$.ajax({
+		type: 'POST',
+		url: arNextOptions['SITE_DIR'] + 'ajax/ajax_main_shop_constants.php',
+		data: {},
+		success: function (mainShopId) {
+			$(quantityElement).replaceWith($data[JSON.parse(mainShopId)[0]]);
+		},
+		error: function (jqXHR, exception) {
+			console.error(exception);
+		}
+	});
+}
+
 function refreshBundleAvailability()
 {
 	var bundleElementsIds = [];
@@ -5112,11 +5130,12 @@ function refreshBundleAvailability()
 		},
 		success: function (data) {
 			replaceStoresAvailability(JSON.parse(data));
+			replaceMainStoreAvailability(JSON.parse(data));
 		},
 		error: function (jqXHR, exception) {
 			console.error(exception);
 		}
-	})
+	});
 }
 
 function setBundleBtnEvents()
