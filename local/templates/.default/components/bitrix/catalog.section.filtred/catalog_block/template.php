@@ -402,33 +402,7 @@
 											<? \Aspro\Functions\CAsproSku::showItemPrices($arParamsCE_CMP, $arItem, $item_id, $min_price_id, $arItemIDs, ($arParams["SHOW_DISCOUNT_PERCENT_NUMBER"] == "Y" ? "N" : "Y")); ?>
 										</div>
 									<? endif; ?>
-									<div class="js_price_wrapper price">
-										<? if ($arCurrentSKU): ?>
-											<?
-											$item_id = $arCurrentSKU["ID"];
-											$arCurrentSKU['PRICE_MATRIX'] = $arCurrentSKU['PRICE_MATRIX_RAW'];
-											$arCurrentSKU['CATALOG_MEASURE_NAME'] = $arCurrentSKU['MEASURE'];
-											if (isset($arCurrentSKU['PRICE_MATRIX']) && $arCurrentSKU['PRICE_MATRIX']) // USE_PRICE_COUNT
-											{
-												?>
-												<? if ($arCurrentSKU['ITEM_PRICE_MODE'] == 'Q' && count($arCurrentSKU['PRICE_MATRIX']['ROWS']) > 1):?>
-												<?= CNext::showPriceRangeTop($arCurrentSKU, $arParams, GetMessage("CATALOG_ECONOMY")); ?>
-											<?endif; ?>
-												<?= CNext::showPriceMatrix($arCurrentSKU, $arParams, $strMeasure, $arAddToBasketData); ?>
-												<? $arMatrixKey = array_keys($arCurrentSKU['PRICE_MATRIX']['MATRIX']);
-												$min_price_id = current($arMatrixKey); ?>
-												<?
-											}
-											else
-											{
-												$arCountPricesCanAccess = 0;
-												$min_price_id = 0; ?>
-												<? \Aspro\Functions\CAsproItem::showItemPrices($arParams, $arCurrentSKU["PRICES"], $strMeasure, $min_price_id, ($arParams["SHOW_DISCOUNT_PERCENT_NUMBER"] == "Y" ? "N" : "Y")); ?>
-											<? } ?>
-										<? else: ?>
-											<? \Aspro\Functions\CAsproSku::showItemPrices($arParams, $arItem, $item_id, $min_price_id, $arItemIDs, ($arParams["SHOW_DISCOUNT_PERCENT_NUMBER"] == "Y" ? "N" : "Y")); ?>
-										<? endif; ?>
-									</div>
+									
 								<? } else { ?>
 									<?
 									$item_id = $arItem["ID"];
