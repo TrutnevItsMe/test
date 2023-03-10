@@ -55,7 +55,8 @@ $asset->addJs($templateFolder."/script.js");
 		$col = 5; ?>
 
 	<? foreach ($arResult["ITEMS"] as $arItem) { ?>
-		<div class="item_block col-<?= $col; ?> col-md-<?= ceil(12 / $col); ?> col-sm-<?= ceil(12 / round($col / 2)) ?> col-xs-6">
+		<div class="item_block col-<?= $col; ?> col-md-<?= ceil(12 / $col); ?> col-sm-<?= ceil(12 / round($col / 2))
+		?> col-xs-6 mt-1">
 			<div class="catalog_item_wrapp item">
 				<div class="basket_props_block" id="bx_basket_div_<?= $arItem["ID"]; ?>" style="display: none;">
 					<? if (!empty($arItem['PRODUCT_PROPERTIES_FILL']))
@@ -555,7 +556,7 @@ $asset->addJs($templateFolder."/script.js");
 						</div>
 
 						<div class="footer_button <?= ($arItem["OFFERS"] && $arItem['OFFERS_PROP'] ? 'has_offer_prop'
-							: ''); ?> inner_content js_offers__<?= $arItem['ID']; ?> mt-3">
+							: ''); ?> inner_content js_offers__<?= $arItem['ID']; ?>">
 							<div class="sku_props">
 								<? if ($arItem["OFFERS"]) { ?>
 									<? if (!empty($arItem['OFFERS_PROP'])) { ?>
