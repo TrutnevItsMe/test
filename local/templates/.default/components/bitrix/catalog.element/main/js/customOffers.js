@@ -681,6 +681,7 @@ window.OffersFilterComponent = {
 		let htmlThumbs = ""; // картинки в списке
 		let htmlSlider = ""; // картинки в слайдере
 		let i = 0;
+
 		if (item["MORE_PHOTO"])
 		{
 			for (let j = 0; j < item["MORE_PHOTO"].length; ++j)
@@ -887,6 +888,5 @@ window.OffersFilterComponent = {
 			{
 			}
 		});
-	}
-
+	},
 };
