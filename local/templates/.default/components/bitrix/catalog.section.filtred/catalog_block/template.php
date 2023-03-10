@@ -573,7 +573,8 @@
 							<? } ?>
 						</div>
 
-						<div class="footer_button <?= ($arItem["OFFERS"] && $arItem['OFFERS_PROP'] ? 'has_offer_prop' : ''); ?> inner_content js_offers__<?= $arItem['ID']; ?>">
+						<div class="footer_button <?= ($arItem["OFFERS"] && $arItem['OFFERS_PROP'] ? 'has_offer_prop'
+							: ''); ?> inner_content js_offers__<?= $arItem['ID']; ?> mt-3">
 							<div class="sku_props">
 								<? if ($arItem["OFFERS"]) { ?>
 									<? if (!empty($arItem['OFFERS_PROP'])) { ?>
