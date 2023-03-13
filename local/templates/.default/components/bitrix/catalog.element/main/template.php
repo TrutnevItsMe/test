@@ -99,7 +99,11 @@ $strObName = 'ob'.preg_replace("/[^a-zA-Z0-9_]/", "x", $strMainID);
 $arResult["strMainID"] = $this->GetEditAreaId($arResult['ID']);
 $arItemIDs=CNext::GetItemsIDs($arResult, "Y");
 
-$totalCount = array_values($arResult["MAIN_STOCK_SET_AMOUNT"])[0] ?: CNext::GetTotalCount($arResult, $arParams);
+if (isset($arResult["MAIN_STOCK_SET_AMOUNT"][\Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS[0]])) {
+	$totalCount = $arResult["MAIN_STOCK_SET_AMOUNT"][\Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS[0]];
+} else {
+	$totalCount = CNext::GetTotalCount($arResult, $arParams);
+}
 $arQuantityData = CNext::GetQuantityArray($totalCount, $arItemIDs["ALL_ITEM_IDS"], "Y");
 
 $displayQuantity  = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($totalCount)["HTML"];
