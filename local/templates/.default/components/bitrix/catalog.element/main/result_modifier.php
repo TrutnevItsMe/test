@@ -2188,42 +2188,8 @@ if ($arResult["OFFERS"])
 	}
 }
 
-$arProductsIds = [];
 
-foreach ($arResult["SET"]["OPTIONAL"] as $product) {
-	if ($product['DEFAULT']) {
-		$arProductsIds[] = $product['ID'];
-	}
-}
-
-$productAmount = \Bitrix\Catalog\StoreProductTable::getList(
-	[
-		'filter' => [
-			'=PRODUCT_ID' => $arProductsIds,
-			'=STORE.ACTIVE' => 'Y',
-			'=STORE_ID' => \Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS
-		],
-		'select' => [
-			'AMOUNT',
-		],
-	]
-)->fetchAll();
-$optionalSetItemsAmount = min(array_column($productAmount, "AMOUNT"));
-
-//Посчитать количество товаров из комплекта на главном складе
-$arProductsIds = array_column($arResult["SET"]["SET"], "ID");
-$productAmount = \Bitrix\Catalog\StoreProductTable::getList(
-	[
-		'filter' => [
-			'=PRODUCT_ID' => $product['ID'],
-			'=STORE.ACTIVE' => 'Y',
-			'=STORE_ID' => \Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS
-		],
-		'select' => [
-			'AMOUNT',
-		],
-	]
-)->fetchAll();
-$mainSetProductAmount = min($productAmount);
-
-$arResult["TOTAL_SET_AMOUNT"] = min($mainSetProductAmount, $optionalSetItemsAmount);
+$arResult["MAIN_STOCK_SET_AMOUNT"] = \Intervolga\Custom\Tools\RestsUtil::getMinStockAvail(
+	\Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS,
+	$arResult['SET']
+);
