@@ -2188,8 +2188,9 @@ if ($arResult["OFFERS"])
 	}
 }
 
-
-$arResult["MAIN_STOCK_SET_AMOUNT"] = \Intervolga\Custom\Tools\RestsUtil::getMinStockAvail(
-	\Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS,
-	$arResult['SET']
-);
+if(is_array($arResult['SET'])) {
+	$arResult["MAIN_STOCK_SET_AMOUNT"] = \Intervolga\Custom\Tools\RestsUtil::getMinStockAvail(
+		\Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS,
+		$arResult['SET']
+	);
+}
