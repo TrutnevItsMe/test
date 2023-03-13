@@ -188,7 +188,7 @@ class RestsUtil
 				],
 				'select' => [
 					'AMOUNT',
-					'STORE_ID'
+					'STORE_ID',
 				],
 			]
 		)->fetchAll();
