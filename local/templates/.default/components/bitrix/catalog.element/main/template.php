@@ -1842,12 +1842,12 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 						<span id="offers-stores-block"></span>
 					<?}elseif(isset($arResult['SET_STORES']) && count($arResult['SET_STORES']) > 0){?>
 						<div class="stores_block_wrap">
-							<? foreach ($arResult['SET_STORES'] as $store):
+							<? $storesAmount = \Intervolga\Custom\Tools\RestsUtil::getMinStockAvail(array_column($arResult['SET_STORES'], 'STORE_ID'), $arResult['SET']);
+							foreach ($arResult['SET_STORES'] as $store):
+								$displayStoreAmount = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($storesAmount[$store['STORE_ID']])["HTML"];
+								$displayStoreAmount = str_replace("#REST#", $storesAmount[$store['STORE_ID']], $displayStoreAmount);
 
-								$displayStoreAmount  = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($store["AMOUNT"])["HTML"];
-								$displayStoreAmount = str_replace("#REST#", $store["AMOUNT"], $displayStoreAmount);
-
-								$storePath=str_replace(
+								$storePath = str_replace(
 									'#store_id#',
 									$store['STORE_ID'],
 									$arParams["STORE_PATH"]);
@@ -1856,7 +1856,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 								<div class="stores_text_wrapp" id="store_<?= $store['STORE_ID'] ?>">
 									<?=$store['NAME']?>
 								</div>
-								<?=$displayStoreAmount?>
+								<?= $displayStoreAmount ?>
 							</div>
 							<? endforeach ?>
 						</div>
