@@ -2180,7 +2180,6 @@ if ($arResult["OFFERS"])
 				];
 			}
 
-
 			if ($arOffer["SET"])
 			{
 				$arResult["SET"]["SET"] = $arOffer["SET"];
@@ -2189,50 +2188,42 @@ if ($arResult["OFFERS"])
 	}
 }
 
-$setProductsAmount = false;
+$arProductsIds = [];
+
 foreach($arResult["SET"]["OPTIONAL"] as $product) {
 	if ($product['DEFAULT']) {
-		$productAmount = \Bitrix\Catalog\StoreProductTable::getList(
-			[
-				'filter' => [
-					'=PRODUCT_ID' => $product['ID'],
-					'=STORE.ACTIVE' => 'Y',
-					'=STORE_ID' => \Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS
-				],
-				'select' => [
-					'AMOUNT',
-				],
-			]
-		)->fetch()["AMOUNT"];
-
-		if(!$setProductsAmount) {
-			$setProductsAmount = $productAmount;
-		} elseif($setProductsAmount > $productAmount) {
-			$setProductsAmount = $productAmount;
-		}
+		$arProductsIds[] = $product['ID'];
 	}
 }
 
-$mainSetItemAmount = false;
-foreach($arResult["SET"]["SET"] as $product) {
-	$productAmount = \Bitrix\Catalog\StoreProductTable::getList(
-		[
-			'filter' => [
-				'=PRODUCT_ID' => $product['ID'],
-				'=STORE.ACTIVE' => 'Y',
-				'=STORE_ID' => \Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS
-			],
-			'select' => [
-				'AMOUNT',
-			],
-		]
-	)->fetch()["AMOUNT"];
+$productAmount = \Bitrix\Catalog\StoreProductTable::getList(
+	[
+		'filter' => [
+			'=PRODUCT_ID' => $arProductsIds,
+			'=STORE.ACTIVE' => 'Y',
+			'=STORE_ID' => \Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS
+		],
+		'select' => [
+			'AMOUNT',
+		],
+	]
+)->fetchAll();
+$optionalSetItemsAmount = min(array_column($productAmount, "AMOUNT"));
 
-	if(!$mainSetItemAmount) {
-		$mainSetItemAmount = $productAmount;
-	} elseif($mainSetItemAmount > $productAmount) {
-		$mainSetItemAmount = $productAmount;
-	}
-}
+//Посчитать количество товаров из комплекта на главном складе
+$arProductsIds = array_column($arResult["SET"]["SET"], "ID");
+$productAmount = \Bitrix\Catalog\StoreProductTable::getList(
+	[
+		'filter' => [
+			'=PRODUCT_ID' => $product['ID'],
+			'=STORE.ACTIVE' => 'Y',
+			'=STORE_ID' => \Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS
+		],
+		'select' => [
+			'AMOUNT',
+		],
+	]
+)->fetchAll();
+$mainSetProductAmount = min($productAmount);
 
-$arResult["TOTAL_SET_AMOUNT"] = min($mainSetItemAmount, $setProductsAmount);
+$arResult["TOTAL_SET_AMOUNT"] = min($mainSetProductAmount, $optionalSetItemsAmount);
