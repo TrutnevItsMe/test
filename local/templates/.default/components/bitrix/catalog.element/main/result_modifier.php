@@ -2190,7 +2190,7 @@ if ($arResult["OFFERS"])
 
 $arProductsIds = [];
 
-foreach($arResult["SET"]["OPTIONAL"] as $product) {
+foreach ($arResult["SET"]["OPTIONAL"] as $product) {
 	if ($product['DEFAULT']) {
 		$arProductsIds[] = $product['ID'];
 	}
