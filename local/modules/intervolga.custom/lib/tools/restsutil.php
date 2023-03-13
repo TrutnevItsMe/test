@@ -162,8 +162,8 @@ class RestsUtil
 
 	/**
 	 * Получить наличие комплекта на складе по нижней границе количества среди всех товаров комплекта
-	 * @param array $storesIds
-	 * @param array $items
+	 * @param array $storesIds - массив INT
+	 * @param array $items - $arResult['SET']
 	 * @return array
 	 */
 	public static function getMinStockAvail(array $storesIds, array $items): array
