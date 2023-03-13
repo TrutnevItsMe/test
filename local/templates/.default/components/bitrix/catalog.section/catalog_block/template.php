@@ -120,8 +120,11 @@ $asset->addJs($templateFolder."/script.js");
 
 				$arItem["strMainID"] = $this->GetEditAreaId($arItem['ID']);
 				$arItemIDs = CNext::GetItemsIDs($arItem);
-
-				$totalCount = CNext::GetTotalCount($arItem, $arParams);
+				if (isset($arItem['AMOUNT'][\Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS[0]])) {
+					$totalCount = $arItem['AMOUNT'][\Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS[0]];
+                } else {
+					$totalCount = CNext::GetTotalCount($arItem, $arParams);
+				}
 				$displayQuantity = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($totalCount)["HTML"];
 				$displayQuantity = str_replace("#REST#", $totalCount, $displayQuantity);
 

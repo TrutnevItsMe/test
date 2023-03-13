@@ -159,4 +159,49 @@ class RestsUtil
 
 		throw new \Exception("No valid condition: $condition");
 	}
+
+	/**
+	 * Получить наличие комплекта на складе по нижней границе количества среди всех товаров комплекта
+	 * @param array $storesIds - массив INT
+	 * @param array $items - $arResult['SET']
+	 * @return array
+	 */
+	public static function getMinStockAvail(array $storesIds, array $items): array
+	{
+		$mainItemsIds = array_column($items['SET'], "ID");
+		$optionalItemsIds = [];
+		$amount = [];
+		
+		foreach ($items['OPTIONAL'] as $item) {
+			if ($item['DEFAULT']) {
+				$optionalItemsIds[] = $item['ID'];
+			}
+		}
+		$itemsIds = array_merge($mainItemsIds, $optionalItemsIds);
+		
+		$storesProductsAmount = \Bitrix\Catalog\StoreProductTable::getList(
+			[
+				'filter' => [
+					'=PRODUCT_ID' => $itemsIds,
+					'=STORE.ACTIVE' => 'Y',
+					'=STORE_ID' => $storesIds
+				],
+				'select' => [
+					'AMOUNT',
+					'STORE_ID',
+				],
+			]
+		)->fetchAll();
+
+		foreach ($storesProductsAmount as $store) {
+			if (!isset($amount[$store['STORE_ID']])) {
+				$amount[$store['STORE_ID']] = $store['AMOUNT'];
+			}
+			if ($store['AMOUNT'] < $amount[$store['STORE_ID']]) {
+				$amount[$store['STORE_ID']] = $store['AMOUNT'];
+			}
+		}
+
+		return $amount;
+	}
 }

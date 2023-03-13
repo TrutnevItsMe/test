@@ -26,7 +26,6 @@ if ($request->isPost()) {
 		]
 	);
 
-
 	$amount = [];
 	while ($arStoreProduct = $rsStoreProduct->fetch()) {
 		if (!$amount[$arStoreProduct['STORE_ID']]) {
