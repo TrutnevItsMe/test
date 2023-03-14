@@ -8,7 +8,7 @@ $(document).on('click', ".item-stock .store_view", function ()
 
 $(document).ready(function ()
 {
-	setBundleBtnEvents()
+	setBundleBtnEvents();
 	//set fixed tabs
 	$('<div class="product-item-detail-tabs-container-fixed">' +
 		'<div class="wrapper_inner">' +
@@ -5140,17 +5140,9 @@ function refreshBundleAvailability()
 
 function setBundleBtnEvents()
 {
-	var addItemBtns = document.querySelectorAll('span.add_sub_item span.add_span[data-id]');
-
-	addItemBtns.forEach(function (element) {
-		element.addEventListener('click', function (event) {
-			setTimeout(function () {
-				replaceProductElementData(event)
-			}, 100);
-			setTimeout(function() {
-				refreshBundleAvailability(event)
-			},200);
-		});
+	$('.set_group_items').on('click', 'span.add_span[data-id]', function (event) {
+		replaceProductElementData(event);
+		refreshBundleAvailability(event)
 	});
 }
 

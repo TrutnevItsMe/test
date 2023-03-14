@@ -28,19 +28,16 @@ if ($request->isPost()) {
 
 	$amount = [];
 	while ($arStoreProduct = $rsStoreProduct->fetch()) {
-		if (!$amount[$arStoreProduct['STORE_ID']]) {
+		if (!isset($amount[$arStoreProduct['STORE_ID']])) {
 			$amount[$arStoreProduct['STORE_ID']] = $arStoreProduct['AMOUNT'];
 		} elseif($amount[$arStoreProduct['STORE_ID']] > $arStoreProduct['AMOUNT']) {
 			$amount[$arStoreProduct['STORE_ID']] = $arStoreProduct['AMOUNT'];
 		}
 	}
-
 	foreach ($amount as $id => $value) {
 		$buffValue = $value;
 		$amount[$id] = Intervolga\Custom\Tools\RestsUtil::getQuantityArray($value)['HTML'];
-		if (strpos($amount[$id], '#REST#') >= 0) {
-			$amount[$id] = str_replace('#REST#', $buffValue, $amount[$id]);
-		}
+		$amount[$id] = str_replace('#REST#', $buffValue, $amount[$id]);
 	}
 
 	echo json_encode($amount);
