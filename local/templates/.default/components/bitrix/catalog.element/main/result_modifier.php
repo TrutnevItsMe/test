@@ -1756,9 +1756,9 @@ if ($property = $rsProperty->Fetch())
 			$priceMatrix['MATRIX'][$curPriceTypeId][$curPriceId]['PRICE'] = $oldPrice;
 			$priceMatrix['MATRIX'][$curPriceTypeId][$curPriceId]['DISCOUNT_PRICE'] = $price;
 			$priceMatrix['MATRIX'][$curPriceTypeId][$curPriceId]['PRINT_PRICE'] =
-				number_format($oldPrice, 2, '.', '&nbsp;') . "&nbsp;руб.";
+				number_format($oldPrice, 2, '.', '&nbsp;') . "&nbsp;₽";
 			$priceMatrix['MATRIX'][$curPriceTypeId][$curPriceId]['PRINT_DISCOUNT_PRICE'] =
-				number_format($price, 2, '.', '&nbsp;') . "&nbsp;руб.";
+				number_format($price, 2, '.', '&nbsp;') . "&nbsp;₽";
 
 			$priceMatrix['MATRIX'][11]["ZERO-INF"]['PRICE'] = $price_discount;
 		}
@@ -1780,7 +1780,7 @@ if ($property = $rsProperty->Fetch())
 		$minPrice["VALUE"] = $oldPrice;
 		$minPrice["DISCOUNT_VALUE"] = $price;
 		$minPrice["PRINT_DISCOUNT_VALUE"] = number_format($price, 2, '.', '&nbsp;')
-			. "&nbsp;руб.";
+			. "&nbsp;₽";
 		$arResult['MIN_PRICE'] = $minPrice;
 
 		// Извлечём остатки по складам
