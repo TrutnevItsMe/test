@@ -138,15 +138,17 @@ $arOfferProps = implode(';', $arParams['OFFERS_CART_PROPERTIES']);
 $arFirstPhoto = reset($arResult['MORE_PHOTO']);
 $arItemPrices = $arResult['MIN_PRICE'];
 
-if(isset($arResult['PRICE_MATRIX']) && $arResult['PRICE_MATRIX'])
+if(isset($arResult['PRICE_MATRIX']) && $arResult['PRICE_MATRIX'] && empty($arResult["OFFERS"]))
 {
 	$rangSelected = $arResult['ITEM_QUANTITY_RANGE_SELECTED'];
 	$priceSelected = $arResult['ITEM_PRICE_SELECTED'];
+
 	if(isset($arResult['FIX_PRICE_MATRIX']) && $arResult['FIX_PRICE_MATRIX'])
 	{
 		$rangSelected = $arResult['FIX_PRICE_MATRIX']['RANGE_SELECT'];
 		$priceSelected = $arResult['FIX_PRICE_MATRIX']['PRICE_SELECT'];
 	}
+
 	$arItemPrices = $arResult['ITEM_PRICES'][$priceSelected];
 	$arItemPrices['VALUE'] = $arItemPrices['BASE_PRICE'];
 	$arItemPrices['PRINT_VALUE'] = \Aspro\Functions\CAsproItem::getCurrentPrice('BASE_PRICE', $arItemPrices);
