@@ -1,6 +1,8 @@
 .catalog_block .item-stock, .catalog_block .article_block
 {
 	text-align: left;
+	max-height: 175px;
+	overflow: auto;
 }
 
 .sa_block > .item-stock-qnty,
@@ -17,3 +19,12 @@
 	font-size: 12px;
 	color: #666;
 }
+
+.item_block{
+	margin-bottom: 60px !important;
+}
+
+.catalog_item.main_item_wrapper.item_wrap:hover{
+	box-shadow: 0px 0px 20px rgb(0 0 0 / 10%) !important;
+}
+
