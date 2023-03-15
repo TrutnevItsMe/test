@@ -5073,9 +5073,15 @@ function formatNumber(n, digits)
 		.replace(' ', '&nbsp;');
 }
 
-function replaceProductElementData(event)
+function replaceProductElementData(data)
 {
-	var element = event.target;
+	var element = '';
+
+	if (data.target) {
+		element = data.target;
+	} else {
+		element = data;
+	}
 	var catalogLink = element.closest('div.sub_items').querySelector('td a b').closest('a').getAttribute('href');
 	var bundleElement = document.querySelector('div.set_new a[href ="' + catalogLink + '"]');
 
@@ -5140,9 +5146,15 @@ function refreshBundleAvailability()
 
 function setBundleBtnEvents()
 {
-	$('.set_group_items').on('click', 'span.add_span[data-id]', function (event) {
-		replaceProductElementData(event);
-		refreshBundleAvailability(event)
+	$('.set_group_items').on('click', 'span.add_sub_item, span.add_span[data-id]', function (event) {
+		var targetElement = event.target;
+
+		if (targetElement.classList.contains('add_sub_item') && targetElement.classList.contains('btn-default')) {
+			replaceProductElementData(targetElement.querySelector('span.add_span[data-id]'));
+		} else {
+			replaceProductElementData(event);
+		}
+		refreshBundleAvailability();
 	});
 }
 
