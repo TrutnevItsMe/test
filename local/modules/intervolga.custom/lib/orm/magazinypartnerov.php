@@ -92,6 +92,10 @@ class MagazinyPartnerovTable extends DataManager
 				"data_type" => "string",
 				"title" => Loc::getMessage("TELEFON")
 			],
+			"UF_ADRES" => [
+				"data_type" => "string",
+				"title" => Loc::getMessage("ADRES")
+			],
 		];
 	}
 

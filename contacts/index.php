@@ -11,6 +11,7 @@ $APPLICATION->SetTitle("Контакты");?><?$APPLICATION->IncludeComponent(
 			1 => "UF_VREMYARABOTY",
 			2 => "UF_GOROD",
 			3 => "UF_TELEFON",
+			4 => "UF_ADRES",
 		),
 		"COORDINATES_DELIMITER" => ",",
 		"USE_FILTER" => "Y",
