@@ -74,6 +74,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 			this.orderSaveAllowed = false;
 			this.socServiceHiddenNode = false;
 			this.isDraft = false;
+			this.comment = "";
 		},
 
 		/**
@@ -82,10 +83,10 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 		init: function (parameters)
 		{
 			this.initializePrimaryFields();
-
 			this.result = parameters.result || {};
 			this.prepareLocations(parameters.locations);
 			this.params = parameters.params || {};
+			this.comment = parameters.comment;
 			this.signedParamsString = parameters.signedParamsString || '';
 			this.siteId = parameters.siteID || '';
 			this.ajaxUrl = parameters.ajaxUrl || '';
@@ -8998,7 +8999,8 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 					id: 'orderDescription',
 					cols: '4',
 					className: 'form-control bx-soa-customer-textarea bx-ios-fix',
-					name: 'ORDER_DESCRIPTION'
+					name: 'ORDER_DESCRIPTION',
+					value: this.comment
 				},
 				text: this.result.ORDER_DESCRIPTION ? this.result.ORDER_DESCRIPTION : ''
 			});

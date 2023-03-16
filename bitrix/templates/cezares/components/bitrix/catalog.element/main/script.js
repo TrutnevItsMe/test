@@ -5054,6 +5054,7 @@ function showPrice(price)
 	}
 
 	html += '</span>';
+
 	$('.prices_block .cost.prices').html(html);
 	$('.button_block .btn.to-cart').attr("data-value", price.price);
 	var totalSumEl = $('.total_summ div span');
