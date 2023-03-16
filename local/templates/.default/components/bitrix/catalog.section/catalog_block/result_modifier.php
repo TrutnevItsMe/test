@@ -1006,4 +1006,41 @@ if (!empty($arResult['ITEMS']))
 
 $arResult['ITEMS'] = '';
 $arResult['ITEMS'] = $items_new;
-?>
+
+$arSets = [];
+foreach ($arResult['ITEMS'] as $id => $item) {
+	$catalogIblockID = Option::get(
+		'aspro.next',
+		'CATALOG_IBLOCK_ID',
+		CNextCache::$arIBlocks[SITE_ID]['aspro_next_catalog']['aspro_next_catalog'][0]
+	);
+
+	$property = CIBlockElement::GetProperty(
+		$catalogIblockID,
+		$item['ID'],
+		[],
+		["CODE" => "COMPOSITION"]
+	)->fetch()['VALUE']['TEXT'];
+	$arSets[] = Sets::getSet($property);
+	$arSets[$id]['MAIN_PRODUCT_ID'] = $item['ID'];
+}
+
+$arAmount = [];
+foreach ($arSets as $id => $set) {
+	$mainStockAmount = \Intervolga\Custom\Tools\RestsUtil::getMinStockAvail(
+		\Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS,
+		$set
+	);
+
+	$arAmount[$id]['MAIN_PRODUCT_ID'] = $set['MAIN_PRODUCT_ID'];
+	$arAmount[$id]['AMOUNT'] = $mainStockAmount;
+}
+$arResult['MAIN_STOCK_AMOUNT'] = $arAmount;
+
+foreach ($arAmount as $amount) {
+	foreach ($arResult['ITEMS'] as $id => $arItem) {
+		if ($arItem['ID'] == $amount['MAIN_PRODUCT_ID']) {
+			$arResult['ITEMS'][$id]['AMOUNT'] = $amount['AMOUNT'];
+		}
+	}
+}
