@@ -53,14 +53,17 @@
 		"SET_META_KEYWORDS" => "N",
 		"SET_META_DESCRIPTION" => "N",
 		"TITLE_BLOCK" => "Новости",
-		"ALL_URL" => "company/news/",
+		"ALL_URL" => "news/",
 		"SET_LAST_MODIFIED" => "N",
 		"TITLE_BLOCK_ALL" => "Все новости",
 		"SHOW_DATE" => "Y",
 		"SHOW_IMAGE" => "N",
 		"PAGER_BASE_LINK_ENABLE" => "N",
 		"SHOW_404" => "N",
-		"MESSAGE_404" => ""
+		"MESSAGE_404" => "",
+		"STRICT_SECTION_CHECK" => "N",
+		"COMPOSITE_FRAME_MODE" => "A",
+		"COMPOSITE_FRAME_TYPE" => "AUTO"
 	),
 	false
 );?>
