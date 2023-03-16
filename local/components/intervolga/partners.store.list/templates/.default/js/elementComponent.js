@@ -10,7 +10,7 @@ if (!window.ElementComponent)
 
 				if (coords)
 				{
-					coords = coords.split("_");
+					coords = coords.split(",");
 					let x = coords[0];
 					let y = coords[1];
 

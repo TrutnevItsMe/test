@@ -831,6 +831,5 @@ window.OffersFilterComponent = {
 			{
 			}
 		});
-	}
-
+	},
 };
