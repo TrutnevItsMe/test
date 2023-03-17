@@ -38,7 +38,7 @@ foreach ($this->basketItems as $row)
 		$totalCount += $row["STORES"][$storeId]["AMOUNT"];
 	}
 
-	$displayQnty = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($totalCount)["HTML"];
+	$displayQnty = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($totalCount)["TEXT"];
 	$displayQnty = str_replace("#REST#", $totalCount, $displayQnty);
 
     $rowData = array(
@@ -304,6 +304,15 @@ foreach ($this->basketItems as $row)
 						'HIDE_MOBILE' => !isset($mobileColumns[$value['id']])
 					);
 				}
+				else{
+					$rowData['COLUMN_LIST'][] = array(
+						'CODE' => $value['id'],
+						'NAME' => $value['name'],
+						'VALUE' => Loc::getMessage("NOT_EXIST_TYPE"),
+						'IS_TEXT' => true,
+						'HIDE_MOBILE' => !isset($mobileColumns[$value['id']])
+					);
+				}
 			}
 			elseif ($value['id'] === 'DISCOUNT')
 			{
@@ -382,23 +391,26 @@ foreach ($this->basketItems as $row)
 					'HIDE_MOBILE' => !isset($mobileColumns[$value['id']])
 				);
 			}
-			elseif (!empty($row[$value['id']]))
-			{
-				$rawValue = isset($row['~'.$value['id']]) ? $row['~'.$value['id']] : $row[$value['id']];
-				$isHtml = !empty($row[$value['id'].'_HTML']);
+			elseif (!empty($row[$value['id']])) {
+				$rawValue = isset($row['~' . $value['id']]) ? $row['~' . $value['id']] : $row[$value['id']];
+				$isHtml = !empty($row[$value['id'] . '_HTML']);
 
-				$rowData['COLUMN_LIST'][] = array(
+				$rowData['COLUMN_LIST'][] = [
 					'CODE' => $value['id'],
 					'NAME' => $value['name'],
-					'VALUE' => $rawValue,
+					'VALUE' => ($value["id"] == "PROPERTY_CML2_ARTICLE_VALUE") && (strlen($rawValue) > 25) ?
+						substr_replace($rawValue, "<br>", 25, 0)
+						:$rawValue,
 					'IS_TEXT' => !$isHtml,
 					'IS_HTML' => $isHtml,
 					'HIDE_MOBILE' => !isset($mobileColumns[$value['id']])
-				);
+				];
 			}
 		}
 
 		unset($value);
+
+		$result["PARAM_HEADERS"] = [["CODE" => "TYPE", "NAME" => "Тип цены"]];
 	}
 
 	if (!empty($row['LABEL_ARRAY_VALUE']))
@@ -416,6 +428,12 @@ foreach ($this->basketItems as $row)
 		$rowData['SHOW_LABEL'] = true;
 		$rowData['LABEL_VALUES'] = $labels;
 	}
+    //Метод для отделения артикуля из списка столбцов
+    if($arParams["ARTICLE_BEFORE_SECTION"] = "Y"){
+            $idArticleInColumns = (array_search("PROPERTY_CML2_ARTICLE_VALUE", array_column($rowData["COLUMN_LIST"], "CODE")) !== false) ?: "";
+            $rowData["ARTICLE_SEPARATE"] = $rowData["COLUMN_LIST"][$idArticleInColumns];
+            unset($rowData["COLUMN_LIST"][$idArticleInColumns]);
+    }
 
 	$result['BASKET_ITEM_RENDER_DATA'][] = $rowData;
 }
