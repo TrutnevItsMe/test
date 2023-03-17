@@ -48,7 +48,7 @@ else
 	unset($_SESSION["BX_CML2_IMPORT"]);
 	unset($_SESSION["BX_CML2_EXPORT"]);
 
-	$script = "/bitrix/admin/1c_exchange.php";
+	$script = "/bitrix/admin/1c_exchange_custom.php";
 }
 ?>
 	<div class="alert alert-info">Для импорта будет использован файл <b><?=$script?></b></div>

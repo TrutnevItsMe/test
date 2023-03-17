@@ -74,6 +74,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 			this.orderSaveAllowed = false;
 			this.socServiceHiddenNode = false;
 			this.isDraft = false;
+			this.comment = "";
 		},
 
 		/**
@@ -82,10 +83,10 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 		init: function (parameters)
 		{
 			this.initializePrimaryFields();
-
 			this.result = parameters.result || {};
 			this.prepareLocations(parameters.locations);
 			this.params = parameters.params || {};
+			this.comment = parameters.comment;
 			this.signedParamsString = parameters.signedParamsString || '';
 			this.siteId = parameters.siteID || '';
 			this.ajaxUrl = parameters.ajaxUrl || '';
@@ -96,6 +97,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 			this.defaultPaySystemLogo = this.templateFolder + "/images/pay_system_logo.png";
 
 			this.ajaxUpdateBasketUrl = parameters.ajaxUpdateBasketUrl || "ajax/updateBasket.php";
+			this.ajaxSaveOrderUrl = parameters.ajaxSaveOrderUrl || "ajax.php";
 			this.updateBasketData = parameters.updateBasketData;
 
 			this.orderBlockNode = BX(parameters.orderBlockId);
@@ -174,34 +176,6 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 		 */
 		sendRequest: function (action, actionData)
 		{
-			// bitrix/templates/cezares/js/main.js
-			// Если не нажат checkbox
-			if (BX.Sale.OrderAjaxComponent.state_licence !== "checked")
-			{
-				let uncheckedBlock = document.querySelector(".uncheckedBlock");
-
-				// Добавляем вывод ошибки
-				if (!uncheckedBlock)
-				{
-					let accessibleFormBlock = document.querySelector(".form");
-					let errorBlock = document.createElement("div");
-					errorBlock.className = "uncheckedBlock";
-					errorBlock.innerHTML = "<p>" + BX.message("PERSONAL_DATA_ERROR") + "</p>";
-					accessibleFormBlock.prepend(errorBlock)
-				}
-
-				return;
-			}
-			else
-			{
-				let uncheckedBlock = document.querySelector(".uncheckedBlock");
-
-				if (uncheckedBlock)
-				{
-					uncheckedBlock.remove();
-				}
-			}
-
 			var form;
 
 			if (!this.startLoader())
@@ -215,6 +189,36 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 
 			if (action === 'saveOrderAjax')
 			{
+				// bitrix/templates/cezares/js/main.js
+				// Если не нажат checkbox
+				if (BX.Sale.OrderAjaxComponent.state_licence !== "checked")
+				{
+					let uncheckedBlock = document.querySelector(".uncheckedBlock");
+
+					// Добавляем вывод ошибки
+					if (!uncheckedBlock)
+					{
+						let accessibleFormBlock = document.querySelector(".form");
+						let errorBlock = document.createElement("div");
+						errorBlock.className = "uncheckedBlock";
+						errorBlock.innerHTML = "<p>" + BX.message("PERSONAL_DATA_ERROR") + "</p>";
+						accessibleFormBlock.prepend(errorBlock)
+					}
+
+					this.endLoader();
+
+					return;
+				}
+				else
+				{
+					let uncheckedBlock = document.querySelector(".uncheckedBlock");
+
+					if (uncheckedBlock)
+					{
+						uncheckedBlock.remove();
+					}
+				}
+
 				form = BX('bx-soa-order-form');
 				if (form)
 				{
@@ -233,7 +237,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 						BX.ajax.submitAjax(
 							BX('bx-soa-order-form'),
 							{
-								url: BX.Sale.OrderAjaxComponent.ajaxUrl,
+								url: BX.Sale.OrderAjaxComponent.ajaxSaveOrderUrl,
 								method: 'POST',
 								dataType: 'json',
 								data: {
@@ -306,8 +310,24 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 
 								break;
 						}
+
 						BX.cleanNode(this.savedFilesBlockNode);
 						this.endLoader();
+						self = this;
+						this.interval = setInterval(function ()
+							{
+								if (document.querySelector("div.change_basket"))
+								{
+									document.querySelectorAll("div.change_basket").forEach(function (div)
+									{
+										div.remove();
+									});
+									clearInterval(self.interval);
+								}
+							}
+							, 100);
+
+
 					}, this),
 					onfailure: BX.delegate(function ()
 					{
@@ -396,7 +416,46 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 					this.deliveryCachedInfo = [];
 				}
 
+				let headers = this.result["GRID"]["HEADERS"];
+				let mapProductStore = {};
+				let mapProductRest = {};
+
+				if (this.params["SHOW_STORE"])
+				{
+					Object.values(this.result["GRID"]["ROWS"]).forEach(function(prod)
+					{
+						mapProductStore[prod["id"]] = prod["data"]["STORE"];
+					});
+				}
+
+				if (this.params["SHOW_RESTS"])
+				{
+					Object.values(this.result["GRID"]["ROWS"]).forEach(function(prod)
+					{
+						mapProductRest[prod["id"]] = prod["data"]["RESTS"];
+					});
+				}
+
 				this.result = result.order;
+				this.result["GRID"]["HEADERS"] = headers;
+				self = this;
+
+				if (Object.keys(mapProductStore).length)
+				{
+					Object.values(this.result["GRID"]["ROWS"]).forEach(function(prod)
+					{
+						self.result["GRID"]["ROWS"][prod["id"]]["data"]["STORE"] = mapProductStore[prod["id"]];
+					});
+				}
+
+				if (Object.keys(mapProductRest).length)
+				{
+					Object.values(this.result["GRID"]["ROWS"]).forEach(function(prod)
+					{
+						self.result["GRID"]["ROWS"][prod["id"]]["data"]["RESTS"] = mapProductRest[prod["id"]];
+					});
+				}
+
 				this.prepareLocations(result.locations);
 				this.locationsInitialized = false;
 				this.maxWaitTimeExpired = false;
@@ -408,6 +467,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 
 				this.initOptions();
 				this.editOrder();
+
 				this.mapsReady && this.initMaps();
 				BX.saleOrderAjax && BX.saleOrderAjax.initDeferredControl();
 			}
@@ -4086,7 +4146,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 
 			var data = allData.columns[column.id] ? allData.columns : allData.data,
 				toRight = BX.util.in_array(column.id, ["QUANTITY", "PRICE_FORMATED", "DISCOUNT_PRICE_PERCENT_FORMATED", "SUM"]),
-				textNode = BX.create('DIV', {props: {className: 'bx-soa-item-td-text'}}),
+				textNode = BX.create('DIV', {props: {className: 'bx-soa-item-td-text'}, attrs: { "data-column": column.id}}),
 				logotype, img;
 
 			if (column.id === 'PRICE_FORMATED')
@@ -8939,7 +8999,8 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 					id: 'orderDescription',
 					cols: '4',
 					className: 'form-control bx-soa-customer-textarea bx-ios-fix',
-					name: 'ORDER_DESCRIPTION'
+					name: 'ORDER_DESCRIPTION',
+					value: this.comment
 				},
 				text: this.result.ORDER_DESCRIPTION ? this.result.ORDER_DESCRIPTION : ''
 			});
@@ -8991,7 +9052,7 @@ BX.namespace('BX.Sale.OrderAjaxComponent');
 			}
 
 			// Показываем общий вес
-			if (this.params["COLUMNS_COMMON_INFO"] && this.options.showOrderWeight && this.params["COLUMNS_COMMON_INFO"].includes("WEIGHT"))
+			if (this.options.showOrderWeight && this.params["COLUMNS_COMMON_INFO"] && this.params["COLUMNS_COMMON_INFO"].includes("WEIGHT"))
 			{
 				this.totalInfoBlockNode.appendChild(this.createTotalUnit(BX.message('SOA_SUM_WEIGHT_SUM'), total.ORDER_WEIGHT_FORMATED));
 			}

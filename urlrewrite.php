@@ -112,6 +112,14 @@ $arUrlRewrite=array (
     'PATH' => '/catalog/index.php',
     'SORT' => 100,
   ),
+  41 => 
+  array (
+    'CONDITION' => '#^/info/docs/#',
+    'RULE' => '',
+    'ID' => 'bitrix:news',
+    'PATH' => '/info/index.php',
+    'SORT' => 100,
+  ),
   17 => 
   array (
     'CONDITION' => '#^/services/#',
@@ -144,15 +152,15 @@ $arUrlRewrite=array (
     'PATH' => '/personal/index.php',
     'SORT' => 100,
   ),
-  34 => 
+  42 => 
   array (
     'CONDITION' => '#^/contacts/#',
     'RULE' => '',
-    'ID' => 'bitrix:news',
-    'PATH' => '/contacts/page_contacts_3.php',
+    'ID' => 'intervolga:partners',
+    'PATH' => '/contacts/index.php',
     'SORT' => 100,
   ),
-  38 => 
+  43 => 
   array (
     'CONDITION' => '#^/catalog/#',
     'RULE' => '',
@@ -190,6 +198,14 @@ $arUrlRewrite=array (
     'RULE' => '',
     'ID' => 'aspro:auth.next',
     'PATH' => '/auth/index.php',
+    'SORT' => 100,
+  ),
+  39 => 
+  array (
+    'CONDITION' => '#^/news/#',
+    'RULE' => '',
+    'ID' => 'bitrix:news',
+    'PATH' => '/news/index.php',
     'SORT' => 100,
   ),
 );

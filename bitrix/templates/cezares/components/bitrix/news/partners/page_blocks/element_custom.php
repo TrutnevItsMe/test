@@ -194,6 +194,12 @@ $arParams["AJAX_FILTER_CATALOG"] = "N";
 				$arrFilter[0] = ['!SECTION_ID' => $arNotShowSections];
 				#######################bart			#######################bart
 
+				$PREFILTER = [
+					"PROPERTY_BRAND" => $arElement["ID"]
+				];
+
+				$GLOBALS["PREFILTER"] = $PREFILTER;
+
 				$APPLICATION->IncludeComponent(
 					"bitrix:catalog.smart.filter",
 					($arParams["AJAX_FILTER_CATALOG"] == "Y" ? "main_ajax" : "main"),
@@ -230,6 +236,7 @@ $arParams["AJAX_FILTER_CATALOG"] = "N";
 						"AVAILABLE_SORT" => $arAvailableSort,
 						"SORT" => $sort,
 						"SORT_ORDER" => $sort_order,
+						"PREFILTER_NAME" => "PREFILTER"
 					],
 					$component);
 				?>
@@ -383,8 +390,9 @@ $arParams["AJAX_FILTER_CATALOG"] = "N";
 					foreach ($arTopSections as $sId => $arSection): ?>
 						<?
 
-						// Снято с производства
-						if ($arSection["ID"] == OUT_OF_PRODUCTION_IBLOCK_ID)
+						// Снято с производства | комплекктующие
+						if (strstr($arSection["CODE"], OUT_OF_PRODUCTION_IBLOCK_SECTION_CODE) !== false ||
+							strstr($arSection["CODE"], "komplektuyushchie_dlya") !== false)
 						{
 							continue;
 						}
@@ -486,8 +494,9 @@ $arParams["AJAX_FILTER_CATALOG"] = "N";
 					<? foreach ($subsections as $sId => $arSection): ?>
 						<?
 
-						// Снято с производства
-						if ($arSection["ID"] == OUT_OF_PRODUCTION_IBLOCK_ID)
+						// Снято с производства | комплектующие
+						if (strstr($arSection["CODE"], OUT_OF_PRODUCTION_IBLOCK_SECTION_CODE) !== false ||
+							strstr($arSection["CODE"], "komplektuyushchie_dlya") !== false)
 						{
 							continue;
 						}

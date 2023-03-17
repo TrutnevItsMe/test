@@ -12,6 +12,8 @@
 			}
 		}
 	}
+	$arResult["ADDRESS"] = ((strlen($arResult["TITLE"]) && strlen(trim($arResult["ADDRESS"])) ? ", ". htmlspecialchars(trim($arResult["ADDRESS"])) : ""));
+	$arResult["~ADDRESS"] = ((strlen($arResult["TITLE"]) && strlen(trim($arResult["ADDRESS"])) ? ", ". htmlspecialchars(trim($arResult["ADDRESS"])) : ""));
 	?>
 <?else:?>
 	<?LocalRedirect(SITE_DIR.'contacts/');?>

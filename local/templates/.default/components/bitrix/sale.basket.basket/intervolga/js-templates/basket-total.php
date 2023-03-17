@@ -39,23 +39,18 @@ use Bitrix\Main\Localization\Loc;
                                 {{{PRICE_FORMATED}}}
                             </span>
                         </div>
-						<? if (in_array("WEIGHT", $arParams["COLUMNS_COMMON_INFO"])): ?>
-							<div class="basket-checkout-block-total-description">
-								{{#WEIGHT_FORMATED}}
-									<?=Loc::getMessage('SBB_WEIGHT')?>: {{{WEIGHT_FORMATED}}}
-								{{/WEIGHT_FORMATED}}
-							</div>
-						<? endif; ?>
-						<? if (in_array("COUNT", $arParams["COLUMNS_COMMON_INFO"])): ?>
-							<div class="basket-checkout-block-total-description">
-								<?=Loc::getMessage('IN_BASKET')?> {{{PRODUCT_COUNT}}} <?=Loc::getMessage('PRODUCTS')?>
-							</div>
-						<? endif; ?>
-						<? if (in_array("VOLUME", $arParams["COLUMNS_COMMON_INFO"])): ?>
 						<div class="basket-checkout-block-total-description">
-							<?=Loc::getMessage("COMMON_VOLUME")?>{{{COMMON_VOLUME_FORMATED}}}
+							{{#WEIGHT_FORMATED}}
+								<?=Loc::getMessage('SBB_WEIGHT')?>: {{{WEIGHT_FORMATED}}}
+								{{#SHOW_VAT}}<br>{{/SHOW_VAT}}
+							{{/WEIGHT_FORMATED}}
+							{{#SHOW_VAT}}
+								<?=Loc::getMessage('SBB_VAT')?>: {{{VAT_SUM_FORMATED}}}
+							{{/SHOW_VAT}}
 						</div>
-						<? endif; ?>
+					</div>
+					<div class="count-info">
+						<span data-entity="basket-items-count" data-filter="all" style="display: none;"</span>
 					</div>
 				</div>
 

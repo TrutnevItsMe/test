@@ -8,7 +8,21 @@
 	Loader::includeModule('iblock');
 	$arSKU = false;
 	$boolSKU = false;
+	$arStore = array();
 
+	if (Loader::includeModule("sale"))
+	{
+
+		$storeIterator = CCatalogStore::GetList(
+			array(),
+			array('ISSUING_CENTER' => 'Y'),
+			false,
+			false,
+			array('ID', 'TITLE')
+		);
+		while ($store = $storeIterator->GetNext())
+			$arStore[$store['ID']] = "[".$store['ID']."] ".$store['TITLE'];
+	}
 
 	$arSort = CIBlockParameters::GetElementSortFields(
 		array('SHOWS', 'SORT', 'TIMESTAMP_X', 'NAME', 'ID', 'ACTIVE_FROM', 'ACTIVE_TO'),
@@ -186,7 +200,7 @@
 			"DEFAULT" => array("POPULARITY", "NAME", "PRICE"),
 			"PARENT" => "LIST_SETTINGS",
 			"TYPE" => "LIST",
-			"REFRESH" => "Y",
+			"REFRESH" => "N",
 			"MULTIPLE" => "Y",
 		),
 	));
@@ -504,13 +518,6 @@
 			'TYPE' => 'LIST',
 			'DEFAULT' => 'NORMAL',
 		),
-		/*"DETAIL_PICTURE_MODE" => array(
-			'PARENT' => 'VISUAL',
-			'NAME' => GetMessage('CP_BCE_TPL_DETAIL_PICTURE_MODE'),
-			'TYPE' => 'LIST',
-			'DEFAULT' => 'POPUP',
-			'VALUES' => $detailPictMode
-		),*/
 		"SHOW_DISCOUNT_TIME" => Array(
 			'PARENT' => 'VISUAL',
 			"NAME" => GetMessage("SHOW_DISCOUNT_TIME"),
@@ -1028,10 +1035,20 @@
 			);
 			unset($rcmTypeList);
 		}
+		$arTemplateParametersParts[]=array(
+			'ADDING_STORE_BASKET' => array(
+				'PARENT' => 'BASKET',
+				'NAME' => GetMessage("ADDING_STORE_BASKET"),
+				'TYPE' => 'LIST',
+				'VALUES' => $arStore,
+				'MULTIPLE' => 'Y'
+			)
+		);
 	}
-
 
 	//merge parameters to one array
 	$arTemplateParameters = array();
 	foreach($arTemplateParametersParts as $i => $part) { $arTemplateParameters = array_merge($arTemplateParameters, $part); }
 ?>
+
+

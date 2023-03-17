@@ -53,7 +53,7 @@ if($arResult['ITEMS']){?>
 				<li class="catalog_item visible" id="<?=$strMainID;?>">
 					<?
 					$totalCount = CNext::GetTotalCount($arItem, $arParams);
-					$arQuantityData = CNext::GetQuantityArray($totalCount);
+					$arQuantityData = Intervolga\Custom\Tools\RestsUtil::getQuantityArray($totalCount);
 					$arItem["FRONT_CATALOG"]="Y";
 					$arItem["RID"]=$arResult["RID"];
 					$arAddToBasketData = CNext::GetAddToBasketArray($arItem, $totalCount, $arParams["DEFAULT_COUNT"], $arParams["BASKET_URL"], true);
@@ -142,7 +142,11 @@ if($arResult['ITEMS']){?>
 								</div>
 							<?endif;?>
 							<div class="sa_block">
-								<?=$arQuantityData["HTML"];?>
+								<?
+									$displayRests = $arQuantityData["HTML"];
+									$displayRests = str_replace("#REST#", $totalCount, $displayRests);
+								?>
+								<?=$displayRests;?>
 							</div>
 							<div class="cost prices clearfix">
 								<?if($arItem["OFFERS"]):?>
@@ -158,9 +162,11 @@ if($arResult['ITEMS']){?>
 									<?
 									}
 									elseif($arItem["PRICES"])
-									{?>
-										<?\Aspro\Functions\CAsproItem::showItemPrices($arParams, $arItem["PRICES"], $strMeasure, $min_price_id, ($arParams["SHOW_DISCOUNT_PERCENT_NUMBER"] == "Y" ? "N" : "Y"));?>
-									<?}?>
+									{
+										echo Intervolga\Custom\Tools\PriceUtil::getHtml(
+											$arItem["PRICES"]["РРЦ"]["VALUE"],
+											$arItem["PRICES"]["РРЦ Константа"]["VALUE"]);
+									}?>
 								<?endif;?>
 							</div>
 						</div>

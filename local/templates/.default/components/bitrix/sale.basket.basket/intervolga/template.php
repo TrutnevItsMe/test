@@ -298,9 +298,9 @@ if (empty($arResult['ERROR_MESSAGE']))
 			siteTemplateId: '<?=CUtil::JSEscape($component->getSiteTemplateId())?>',
 			templateFolder: '<?=CUtil::JSEscape($templateFolder)?>',
             templateItemsDisplay: '<?=$arParams["DISPLAY_MODE_ITEMS"]?>',
-            displayRests: !!<?=intval($arParams["DISPLAY_RESTS"] == "Y")?>,
-			displayArticleBeforeName: !!<?=intval($arParams["SHOW_ARTICLE_BEFORE_NAME"] === "Y")?>,
-            displayDiscountPercent: !!<?=intval($arParams["SHOW_DISCOUNT_PERCENT_COLUMN"] === "Y")?>
+            displayRests: !!<?=($arParams["DISPLAY_RESTS"] === "Y")?>,
+			displayArticleBeforeName: !!<?=$arParams["SHOW_ARTICLE_BEFORE_NAME"] === "Y"?>,
+            displayDiscountPercent: !!<?=$arParams["SHOW_DISCOUNT_PERCENT_COLUMN"] === "Y"?>
 		});
 	</script>
 	<?

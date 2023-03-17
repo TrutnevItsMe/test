@@ -1,0 +1,132 @@
+.item-wrap{
+	border: solid 1px #ededed;
+	min-height: 100px;
+	vertical-align: top;
+	height: 300px;
+	overflow: auto;
+}
+
+.item-wrap:hover{
+	border: none;
+	box-shadow: 0px 0px 20px #bbbbbb;
+}
+
+#filter{
+	border: solid 1px #b1b1b1;
+	background-color: #f9f9f9;
+	overflow-wrap: break-word;
+}
+
+.filter-block-inner{
+	height: 320px;
+	overflow: auto;
+}
+
+#filter-title{
+	display: block;
+	text-align: center;
+	font-weight: 1000;
+	padding: 12px;
+	border-bottom: solid 1px #e7e7e7;
+}
+
+.filter-block{
+	border-bottom: solid 1px #e7e7e7;
+	display: block;
+	text-align: center;
+	padding: 5px;
+}
+
+.filter-block:hover{
+	background-color: #fff;
+}
+
+.filter-item-title-block{
+	padding: 8px 0;
+	padding-right: 4px;
+}
+
+.filter-value-block{
+	display: flex;
+	align-items: center;
+}
+
+.filter-value-block label{
+	font-weight: 400;
+	padding: 10px;
+}
+
+.filter-value-block:hover input[type='checkbox'].custom-checkbox{
+	background-color: #0f78ad;
+	border-color: #0f78ad;
+}
+
+input[type='checkbox'].custom-checkbox{
+	display: inline-block;
+	padding: 9px;
+	border: solid 1px #bbbbbb;
+}
+
+input[type='checkbox'].custom-checkbox-active{
+	border-color: #0f78ad;
+	background: url("../images/checked.png") center no-repeat #0f78ad;
+	background-size: 16px;
+}
+
+.item-field-name{
+	font-weight: 500;
+}
+
+.item-field-block ul li{
+	padding-left: 0px;
+}
+
+.item-field-block ul li:before{
+	content: "";
+}
+
+.map-block{
+	height: 400px;
+}
+
+.down-icon{
+	background: url("../images/down-arrow.png") center no-repeat;
+	background-size: 22px;
+}
+
+.rotated{
+	transform: rotate(180deg);
+}
+
+#city-filter-search{
+	background-color: #fff;
+	border: solid 1px;
+}
+
+#city-filter-search:focus{
+	box-shadow: 0px 0px 20px #bbbbbb;
+}
+
+.loader{
+	width: 100px;
+	height: 100px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	background: url("../images/loader.png") center no-repeat;
+	background-size: 100px;
+	z-index: 1000;
+}
+
+.round{
+	animation:round 830ms linear infinite;
+}
+
+@keyframes round {
+	0%{
+		transform: rotate(0deg);
+	}
+	100%{
+		transform: rotate(360deg);
+	}
+}

@@ -32,7 +32,7 @@ $APPLICATION->SetTitle("Акции");
 	?>
 	<?$APPLICATION->IncludeComponent(
 	"bitrix:catalog.smart.filter", 
-	"main", 
+	"sale", 
 	array(
 		"IBLOCK_TYPE" => "aspro_next_catalog",
 		"IBLOCK_ID" => "17",
@@ -41,7 +41,7 @@ $APPLICATION->SetTitle("Акции");
 		"FILTER_NAME" => "arrFilter",
 		"PRICE_CODE" => array(
 		),
-		"CACHE_TYPE" => "A",
+		"CACHE_TYPE" => "N",
 		"CACHE_TIME" => $arParams["CACHE_TIME"],
 		"FILL_COMPACT_FILTER" => $arParams["FILL_COMPACT_FILTER"],
 		"CACHE_NOTES" => "",
@@ -65,7 +65,7 @@ $APPLICATION->SetTitle("Акции");
 		"AVAILABLE_SORT" => $arAvailableSort,
 		"SORT" => $sort,
 		"SORT_ORDER" => $sort_order,
-		"COMPONENT_TEMPLATE" => "main",
+		"COMPONENT_TEMPLATE" => "sale",
 		"SECTION_CODE" => "",
 		"PREFILTER_NAME" => "smartPreFilter",
 		"PAGER_PARAMS_NAME" => "arrPager"
@@ -175,7 +175,7 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUE
 		"PAGER_SHOW_ALWAYS" => "Y",
 		"PAGER_DESC_NUMBERING" => "N",
 		"PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",
-		"PAGER_SHOW_ALL" => "Y",
+		"PAGER_SHOW_ALL" => "N",
 		"AJAX_OPTION_ADDITIONAL" => "",
 		"PRODUCT_QUANTITY_VARIABLE" => "quantity",
 		"COMPONENT_TEMPLATE" => "catalog_block",
@@ -193,7 +193,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUE
 		"OFFERS_SORT_ORDER2" => "desc",
 		"PRODUCT_DISPLAY_MODE" => "N",
 		"OFFERS_CART_PROPERTIES" => array(
-		)
+		),
+        "STORES" => \Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS
 	),
 	false
 );?>

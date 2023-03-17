@@ -97,11 +97,11 @@
 			this.useDynamicScroll = this.params.USE_DYNAMIC_SCROLL === 'Y';
 			this.useItemsFilter = this.params.SHOW_FILTER === 'Y' && !this.isMobile;
 
-			this.maxAmount = parameters.maxAmount || 10;
-			this.minAmount = parameters.minAmount || 2;
-			this.manyText = parameters.manyText || "Много";
-			this.fewText = parameters.fewText || "Мало";
-			this.enoughText = parameters.enoughText || "Достаточно";
+			// this.maxAmount = parameters.maxAmount || 10;
+			// this.minAmount = parameters.minAmount || 2;
+			// this.manyText = parameters.manyText || "Много";
+			// this.fewText = parameters.fewText || "Мало";
+			// this.enoughText = parameters.enoughText || "Достаточно";
 
 			this.templateItemsDisplay = parameters.templateItemsDisplay;
 
@@ -1250,7 +1250,6 @@
 				return;
 			}
 
-			// var basketItemTemplate = this.getTemplate('basket-item-template');
 			var basketItemTemplate = this.getTemplate(this.templateItemsDisplay);
 			if (basketItemTemplate)
 			{
@@ -1664,7 +1663,8 @@
 				{
 					oldHeight = nodeAligner.clientHeight;
 				}
-				var basketItemHtml=this.renderBasketItem(basketItemTemplate, this.items[itemId]);
+
+				var basketItemHtml = this.renderBasketItem(basketItemTemplate, this.items[itemId]);
 				basketItemNode.insertAdjacentHTML('beforebegin', basketItemHtml);
 				BX.remove(basketItemNode);
 
@@ -1799,22 +1799,6 @@
 				articleNode.remove();
 			});
 		},
-
-		showTextRests: function () {
-			$(this.selectorRestItem).each(function () {
-
-				let currentRest = $(this).html();
-
-				if (currentRest > BX.Sale.BasketComponent.maxAmount) {
-					$(this).html(BX.Sale.BasketComponent.manyText);
-				} else if (currentRest < BX.Sale.BasketComponent.minAmount) {
-					$(this).html(BX.Sale.BasketComponent.fewText);
-				} else {
-					$(this).html(BX.Sale.BasketComponent.enoughText);
-				}
-
-			});
-	},
 
 		startQuantityInterval: function()
 		{
