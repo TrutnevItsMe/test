@@ -809,17 +809,11 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 					>
 						<?if (in_array($prop, $arParams["OFFER_FILTER_REPLACED_PICTURE"])):?>
 							<?
-								$file = \CFile::ResizeImageGet($arValueOffers[$value][0]["PROPERTIES"]["IMG_$prop"]["VALUE"],
-									[
-										'width' => 128,
-										'height' => 128
-									],
-									BX_RESIZE_IMAGE_EXACT,
-								true);
+								$file = $arValueOffers[$value][0]["DISPLAY_PICTURES"][$prop];
 							?>
-							<img src="<?=$file["src"]?>"
-								 height="<?=$file["height"]?>"
-								 width="<?=$file["width"]?>">
+							<img src="<?=str_replace($_SERVER["DOCUMENT_ROOT"], "", $file["tmp_name"])?>"
+								 height="128"
+								 width="128">
 						<?else:?>
 						<span><?=$value?></span>
 						<?endif;?>

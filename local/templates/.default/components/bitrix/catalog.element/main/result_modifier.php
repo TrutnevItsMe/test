@@ -1925,6 +1925,35 @@ if ($arResult["OFFERS"])
 
 		$arResult["OFFERS"][$offerId] = $arResult["OFFERS"][$i];
 		$arResult["OFFERS"][$offerId]["ACTIVE_OFFER"] = $arResult["OFFERS"][$i]["CATALOG_QUANTITY"] > 0 && $arResult["OFFERS"][$i]["CATALOG_AVAILABLE"];
+
+		// Проходим по св-ам, которые выводятся картинкой в фильтре
+		foreach ($arResult["OFFERS"][$offerId]["PROPERTIES"]["CML2_TRAITS"]["VALUE"] as $j => $imgPath)
+		{
+			$desc = $arResult["OFFERS"][$offerId]["PROPERTIES"]["CML2_TRAITS"]["DESCRIPTION"][$j];
+			/** Уберем 'Картинка' из описания */
+			$desc = str_replace("Картинка", "", $desc);
+
+			/** Разобьъем строку по словам */
+			$re = "/[А-Я][^А-Я]*?/Usu";
+			$result = [];
+			preg_match_all($re, $desc, $result);
+
+			if ($result)
+			{
+				/** Транслитерируем */
+				$result = array_map(function ($str){return CUtil::translit($str, 'ru');}, $result[0]);
+				/** Переводим каждое слово в массиве в верхний регистр */
+				$result = array_map(strtoupper, $result);
+				$propCode = implode("_", $result);
+
+				if (file_exists($_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/".$imgPath))
+				{
+					$file = CFile::MakeFileArray($_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/".$imgPath);
+					$arResult["OFFERS"][$offerId]["DISPLAY_PICTURES"][$propCode] = $file;
+				}
+			}
+		}
+
 		unset($arResult["OFFERS"][$i]);
 	}
 
