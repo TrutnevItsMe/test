@@ -1047,10 +1047,6 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 					{
 						$("#set_item_base_price_" + group).html(formatedOldPrice);
 					}
-					else
-					{
-						$("#set_item_base_price_" + group).html("");
-					}
 
 					$("#set_item_base_price_" + group).data("old-price", oldPrice);
 

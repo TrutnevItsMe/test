@@ -56,8 +56,8 @@ showViewedItems = function(lastViewedTime, bShowMeasure, $viewedSlider){
 									'<div class="cost prices clearfix">'+
 										(item.MIN_PRICE ?
 											((((item.MIN_PRICE.VALUE * 1) > (item.MIN_PRICE.DISCOUNT_VALUE * 1))) ?
-												'<div class="price only_price">' + (bWithOffers ? BX.message('CATALOG_FROM_VIEWED')+' ' : '') + item.MIN_PRICE.PRINT_DISCOUNT_VALUE + (bShowMeasure && item.CATALOG_MEASURE_NAME.length ? '/' + item.CATALOG_MEASURE_NAME : '') + '</div>'
-											: '<div class="price only_price">' + (bWithOffers ? BX.message('CATALOG_FROM_VIEWED')+' ' : '') + item.MIN_PRICE.PRINT_DISCOUNT_VALUE + (bShowMeasure && item.CATALOG_MEASURE_NAME.length ? '/' + item.CATALOG_MEASURE_NAME : '') + '</div>')
+												'<div class="price only_price">' + (bWithOffers ? BX.message('CATALOG_FROM_VIEWED')+' ' : '') + item.MIN_PRICE.PRINT_DISCOUNT_VALUE + '</div>'
+											: '<div class="price only_price">' + (bWithOffers ? BX.message('CATALOG_FROM_VIEWED')+' ' : '') + item.MIN_PRICE.PRINT_DISCOUNT_VALUE + '</div>')
 										: '')+
 									'</div>'+
 								'</div>'+

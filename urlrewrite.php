@@ -152,7 +152,15 @@ $arUrlRewrite=array (
     'PATH' => '/personal/index.php',
     'SORT' => 100,
   ),
-  40 =>
+  42 => 
+  array (
+    'CONDITION' => '#^/contacts/#',
+    'RULE' => '',
+    'ID' => 'intervolga:partners',
+    'PATH' => '/contacts/index.php',
+    'SORT' => 100,
+  ),
+  43 => 
   array (
     'CONDITION' => '#^/catalog/#',
     'RULE' => '',

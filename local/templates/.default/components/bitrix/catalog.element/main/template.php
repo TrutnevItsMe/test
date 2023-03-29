@@ -99,7 +99,11 @@ $strObName = 'ob'.preg_replace("/[^a-zA-Z0-9_]/", "x", $strMainID);
 $arResult["strMainID"] = $this->GetEditAreaId($arResult['ID']);
 $arItemIDs=CNext::GetItemsIDs($arResult, "Y");
 
-$totalCount = CNext::GetTotalCount($arResult, $arParams);
+if (isset($arResult["MAIN_STOCK_SET_AMOUNT"][\Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS[0]])) {
+	$totalCount = $arResult["MAIN_STOCK_SET_AMOUNT"][\Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS[0]];
+} else {
+	$totalCount = CNext::GetTotalCount($arResult, $arParams);
+}
 $arQuantityData = CNext::GetQuantityArray($totalCount, $arItemIDs["ALL_ITEM_IDS"], "Y");
 
 $displayQuantity  = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($totalCount)["HTML"];
@@ -138,15 +142,17 @@ $arOfferProps = implode(';', $arParams['OFFERS_CART_PROPERTIES']);
 $arFirstPhoto = reset($arResult['MORE_PHOTO']);
 $arItemPrices = $arResult['MIN_PRICE'];
 
-if(isset($arResult['PRICE_MATRIX']) && $arResult['PRICE_MATRIX'])
+if(isset($arResult['PRICE_MATRIX']) && $arResult['PRICE_MATRIX'] && empty($arResult["OFFERS"]))
 {
 	$rangSelected = $arResult['ITEM_QUANTITY_RANGE_SELECTED'];
 	$priceSelected = $arResult['ITEM_PRICE_SELECTED'];
+
 	if(isset($arResult['FIX_PRICE_MATRIX']) && $arResult['FIX_PRICE_MATRIX'])
 	{
 		$rangSelected = $arResult['FIX_PRICE_MATRIX']['RANGE_SELECT'];
 		$priceSelected = $arResult['FIX_PRICE_MATRIX']['PRICE_SELECT'];
 	}
+
 	$arItemPrices = $arResult['ITEM_PRICES'][$priceSelected];
 	$arItemPrices['VALUE'] = $arItemPrices['BASE_PRICE'];
 	$arItemPrices['PRINT_VALUE'] = \Aspro\Functions\CAsproItem::getCurrentPrice('BASE_PRICE', $arItemPrices);
@@ -679,11 +685,22 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 									</div>
 								<? endif; ?>
 							<? endif; ?>
+							
+							<?php 
+							global $USER;
+							if (!$USER->IsAuthorized()) { 
+							$url = ((isset($_GET['backurl']) && $_GET['backurl']) ? $_GET['backurl'] : $APPLICATION->GetCurUri()); ?>
+							<div id="<? echo $arItemIDs["ALL_ITEM_IDS"]['BASKET_ACTIONS']; ?>" class="button_block <?=(($arAddToBasketData["ACTION"] == "ORDER") || !$arAddToBasketData["CAN_BUY"] || !$arAddToBasketData["OPTIONS"]["USE_PRODUCT_QUANTITY_DETAIL"] || ($arAddToBasketData["ACTION"] == "SUBSCRIBE" && $arResult["CATALOG_SUBSCRIBE"] == "Y")  ? "wide" : "");?>">
+							<a rel="nofollow" title="<?=Loc::getMessage('CABINET_LINK')?>" class="personal-link dark-color animate-load" data-event="jqm" data-param-type="auth" data-param-backurl="<?=htmlspecialcharsbx($url)?>" data-name="auth" href="<?=$arTheme['PERSONAL_PAGE_URL']['VALUE']?>" style="display: inline-block;font-size: 14px;background-color: #107bb1;border-color: #107bb1;color: #ffffff;padding: 20px 25px 20px;">В корзину</a>
+							</div>
+							<? } else { ?>
 							<div id="<? echo $arItemIDs["ALL_ITEM_IDS"]['BASKET_ACTIONS']; ?>" class="button_block <?=(($arAddToBasketData["ACTION"] == "ORDER") || !$arAddToBasketData["CAN_BUY"] || !$arAddToBasketData["OPTIONS"]["USE_PRODUCT_QUANTITY_DETAIL"] || ($arAddToBasketData["ACTION"] == "SUBSCRIBE" && $arResult["CATALOG_SUBSCRIBE"] == "Y")  ? "wide" : "");?>">
 								<!--noindex-->
 									<?=$arAddToBasketData["HTML"]?>
 								<!--/noindex-->
 							</div>
+							<?php } ?>
+							
 						</div>
 						<?if(isset($arResult['PRICE_MATRIX']) && $arResult['PRICE_MATRIX']) // USE_PRICE_COUNT
 						{?>
@@ -1501,7 +1518,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 				<div class="tab-pane <?=(!($iTab++) ? ' active' : '')?>" id="haracter">
 					<div class="title-tab-heading visible-xs"><?=($arParams["TAB_CHAR_NAME"] ? $arParams["TAB_CHAR_NAME"] : GetMessage("PROPERTIES_TAB"));?></div>
 					<div>
-					
+
 						<?if($showProps && $arParams["PROPERTIES_DISPLAY_LOCATION"] != "TAB"):?>
 							<div style="padding:0px;" class="wraps">
 								<hr>
@@ -1618,10 +1635,10 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 								<?endif;?>
 							</div>
 						<?endif;?>
-					
+
 					</div>
 				</div>
-				
+
 				<div class="tab-pane <?=(!($iTab++) ? ' active' : '')?>" id="docs">
 					<div class="title-tab-heading visible-xs"><?=($arParams["TAB_CHAR_NAME"] ? $arParams["TAB_CHAR_NAME"] : GetMessage("PROPERTIES_TAB"));?></div>
 					<div>
@@ -1664,11 +1681,11 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 									</div>
 								</div>
 							</div>
-						<?endif;?>		
+						<?endif;?>
 					</div>
 				</div>
-					
-			
+
+
 			<?if($showProps && $arParams["PROPERTIES_DISPLAY_LOCATION"] == "TAB"):?>
 				<div class="tab-pane <?=(!($iTab++) ? ' active' : '')?>" id="props">
 					<div class="title-tab-heading visible-xs"><?=($arParams["TAB_CHAR_NAME"] ? $arParams["TAB_CHAR_NAME"] : GetMessage("PROPERTIES_TAB"));?></div>
@@ -1831,26 +1848,26 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 			<?if($useStores && ($showCustomOffer || !$arResult["OFFERS"] )):?>
 				<div class="tab-pane stores_tab<?=(!($iTab++) ? ' active' : '')?>" id="stores">
 					<div class="title-tab-heading visible-xs"><?=($arParams["TAB_STOCK_NAME"] ? $arParams["TAB_STOCK_NAME"] : GetMessage("STORES_TAB"));?></div>
-					<div class="stores_wrapp_1">				
+					<div class="stores_wrapp_1">
 					<?if($arResult["OFFERS"]){?>
 						<span id="offers-stores-block"></span>
 					<?}elseif(isset($arResult['SET_STORES']) && count($arResult['SET_STORES']) > 0){?>
 						<div class="stores_block_wrap">
-							<? foreach ($arResult['SET_STORES'] as $store):
+							<? $storesAmount = \Intervolga\Custom\Tools\RestsUtil::getMinStockAvail(array_column($arResult['SET_STORES'], 'STORE_ID'), $arResult['SET']);
+							foreach ($arResult['SET_STORES'] as $store):
+								$displayStoreAmount = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($storesAmount[$store['STORE_ID']])["HTML"];
+								$displayStoreAmount = str_replace("#REST#", $storesAmount[$store['STORE_ID']], $displayStoreAmount);
 
-								$displayStoreAmount  = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($store["AMOUNT"])["HTML"];
-								$displayStoreAmount = str_replace("#REST#", $store["AMOUNT"], $displayStoreAmount);
-
-								$storePath=str_replace(
+								$storePath = str_replace(
 									'#store_id#',
 									$store['STORE_ID'],
 									$arParams["STORE_PATH"]);
 								?>
 							<div class="stores_block wo_image">
-								<div class="stores_text_wrapp ">
+								<div class="stores_text_wrapp" id="store_<?= $store['STORE_ID'] ?>">
 									<?=$store['NAME']?>
 								</div>
-								<?=$displayStoreAmount?>
+								<?= $displayStoreAmount ?>
 							</div>
 							<? endforeach ?>
 						</div>
@@ -2131,7 +2148,7 @@ if ($arResult['CATALOG'] && $arParams['USE_GIFTS_MAIN_PR_SECTION_LIST'] == 'Y' &
 </script>
 
 <script type="text/javascript">
-	BX.message({
+    BX.message({
 		QUANTITY_AVAILIABLE: '<? echo COption::GetOptionString("aspro.next", "EXPRESSION_FOR_EXISTS", GetMessage("EXPRESSION_FOR_EXISTS_DEFAULT"), SITE_ID); ?>',
 		QUANTITY_NOT_AVAILIABLE: '<? echo COption::GetOptionString("aspro.next", "EXPRESSION_FOR_NOTEXISTS", GetMessage("EXPRESSION_FOR_NOTEXISTS"), SITE_ID); ?>',
 		ADD_ERROR_BASKET: '<? echo GetMessage("ADD_ERROR_BASKET"); ?>',

@@ -618,10 +618,21 @@ $asset->addJs($templateFolder."/script.js");
 												  id="<? echo $arItemIDs["ALL_ITEM_IDS"]['QUANTITY_UP']; ?>" <?= ($arAddToBasketData["MAX_QUANTITY_BUY"] ? "data-max='" . $arAddToBasketData["MAX_QUANTITY_BUY"] . "'" : "") ?>>+</span>
 										</div>
 									<? endif; ?>
-									<div id="<?= $arItemIDs["ALL_ITEM_IDS"]['BASKET_ACTIONS']; ?>"
+									
+							<div id="<?= $arItemIDs["ALL_ITEM_IDS"]['BASKET_ACTIONS']; ?>"
 										 class="button_block <?= (($arAddToBasketData["ACTION"] == "ORDER") || !$arAddToBasketData["CAN_BUY"] || !$arAddToBasketData["OPTIONS"]["USE_PRODUCT_QUANTITY_LIST"] || $arAddToBasketData["ACTION"] == "SUBSCRIBE" ? "wide" : ""); ?>">
-										<?= $arAddToBasketData["HTML"] ?>
-									</div>
+							<?php if(!$totalCount <= 0) { ?>
+							<?php 
+							global $USER;
+							if (!$USER->IsAuthorized()) { 
+								$url = ((isset($_GET['backurl']) && $_GET['backurl']) ? $_GET['backurl'] : $APPLICATION->GetCurUri()); ?>							
+								<a rel="nofollow"  data-event="jqm" data-param-type="auth" data-param-backurl="<?=htmlspecialcharsbx($url)?>" data-name="auth" href="<?=$arTheme['PERSONAL_PAGE_URL']['VALUE']?>" style="display: inline-block;font-size: 14px;background-color: #107bb1;border-color: #107bb1;color: #ffffff;padding: 10px 10px 10px;margin: 0px 7px;">В корзину</a>
+							<? } else { ?>
+								<?= $arAddToBasketData["HTML"] ?>
+							<?php } ?>
+							<?php } ?>
+							</div>
+
 								</div>
 							<?
 							if (isset($arItem['PRICE_MATRIX']) && $arItem['PRICE_MATRIX']) // USE_PRICE_COUNT

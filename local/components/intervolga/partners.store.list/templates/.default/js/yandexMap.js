@@ -55,6 +55,8 @@ class YandexMap
 					// https://tech.yandex.ru/maps/doc/jsapi/2.1/dg/concepts/controls/standard-docpage/
 					controls: controlsMap
 				});
+			YandexMap.#oMap.options.set("maxZoom", 8);
+			YandexMap.#oMap.options.set("restrictMapArea", [[85,-180], [-85, 179]]);
 
 			if (params["BALLOONS"])
 			{

@@ -618,12 +618,12 @@ if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFE
 				$foundOffer = ($arResult['OFFER_ID_SELECTED'] == $arOffer['ID']);
 			if ($foundOffer)
 				$intSelected = $keyOffer;
-			if (empty($arResult['MIN_PRICE']) /*&& $arOffer['CAN_BUY']*/)
+			if (empty($arResult['MIN_PRICE']))
 			{
-				// $arResult['MIN_PRICE'] = (isset($arOffer['RATIO_PRICE']) ? $arOffer['RATIO_PRICE'] : $arOffer['MIN_PRICE']);
 				$arResult['MIN_PRICE'] = $arOffer['MIN_PRICE'];
 				$arResult['MIN_BASIS_PRICE'] = $arOffer['MIN_PRICE'];
 			}
+
 			$arSKUProps = false;
 			if (!empty($arOffer['DISPLAY_PROPERTIES']))
 			{
@@ -900,7 +900,6 @@ if ($arResult['CATALOG'] && isset($arResult['OFFERS']) && !empty($arResult['OFFE
 	$arResult['OFFERS_IBLOCK'] = $arSKU['IBLOCK_ID'];
 }
 
-
 if ($arResult['MODULES']['catalog'] && $arResult['CATALOG'])
 {
 	if ($arResult['CATALOG_TYPE'] == CCatalogProduct::TYPE_PRODUCT || $arResult['CATALOG_TYPE'] == CCatalogProduct::TYPE_SET)
@@ -986,13 +985,11 @@ if ($arResult['MODULES']['catalog'] && $arResult['CATALOG'])
 	$arResult = array_merge($arResult, CNext::formatPriceMatrix($arResult));
 }
 
-
 /*complect*/
 if (true || $arParams["SHOW_KIT_PARTS"] == "Y")
 {
 	$arSetItems = $arSetItemsOtherID = [];
-
-	$arSets = CCatalogProductSet::getAllSetsByProduct($arResult["ID"], 1);
+	$arSets = CCatalogProductSet::getAllSetsByProduct($arResult["ID"], CCatalogProductSet::TYPE_SET);
 
 	if (is_array($arSets) && !empty($arSets))
 	{
@@ -1031,6 +1028,7 @@ if (true || $arParams["SHOW_KIT_PARTS"] == "Y")
 			if ($arSetItemsOtherID[$res["ID"]]["QUANTITY"] > 1)
 				$bShowQuantity = true;
 		}
+
 		$arResult["SET_ITEMS_QUANTITY"] = $bShowQuantity;
 		$arResult["SET_ITEMS"] = array_values($arResult["SET_ITEMS"]);
 		\Bitrix\Main\Type\Collection::sortByColumn($arResult["SET_ITEMS"], ['SORT' => SORT_ASC]);
@@ -1072,7 +1070,6 @@ if (true || $arParams["SHOW_KIT_PARTS"] == "Y")
 		}
 	}
 }
-
 
 if (!empty($arResult['DISPLAY_PROPERTIES']))
 {
@@ -1612,9 +1609,6 @@ if (is_array($arParams["SECTION_TIZER"]) && $arParams["SECTION_TIZER"])
 	}
 	$arResult["TIZERS_ITEMS"] = $arTizersData;
 }
-////////////////////////
-//die('9809');
-
 
 $catalogIblockID = Option::get(
 	'aspro.next',
@@ -1762,9 +1756,9 @@ if ($property = $rsProperty->Fetch())
 			$priceMatrix['MATRIX'][$curPriceTypeId][$curPriceId]['PRICE'] = $oldPrice;
 			$priceMatrix['MATRIX'][$curPriceTypeId][$curPriceId]['DISCOUNT_PRICE'] = $price;
 			$priceMatrix['MATRIX'][$curPriceTypeId][$curPriceId]['PRINT_PRICE'] =
-				number_format($oldPrice, 2, '.', '&nbsp;') . "&nbsp;руб.";
+				number_format($oldPrice, 0, '.', '&nbsp;') . "&nbsp;₽";
 			$priceMatrix['MATRIX'][$curPriceTypeId][$curPriceId]['PRINT_DISCOUNT_PRICE'] =
-				number_format($price, 2, '.', '&nbsp;') . "&nbsp;руб.";
+				number_format($price, 0, '.', '&nbsp;') . "&nbsp;₽";
 
 			$priceMatrix['MATRIX'][11]["ZERO-INF"]['PRICE'] = $price_discount;
 		}
@@ -1785,8 +1779,8 @@ if ($property = $rsProperty->Fetch())
 
 		$minPrice["VALUE"] = $oldPrice;
 		$minPrice["DISCOUNT_VALUE"] = $price;
-		$minPrice["PRINT_DISCOUNT_VALUE"] = number_format($price, 2, '.', '&nbsp;')
-			. "&nbsp;руб.";
+		$minPrice["PRINT_DISCOUNT_VALUE"] = number_format($price, 0, '.', '&nbsp;')
+			. "&nbsp;₽";
 		$arResult['MIN_PRICE'] = $minPrice;
 
 		// Извлечём остатки по складам
@@ -1809,7 +1803,6 @@ if ($property = $rsProperty->Fetch())
 		{
 			$products = array_column($arResult["SET_ITEMS"], "ID");
 			$stores = array_column($arResult["SET_STORES"], "STORE_ID");
-
 			$res = CCatalogStoreProduct::GetList(
 				$arOrder = [],
 				$arFilter = [
@@ -2216,7 +2209,6 @@ if ($arResult["OFFERS"])
 				];
 			}
 
-
 			if ($arOffer["SET"])
 			{
 				$arResult["SET"]["SET"] = $arOffer["SET"];
@@ -2225,4 +2217,9 @@ if ($arResult["OFFERS"])
 	}
 }
 
-?>
+if(is_array($arResult['SET'])) {
+	$arResult["MAIN_STOCK_SET_AMOUNT"] = \Intervolga\Custom\Tools\RestsUtil::getMinStockAvail(
+		\Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS,
+		$arResult['SET']
+	);
+}

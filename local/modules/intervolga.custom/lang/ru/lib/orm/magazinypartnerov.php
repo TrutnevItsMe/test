@@ -11,3 +11,5 @@ $MESS["RODITEL"] = "RODITEL";
 $MESS["DESCRIPTION"] = "Описание";
 $MESS["VERSION"] = "Версия";
 $MESS["TIPMAGAZINA"] = "Тип магазина";
+$MESS["TELEFON"] = "Телефон";
+$MESS["ADRES"] = "Адрес";

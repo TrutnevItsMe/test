@@ -286,10 +286,11 @@ if (empty($arResult['ERROR_MESSAGE']))
 	$signedParams = $signer->sign(base64_encode(serialize($arParams)), 'sale.basket.basket');
 	$messages = Loc::loadLanguageFile(__FILE__);
 	?>
-	<script>
+	<script defer>
 		BX.message(<?=CUtil::PhpToJSObject($messages)?>);
 		BX.Sale.BasketComponent.init({
 			result: <?=CUtil::PhpToJSObject($arResult, false, false, true)?>,
+            headers: <?=CUtil::PhpToJSObject(["PARAM_HEADERS" => $arResult["PARAM_HEADERS"]])?>,
 			params: <?=CUtil::PhpToJSObject($arParams)?>,
 			template: '<?=CUtil::JSEscape($signedTemplate)?>',
 			signedParamsString: '<?=CUtil::JSEscape($signedParams)?>',
@@ -301,13 +302,6 @@ if (empty($arResult['ERROR_MESSAGE']))
 			displayArticleBeforeName: !!<?=$arParams["SHOW_ARTICLE_BEFORE_NAME"] === "Y"?>,
             displayDiscountPercent: !!<?=$arParams["SHOW_DISCOUNT_PERCENT_COLUMN"] === "Y"?>
 		});
-
-        $(document).ready(function(){
-            $(".basket-items-list-table .table-header").prepend($(".basket-header").html());
-            $(".basket-header").remove();
-        });
-
-
 	</script>
 	<?
 	if ($arParams['USE_GIFTS'] === 'Y' && $arParams['GIFTS_PLACE'] === 'BOTTOM')
