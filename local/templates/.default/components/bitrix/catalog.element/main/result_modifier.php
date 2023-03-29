@@ -1934,9 +1934,8 @@ if ($arResult["OFFERS"])
 			$desc = str_replace("Картинка", "", $desc);
 
 			/** Разобьъем строку по словам */
-			$re = "/[А-Я][^А-Я]*?/Usu";
 			$result = [];
-			preg_match_all($re, $desc, $result);
+			preg_match_all('/[А-Я][^А-Я]*?/Usu', $desc, $result);
 
 			if ($result)
 			{
@@ -1946,9 +1945,9 @@ if ($arResult["OFFERS"])
 				$result = array_map(strtoupper, $result);
 				$propCode = implode("_", $result);
 
-				if (file_exists($_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/".$imgPath))
+				if (file_exists($_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/" . $imgPath))
 				{
-					$file = CFile::MakeFileArray($_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/".$imgPath);
+					$file = CFile::MakeFileArray($_SERVER["DOCUMENT_ROOT"]."/upload/1c_catalog/" . $imgPath);
 					$arResult["OFFERS"][$offerId]["DISPLAY_PICTURES"][$propCode] = $file;
 				}
 			}
