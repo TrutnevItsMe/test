@@ -1,5 +1,6 @@
 .offers-filter{
 	padding: 0 0 0 50%;
+	margin-left: 10px
 }
 
 .offers-filter-item{
@@ -17,6 +18,7 @@
 .offers-filter-column{
 	margin: 15px 5px 7px 5px;
 	display: inline-block;
+	margin-left: -1px;
 }
 
 .active-offers-filter-item{
