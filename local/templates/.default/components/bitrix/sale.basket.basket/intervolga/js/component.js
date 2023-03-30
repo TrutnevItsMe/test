@@ -1663,7 +1663,8 @@
 				{
 					oldHeight = nodeAligner.clientHeight;
 				}
-				var basketItemHtml=this.renderBasketItem(basketItemTemplate, this.items[itemId]);
+
+				var basketItemHtml = this.renderBasketItem(basketItemTemplate, this.items[itemId]);
 				basketItemNode.insertAdjacentHTML('beforebegin', basketItemHtml);
 				BX.remove(basketItemNode);
 

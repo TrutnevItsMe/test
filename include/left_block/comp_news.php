@@ -60,7 +60,10 @@
 		"SHOW_IMAGE" => "N",
 		"PAGER_BASE_LINK_ENABLE" => "N",
 		"SHOW_404" => "N",
-		"MESSAGE_404" => ""
+		"MESSAGE_404" => "",
+		"STRICT_SECTION_CHECK" => "N",
+		"COMPOSITE_FRAME_MODE" => "A",
+		"COMPOSITE_FRAME_TYPE" => "AUTO"
 	),
 	false
 );?>

@@ -49,8 +49,7 @@
 	if ($arParams["LINE_ELEMENT_COUNT"] > 5)
 		$col = 5; ?>
 	<? foreach ($arResult["ITEMS"] as $arItem) { ?>
-		<div class="item_block col-<?= $col; ?> col-md-<?= ceil(12 / $col); ?> col-sm-<?= ceil(12 / round($col / 2))
-		?> col-xs-6 mt-1">
+		<div class="item_block col-<?= $col; ?> col-md-<?= ceil(12 / $col); ?> col-sm-<?= ceil(12 / round($col / 2)) ?> col-xs-6">
 			<div class="catalog_item_wrapp item">
 				<div class="basket_props_block" id="bx_basket_div_<?= $arItem["ID"]; ?>" style="display: none;">
 					<? if (!empty($arItem['PRODUCT_PROPERTIES_FILL']))
@@ -403,7 +402,33 @@
 											<? \Aspro\Functions\CAsproSku::showItemPrices($arParamsCE_CMP, $arItem, $item_id, $min_price_id, $arItemIDs, ($arParams["SHOW_DISCOUNT_PERCENT_NUMBER"] == "Y" ? "N" : "Y")); ?>
 										</div>
 									<? endif; ?>
-									
+									<div class="js_price_wrapper price">
+										<? if ($arCurrentSKU): ?>
+											<?
+											$item_id = $arCurrentSKU["ID"];
+											$arCurrentSKU['PRICE_MATRIX'] = $arCurrentSKU['PRICE_MATRIX_RAW'];
+											$arCurrentSKU['CATALOG_MEASURE_NAME'] = $arCurrentSKU['MEASURE'];
+											if (isset($arCurrentSKU['PRICE_MATRIX']) && $arCurrentSKU['PRICE_MATRIX']) // USE_PRICE_COUNT
+											{
+												?>
+												<? if ($arCurrentSKU['ITEM_PRICE_MODE'] == 'Q' && count($arCurrentSKU['PRICE_MATRIX']['ROWS']) > 1):?>
+												<?= CNext::showPriceRangeTop($arCurrentSKU, $arParams, GetMessage("CATALOG_ECONOMY")); ?>
+											<?endif; ?>
+												<?= CNext::showPriceMatrix($arCurrentSKU, $arParams, $strMeasure, $arAddToBasketData); ?>
+												<? $arMatrixKey = array_keys($arCurrentSKU['PRICE_MATRIX']['MATRIX']);
+												$min_price_id = current($arMatrixKey); ?>
+												<?
+											}
+											else
+											{
+												$arCountPricesCanAccess = 0;
+												$min_price_id = 0; ?>
+												<? \Aspro\Functions\CAsproItem::showItemPrices($arParams, $arCurrentSKU["PRICES"], $strMeasure, $min_price_id, ($arParams["SHOW_DISCOUNT_PERCENT_NUMBER"] == "Y" ? "N" : "Y")); ?>
+											<? } ?>
+										<? else: ?>
+											<? \Aspro\Functions\CAsproSku::showItemPrices($arParams, $arItem, $item_id, $min_price_id, $arItemIDs, ($arParams["SHOW_DISCOUNT_PERCENT_NUMBER"] == "Y" ? "N" : "Y")); ?>
+										<? endif; ?>
+									</div>
 								<? } else { ?>
 									<?
 									$item_id = $arItem["ID"];
@@ -548,8 +573,7 @@
 							<? } ?>
 						</div>
 
-						<div class="footer_button <?= ($arItem["OFFERS"] && $arItem['OFFERS_PROP'] ? 'has_offer_prop'
-							: ''); ?> inner_content js_offers__<?= $arItem['ID']; ?>">
+						<div class="footer_button <?= ($arItem["OFFERS"] && $arItem['OFFERS_PROP'] ? 'has_offer_prop' : ''); ?> inner_content js_offers__<?= $arItem['ID']; ?>">
 							<div class="sku_props">
 								<? if ($arItem["OFFERS"]) { ?>
 									<? if (!empty($arItem['OFFERS_PROP'])) { ?>
@@ -587,12 +611,21 @@
 												  id="<? echo $arItemIDs["ALL_ITEM_IDS"]['QUANTITY_UP']; ?>" <?= ($arAddToBasketData["MAX_QUANTITY_BUY"] ? "data-max='" . $arAddToBasketData["MAX_QUANTITY_BUY"] . "'" : "") ?>>+</span>
 										</div>
 									<? endif; ?>
-									<div id="<?= $arItemIDs["ALL_ITEM_IDS"]['BASKET_ACTIONS']; ?>"
-										 class="button_block <?= (($arAddToBasketData["ACTION"] == "ORDER"/*&& !$arItem["CAN_BUY"]*/) || !$arAddToBasketData["CAN_BUY"] || !$arAddToBasketData["OPTIONS"]["USE_PRODUCT_QUANTITY_LIST"] || $arAddToBasketData["ACTION"] == "SUBSCRIBE" ? "wide" : ""); ?>">
+							<?php if(!$totalCount <= 0) { ?>
+							<div id="<?= $arItemIDs["ALL_ITEM_IDS"]['BASKET_ACTIONS']; ?>"
+										 class="button_block <?= (($arAddToBasketData["ACTION"] == "ORDER") || !$arAddToBasketData["CAN_BUY"] || !$arAddToBasketData["OPTIONS"]["USE_PRODUCT_QUANTITY_LIST"] || $arAddToBasketData["ACTION"] == "SUBSCRIBE" ? "wide" : ""); ?>">
+							<?php 
+							global $USER;
+							if (!$USER->IsAuthorized()) { 
+							$url = ((isset($_GET['backurl']) && $_GET['backurl']) ? $_GET['backurl'] : $APPLICATION->GetCurUri()); ?>							
+							<a rel="nofollow"  data-event="jqm" data-param-type="auth" data-param-backurl="<?=htmlspecialcharsbx($url)?>" data-name="auth" href="<?=$arTheme['PERSONAL_PAGE_URL']['VALUE']?>" style="display: inline-block;font-size: 14px;background-color: #107bb1;border-color: #107bb1;color: #ffffff;padding: 10px 10px 10px;margin:0px 7px;">В корзину</a>
+							<? } else { ?>
 										<!--noindex-->
 										<?= $arAddToBasketData["HTML"] ?>
 										<!--/noindex-->
+							<?php } ?>
 									</div>
+							<?php } ?>
 								</div>
 							<?
 							if (isset($arItem['PRICE_MATRIX']) && $arItem['PRICE_MATRIX']) // USE_PRICE_COUNT
