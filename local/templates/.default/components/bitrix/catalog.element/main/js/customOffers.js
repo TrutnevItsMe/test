@@ -84,6 +84,7 @@ window.OffersFilterComponent = {
 			this.setStoresBlock(this.result["CURRENT_OFFER"]["ID"]);
 			this.setProductName(this.result["CURRENT_OFFER"]["NAME"]);
 			this.setPreviewText(this.result["CURRENT_OFFER"]["PREVIEW_TEXT"]);
+			this.setProps(this.result["CURRENT_OFFER"]["PROPERTIES"]);
 
 			if (this.result["CURRENT_OFFER"]["PRICES"])
 			{
@@ -462,6 +463,8 @@ window.OffersFilterComponent = {
 					this.setPrice(newPrice, oldPrice);
 				}
 			}
+			// Меняем характеристики у товара
+			self.setProps(currentOffer["PROPERTIES"]);
 
 			// Меняем картинки в слайдере
 			self.setSliderPhotos(currentOffer);
@@ -620,12 +623,25 @@ window.OffersFilterComponent = {
 	/** Устанавливает назавание товара в верстке */
 	setProductName: function (name)
 	{
-		let nodeName = $("#pagetitle");
+		const nodeName = $("#pagetitle");
+
+		if ((name = this.trimOfferName(name)) != null)
+		{
+			nodeName.html(name[1]);
+			return;
+		}
 
 		if (nodeName.length)
 		{
 			nodeName.html(name);
 		}
+	},
+
+	trimOfferName: function (name)
+	{
+		const regexp = /\(([^)]+)\)/;
+
+		return regexp.exec(name);
 	},
 
 	/** Устанавливает PREVIEW_TEXT в верстке */
@@ -798,6 +814,47 @@ window.OffersFilterComponent = {
 			{
 			}
 		});
+	},
+
+	/**
+	 * Устанавливает верстку для характеристик товара в зависимости от торгового предложения
+	 *
+	 * @param {Object} props
+	 */
+	setProps: function(props)
+	{
+		var displayProperties = {};
+		for (let key in props){
+			if (key in this.result["DISPLAY_PROPERTIES"]) {
+				displayProperties[key] = props[key];
+			}
+		}
+
+		var propsListContainer = document.querySelector(".char_block");
+		propsListContainer.innerHTML = '<table class="props_list">' +
+			Object.values(displayProperties).filter(function (arProp) {
+				return !["SERVICES", "BRAND", "HIT", "RECOMMEND", "NEW", "STOCK", "VIDEO", "VIDEO_YOUTUBE", "CML2_ARTICLE"].includes(arProp.CODE) &&
+					((!Array.isArray(arProp.DISPLAY_VALUE) && arProp.DISPLAY_VALUE !== "") || (Array.isArray(arProp.DISPLAY_VALUE) && arProp.DISPLAY_VALUE.length > 0));
+			}).map(function (arProp) {
+				var values = Array.isArray(arProp.VALUE) ? arProp.VALUE.join(", ") : arProp.VALUE;
+				if(values == '')
+				{
+					values = this.result["DISPLAY_PROPERTIES"][arProp.CODE]["VALUE"];
+				}
+				var hint = arProp.HINT && props.SHOW_HINTS ? '<div class="hint"><span class="icon"><i>?</i></span><div class="tooltip">' + arProp.HINT + '</div></div>' : "";
+				return (
+					'<tr data-prop="' + arProp.CODE + '" itemprop="additionalProperty" itemscope itemtype="http://schema.org/PropertyValue">' +
+					'<td class="char_name">' + hint +
+					'<div class="props_item ' + (arProp.HINT && props.SHOW_HINTS ? "whint" : "") + '">' +
+					'<span itemprop="name">' + arProp.NAME + '</span>' +
+					'</div>' +
+					'</td>' +
+					'<td class="char_value">' +
+					'<span itemprop="value">' + values + '</span>' +
+					'</td>' +
+					'</tr>');
+			}.bind(this)).join("") +
+			'</table>';
 	},
 
 	/**
