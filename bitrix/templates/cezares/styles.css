@@ -24,6 +24,51 @@ h1.more-spaced, h2.more-spaced, h3.more-spaced, h4.more-spaced, h5.more-spaced, 
 h1.bottom-spaced, h2.bottom-spaced, h3.bottom-spaced, h4.bottom-spaced, h5.bottom-spaced, h6.bottom-spaced{margin-bottom:36px;}
 img{border:0;}
 
+/*new style >>*/
+.contact_b {display: inline-block;width: 100%;}
+.contact_t {display: inline-block;float: right;width: 40%;}
+.bx_filter .group_filt .bx_filter_parameters_box {padding: 11px 5px;}
+.bx_filter .active .group_filt .bx_filter_parameters_box_title:after {content: "\f107";}
+.bx_filter .active > .bx_filter_parameters_box_title:after {content: "\f106" !important;}
+.store_LIST_AMOUNT .info-row__item_image .lazyloaded {max-width: 60px;max-height: 60px;}
+.store_LIST_AMOUNT .info-row__item_image {flex-basis: 110px;}
+#filter {margin-right: 0px !important;width: 100% !important;}
+#filter .filter-block-inner {height: auto;overflow: hidden;}
+.ik_select_list .ik_select_list_inner {height: 300px !important;}
+.magaz_items {float: right;}
+.magaz_items .item-wrap {height: auto !important;min-height: 55px;margin: 5px 0px !important;border-color: #b1b2b3;}
+.magaz_items .item-wrap:hover {border: 1px solid #b1b2b3;}
+.magaz_items.over_items {width: 100%;}
+.over_items {max-height: 690px;overflow-y: auto;margin-bottom: 40px;border-bottom: 1px solid #ddd;}
+.data_table_props .hovered .remove {display:none !important;}
+.modal_background{position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 9999;background: rgba(0,0,0,0.6);display: none;flex-direction: column;align-items: center;justify-content: center;}
+.modal_form{background: #ffffff;border-radius: 2px;width: 500px;padding: 40px 30px;position: relative;display: none;max-width: 100%;}
+a.close_form{position: absolute;right: 30px;top: 40px;z-index: 5;font-size: 20px;}
+a.review_form {width: 45px;height: 45px;position: fixed;right: 80px;bottom: 125px;z-index: 5;border-radius: 50%;border: 1px solid #a9a9a9;padding: 7px;background: #fff;}
+a.review_form svg {fill: #107bb1;}
+.modal_form_review .row div {display: inline-block;margin-bottom: 15px;}
+.modal_form_review .row .fcallback {background-color: #107bb1;color: #fff;padding: 10px 20px;cursor: pointer;}
+.modal_form_review .row .fcallback:active {transition: opacity 0.3s;background-color: #44ace1;zoom: 1.05;}
+.modal_form_review .cb-title {text-align: center;font-size: 21px;margin-bottom: 20px;border-bottom: 1px solid #c5c5c5;padding-bottom: 15px;margin-top: 10px;}
+.modal_form_review .ok-message {text-align: center;font-size: 19px;color: #00a500;}
+.modal_form_review .ok-message .err {color: #a11b2a;}
+.magaz_items .btn-secondary {display: block;width: 100%;border-color: #c5c5c5;border: none;border-bottom: 1px solid #c5c5c5;border-radius: 0px;}
+.magaz_items .dropdown .btn-secondary:after {top: 21px;right: 20px;font-family: FontAwesome;content: "\f107";font-size: 14px;width: 15px;height: 12px;text-align: center;}
+.magaz_items .dropdown.open .btn-secondary:after {top: 21px;right: 20px;font-family: FontAwesome;content: "\f106";font-size: 14px;width: 15px;height: 12px;text-align: center;}
+.magaz_items .dropdown-menu {position: relative;width: 100%;border-bottom: 1px solid #c5c5c5;border: none;border-radius: 0px;}
+.magaz_items .dropdown-menu .dropdown-item {display: block;}
+.m_map {float: left;width: 25px;padding: 5px;fill: #a6122b;}
+.dropdown.open + svg + .item-field-block + .item-field-block, .dropdown.open + svg + .item-field-block, .dropdown.open + svg {display:none;}
+.drop_fields {display: inline-block;width: 90%;}
+/*mobile style >>*/
+@media (max-width: 767px) {
+.shops_regions.mt-5 {display: inline-block !important;}
+.shops_regions.mt-5 .w-40 {margin: 15px !important;width: 90% !important;}
+.shops_regions.mt-5 .magaz_items {float: none;display: block;width: 100% !important;}
+}
+/*<< mobile style*/
+/*<< new style*/
+
 blockquote{color:#383838;margin:43px 0 45px;min-height:40px;padding-left:25px;position:relative;vertical-align:middle;border:none;}
 blockquote:before{bottom:3px;content:" ";display:block;left:0;position:absolute;top:3px;width:3px;background-color:#ddd;}
 .medium{font-weight: 500;font-size: 14px;}

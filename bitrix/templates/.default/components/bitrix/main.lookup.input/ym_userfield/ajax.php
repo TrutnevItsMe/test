@@ -43,7 +43,5 @@ if (isset($_REQUEST['MODE']) && $_REQUEST['MODE'] == 'SEARCH')
 	$query = trim($_REQUEST['search']);
 	$result = $providerClassName::searchByName($query);
 
-	header('Content-Type: application/json');
-	echo Main\Web\Json::encode($result);
-	die();
+	Market\Utils\HttpResponse::sendJson($result);
 }

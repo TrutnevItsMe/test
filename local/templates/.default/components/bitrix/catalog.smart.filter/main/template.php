@@ -224,6 +224,7 @@ if ($arResult["ITEMS"])
 							</script>
 						<?endif;
 					}
+					
 					//not prices
 					foreach ($arResult["ITEMS"] as $key => $arItem)
 					{
@@ -249,7 +250,51 @@ if ($arResult["ITEMS"])
 
 						$isFilter = true;
 						?>
-						<div class="bx_filter_parameters_box <?= $class; ?>"
+						<?php if($arItem["ID"] == 350) { ?>
+							<div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="350">
+							<span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span>
+								<div class="bx_filter_parameters_box_title icons_fa"><div>Габариты<div class="char_name"><div class="props_list"></div>
+								</div>
+							</div>
+							</div>
+							<div class="bx_filter_block group_filt" style="display:none;">
+						<?php } ?>
+						<?php if($_SERVER['REQUEST_URI'] == '/catalog/aksessuary_dlya_vannoy_komnaty/dlya_polotenets/polotentsederzhateli/' && $arItem["ID"] == 384) { ?>
+							<div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="350">
+							<span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span>
+								<div class="bx_filter_parameters_box_title icons_fa"><div>Габариты<div class="char_name"><div class="props_list"></div>
+								</div>
+							</div>
+							</div>
+							<div class="bx_filter_block group_filt" style="display:none;">
+						<?php } ?>
+						
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/' && $arItem["ID"] == 403) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Цвет<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/tumby_s_rakovinoy/' && $arItem["ID"] == 403) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Цвет<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/tumby_so_stoleshnitsey_i_nakladnoy_rakovinoy/' && $arItem["ID"] == 403) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Цвет<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/konsoli_podvesnye/' && $arItem["ID"] == 403) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Цвет<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/dushevye_ograzhdeniya_i_poddony/' && $arItem["ID"] == 455) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Цвет<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/dushevye_ograzhdeniya_i_poddony/dushevye_ugly/' && $arItem["ID"] == 455) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Цвет<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/dushevye_ograzhdeniya_i_poddony/shtorki_na_vannu/' && $arItem["ID"] == 455) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Цвет<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/unitazy_rakoviny_bide/' && $arItem["ID"] == 413) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Цвет<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/unitazy_rakoviny_bide/rakoviny/' && $arItem["ID"] == 413) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Цвет<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/unitazy_rakoviny_bide/rakoviny/rakoviny_stoleshnitsy/' && $arItem["ID"] == 413) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Цвет<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/' && $arItem["ID"] == 406) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Материал<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/tumby_s_rakovinoy/' && $arItem["ID"] == 406) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Материал<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/shkafy/' && $arItem["ID"] == 406) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Материал<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/shkafy_penaly/' && $arItem["ID"] == 406) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Материал<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/tumby_so_stoleshnitsey_i_nakladnoy_rakovinoy/' && $arItem["ID"] == 406) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Материал<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/zerkala_shkafy/' && $arItem["ID"] == 406) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Материал<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/konsoli_podvesnye/' && $arItem["ID"] == 406) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Материал<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/metallicheskie_svarnye_polki/' && $arItem["ID"] == 406) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Материал<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/zerkala_1/' && $arItem["ID"] == 406) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Материал<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/unitazy_rakoviny_bide/' && $arItem["ID"] == 415) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Материал<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/unitazy_rakoviny_bide/rakoviny/' && $arItem["ID"] == 415) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Материал<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/unitazy_rakoviny_bide/rakoviny/rakoviny_stoleshnitsy/' && $arItem["ID"] == 415) { ?><div class="bx_filter_parameters_box " data-expanded="N" data-prop_code="minimum_price" data-property_id="403"><span data-f="Показать" data-fi="товар" data-fr="товара" data-frm="товаров" class="bx_filter_container_modef"></span><div class="bx_filter_parameters_box_title icons_fa"><div>Материал<div class="char_name"><div class="props_list"></div></div></div></div><div class="bx_filter_block group_filt" style="display:none;"><?php } ?>
+						
+						
+						<div class="bx_filter_parameters_box <?= $class; ?> ftr_<?= $arItem["ID"] ?>"
 							 data-expanded="<?= ($arItem["DISPLAY_EXPANDED"] ? $arItem["DISPLAY_EXPANDED"] : "N"); ?>"
 							 data-prop_code=<?= strtolower($arItem["CODE"]); ?> data-property_id="<?= $arItem["ID"] ?>">
 							<span data-f="<?= Loc::getMessage('CT_BCSF_SET_FILTER') ?>"
@@ -891,6 +936,34 @@ if ($arResult["ITEMS"])
 								<div class="clb"></div>
 							</div>
 						</div>
+<?php if($arItem["ID"] == 351 || $_SERVER['REQUEST_URI'] == '/catalog/installyatsii/' && $arItem["ID"] == 435) { ?></div></div><?php } ?>
+						
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/' && $arItem["ID"] == 416) { ?></div></div><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/tumby_s_rakovinoy/' && $arItem["ID"] == 413) { ?></div></div><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/tumby_so_stoleshnitsey_i_nakladnoy_rakovinoy/' && $arItem["ID"] == 413) { ?></div></div><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/konsoli_podvesnye/' && $arItem["ID"] == 413) { ?></div></div><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/dushevye_ograzhdeniya_i_poddony/' && $arItem["ID"] == 454) { ?></div></div><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/dushevye_ograzhdeniya_i_poddony/dushevye_ugly/' && $arItem["ID"] == 454) { ?></div></div><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/dushevye_ograzhdeniya_i_poddony/shtorki_na_vannu/' && $arItem["ID"] == 454) { ?></div></div><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/unitazy_rakoviny_bide/' && $arItem["ID"] == 416) { ?></div></div><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/unitazy_rakoviny_bide/rakoviny/' && $arItem["ID"] == 416) { ?></div></div><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/unitazy_rakoviny_bide/rakoviny/rakoviny_stoleshnitsy/' && $arItem["ID"] == 416) { ?></div></div><?php } ?>
+
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/' && $arItem["ID"] == 429) { ?></div></div><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/tumby_s_rakovinoy/' && $arItem["ID"] == 429) { ?></div></div><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/shkafy/' && $arItem["ID"] == 409) { ?></div></div><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/shkafy_penaly/' && $arItem["ID"] == 409) { ?></div></div><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/tumby_so_stoleshnitsey_i_nakladnoy_rakovinoy/' && $arItem["ID"] == 429) { ?></div></div><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/zerkala_shkafy/' && $arItem["ID"] == 409) { ?></div></div><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/konsoli_podvesnye/' && $arItem["ID"] == 429) { ?></div></div><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/mebel_dlya_vannoy_komnaty/metallicheskie_svarnye_polki/' && $arItem["ID"] == 409) { ?></div></div><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/zerkala_1/' && $arItem["ID"] == 409) { ?></div></div><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/unitazy_rakoviny_bide/' && $arItem["ID"] == 429) { ?></div></div><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/unitazy_rakoviny_bide/rakoviny/' && $arItem["ID"] == 429) { ?></div></div><?php } ?>
+<?php if ($_SERVER['REQUEST_URI'] == '/catalog/unitazy_rakoviny_bide/rakoviny/rakoviny_stoleshnitsy/' && $arItem["ID"] == 429) { ?></div></div><?php } ?>
+
+
+
 					<? } ?>
 				</div>
 
