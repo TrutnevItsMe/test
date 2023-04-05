@@ -42,6 +42,7 @@ include_once $_SERVER["DOCUMENT_ROOT"] . $templateFolder . "/template_js/sets.ph
 							"FORUM_ID" => $arParams["FORUM_ID"],
 							"ELEMENT_ID" => $arResult["ID"],
 							"IBLOCK_ID" => $arParams["IBLOCK_ID"],
+							"IBLOCK_SECTION_ID" => $arParams["IBLOCK_SECTION_ID"],
 							"AJAX_POST" => $arParams["REVIEW_AJAX_POST"],
 							"SHOW_RATING" => "N",
 							"SHOW_MINIMIZED" => "Y",

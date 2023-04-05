@@ -367,9 +367,7 @@ class AdminFormEdit extends \CBitrixComponent
             ];
         }
 
-        $APPLICATION->RestartBuffer();
-        echo Market\Utils::jsonEncode($response, JSON_UNESCAPED_UNICODE);
-        die();
+		Market\Utils\HttpResponse::sendJson($response);
     }
 
 	protected function hasPostAction()
@@ -712,7 +710,6 @@ class AdminFormEdit extends \CBitrixComponent
     protected function redirectCancel()
     {
         LocalRedirect($this->arParams['LIST_URL']);
-        die();
     }
 
     protected function redirectAfterSave($primary = null)
@@ -780,7 +777,6 @@ class AdminFormEdit extends \CBitrixComponent
         }
 
         LocalRedirect($redirectUrl);
-        die();
     }
 
     protected function loadItem()

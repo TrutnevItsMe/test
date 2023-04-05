@@ -1606,9 +1606,206 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 												<?endif;?>
 											<?endforeach;?>
 										</div>
-									<?else:?>
+									<?else:?> 
 										<div class="char_block">
 											<table class="props_list">
+												<?php 
+												//echo $arResult["IBLOCK_SECTION_ID"];
+												/*унитазы*/
+												if($arResult["IBLOCK_SECTION_ID"]=='297' || $arResult["IBLOCK_SECTION_ID"]=='298') { 
+												?>
+												<?foreach($arResult["DISPLAY_PROPERTIES"] as $arProp):?>
+													<?php if(
+													   $arProp["NAME"] == 'Коллекция'
+													|| $arProp["NAME"] == 'Стиль'
+													|| $arProp["NAME"] == 'Форма'
+													|| $arProp["NAME"] == 'Материал'
+													|| $arProp["NAME"] == 'Цвет'
+													|| $arProp["NAME"] == 'Вес нетто, кг'
+													|| $arProp["NAME"] == 'Вес брутто, кг'
+													|| $arProp["NAME"] == 'Длина изделия, см'
+													|| $arProp["NAME"] == 'Ширина изделия, см'
+													|| $arProp["NAME"] == 'Высота изделия, см'
+													|| $arProp["NAME"] == 'Длина индивидуальной упаковки, м'
+													|| $arProp["NAME"] == 'Высота индивидуальной упаковки, м'
+													|| $arProp["NAME"] == 'Ширина индивидуальной упаковки, м'
+													|| $arProp["NAME"] == 'Объем индивидуальной упаковки, м3'
+													|| $arProp["NAME"] == 'Межосевое расстояние под крепежные шпильки, см'
+													|| $arProp["NAME"] == 'Высота чаши, см (без учета крышки-сиденья)'
+													|| $arProp["NAME"] == 'Длина чаши, см'
+													|| $arProp["NAME"] == 'Безободковый унитаз'
+													|| $arProp["NAME"] == 'Организация смывающего потока'
+													|| $arProp["NAME"] == 'Система антивсплеск'
+													|| $arProp["NAME"] == 'Полочка в чаше'
+													|| $arProp["NAME"] == 'Направление выпуска'
+													|| $arProp["NAME"] == 'Объем смывного бачка, литрах'
+													|| $arProp["NAME"] == 'Подвод воды'
+													|| $arProp["NAME"] == 'Расположение подвода воды'
+													|| $arProp["NAME"] == 'Метод установки сливного бачка'
+													|| $arProp["NAME"] == 'Механизм слива'
+													|| $arProp["NAME"] == 'Режим слива воды'
+													|| $arProp["NAME"] == 'Крышка-сиденье в комплекте'
+													|| $arProp["NAME"] == 'Быстросъемная крышка-сиденье'
+													|| $arProp["NAME"] == 'Крышка-сиденье с микролифтом'
+													|| $arProp["NAME"] == 'Материал крышки-сиденья'
+													|| $arProp["NAME"] == 'Фурнитура, крепеж сиденья, кнопка'
+													|| $arProp["NAME"] == 'Функция биде'
+													|| $arProp["NAME"] == 'Требуется система инсталляции'
+													|| $arProp["NAME"] == 'Крепёж в комплекте'
+													|| $arProp["NAME"] == 'Монтаж чаши'
+													|| $arProp["NAME"] == 'Диаметр слива, см'
+													|| $arProp["NAME"] == 'Гарантийный срок'
+													|| $arProp["NAME"] == 'Оснащение'
+													) { ?>
+														<tr data-prop="<?=$arProp["CODE"]?>" itemprop="additionalProperty" itemscope itemtype="http://schema.org/PropertyValue">
+															<td class="char_name">
+																<div class="props_item">
+																	<span itemprop="name"><?=$arProp["NAME"]?></span>
+																</div>
+															</td>
+															<td class="char_value">
+																<span itemprop="value">
+																		<?=$arProp["DISPLAY_VALUE"];?>
+																</span>
+															</td>
+														</tr>
+													<?php } ?>
+												<?endforeach;?>	
+												<?php } 
+												/*раковины*/
+												elseif($arResult["IBLOCK_SECTION_ID"]=='1183' || $arResult["IBLOCK_SECTION_ID"]=='291' || $arResult["IBLOCK_SECTION_ID"]=='294') { ?>
+												<?foreach($arResult["DISPLAY_PROPERTIES"] as $arProp):?>
+													<?php if(
+													      $arProp["NAME"] == 'Коллекция'
+													   || $arProp["NAME"] == 'Стиль'
+													   || $arProp["NAME"] == 'Форма'
+													   || $arProp["NAME"] == 'Материал'
+													   || $arProp["NAME"] == 'Цвет'
+													   || $arProp["NAME"] == 'Вес нетто, кг'
+													   || $arProp["NAME"] == 'Вес брутто, кг'
+													   || $arProp["NAME"] == 'Длина изделия, см'
+													   || $arProp["NAME"] == 'Ширина изделия, см'
+													   || $arProp["NAME"] == 'Высота изделия, см'
+													   || $arProp["NAME"] == 'Длина индивидуальной упаковки, см'
+													   || $arProp["NAME"] == 'Высота индивидуальной упаковки, см'
+													   || $arProp["NAME"] == 'Ширина индивидуальной упаковки, см'
+													   || $arProp["NAME"] == 'Объем индивидуальной упаковки, см3'
+													   || $arProp["NAME"] == 'Смеситель в комплекте'
+													   || $arProp["NAME"] == 'Готовые отверстия под смеситель'
+													   || $arProp["NAME"] == 'Донный клапан'
+													   || $arProp["NAME"] == 'Диаметр слива, см'
+													   || $arProp["NAME"] == 'Диаметр для сифона на слив, см'
+													   || $arProp["NAME"] == 'Возможна установка над стир. машиной'
+													   || $arProp["NAME"] == 'Гарантийный срок'
+													) { ?>
+														<tr data-prop="<?=$arProp["CODE"]?>" itemprop="additionalProperty" itemscope itemtype="http://schema.org/PropertyValue">
+															<td class="char_name">
+																<div class="props_item">
+																	<span itemprop="name"><?=$arProp["NAME"]?></span>
+																</div>
+															</td>
+															<td class="char_value">
+																<span itemprop="value">
+																		<?=$arProp["DISPLAY_VALUE"];?>
+																</span>
+															</td>
+														</tr>
+													<?php } ?>
+												<?endforeach;?>	
+												<?php } 
+												/*биде*/
+												elseif($arResult["IBLOCK_SECTION_ID"]=='288') { ?>
+												<?foreach($arResult["DISPLAY_PROPERTIES"] as $arProp):?>
+													<?php if(
+													      $arProp["NAME"] == 'Коллекция'
+													   || $arProp["NAME"] == 'Стиль'
+													   || $arProp["NAME"] == 'Форма'
+													   || $arProp["NAME"] == 'Материал'
+													   || $arProp["NAME"] == 'Цвет'
+													   || $arProp["NAME"] == 'Вес нетто, кг'
+													   || $arProp["NAME"] == 'Вес брутто, кг'
+													   || $arProp["NAME"] == 'Длина изделия, см'
+													   || $arProp["NAME"] == 'Ширина изделия, см'
+													   || $arProp["NAME"] == 'Высота изделия, см'
+													   || $arProp["NAME"] == 'Длина индивидуальной упаковки, см'
+													   || $arProp["NAME"] == 'Высота индивидуальной упаковки, см'
+													   || $arProp["NAME"] == 'Ширина индивидуальной упаковки, см'
+													   || $arProp["NAME"] == 'Объем индивидуальной упаковки, см3'
+													   || $arProp["NAME"] == 'Межосевое расстояние под крепежные шпильки, см'
+													   || $arProp["NAME"] == 'Высота чаши, см (без учета крышки-сиденья)'
+													   || $arProp["NAME"] == 'Длина чаши, см'
+													   || $arProp["NAME"] == 'Направление выпуска'
+													   || $arProp["NAME"] == 'Требуется система инсталляции'
+													   || $arProp["NAME"] == 'Крышка в комплекте'
+													   || $arProp["NAME"] == 'Монтаж чаши'
+													   || $arProp["NAME"] == 'Сиденье в комплекте'
+													   || $arProp["NAME"] == 'Готовые отверстия под смеситель'
+													   || $arProp["NAME"] == 'Слив-перелив'
+													   || $arProp["NAME"] == 'Донный клапан'
+													   || $arProp["NAME"] == 'Диаметр слива, см'
+													   || $arProp["NAME"] == 'Диаметр для сифона на слив, см'
+													   || $arProp["NAME"] == 'Гарантийный срок'
+													) { ?>
+														<tr data-prop="<?=$arProp["CODE"]?>" itemprop="additionalProperty" itemscope itemtype="http://schema.org/PropertyValue">
+															<td class="char_name">
+																<div class="props_item">
+																	<span itemprop="name"><?=$arProp["NAME"]?></span>
+																</div>
+															</td>
+															<td class="char_value">
+																<span itemprop="value">
+																		<?=$arProp["DISPLAY_VALUE"];?>
+																</span>
+															</td>
+														</tr>
+													<?php } ?>
+												<?endforeach;?>	
+												<?php } 
+												/*мебель*/
+												elseif($arResult["IBLOCK_SECTION_ID"]=='285' || $arResult["IBLOCK_SECTION_ID"]=='283' || $arResult["IBLOCK_SECTION_ID"]=='284') { ?>
+												<?foreach($arResult["DISPLAY_PROPERTIES"] as $arProp):?>
+													<?php if(
+													      $arProp["NAME"] == 'БРЕНД'
+													   || $arProp["NAME"] == 'Коллекция'
+													   || $arProp["NAME"] == 'Стиль'
+													   || $arProp["NAME"] == 'Форма'
+													   || $arProp["NAME"] == 'Цвет корпуса мебели'
+													   || $arProp["NAME"] == 'Цвет фасада мебели'
+													   || $arProp["NAME"] == 'Цвет раковины'
+													   || $arProp["NAME"] == 'Материал корпуса'
+													   || $arProp["NAME"] == 'Материал фасада'
+													   || $arProp["NAME"] == 'Материал раковины'
+													   || $arProp["NAME"] == 'Покрытие корпуса'
+													   || $arProp["NAME"] == 'Поверхность корпуса'
+													   || $arProp["NAME"] == 'Покрытие фасада'
+													   || $arProp["NAME"] == 'Поверхность фасада'
+													   || $arProp["NAME"] == 'Вес нетто, кг'
+													   || $arProp["NAME"] == 'Вес брутто, кг'
+													   || $arProp["NAME"] == 'Ширина изделия, см'
+													   || $arProp["NAME"] == 'Глубина изделия, см'
+													   || $arProp["NAME"] == 'Высота изделия, см'
+													   || $arProp["NAME"] == 'Высота тумбы с раковиной, см'
+													   || $arProp["NAME"] == 'Количество упаковок'
+													   || $arProp["NAME"] == 'Объем индивидуальной упаковки, м3'
+													   || $arProp["NAME"] == 'Монтаж'
+													   || $arProp["NAME"] == 'Гарантийный срок'
+													) { ?>
+														<tr data-prop="<?=$arProp["CODE"]?>" itemprop="additionalProperty" itemscope itemtype="http://schema.org/PropertyValue">
+															<td class="char_name">
+																<div class="props_item">
+																	<span itemprop="name"><?=$arProp["NAME"]?></span>
+																</div>
+															</td>
+															<td class="char_value">
+																<span itemprop="value">
+																		<?=$arProp["DISPLAY_VALUE"];?>
+																</span>
+															</td>
+														</tr>
+													<?php } ?>
+												<?endforeach;?>	
+												<?php } else { ?>
+												<?//=$arResult["IBLOCK_SECTION_ID"]?>
 												<?foreach($arResult["DISPLAY_PROPERTIES"] as $arProp):?>
 													<?if(!in_array($arProp["CODE"], array("SERVICES", "BRAND", "HIT", "RECOMMEND", "NEW", "STOCK", "VIDEO", "VIDEO_YOUTUBE", "CML2_ARTICLE"))):?>
 														<?if((!is_array($arProp["DISPLAY_VALUE"]) && strlen($arProp["DISPLAY_VALUE"])) || (is_array($arProp["DISPLAY_VALUE"]) && implode('', $arProp["DISPLAY_VALUE"]))):?>
@@ -1633,7 +1830,8 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 															</tr>
 														<?endif;?>
 													<?endif;?>
-												<?endforeach;?>
+												<?endforeach;?>												
+												<?php } ?>
 											</table>
 											<table class="props_list" id="<? echo $arItemIDs["ALL_ITEM_IDS"]['DISPLAY_PROP_DIV']; ?>"></table>
 										</div>

@@ -34,5 +34,5 @@ $MESS['YANDEX_MARKET_T_ADMIN_FIELD_DELIVERY_HEADER_DELIVERY_TYPE'] = 'Самов
 $MESS['YANDEX_MARKET_T_ADMIN_FIELD_DELIVERY_MODAL_TITLE'] = 'Доставка';
 $MESS['YANDEX_MARKET_T_ADMIN_FIELD_DELIVERY_HELP'] = 'Укажите стоимость и сроки курьерской доставки по вашему региону.';
 $MESS['YANDEX_MARKET_T_ADMIN_FIELD_DELIVERY_HELP_DETAILS'] = 'Подробнее о настройке читайте:<br /> <a href="https://yandex.ru/support/partnermarket/elements/delivery-options.html" target="_blank">https://yandex.ru/support/partnermarket/elements/delivery-options.html</a>';
-$MESS['YANDEX_MARKET_T_ADMIN_FIELD_DELIVERY_WARNING'] = 'Для передачи информации о доставке с помощью элемента <nobr>delivery-options</nobr>, убедитесь, что в личном кабинете, на странице Подключение и настройки &rarr; Настройки доставки, отмечена опция Использовать данные из прайс-листа.';
+$MESS['YANDEX_MARKET_T_ADMIN_FIELD_DELIVERY_WARNING'] = 'Для передачи информации о&nbsp;доставке с&nbsp;помощью элемента <nobr>delivery-options</nobr>, в&nbsp;личном кабинете Маркета на&nbsp;странице Настройки &rarr; Доставка магазина в&nbsp;блоке Ваши курьеры перейдите к&nbsp;настройке. И&nbsp;отредактируйте тариф, выбрав вариант Использовать данные из&nbsp;прайс-листа.';
 $MESS['YANDEX_MARKET_T_ADMIN_FIELD_DELIVERY_ADD_LIMIT_REACHED'] = 'Вы можете указать не более пяти способов доставки.';

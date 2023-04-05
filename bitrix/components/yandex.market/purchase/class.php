@@ -265,22 +265,23 @@ class Purchase extends \CBitrixComponent
 
 	protected function sendResponse($response, $status)
 	{
-		global $APPLICATION;
+		list($markerName, $markerValue) = Market\Api\Marker::getHeader();
+		$options = [
+			'headers' => [
+				$markerName => $markerValue,
+			],
+		];
 
-		$APPLICATION->RestartBuffer();
 		\CHTTP::SetStatus($status);
 
-		if ($response !== null)
+		if (is_array($response))
 		{
-			$marker = Market\Api\Marker::getHeader();
-			$responseEncoded = is_array($response) ? Main\Web\Json::encode($response) : $response;
-
-			header('Content-Type: application/json');
-			header(implode(': ', $marker));
-			echo $responseEncoded;
+			Market\Utils\HttpResponse::sendJson($response, $options);
 		}
-
-		die();
+		else
+		{
+			Market\Utils\HttpResponse::sendRaw((string)$response, $options);
+		}
 	}
 
 	protected function getRequestPath()

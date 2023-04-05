@@ -99,6 +99,18 @@ if (!window.FilterComponent){
 						urlParams[field].push(radio.id);
 					});
 
+					// Проходим по всем активным option
+					BX("filter").querySelectorAll("option[type='option']:checked").forEach(function (radio) {
+
+						let field = radio.getAttribute("data-filter-field");
+
+						if (!urlParams[field]) {
+							urlParams[field] = [];
+						}
+
+						urlParams[field].push(radio.id);
+					});
+
 					// Добавляем в URL параметры для фильтрации
 					Object.keys(urlParams).forEach(function (field) {
 						let fieldWithoutUF = field.replace("UF_", "");
