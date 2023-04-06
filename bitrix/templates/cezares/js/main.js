@@ -7432,7 +7432,8 @@ BX.addCustomEvent('onSubmitForm', function(eventdata){
 			}
 			else
 			{
-				if(typeof grecaptcha != 'undefined'){
+				if(typeof grecaptcha != 'undefined')
+				{
 					grecaptcha.execute($(eventdata.form).find('.g-recaptcha').data('widgetid'));
 				}
 				else{
