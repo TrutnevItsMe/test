@@ -460,7 +460,7 @@ $asset->addJs($templateFolder."/script.js");
 											<? \Aspro\Functions\CAsproSku::showItemPrices($arParamsCE_CMP, $arItem, $item_id, $min_price_id, $arItemIDs, ($arParams["SHOW_DISCOUNT_PERCENT_NUMBER"] == "Y" ? "N" : "Y")); ?>
 										</div>
 									<? endif; ?>
-									<div class="js_price_wrapper price">
+									<div class="js_price_wrapper price" <?= !$arCurrentSKU ? 'style="display:none;"' : '' ?>>
 										<? if ($arCurrentSKU): ?>
 											<?
 											$item_id = $arCurrentSKU["ID"];
