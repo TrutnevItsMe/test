@@ -509,11 +509,10 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 
 								<div class="price_group   eb812f89-14ce-11e5-a550-5404a68a235f"><div class="price_name"></div>
 									<div class="price_matrix_wrapper ">
-										<div class="price" data-currency="RUB" data-value="0"><div style="display: none;">50 rub.</div>
+										<div class="price" data-currency="RUB" data-value="0">
 											<span>
 												<span class="values_wrapper">
 													<span class="price_value">
-														<div style="display: none;">50 rub.</div>
 														<?php
 
 														$db_res = CPrice::GetList(
@@ -699,10 +698,10 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 									</div>
 								<?php endif; ?>
 							<?php endif; ?>
-							
-							<?php 
+
+							<?php
 							global $USER;
-							if (!$USER->IsAuthorized()) { 
+							if (!$USER->IsAuthorized()) {
 							$url = ((isset($_GET['backurl']) && $_GET['backurl']) ? $_GET['backurl'] : $APPLICATION->GetCurUri()); ?>
 							<div id="<?php echo $arItemIDs["ALL_ITEM_IDS"]['BASKET_ACTIONS']; ?>" class="button_block <?=(($arAddToBasketData["ACTION"] == "ORDER") || !$arAddToBasketData["CAN_BUY"] || !$arAddToBasketData["OPTIONS"]["USE_PRODUCT_QUANTITY_DETAIL"] || ($arAddToBasketData["ACTION"] == "SUBSCRIBE" && $arResult["CATALOG_SUBSCRIBE"] == "Y")  ? "wide" : "");?>">
 							<a rel="nofollow" title="<?=Loc::getMessage('CABINET_LINK')?>" class="personal-link dark-color animate-load" data-event="jqm" data-param-type="auth" data-param-backurl="<?=htmlspecialcharsbx($url)?>" data-name="auth" href="<?=$arTheme['PERSONAL_PAGE_URL']['VALUE']?>" style="display: inline-block;font-size: 14px;background-color: #107bb1;border-color: #107bb1;color: #ffffff;padding: 20px 25px 20px;">В корзину</a>
@@ -714,7 +713,7 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 								<!--/noindex-->
 							</div>
 							<?php } ?>
-							
+
 						</div>
 					<?php if(isset($arResult['PRICE_MATRIX']) && $arResult['PRICE_MATRIX']) // USE_PRICE_COUNT
 						{?>

@@ -340,8 +340,14 @@ $asset->addJs($templateFolder."/script.js");
 										<?foreach ($arParams["PROPERTY_CODE"] as $prop):?>
 											<?if ($arItem["PROPERTIES"][$prop]["VALUE"]):?>
 											<tr>
-												<td><?=$arItem["PROPERTIES"][$prop]["NAME"]?>:
-													<?=$arItem["PROPERTIES"][$prop]["VALUE"]?></td>
+												<td>
+													<?= $arItem["PROPERTIES"][$prop]["NAME"] ?>:
+													<?php if (is_array($arItem["PROPERTIES"][$prop]["VALUE"])): ?>
+														<?= join("&nbsp", $arItem["PROPERTIES"][$prop]["VALUE"]) ?>
+													<?php else: ?>
+														<?= $arItem["PROPERTIES"][$prop]["VALUE"] ?>
+													<?php endif; ?>
+												</td>
 											</tr>
 											<?endif?>
 										<?endforeach;?>
@@ -460,7 +466,7 @@ $asset->addJs($templateFolder."/script.js");
 											<? \Aspro\Functions\CAsproSku::showItemPrices($arParamsCE_CMP, $arItem, $item_id, $min_price_id, $arItemIDs, ($arParams["SHOW_DISCOUNT_PERCENT_NUMBER"] == "Y" ? "N" : "Y")); ?>
 										</div>
 									<? endif; ?>
-									<div class="js_price_wrapper price">
+									<div class="js_price_wrapper price" <?= !$arCurrentSKU ? 'style="display:none;"' : '' ?>>
 										<? if ($arCurrentSKU): ?>
 											<?
 											$item_id = $arCurrentSKU["ID"];
@@ -508,11 +514,8 @@ $asset->addJs($templateFolder."/script.js");
 									<? } ?>
 								<? } ?>
 								<div class="price_matrix_block">
-									<div style="display: none;">50 rub.</div>
 									<div class="price_matrix_wrapper ">
 										<div class="price" data-currency="RUB" data-value="<?= $arItem['PRICE'] ?>">
-											<div style="display: none;">50 rub.</div>
-
 											<?
 											$db_res = CPrice::GetList(
 												array(),
@@ -666,13 +669,13 @@ $asset->addJs($templateFolder."/script.js");
 												  id="<? echo $arItemIDs["ALL_ITEM_IDS"]['QUANTITY_UP']; ?>" <?= ($arAddToBasketData["MAX_QUANTITY_BUY"] ? "data-max='" . $arAddToBasketData["MAX_QUANTITY_BUY"] . "'" : "") ?>>+</span>
 										</div>
 									<? endif; ?>
-									
-							<?php 
+
+							<?php
 							global $USER;
-							if (!$USER->IsAuthorized()) { 
+							if (!$USER->IsAuthorized()) {
 								$url = ((isset($_GET['backurl']) && $_GET['backurl']) ? $_GET['backurl'] : $APPLICATION->GetCurUri()); ?>
 							<div id="<?= $arItemIDs["ALL_ITEM_IDS"]['BASKET_ACTIONS']; ?>"
-										 class="button_block <?= (($arAddToBasketData["ACTION"] == "ORDER") || !$arAddToBasketData["CAN_BUY"] || !$arAddToBasketData["OPTIONS"]["USE_PRODUCT_QUANTITY_LIST"] || $arAddToBasketData["ACTION"] == "SUBSCRIBE" ? "wide" : ""); ?>">							
+										 class="button_block <?= (($arAddToBasketData["ACTION"] == "ORDER") || !$arAddToBasketData["CAN_BUY"] || !$arAddToBasketData["OPTIONS"]["USE_PRODUCT_QUANTITY_LIST"] || $arAddToBasketData["ACTION"] == "SUBSCRIBE" ? "wide" : ""); ?>">
 								<a rel="nofollow"  data-event="jqm" data-param-type="auth" data-param-backurl="<?=htmlspecialcharsbx($url)?>" data-name="auth" href="<?=$arTheme['PERSONAL_PAGE_URL']['VALUE']?>" style="display: inline-block;font-size: 14px;background-color: #107bb1;border-color: #107bb1;color: #ffffff;padding: 10px 10px 10px;margin: 7px;">В корзину</a>
 							</div>
 							<? } else { ?>
