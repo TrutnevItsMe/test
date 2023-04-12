@@ -340,8 +340,14 @@ $asset->addJs($templateFolder."/script.js");
 										<?foreach ($arParams["PROPERTY_CODE"] as $prop):?>
 											<?if ($arItem["PROPERTIES"][$prop]["VALUE"]):?>
 											<tr>
-												<td><?=$arItem["PROPERTIES"][$prop]["NAME"]?>:
-													<?=$arItem["PROPERTIES"][$prop]["VALUE"]?></td>
+												<td>
+													<?= $arItem["PROPERTIES"][$prop]["NAME"] ?>:
+													<?php if (is_array($arItem["PROPERTIES"][$prop]["VALUE"])): ?>
+														<?= join("&nbsp", $arItem["PROPERTIES"][$prop]["VALUE"]) ?>
+													<?php else: ?>
+														<?= $arItem["PROPERTIES"][$prop]["VALUE"] ?>
+													<?php endif; ?>
+												</td>
 											</tr>
 											<?endif?>
 										<?endforeach;?>
