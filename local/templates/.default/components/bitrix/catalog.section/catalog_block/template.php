@@ -6,6 +6,11 @@ $asset = \Bitrix\Main\Page\Asset::getInstance();
 $asset->addJs($templateFolder."/script.js");
 ?>
 
+<?php if (in_array('mebel_dlya_vannoy_komnaty', explode('/', $_SERVER['REQUEST_URI'])) || in_array('unitazy_rakoviny_bide', explode('/', $_SERVER['REQUEST_URI']))) { ?>
+<style>
+.ftr_347, .ftr_346 {display:none;}
+</style>
+<?php } ?>
 <? if (count($arResult["ITEMS"]) >= 1) { ?>
 	<? if (($arParams["AJAX_REQUEST"] == "N") || !isset($arParams["AJAX_REQUEST"])) { ?>
 		<? if (isset($arParams["TITLE"]) && $arParams["TITLE"]): ?>
@@ -227,7 +232,7 @@ $asset->addJs($templateFolder."/script.js");
 											</div>
 										<? endif; ?>
 									<? endif; ?>
-									<? if ($arParams["DISPLAY_COMPARE"] == "Y"): ?>
+									<?// if ($arParams["DISPLAY_COMPARE"] == "Y"): ?>
 										<? if (!$arItem["OFFERS"] || ($arParams["TYPE_SKU"] !== 'TYPE_1' || ($arParams["TYPE_SKU"] == 'TYPE_1' && !$arItem["OFFERS_PROP"]))): ?>
 											<div class="compare_item_button">
 												<span title="<?= GetMessage('CATALOG_COMPARE') ?>"
@@ -261,7 +266,7 @@ $asset->addJs($templateFolder."/script.js");
 													  data-item="<?= $arItem["ID"] ?>"><i></i></span>
 											</div>
 										<? endif; ?>
-									<? endif; ?>
+									<?// endif; ?>
 								</div>
 							<? endif; ?>
 							<a href="<?= $arItem["DETAIL_PAGE_URL"] ?>" class="thumb shine"
@@ -325,17 +330,25 @@ $asset->addJs($templateFolder."/script.js");
 									<? $frame->end(); ?>
 								</div>
 							<? endif; ?>
-							<div class="sa_block" style="min-height: 190px;">
+							<div class="sa_block" style="min-height: 175px;">
 								<?= $displayQuantity; ?>
 								<div class="article_block"
+									 <? if (isset($arItem['ARTICLE']) && $arItem['ARTICLE']['VALUE']): ?>data-name="<?= $arItem['ARTICLE']['NAME']; ?>"
+									 data-value="<?= $arItem['ARTICLE']['VALUE']; ?>"<? endif; ?>>
+								<?php if(!$arResult["IBLOCK_SECTION_ID"] == 286) { ?>
 									<table>
 										<?foreach ($arParams["PROPERTY_CODE"] as $prop):?>
 											<?if ($arItem["PROPERTIES"][$prop]["VALUE"]):?>
 											<tr>
-												<td><?=$arItem["PROPERTIES"][$prop]["NAME"]?>:
-													<?=$arItem["PROPERTIES"][$prop]["VALUE"]?></td>
+												<td>
+													<?= $arItem["PROPERTIES"][$prop]["NAME"] ?>:
+													<?php if (is_array($arItem["PROPERTIES"][$prop]["VALUE"])): ?>
+														<?= join("&nbsp", $arItem["PROPERTIES"][$prop]["VALUE"]) ?>
+													<?php else: ?>
+														<?= $arItem["PROPERTIES"][$prop]["VALUE"] ?>
+													<?php endif; ?>
+												</td>
 											</tr>
-											<br>
 											<?endif?>
 										<?endforeach;?>
 										<tr>
@@ -376,6 +389,48 @@ $asset->addJs($templateFolder."/script.js");
 											</tr>
 										<? } ?>
 									</table>
+								<? } else { ?>
+									<table>
+										<? if ($arItem["PROPERTIES"]["BRAND"]["VALUE"]) { ?>
+											<tr>
+												<td>Бренд: <?= $arItem["PROPERTIES"]["BRAND"]["VALUE"] ?></td>
+											</tr>
+										<? } ?>
+										<? if ($arItem["PROPERTIES"]["KOLLEKTSIYA"]["VALUE"]) { ?>
+											<tr>
+												<td>Коллекция: <?= $arItem["PROPERTIES"]["KOLLEKTSIYA"]["VALUE"] ?></td>
+											</tr>
+										<? } ?>
+										<? if ($arItem["PROPERTIES"]["CML2_ARTICLE"]["VALUE"]) { ?>
+											<tr>
+												<td>Артикул: <?= $arItem["PROPERTIES"]["CML2_ARTICLE"]["VALUE"] ?></td>
+											</tr>
+										<? } ?>
+										<? if ($arItem["PROPERTIES"]["DLINA_CHASHI_SM"]["VALUE"]) { ?>
+											<tr>
+												<td>Длина чаши: <?= $arItem["PROPERTIES"]["DLINA_CHASHI_SM"]["VALUE"] ?></td>
+											</tr>
+										<? } ?>
+										<? if ($arItem["PROPERTIES"]["KRYSHKA_SIDENE_S_MIKROLIFTOM"]["VALUE"]) { ?>
+											<tr>
+												<td>
+													Микролифт: <?= $arItem["PROPERTIES"]["KRYSHKA_SIDENE_S_MIKROLIFTOM"]["VALUE"] ?></td>
+											</tr>
+										<? } ?>
+										<? if ($arItem["PROPERTIES"]["BEZOBODKOVYY_UNITAZ"]["VALUE"]) { ?>
+											<tr>
+												<td>
+													Безободковый: <?= $arItem["PROPERTIES"]["BEZOBODKOVYY_UNITAZ"]["VALUE"] ?></td>
+											</tr>
+										<? } ?>
+										<? if ($arItem["PROPERTIES"]["ORGANIZATSIYA_SMYVAYUSHCHEGO_POTOKA"]["VALUE"]) { ?>
+											<tr>
+												<td>
+													Вид смывающего потока: <?= $arItem["PROPERTIES"]["ORGANIZATSIYA_SMYVAYUSHCHEGO_POTOKA"]["VALUE"] ?></td>
+											</tr>
+										<? } ?>
+									</table>
+								<? } ?>
 								</div>
 							</div>
 							<div class="cost prices clearfix">
@@ -411,7 +466,7 @@ $asset->addJs($templateFolder."/script.js");
 											<? \Aspro\Functions\CAsproSku::showItemPrices($arParamsCE_CMP, $arItem, $item_id, $min_price_id, $arItemIDs, ($arParams["SHOW_DISCOUNT_PERCENT_NUMBER"] == "Y" ? "N" : "Y")); ?>
 										</div>
 									<? endif; ?>
-									<div class="js_price_wrapper price">
+									<div class="js_price_wrapper price" <?= !$arCurrentSKU ? 'style="display:none;"' : '' ?>>
 										<? if ($arCurrentSKU): ?>
 											<?
 											$item_id = $arCurrentSKU["ID"];
@@ -459,11 +514,8 @@ $asset->addJs($templateFolder."/script.js");
 									<? } ?>
 								<? } ?>
 								<div class="price_matrix_block">
-									<div style="display: none;">50 rub.</div>
 									<div class="price_matrix_wrapper ">
 										<div class="price" data-currency="RUB" data-value="<?= $arItem['PRICE'] ?>">
-											<div style="display: none;">50 rub.</div>
-
 											<?
 											$db_res = CPrice::GetList(
 												array(),
@@ -617,20 +669,21 @@ $asset->addJs($templateFolder."/script.js");
 												  id="<? echo $arItemIDs["ALL_ITEM_IDS"]['QUANTITY_UP']; ?>" <?= ($arAddToBasketData["MAX_QUANTITY_BUY"] ? "data-max='" . $arAddToBasketData["MAX_QUANTITY_BUY"] . "'" : "") ?>>+</span>
 										</div>
 									<? endif; ?>
-									
+
+							<?php
+							global $USER;
+							if (!$USER->IsAuthorized()) {
+								$url = ((isset($_GET['backurl']) && $_GET['backurl']) ? $_GET['backurl'] : $APPLICATION->GetCurUri()); ?>
 							<div id="<?= $arItemIDs["ALL_ITEM_IDS"]['BASKET_ACTIONS']; ?>"
 										 class="button_block <?= (($arAddToBasketData["ACTION"] == "ORDER") || !$arAddToBasketData["CAN_BUY"] || !$arAddToBasketData["OPTIONS"]["USE_PRODUCT_QUANTITY_LIST"] || $arAddToBasketData["ACTION"] == "SUBSCRIBE" ? "wide" : ""); ?>">
-							<?php if(!$totalCount <= 0) { ?>
-							<?php 
-							global $USER;
-							if (!$USER->IsAuthorized()) { 
-								$url = ((isset($_GET['backurl']) && $_GET['backurl']) ? $_GET['backurl'] : $APPLICATION->GetCurUri()); ?>							
-								<a rel="nofollow"  data-event="jqm" data-param-type="auth" data-param-backurl="<?=htmlspecialcharsbx($url)?>" data-name="auth" href="<?=$arTheme['PERSONAL_PAGE_URL']['VALUE']?>" style="display: inline-block;font-size: 14px;background-color: #107bb1;border-color: #107bb1;color: #ffffff;padding: 10px 10px 10px;margin: 0px 7px;">В корзину</a>
-							<? } else { ?>
-								<?= $arAddToBasketData["HTML"] ?>
-							<?php } ?>
-							<?php } ?>
+								<a rel="nofollow"  data-event="jqm" data-param-type="auth" data-param-backurl="<?=htmlspecialcharsbx($url)?>" data-name="auth" href="<?=$arTheme['PERSONAL_PAGE_URL']['VALUE']?>" style="display: inline-block;font-size: 14px;background-color: #107bb1;border-color: #107bb1;color: #ffffff;padding: 10px 10px 10px;margin: 7px;">В корзину</a>
 							</div>
+							<? } else { ?>
+							<div id="<?= $arItemIDs["ALL_ITEM_IDS"]['BASKET_ACTIONS']; ?>"
+										 class="button_block <?= (($arAddToBasketData["ACTION"] == "ORDER") || !$arAddToBasketData["CAN_BUY"] || !$arAddToBasketData["OPTIONS"]["USE_PRODUCT_QUANTITY_LIST"] || $arAddToBasketData["ACTION"] == "SUBSCRIBE" ? "wide" : ""); ?>">
+								<?= $arAddToBasketData["HTML"] ?>
+							</div>
+							<?php } ?>
 
 								</div>
 							<?

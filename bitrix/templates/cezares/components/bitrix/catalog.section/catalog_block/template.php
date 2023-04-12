@@ -464,11 +464,8 @@ $asset->addJs($templateFolder."/script.js");
 									<?php } ?>
 								<?php } ?>
 								<div class="price_matrix_block">
-									<div style="display: none;">50 rub.</div>
 									<div class="price_matrix_wrapper ">
 										<div class="price" data-currency="RUB" data-value="<?= $arItem['PRICE'] ?>">
-											<div style="display: none;">50 rub.</div>
-
 											<?php
 											$db_res = CPrice::GetList(
 												array(),

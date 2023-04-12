@@ -482,11 +482,10 @@ setViewedProduct(<?=$arResult['ID']?>, <?=CUtil::PhpToJSObject($arViewedData, fa
 
 								<div class="price_group   eb812f89-14ce-11e5-a550-5404a68a235f"><div class="price_name"></div>
 									<div class="price_matrix_wrapper ">
-										<div class="price" data-currency="RUB" data-value="0"><div style="display: none;">50 rub.</div>
+										<div class="price" data-currency="RUB" data-value="0">
 											<span>
 												<span class="values_wrapper">
 													<span class="price_value">
-														<div style="display: none;">50 rub.</div>
 														<?
 
 														$db_res = CPrice::GetList(

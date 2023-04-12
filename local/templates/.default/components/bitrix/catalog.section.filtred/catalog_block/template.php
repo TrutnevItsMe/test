@@ -452,12 +452,8 @@
 									<? } ?>
 								<? } ?>
 								<div class="price_matrix_block">
-									<div style="display: none;">50 rub.</div>
 									<div class="price_matrix_wrapper ">
 										<div class="price" data-currency="RUB" data-value="<?= $arItem['PRICE'] ?>">
-											<div style="display: none;">50 rub.</div>
-
-
 											<?
 											$db_res = CPrice::GetList(
 												array(),
@@ -614,10 +610,10 @@
 							<?php if(!$totalCount <= 0) { ?>
 							<div id="<?= $arItemIDs["ALL_ITEM_IDS"]['BASKET_ACTIONS']; ?>"
 										 class="button_block <?= (($arAddToBasketData["ACTION"] == "ORDER") || !$arAddToBasketData["CAN_BUY"] || !$arAddToBasketData["OPTIONS"]["USE_PRODUCT_QUANTITY_LIST"] || $arAddToBasketData["ACTION"] == "SUBSCRIBE" ? "wide" : ""); ?>">
-							<?php 
+							<?php
 							global $USER;
-							if (!$USER->IsAuthorized()) { 
-							$url = ((isset($_GET['backurl']) && $_GET['backurl']) ? $_GET['backurl'] : $APPLICATION->GetCurUri()); ?>							
+							if (!$USER->IsAuthorized()) {
+							$url = ((isset($_GET['backurl']) && $_GET['backurl']) ? $_GET['backurl'] : $APPLICATION->GetCurUri()); ?>
 							<a rel="nofollow"  data-event="jqm" data-param-type="auth" data-param-backurl="<?=htmlspecialcharsbx($url)?>" data-name="auth" href="<?=$arTheme['PERSONAL_PAGE_URL']['VALUE']?>" style="display: inline-block;font-size: 14px;background-color: #107bb1;border-color: #107bb1;color: #ffffff;padding: 10px 10px 10px;margin:0px 7px;">В корзину</a>
 							<? } else { ?>
 										<!--noindex-->

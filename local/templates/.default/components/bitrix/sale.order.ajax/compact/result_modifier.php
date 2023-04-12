@@ -300,7 +300,7 @@ if (is_array($arResult["GRID"]["ROWS"]))
 			}
 
 			$displayQuantity = \Intervolga\Custom\Tools\RestsUtil::getQuantityArray($quantity)["HTML"];
-			$displayQuantity = str_replace("#REST#", $displayQuantity, $displayQuantity);
+			$displayQuantity = str_replace("#REST#", $quantity, $displayQuantity);
 
 			$arResult['JS_DATA']["GRID"]["ROWS"][$key]["data"][RESTS_CODE] = $displayQuantity;
 		}

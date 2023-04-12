@@ -16,7 +16,7 @@ if (!window.ElementComponent)
 
 					YandexMap.moveTo(parseFloat(x), parseFloat(y)).then(
 						function(){
-							YandexMap.zoom(12);
+							YandexMap.zoom(17);
 						});
 				}
 			});

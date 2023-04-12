@@ -69,5 +69,35 @@
 		<?CNext::ShowPageType('search_title_component');?>
 		<?CNext::setFooterTitle();
 		CNext::showFooterBasket();?>
+<script>
+$(function() {
+    $(document).on("click", ".review_form", function(e) {
+    	e.preventDefault();
+
+    	var this_ = $(this);
+    	if(this_.hasClass("disabled"))
+    		return false;
+        
+        this_.addClass("disabled");
+
+        $.ajax({
+            url: "/review/review.php",
+            type: "POST",
+            data: {},
+            success: function(data) {
+            	$("body").append(data);
+            	$(".modal_background").css({"display":"flex"});
+            	$(".modal_form").fadeIn();
+        	this_.removeClass("disabled");
+            }
+        });
+    });
+
+    $(document).on("click", ".close_form", function(e) {
+        e.preventDefault();
+        $(".modal_background").hide().remove();
+    });
+});
+</script>
 	</body>
 </html>

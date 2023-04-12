@@ -1,6 +1,6 @@
 <?php
 $arUrlRewrite=array (
-  6 => 
+  6 =>
   array (
     'CONDITION' => '#^/bitrix/services/ymarket/([\\w\\d\\-]+)?(/)?(([\\w\\d\\-]+)(/)?)?#',
     'RULE' => 'REQUEST_OBJECT=$1&METHOD=$4',
@@ -8,7 +8,7 @@ $arUrlRewrite=array (
     'PATH' => '/bitrix/services/ymarket/index.php',
     'SORT' => 100,
   ),
-  1 => 
+  1 =>
   array (
     'CONDITION' => '#^/online/([\\.\\-0-9a-zA-Z]+)(/?)([^/]*)#',
     'RULE' => 'alias=$1',
@@ -16,7 +16,7 @@ $arUrlRewrite=array (
     'PATH' => '/desktop_app/router.php',
     'SORT' => 100,
   ),
-  28 => 
+  28 =>
   array (
     'CONDITION' => '#^/video/([\\.\\-0-9a-zA-Z]+)(/?)([^/]*)#',
     'RULE' => 'alias=$1&videoconf',
@@ -24,7 +24,7 @@ $arUrlRewrite=array (
     'PATH' => '/desktop_app/router.php',
     'SORT' => 100,
   ),
-  7 => 
+  7 =>
   array (
     'CONDITION' => '#^/personal/history-of-orders/#',
     'RULE' => '',
@@ -32,7 +32,7 @@ $arUrlRewrite=array (
     'PATH' => '/personal/history-of-orders/index.php',
     'SORT' => 100,
   ),
-  3 => 
+  3 =>
   array (
     'CONDITION' => '#^\\/?\\/mobileapp/jn\\/(.*)\\/.*#',
     'RULE' => 'componentName=$1',
@@ -40,7 +40,7 @@ $arUrlRewrite=array (
     'PATH' => '/bitrix/services/mobileapp/jn.php',
     'SORT' => 100,
   ),
-  5 => 
+  5 =>
   array (
     'CONDITION' => '#^/bitrix/services/ymarket/#',
     'RULE' => '',
@@ -48,7 +48,7 @@ $arUrlRewrite=array (
     'PATH' => '/bitrix/services/ymarket/index.php',
     'SORT' => 100,
   ),
-  2 => 
+  2 =>
   array (
     'CONDITION' => '#^/online/(/?)([^/]*)#',
     'RULE' => '',
@@ -56,7 +56,7 @@ $arUrlRewrite=array (
     'PATH' => '/desktop_app/router.php',
     'SORT' => 100,
   ),
-  0 => 
+  0 =>
   array (
     'CONDITION' => '#^/stssync/calendar/#',
     'RULE' => '',
@@ -64,7 +64,7 @@ $arUrlRewrite=array (
     'PATH' => '/bitrix/services/stssync/calendar/index.php',
     'SORT' => 100,
   ),
-  14 => 
+  14 =>
   array (
     'CONDITION' => '#^/company/vacancy/#',
     'RULE' => '',
@@ -72,7 +72,7 @@ $arUrlRewrite=array (
     'PATH' => '/company/vacancy/index.php',
     'SORT' => 100,
   ),
-  8 => 
+  8 =>
   array (
     'CONDITION' => '#^/contacts/stores/#',
     'RULE' => '',
@@ -80,7 +80,7 @@ $arUrlRewrite=array (
     'PATH' => '/contacts/stores/index.php',
     'SORT' => 100,
   ),
-  9 => 
+  9 =>
   array (
     'CONDITION' => '#^/personal/order/#',
     'RULE' => '',
@@ -88,7 +88,7 @@ $arUrlRewrite=array (
     'PATH' => '/personal/order/index.php',
     'SORT' => 100,
   ),
-  15 => 
+  15 =>
   array (
     'CONDITION' => '#^/company/staff/#',
     'RULE' => '',
@@ -96,7 +96,7 @@ $arUrlRewrite=array (
     'PATH' => '/company/staff/index.php',
     'SORT' => 100,
   ),
-  12 => 
+  12 =>
   array (
     'CONDITION' => '#^/company/news/#',
     'RULE' => '',
@@ -104,7 +104,7 @@ $arUrlRewrite=array (
     'PATH' => '/company/news/index.php',
     'SORT' => 100,
   ),
-  22 => 
+  22 =>
   array (
     'CONDITION' => '#^/instruments/#',
     'RULE' => 'ls=254',
@@ -112,7 +112,7 @@ $arUrlRewrite=array (
     'PATH' => '/catalog/index.php',
     'SORT' => 100,
   ),
-  41 => 
+  44 =>
   array (
     'CONDITION' => '#^/info/docs/#',
     'RULE' => '',
@@ -120,7 +120,7 @@ $arUrlRewrite=array (
     'PATH' => '/info/index.php',
     'SORT' => 100,
   ),
-  17 => 
+  17 =>
   array (
     'CONDITION' => '#^/services/#',
     'RULE' => '',
@@ -128,7 +128,7 @@ $arUrlRewrite=array (
     'PATH' => '/services/index.php',
     'SORT' => 100,
   ),
-  19 => 
+  19 =>
   array (
     'CONDITION' => '#^/landings/#',
     'RULE' => '',
@@ -136,7 +136,7 @@ $arUrlRewrite=array (
     'PATH' => '/landings/index.php',
     'SORT' => 100,
   ),
-  13 => 
+  13 =>
   array (
     'CONDITION' => '#^/projects/#',
     'RULE' => '',
@@ -144,7 +144,7 @@ $arUrlRewrite=array (
     'PATH' => '/projects/index.php',
     'SORT' => 100,
   ),
-  33 => 
+  33 =>
   array (
     'CONDITION' => '#^/personal/#',
     'RULE' => '',
@@ -152,7 +152,7 @@ $arUrlRewrite=array (
     'PATH' => '/personal/index.php',
     'SORT' => 100,
   ),
-  42 => 
+  45 =>
   array (
     'CONDITION' => '#^/contacts/#',
     'RULE' => '',
@@ -160,7 +160,7 @@ $arUrlRewrite=array (
     'PATH' => '/contacts/index.php',
     'SORT' => 100,
   ),
-  43 =>
+  46 =>
   array (
     'CONDITION' => '#^/catalog/#',
     'RULE' => '',
@@ -168,7 +168,7 @@ $arUrlRewrite=array (
     'PATH' => '/catalog/index.php',
     'SORT' => 100,
   ),
-  37 => 
+  37 =>
   array (
     'CONDITION' => '#^/brands/#',
     'RULE' => '',
@@ -176,7 +176,7 @@ $arUrlRewrite=array (
     'PATH' => '/brands/index.php',
     'SORT' => 100,
   ),
-  4 => 
+  4 =>
   array (
     'CONDITION' => '#^/rest/#',
     'RULE' => '',
@@ -184,7 +184,7 @@ $arUrlRewrite=array (
     'PATH' => '/bitrix/services/rest/index.php',
     'SORT' => 100,
   ),
-  10 => 
+  10 =>
   array (
     'CONDITION' => '#^/blog/#',
     'RULE' => '',
@@ -192,7 +192,7 @@ $arUrlRewrite=array (
     'PATH' => '/blog/index.php',
     'SORT' => 100,
   ),
-  11 => 
+  11 =>
   array (
     'CONDITION' => '#^/auth/#',
     'RULE' => '',
@@ -200,7 +200,7 @@ $arUrlRewrite=array (
     'PATH' => '/auth/index.php',
     'SORT' => 100,
   ),
-  39 => 
+  39 =>
   array (
     'CONDITION' => '#^/news/#',
     'RULE' => '',

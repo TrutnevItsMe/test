@@ -207,6 +207,8 @@ else
 				{
 					$isSelected = ($fieldInputName !== null && $fieldEnum['ID'] === $sourceFieldAttributes['value']);
 
+					if (!empty($fieldEnum['DEPRECATED']) && !$isSelected) { continue; }
+
 					?>
 					<option value="<?= $fieldEnum['ID'] ?>" <?= $isSelected ? 'selected': ''; ?>><?= Market\Utils::htmlEscape($fieldEnum['VALUE']); ?></option>
 					<?php
