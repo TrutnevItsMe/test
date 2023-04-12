@@ -1,8 +1,11 @@
 .catalog_block .item-stock, .catalog_block .article_block
 {
 	text-align: left;
-	max-height: 175px;
+	max-height: 160px;
 	overflow: auto;
+	color: transparent;
+	-webkit-background-clip: text;
+	background-clip: text;
 }
 
 .sa_block > .item-stock-qnty,
