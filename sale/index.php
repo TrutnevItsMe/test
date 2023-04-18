@@ -105,8 +105,8 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUE
 			1 => "",
 		),
 		"AJAX_REQUEST" => $isAjax,
-		"ELEMENT_SORT_FIELD" => "name",
-		"ELEMENT_SORT_ORDER" => "asc",
+		"ELEMENT_SORT_FIELD" => "QUANTITY",
+		"ELEMENT_SORT_ORDER" => "desc",
 		"ELEMENT_SORT_FIELD2" => "sort",
 		"ELEMENT_SORT_ORDER2" => "desc",
 		"FILTER_NAME" => "arrFilter",
@@ -153,7 +153,6 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUE
 		"CACHE_FILTER" => "N",
 		"PRICE_CODE" => array(
 			0 => "РРЦ Константа",
-			1 => "РРЦ 2022",
 		),
 		"USE_PRICE_COUNT" => "N",
 		"SHOW_PRICE_COUNT" => "1",
@@ -188,13 +187,15 @@ if(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER['HTTP_X_REQUE
 			1 => "",
 		),
 		"OFFERS_SORT_FIELD" => "sort",
-		"OFFERS_SORT_ORDER" => "asc",
+		"OFFERS_SORT_ORDER" => "desc",
 		"OFFERS_SORT_FIELD2" => "id",
 		"OFFERS_SORT_ORDER2" => "desc",
 		"PRODUCT_DISPLAY_MODE" => "N",
 		"OFFERS_CART_PROPERTIES" => array(
 		),
-        "STORES" => \Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS
+		"STORES" => \Intervolga\Custom\Helpers\StoreHelper::MAIN_STORE_IDS,
+		"COMPOSITE_FRAME_MODE" => "A",
+		"COMPOSITE_FRAME_TYPE" => "AUTO"
 	),
 	false
 );?>

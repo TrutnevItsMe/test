@@ -49,6 +49,9 @@
 	if ($arParams["LINE_ELEMENT_COUNT"] > 5)
 		$col = 5; ?>
 	<? foreach ($arResult["ITEMS"] as $arItem) { ?>
+	<?php $pr = number_format($arItem['PRICE_MATRIX']["MATRIX"][13]["ZERO-INF"]["PRICE"], 0, ',', ' '); 
+	 if($pr > 0) {
+	?>
 		<div class="item_block col-<?= $col; ?> col-md-<?= ceil(12 / $col); ?> col-sm-<?= ceil(12 / round($col / 2)) ?> col-xs-6">
 			<div class="catalog_item_wrapp item">
 				<div class="basket_props_block" id="bx_basket_div_<?= $arItem["ID"]; ?>" style="display: none;">
@@ -716,6 +719,7 @@
 				</div>
 			</div>
 		</div>
+	 <? } ?>
 	<? } ?>
 	<? if (($arParams["AJAX_REQUEST"] == "N") || !isset($arParams["AJAX_REQUEST"])) { ?>
 		</div>

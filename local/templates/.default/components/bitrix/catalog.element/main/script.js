@@ -4887,22 +4887,20 @@ $(function ()
 		{
 			showPrice(price);
 		}
-
-		$('#set_item_base_img_' + group).html('<img src="' + $(this).data('img') + '" />');
-		if ($(this).data('price_discount') == "")
-		{
-			$('#set_item_base_price_discount_' + group).html(formatNumber($(this).data('price'), 0) + " ₽");
-			$('#set_item_base_price_discount_' + group).hide();
+		if ($(this).data('price') !== undefined) {
+			$('#set_item_base_img_' + group).html('<img src="' + $(this).data('img') + '" />');
+			if ($(this).data('price_discount') == "") {
+				$('#set_item_base_price_discount_' + group).html(formatNumber($(this).data('price'), 0) + " ₽");
+				$('#set_item_base_price_discount_' + group).hide();
+			} else {
+				$('#set_item_base_price_discount_' + group).show();
+				$('#set_item_base_price_discount_' + group).html(formatNumber($(this).data('price_discount'), 0) + " ₽");
+			}
+			$('#set_item_base_price_' + group).html(formatNumber($(this).data('price'), 0) + " ₽");
+			$('#set_item_base_name_' + group).html($(this).data('name'));
+			$('#set_item_base_name_' + group).attr('href', '/catalog/product/' + $(this).data('id') + '/');
+			$('#set_item_base_article_' + group).html($(this).data('article'));
 		}
-		else
-		{
-			$('#set_item_base_price_discount_' + group).show();
-			$('#set_item_base_price_discount_' + group).html(formatNumber($(this).data('price_discount'), 0) + " ₽");
-		}
-		$('#set_item_base_price_' + group).html(formatNumber($(this).data('price'), 0) + " ₽");
-		$('#set_item_base_name_' + group).html($(this).data('name'));
-		$('#set_item_base_name_' + group).attr('href', '/catalog/product/' + $(this).data('id') + '/');
-		$('#set_item_base_article_' + group).html($(this).data('article'));
 	})
 })
 
@@ -5051,7 +5049,9 @@ function showPrice(price)
 	}
 	else
 	{
-		html = '<span class="price">' + formatNumber(price.price, 0) + ' ₽</span>';
+		if (price.price !== undefined) {
+			html = '<span class="price">' + formatNumber(price.price, 0) + ' ₽</span>';
+		}
 	}
 
 	html += '</span>';
@@ -5062,7 +5062,9 @@ function showPrice(price)
 	if (totalSumEl)
 	{
 		var sum = price.price * parseInt($('.counter_wrapp .counter_block .text').val());
-		totalSumEl.html(formatNumber(sum, 0) + '&nbsp;₽');
+		if (sum !== undefined) {
+			totalSumEl.html(formatNumber(sum, 0) + '&nbsp;₽');
+		}
 	}
 }
 

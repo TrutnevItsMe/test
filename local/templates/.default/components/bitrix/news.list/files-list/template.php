@@ -110,7 +110,7 @@ $this->setFrameMode(true);
 											</a>
 										</div>
 										<div class="info-row__item info-row__item_name">
-											<a href="<?=$arItem["DETAIL_PAGE_URL"]?>"><p><?=$file["ORIGINAL_NAME"]?></p>
+											<a href="<?=$file["SRC"]?>" download="<?=$file["ORIGINAL_NAME"]?>" <?/*href="<?=$arItem["DETAIL_PAGE_URL"]?>"*/?>><p><?=$file["ORIGINAL_NAME"]?></p>
 											</a>
 										</div>
 										<?php if ($file["TIMESTAMP_X"]): ?>

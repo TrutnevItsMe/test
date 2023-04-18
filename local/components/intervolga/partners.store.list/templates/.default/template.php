@@ -26,7 +26,7 @@ else
 }
 
 ?>
-
+<script src="/bitrix/templates/cezares/vendor/js/bootstrap5js/bootstrap.bundle.min.js"></script>
 <div class="loader d-none"></div>
 
 	<div class="d-flex mt-5 shops_regions">
@@ -91,7 +91,6 @@ else
 				</div>
 			<?php endif; ?>
 		<section class="magaz_items over_items">
-
 			<?php if ($arParams["USE_PAGINATION"] === "Y") {
 				$arItemsId = $arResult["PAGINATION_ELEMENT_IDS"];
 			} else {
@@ -120,9 +119,9 @@ else
 
 							$detailUrl .= "&backurl=" . parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 						?>
-					 
 <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <?/*<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">*/?>
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
    <?= $arItem["UF_NAME"] ?>
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

@@ -1,4 +1,10 @@
-body{width:100%;position:relative;margin:0 auto;padding:0;color:#555;}
+@font-face{
+	font-family: "Montserrat";
+	src: url("/bitrix/templates/cezares/font/Montserrat-VariableFont_wght.ttf");
+	font-style: normal; 
+	font-weight: normal; 
+}
+body{width:100%;position:relative;margin:0 auto;padding:0;color:#555;font: 14px/22px "Montserrat", Arial, sans-serif !important;}
 button, input[type='submit'], input[type='button'], .basket_button, .basket_button span {text-transform:none;box-sizing:border-box;-moz-box-sizing:border-box;-o-box-sizing:border-box;-webkit-box-sizing:border-box;outline:none;}
 h1{color: #383838;font-size: 36px;font-weight:bold;line-height: 38px;padding-bottom: 25px;}
 h1.shifted{padding-right:200px;}
@@ -26,7 +32,7 @@ img{border:0;}
 
 /*new style >>*/
 .contact_b {display: inline-block;width: 100%;}
-.contact_t {display: inline-block;float: right;width: 40%;}
+.contact_t {display: inline-block;float: right;width: 40%;text-align: left;}
 .bx_filter .group_filt .bx_filter_parameters_box {padding: 11px 5px;}
 .bx_filter .active .group_filt .bx_filter_parameters_box_title:after {content: "\f107";}
 .bx_filter .active > .bx_filter_parameters_box_title:after {content: "\f106" !important;}
@@ -36,7 +42,7 @@ img{border:0;}
 #filter .filter-block-inner {height: auto;overflow: hidden;}
 .ik_select_list .ik_select_list_inner {height: 300px !important;}
 .magaz_items {float: right;}
-.magaz_items .item-wrap {height: auto !important;min-height: 55px;margin: 5px 0px !important;border-color: #b1b2b3;}
+.magaz_items .item-wrap {height: auto !important;min-height: 55px;margin: 5px 0px !important;border-color: #b1b2b3;overflow: initial;}
 .magaz_items .item-wrap:hover {border: 1px solid #b1b2b3;}
 .magaz_items.over_items {width: 100%;}
 .over_items {max-height: 690px;overflow-y: auto;margin-bottom: 40px;border-bottom: 1px solid #ddd;}
@@ -55,7 +61,7 @@ a.review_form svg {fill: #107bb1;}
 .magaz_items .btn-secondary {display: block;width: 100%;border-color: #c5c5c5;border: none;border-bottom: 1px solid #c5c5c5;border-radius: 0px;}
 .magaz_items .dropdown .btn-secondary:after {top: 21px;right: 20px;font-family: FontAwesome;content: "\f107";font-size: 14px;width: 15px;height: 12px;text-align: center;}
 .magaz_items .dropdown.open .btn-secondary:after {top: 21px;right: 20px;font-family: FontAwesome;content: "\f106";font-size: 14px;width: 15px;height: 12px;text-align: center;}
-.magaz_items .dropdown-menu {position: relative;width: 100%;border-bottom: 1px solid #c5c5c5;border: none;border-radius: 0px;}
+.magaz_items .dropdown-menu {position: relative !important;width: 100%;border-bottom: 1px solid #c5c5c5;border: none;border-radius: 0px;margin-bottom: -10px !important;}
 .magaz_items .dropdown-menu .dropdown-item {display: block;}
 .m_map {float: left;width: 25px;padding: 5px;fill: #a6122b;}
 .dropdown.open + svg + .item-field-block + .item-field-block, .dropdown.open + svg + .item-field-block, .dropdown.open + svg {display:none;}

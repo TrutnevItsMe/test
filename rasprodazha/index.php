@@ -93,8 +93,8 @@ $APPLICATION->SetTitle("Распродажа");
 			0 => "",
 			1 => "",
 		),
-		"ELEMENT_SORT_FIELD" => "name",
-		"ELEMENT_SORT_ORDER" => "asc",
+		"ELEMENT_SORT_FIELD" => "QUANTITY",
+		"ELEMENT_SORT_ORDER" => "desc",
 		"ELEMENT_SORT_FIELD2" => "sort",
 		"ELEMENT_SORT_ORDER2" => "desc",
 		"FILTER_NAME" => "arrFilter",
@@ -140,8 +140,6 @@ $APPLICATION->SetTitle("Распродажа");
 		"SET_STATUS_404" => "N",
 		"CACHE_FILTER" => "N",
 		"PRICE_CODE" => array(
-			0 => "РРЦ МОСКВА, СПБ Акция/Распродажа",
-			1 => "РРЦ МОСКВА, СПБ",
 		),
 		"USE_PRICE_COUNT" => "N",
 		"SHOW_PRICE_COUNT" => "1",
@@ -176,12 +174,14 @@ $APPLICATION->SetTitle("Распродажа");
 			1 => "",
 		),
 		"OFFERS_SORT_FIELD" => "sort",
-		"OFFERS_SORT_ORDER" => "asc",
+		"OFFERS_SORT_ORDER" => "desc",
 		"OFFERS_SORT_FIELD2" => "id",
 		"OFFERS_SORT_ORDER2" => "desc",
 		"PRODUCT_DISPLAY_MODE" => "N",
 		"OFFERS_CART_PROPERTIES" => array(
-		)
+		),
+		"COMPOSITE_FRAME_MODE" => "A",
+		"COMPOSITE_FRAME_TYPE" => "AUTO"
 	),
 	false
 );?>
