@@ -280,25 +280,22 @@ window.OffersFilterComponent = {
 		});
 
 		accessibleItems = {};
+		if (intsctIds !== undefined) {
+			intsctIds.forEach(function (id) {
+				self.filterProps.forEach(function (prop) {
+					if (self.result["OFFERS_MAP_FILTER"]
+						&& self.result["OFFERS_MAP_FILTER"][prop]
+						&& self.result["OFFERS"][id]["PROPERTIES"][prop]
+						&& self.result["OFFERS"][id]["PROPERTIES"][prop]["VALUE"]) {
+						if (!accessibleItems[prop]) {
+							accessibleItems[prop] = [];
+						}
 
-		intsctIds.forEach(function (id)
-		{
-			self.filterProps.forEach(function (prop)
-			{
-				if (self.result["OFFERS_MAP_FILTER"]
-					&& self.result["OFFERS_MAP_FILTER"][prop]
-					&& self.result["OFFERS"][id]["PROPERTIES"][prop]
-					&& self.result["OFFERS"][id]["PROPERTIES"][prop]["VALUE"])
-				{
-					if (!accessibleItems[prop])
-					{
-						accessibleItems[prop] = [];
+						accessibleItems[prop].push(self.result["OFFERS"][id]["PROPERTIES"][prop]["VALUE"]);
 					}
-
-					accessibleItems[prop].push(self.result["OFFERS"][id]["PROPERTIES"][prop]["VALUE"]);
-				}
+				});
 			});
-		});
+		}
 
 		self.filterProps.forEach(function (prop){
 			accessibleItems[prop] = Array.from((new Set(accessibleItems[prop])));
