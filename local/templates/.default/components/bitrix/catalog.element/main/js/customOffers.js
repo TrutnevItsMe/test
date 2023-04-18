@@ -406,8 +406,11 @@ window.OffersFilterComponent = {
 		{
 			intsctIds = self.intersection(intsctIds, arId);
 		});
-
-		returnsOffer = self.result["OFFERS"][intsctIds[0]];
+		if (self.result["OFFERS"][intsctIds] !== undefined) {
+			returnsOffer = self.result["OFFERS"][intsctIds[0]];
+		} else {
+			returnsOffer = null
+		}
 
 		return returnsOffer;
 	},
